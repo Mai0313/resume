@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "lint": "eslint --fix",
     "preview": "vite preview",
-    "deploy": "tsc && vite build && gh-pages -d dist -u \"github-actions-bot <support+actions@github.com>\""
+    "deploy": "tsc && vite build && gh-pages -d dist"
   },
   "dependencies": {
     "@heroui/button": "2.2.19",
