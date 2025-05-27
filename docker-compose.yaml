@@ -1,0 +1,17 @@
+services:
+  resume:
+    image: ghcr.io/mai0313/resume:latest
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: prod
+    command:
+      - npm
+      - run
+      - preview
+      - --host=0.0.0.0
+      - --port=3000
+    ports:
+      - 3000:3000
+    pull_policy: always
+    restart: always
