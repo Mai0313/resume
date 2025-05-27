@@ -9,7 +9,7 @@ permissions: write-all
 
 jobs:
   build:
-    name: Deploy docs
+    name: Deploy Website
     runs-on: ubuntu-latest
     # container: catthehacker/ubuntu:act-20.04  # Uncomment it if you use it on Gitea
 
@@ -28,4 +28,5 @@ jobs:
 
       - name: Deploy docs
         run: |
+          npm install
           npm run deploy
