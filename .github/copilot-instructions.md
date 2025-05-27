@@ -1,8 +1,9 @@
 <!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
 
+**每一次代碼修改 請隨時更新此文件 以便後續其他人能快速了解專案狀態**
+
 # 個人網站開發專案
 - 透過 HeroUI 提供的框架構建一個可用於 Github Pages 的個人網站
-- 請依照代碼修改或功能需求 隨時更新此文件 以便後續其他人能快速了解專案狀態
 - 使用 `vite` 和 `yarn` 作為前端開發工具
 - Navbar 導覽列目前只包含 `Resume` 和 `Portfolio` 兩個頁面，點擊品牌 LOGO 可返回 `Home` 頁面
 - 其他自定義頁面已移除，現有三個路由：`Home (/)`、`Resume (/resume)`、`Portfolio (/portfolio)`

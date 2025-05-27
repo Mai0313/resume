@@ -5,6 +5,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from "@her
 import { addToast } from "@heroui/toast";
 import { motion, useAnimation } from "framer-motion";
 import FuzzyText from '../components/FuzzyText';
+import { useTheme } from "@heroui/use-theme";
 
 // Read PIN code from .env via VITE_PIN_CODE
 const PIN_CODE = import.meta.env.VITE_PIN_CODE;
@@ -17,7 +18,11 @@ export default function ResumePage() {
   const [failCount, setFailCount] = useState(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const controls = useAnimation();
+  const { theme } = useTheme();
   useEffect(onOpen, []);
+
+  // 動態取得 PIN 長度
+  const pinLength = PIN_CODE?.length || 4;
 
   function handleSubmit(onClose: () => void) {
     if (!pin) {
@@ -35,12 +40,20 @@ export default function ResumePage() {
     }
   }
 
+  // 監聽 pin 長度
   useEffect(() => {
-    if (pin.length === 4) {
+    if (pin.length === pinLength) {
       handleSubmit(onOpenChange);
     }
     // eslint-disable-next-line
-  }, [pin]);
+  }, [pin, pinLength]);
+
+  // 監聽 Modal 關閉事件，若未驗證則直接 404
+  useEffect(() => {
+    if (!isOpen && !authenticated && isMounted) {
+      setFailCount(3);
+    }
+  }, [isOpen, authenticated, isMounted]);
 
   // 3次錯誤才顯示404，並包在DefaultLayout下
   if (failCount >= 3) {
@@ -52,6 +65,7 @@ export default function ResumePage() {
               baseIntensity={0.2}
               hoverIntensity={0.5}
               enableHover={true}
+              color={theme === "dark" ? "#fff" : "#222"}
             >
               404
             </FuzzyText>
@@ -68,9 +82,9 @@ export default function ResumePage() {
         <ModalContent className="overflow-hidden">
           {(onClose: () => void) => (
             <motion.div animate={controls} initial={{ x: 0 }} className="flex flex-col items-center gap-4 p-4">
-              <ModalHeader className="text-center">輸入 4 位 PIN 碼</ModalHeader>
+              <ModalHeader className="text-center">輸入 {pinLength} 位 PIN 碼</ModalHeader>
               <ModalBody className="flex justify-center">
-                <InputOtp length={4} value={pin} onValueChange={setPin} />
+                <InputOtp length={pinLength} value={pin} onValueChange={setPin} />
               </ModalBody>
             </motion.div>
           )}
