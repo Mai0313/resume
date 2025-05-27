@@ -59,16 +59,28 @@ export default function ResumePage() {
   if (failCount >= 3) {
     return (
       <DefaultLayout>
-        <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2">
           {isMounted && (
-            <FuzzyText
-              baseIntensity={0.2}
-              hoverIntensity={0.5}
-              enableHover={true}
-              color={theme === "dark" ? "#fff" : "#222"}
-            >
-              404
-            </FuzzyText>
+            <>
+              <FuzzyText
+                baseIntensity={0.2}
+                hoverIntensity={0.5}
+                enableHover={true}
+                color={theme === "dark" ? "#fff" : "#222"}
+                fontSize="clamp(2rem, 8vw, 8rem)"
+              >
+                404
+              </FuzzyText>
+              <FuzzyText
+                baseIntensity={0.15}
+                hoverIntensity={0.4}
+                enableHover={true}
+                color={theme === "dark" ? "#fff" : "#222"}
+                fontSize="clamp(2rem, 4vw, 4rem)"
+              >
+                Not Found
+              </FuzzyText>
+            </>
           )}
         </div>
       </DefaultLayout>
