@@ -28,5 +28,5 @@ jobs:
 
       - name: Deploy docs
         run: |
-          npm install
-          npm run deploy
+          yarn install
+          yarn deploy

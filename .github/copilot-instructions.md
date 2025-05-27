@@ -5,7 +5,7 @@ applyTo: "**"
 
 # 個人網站開發專案
 - 透過 HeroUI 提供的框架構建一個可用於 Github Pages 的個人網站
-- 使用 `vite` 和 `npm` 作為前端開發工具
+- 使用 `vite` 和 `yarn` 作為前端開發工具
 - 上方需要透過 `HeroUI` 提供的 `Navbar` 元件來做導覽列
     - 導航頁面目前只需要 `Resume`, `Portfolio` 和 `Blog` 三個頁面
     - 其他不需要的頁面請幫我全部刪除

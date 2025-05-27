@@ -13,5 +13,5 @@ LABEL maintainer="Wei Lee <mai@mai0313.com>" \
 FROM builder AS prod
 WORKDIR /app
 COPY . .
-RUN npm install && \
-    npm run build
+RUN yarn install && \
+    yarn build
