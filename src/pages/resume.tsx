@@ -30,7 +30,7 @@ export default function ResumePage() {
     <DefaultLayout>
       {/* Display resume after authentication */}
       <Modal isOpen={isOpen && !authenticated} onOpenChange={onOpenChange}>
-        <ModalContent>
+        <ModalContent className="overflow-hidden">
           {(onClose: () => void) => (
             <motion.div animate={controls} initial={{ x: 0 }} className="flex flex-col items-center gap-4 p-4">
               <ModalHeader className="text-center">輸入 4 位 PIN 碼</ModalHeader>

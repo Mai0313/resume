@@ -13,6 +13,6 @@ export const siteConfig = {
   ],
   links: {
     github: "https://github.com/Mai0313",
-    discord: "https://discord.gg/9b6yyZKmH4",
+    discord: "mai9999",
   },
 };
