@@ -80,14 +80,13 @@ export default function ResumePage() {
       {/* Display resume after authentication */}
       <Modal isOpen={isOpen && !authenticated} onOpenChange={onOpenChange}>
         <ModalContent className="overflow-hidden">
-          {(onClose: () => void) => (
-            <motion.div animate={controls} initial={{ x: 0 }} className="flex flex-col items-center gap-4 p-4">
-              <ModalHeader className="text-center">輸入 {pinLength} 位 PIN 碼</ModalHeader>
-              <ModalBody className="flex justify-center">
-                <InputOtp length={pinLength} value={pin} onValueChange={setPin} />
-              </ModalBody>
-            </motion.div>
-          )}
+          {/* 移除未使用的 onClose 參數 */}
+          <motion.div animate={controls} initial={{ x: 0 }} className="flex flex-col items-center gap-4 p-4">
+            <ModalHeader className="text-center">輸入 {pinLength} 位 PIN 碼</ModalHeader>
+            <ModalBody className="flex justify-center">
+              <InputOtp length={pinLength} value={pin} onValueChange={setPin} />
+            </ModalBody>
+          </motion.div>
         </ModalContent>
       </Modal>
       {authenticated && <div>{/* TODO: Resume content */}</div>}
