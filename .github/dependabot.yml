@@ -12,18 +12,6 @@ updates:
     schedule:
       interval: daily
 
-  # pip (Python)
-  - package-ecosystem: pip
-    directory: /
-    schedule:
-      interval: daily
-
-  # uv (Python)
-  - package-ecosystem: uv
-    directory: /
-    schedule:
-      interval: daily
-
   # Dockerfile
   - package-ecosystem: docker
     directory: /
@@ -44,12 +32,6 @@ updates:
 
   # GitHub Actions
   - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: weekly
-
-  # git submodules
-  - package-ecosystem: gitsubmodule
     directory: /
     schedule:
       interval: weekly

@@ -25,6 +25,7 @@ applyTo: "**"
     - 透過 `FuzzyText` 來顯示錯誤訊息
 - `pin code` 可以利用 `npx heroui-cli@latest add input-otp` 當作元件使用
 - `pin code` 可以透過環境變數 `VITE_PIN_CODE` 來設定
+- 履歷內容稍後會補上 現在先不用做
 
 # `Portfolio` 頁面
 - 該頁面需要顯示我的作品集
