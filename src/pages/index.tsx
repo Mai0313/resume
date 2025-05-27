@@ -1,12 +1,13 @@
 import { Link } from "@heroui/link";
 import { button as buttonStyles } from "@heroui/theme";
 
+import SplitText from "../components/SplitText";
+import Orb from "../components/Orb";
+import Particles from "../components/Particles";
+
 import { siteConfig } from "@/config/site";
 import { GithubIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
-import SplitText from "../components/SplitText";
-import Orb from '../components/Orb';
-import Particles from '../components/Particles';
 
 export default function IndexPage() {
   return (
@@ -15,34 +16,34 @@ export default function IndexPage() {
         {/* Particles 作為背景層 */}
         <div className="absolute inset-0 w-full h-full -z-10">
           <Particles
-            particleColors={['#ffffff', '#ffffff']}
+            alphaParticles={false}
+            disableRotation={false}
+            moveParticlesOnHover={true}
+            particleBaseSize={100}
+            particleColors={["#ffffff", "#ffffff"]}
             particleCount={200}
             particleSpread={10}
             speed={0.1}
-            particleBaseSize={100}
-            moveParticlesOnHover={true}
-            alphaParticles={false}
-            disableRotation={false}
           />
         </div>
         {/* Orb 與 SplitText 內容置中於上層 */}
-        <div style={{ width: '100%', height: '600px', position: 'relative' }}>
+        <div style={{ width: "100%", height: "600px", position: "relative" }}>
           <Orb
-            hoverIntensity={0.5}
-            rotateOnHover={true}
-            hue={0}
             forceHoverState={false}
+            hoverIntensity={0.5}
+            hue={0}
+            rotateOnHover={true}
           />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <SplitText
-              text="Mai"
+              animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
+              animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
               className="text-5xl font-bold text-center"
               delay={150}
-              animationFrom={{ opacity: 0, transform: 'translate3d(0,50px,0)' }}
-              animationTo={{ opacity: 1, transform: 'translate3d(0,0,0)' }}
               easing={(t) => t}
-              threshold={0.2}
               rootMargin="50px"
+              text="Mai"
+              threshold={0.2}
               onLetterAnimationComplete={() => {}}
             />
           </div>

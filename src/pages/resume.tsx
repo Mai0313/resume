@@ -1,24 +1,36 @@
 import { useState, useEffect } from "react";
-import DefaultLayout from '@/layouts/default';
 import { InputOtp } from "@heroui/input-otp";
-import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from "@heroui/modal";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+} from "@heroui/modal";
 import { addToast } from "@heroui/toast";
 import { motion, useAnimation } from "framer-motion";
-import FuzzyText from '../components/FuzzyText';
 import { useTheme } from "@heroui/use-theme";
+
+import FuzzyText from "../components/FuzzyText";
+
+import DefaultLayout from "@/layouts/default";
 
 // Read PIN code from .env via VITE_PIN_CODE
 const PIN_CODE = import.meta.env.VITE_PIN_CODE;
 
 export default function ResumePage() {
   const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => { setIsMounted(true); }, []);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const [pin, setPin] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [failCount, setFailCount] = useState(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const controls = useAnimation();
   const { theme } = useTheme();
+
   useEffect(onOpen, []);
 
   // 動態取得 PIN 長度
@@ -27,6 +39,7 @@ export default function ResumePage() {
   function handleSubmit(onClose: () => void) {
     if (!pin) {
       setFailCount((c) => c + 1);
+
       return;
     }
     if (pin === PIN_CODE) {
@@ -34,8 +47,15 @@ export default function ResumePage() {
       onClose();
     } else {
       setFailCount((c) => c + 1);
-      controls.start({ x: [0, -10, 10, -10, 10, 0], transition: { duration: 0.5 } });
-      addToast({ title: "Invalid PIN", description: "請重新輸入", color: "danger" });
+      controls.start({
+        x: [0, -10, 10, -10, 10, 0],
+        transition: { duration: 0.5 },
+      });
+      addToast({
+        title: "Invalid PIN",
+        description: "請重新輸入",
+        color: "danger",
+      });
       setPin("");
     }
   }
@@ -45,7 +65,6 @@ export default function ResumePage() {
     if (pin.length === pinLength) {
       handleSubmit(onOpenChange);
     }
-    // eslint-disable-next-line
   }, [pin, pinLength]);
 
   // 監聽 Modal 關閉事件，若未驗證則直接 404
@@ -64,19 +83,19 @@ export default function ResumePage() {
             <>
               <FuzzyText
                 baseIntensity={0.2}
-                hoverIntensity={0.5}
-                enableHover={true}
                 color={theme === "dark" ? "#fff" : "#222"}
+                enableHover={true}
                 fontSize="clamp(2rem, 8vw, 8rem)"
+                hoverIntensity={0.5}
               >
                 404
               </FuzzyText>
               <FuzzyText
                 baseIntensity={0.15}
-                hoverIntensity={0.4}
-                enableHover={true}
                 color={theme === "dark" ? "#fff" : "#222"}
+                enableHover={true}
                 fontSize="clamp(2rem, 4vw, 4rem)"
+                hoverIntensity={0.4}
               >
                 Not Found
               </FuzzyText>
@@ -93,8 +112,14 @@ export default function ResumePage() {
       <Modal isOpen={isOpen && !authenticated} onOpenChange={onOpenChange}>
         <ModalContent className="overflow-hidden">
           {/* 移除未使用的 onClose 參數 */}
-          <motion.div animate={controls} initial={{ x: 0 }} className="flex flex-col items-center gap-4 p-4">
-            <ModalHeader className="text-center">輸入 {pinLength} 位 PIN 碼</ModalHeader>
+          <motion.div
+            animate={controls}
+            className="flex flex-col items-center gap-4 p-4"
+            initial={{ x: 0 }}
+          >
+            <ModalHeader className="text-center">
+              輸入 {pinLength} 位 PIN 碼
+            </ModalHeader>
             <ModalBody className="flex justify-center">
               <InputOtp length={pinLength} value={pin} onValueChange={setPin} />
             </ModalBody>

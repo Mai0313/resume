@@ -43,10 +43,11 @@ const SplitText: React.FC<SplitTextProps> = ({
           obs.unobserve(ref.current as Element);
         }
       },
-      { threshold, rootMargin }
+      { threshold, rootMargin },
     );
 
     obs.observe(ref.current);
+
     return () => obs.disconnect();
   }, [threshold, rootMargin]);
 
@@ -56,7 +57,7 @@ const SplitText: React.FC<SplitTextProps> = ({
       from: animationFrom,
       to: inView
         ? async (
-            next: (step: Record<string, string | number>) => Promise<void>
+            next: (step: Record<string, string | number>) => Promise<void>,
           ) => {
             await next(animationTo);
             animatedCount.current += 1;
@@ -70,7 +71,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         : animationFrom,
       delay: i * delay,
       config: { easing },
-    }))
+    })),
   );
 
   return (

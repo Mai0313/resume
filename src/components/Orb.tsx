@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Renderer, Program, Mesh, Triangle, Vec3 } from "ogl";
 
-import '../styles/Orb.css';
+import "../styles/Orb.css";
 
 interface OrbProps {
   hue?: number;
@@ -179,10 +179,12 @@ export default function Orb({
 
   useEffect(() => {
     const container = ctnDom.current;
+
     if (!container) return;
 
     const renderer = new Renderer({ alpha: true, premultipliedAlpha: false });
     const gl = renderer.gl;
+
     gl.clearColor(0, 0, 0, 0);
     container.appendChild(gl.canvas);
 
@@ -196,7 +198,7 @@ export default function Orb({
           value: new Vec3(
             gl.canvas.width,
             gl.canvas.height,
-            gl.canvas.width / gl.canvas.height
+            gl.canvas.width / gl.canvas.height,
           ),
         },
         hue: { value: hue },
@@ -213,13 +215,14 @@ export default function Orb({
       const dpr = window.devicePixelRatio || 1;
       const width = container.clientWidth;
       const height = container.clientHeight;
+
       renderer.setSize(width * dpr, height * dpr);
       gl.canvas.style.width = width + "px";
       gl.canvas.style.height = height + "px";
       program.uniforms.iResolution.value.set(
         gl.canvas.width,
         gl.canvas.height,
-        gl.canvas.width / gl.canvas.height
+        gl.canvas.width / gl.canvas.height,
       );
     }
     window.addEventListener("resize", resize);
@@ -260,13 +263,16 @@ export default function Orb({
     const update = (t: number) => {
       rafId = requestAnimationFrame(update);
       const dt = (t - lastTime) * 0.001;
+
       lastTime = t;
       program.uniforms.iTime.value = t * 0.001;
       program.uniforms.hue.value = hue;
       program.uniforms.hoverIntensity.value = hoverIntensity;
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
-      program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.1;
+
+      program.uniforms.hover.value +=
+        (effectiveHover - program.uniforms.hover.value) * 0.1;
 
       if (rotateOnHover && effectiveHover > 0.5) {
         currentRot += dt * rotationSpeed;
@@ -275,6 +281,7 @@ export default function Orb({
 
       renderer.render({ scene: mesh });
     };
+
     rafId = requestAnimationFrame(update);
 
     return () => {

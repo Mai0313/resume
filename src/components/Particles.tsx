@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl";
 
-import '../styles/Particles.css';
+import "../styles/Particles.css";
 
 interface ParticlesProps {
   particleCount?: number;
@@ -23,12 +23,16 @@ const defaultColors: string[] = ["#ffffff", "#ffffff", "#ffffff"];
 const hexToRgb = (hex: string): [number, number, number] => {
   hex = hex.replace(/^#/, "");
   if (hex.length === 3) {
-    hex = hex.split("").map((c) => c + c).join("");
+    hex = hex
+      .split("")
+      .map((c) => c + c)
+      .join("");
   }
   const int = parseInt(hex, 16);
   const r = ((int >> 16) & 255) / 255;
   const g = ((int >> 8) & 255) / 255;
   const b = (int & 255) / 255;
+
   return [r, g, b];
 };
 
@@ -110,22 +114,27 @@ const Particles: React.FC<ParticlesProps> = ({
 
   useEffect(() => {
     const container = containerRef.current;
+
     if (!container) return;
 
     const renderer = new Renderer({ depth: false, alpha: true });
     const gl = renderer.gl;
+
     container.appendChild(gl.canvas);
     gl.clearColor(0, 0, 0, 0);
 
     const camera = new Camera(gl, { fov: 15 });
+
     camera.position.set(0, 0, cameraDistance);
 
     const resize = () => {
       const width = container.clientWidth;
       const height = container.clientHeight;
+
       renderer.setSize(width, height);
       camera.perspective({ aspect: gl.canvas.width / gl.canvas.height });
     };
+
     window.addEventListener("resize", resize, false);
     resize();
 
@@ -133,6 +142,7 @@ const Particles: React.FC<ParticlesProps> = ({
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+
       mouseRef.current = { x, y };
     };
 
@@ -144,10 +154,14 @@ const Particles: React.FC<ParticlesProps> = ({
     const positions = new Float32Array(count * 3);
     const randoms = new Float32Array(count * 4);
     const colors = new Float32Array(count * 3);
-    const palette = particleColors && particleColors.length > 0 ? particleColors : defaultColors;
+    const palette =
+      particleColors && particleColors.length > 0
+        ? particleColors
+        : defaultColors;
 
     for (let i = 0; i < count; i++) {
       let x: number, y: number, z: number, len: number;
+
       do {
         x = Math.random() * 2 - 1;
         y = Math.random() * 2 - 1;
@@ -155,9 +169,14 @@ const Particles: React.FC<ParticlesProps> = ({
         len = x * x + y * y + z * z;
       } while (len > 1 || len === 0);
       const r = Math.cbrt(Math.random());
+
       positions.set([x * r, y * r, z * r], i * 3);
-      randoms.set([Math.random(), Math.random(), Math.random(), Math.random()], i * 4);
+      randoms.set(
+        [Math.random(), Math.random(), Math.random(), Math.random()],
+        i * 4,
+      );
       const col = hexToRgb(palette[Math.floor(Math.random() * palette.length)]);
+
       colors.set(col, i * 3);
     }
 
@@ -190,6 +209,7 @@ const Particles: React.FC<ParticlesProps> = ({
     const update = (t: number) => {
       animationFrameId = requestAnimationFrame(update);
       const delta = t - lastTime;
+
       lastTime = t;
       elapsed += delta * speed;
 
@@ -238,10 +258,7 @@ const Particles: React.FC<ParticlesProps> = ({
   ]);
 
   return (
-    <div
-      ref={containerRef}
-      className={`particles-container ${className}`}
-    />
+    <div ref={containerRef} className={`particles-container ${className}`} />
   );
 };
 
