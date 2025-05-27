@@ -1,11 +1,9 @@
-import DefaultLayout from '@/layouts/default';
+import DefaultLayout from "@/layouts/default";
 
 export default function PortfolioPage() {
   return (
     <DefaultLayout>
-      <div>
-        {/* TODO: Portfolio content */}
-      </div>
+      <div>{/* TODO: Portfolio content */}</div>
     </DefaultLayout>
   );
 }
