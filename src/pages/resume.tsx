@@ -26,6 +26,13 @@ export default function ResumePage() {
     }
   }
 
+  useEffect(() => {
+    if (pin.length === 4) {
+      handleSubmit(onOpenChange);
+    }
+    // eslint-disable-next-line
+  }, [pin]);
+
   return (
     <DefaultLayout>
       {/* Display resume after authentication */}
@@ -35,11 +42,7 @@ export default function ResumePage() {
             <motion.div animate={controls} initial={{ x: 0 }} className="flex flex-col items-center gap-4 p-4">
               <ModalHeader className="text-center">輸入 4 位 PIN 碼</ModalHeader>
               <ModalBody className="flex justify-center">
-                <InputOtp length={4} value={pin} onValueChange={(val) => {
-                    setPin(val);
-                    if (val.length === 4) handleSubmit(onClose);
-                  }}
-                />
+                <InputOtp length={4} value={pin} onValueChange={setPin} />
               </ModalBody>
             </motion.div>
           )}
