@@ -6,6 +6,7 @@
 
 - **動態首頁**: 使用 @react-spring/web 和自定義組件 (Orb, SplitText, GradientText) 創建生動的視覺效果
 - **PIN 碼保護的履歷**: 基於 YAML 配置的履歷系統，支援 PIN 碼驗證保護隱私
+- **PDF 履歷導出**: 一鍵生成和下載專業格式的 PDF 履歷，支援完整的履歷內容和美觀的排版
 - **GitHub Portfolio**: 透過 GitHub API 自動獲取並展示個人專案和貢獻記錄
 - **響應式設計**: 支援深色/淺色主題切換，完全響應式佈局
 - **現代化 UI**: 使用 HeroUI 組件庫和 Framer Motion 動畫效果
@@ -18,6 +19,7 @@
 - [TypeScript](https://www.typescriptlang.org) - 類型安全的 JavaScript
 - [Framer Motion](https://www.framer.com/motion) - React 動畫庫
 - [React Spring](https://react-spring.dev/) - 彈簧動畫庫
+- [React PDF](https://react-pdf.org/) - PDF 生成和渲染庫
 - [GitHub API](https://docs.github.com/en/rest) - 獲取專案數據
 
 ## 環境設置
@@ -77,7 +79,12 @@ npm run dev
 - PIN 碼驗證保護
 - YAML 驅動的履歷數據管理
 - 結構化展示個人信息、教育背景、工作經歷等
-- 錯誤狀態顯示 FuzzyText 404 效果
+- **PDF 下載功能**: 一鍵生成專業格式的 PDF 履歷
+  - 使用 Inter 字體的現代化排版
+  - 藍色主題的專業配色方案
+  - 雙欄佈局優化空間使用
+  - 自動文件命名 (姓名_Resume.pdf)
+- 響應式設計和動畫效果
 
 ### Portfolio 頁面 (`/portfolio`)
 - 自動獲取 GitHub 儲存庫和貢獻記錄

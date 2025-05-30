@@ -11,9 +11,12 @@ import { addToast } from "@heroui/toast";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "@heroui/use-theme";
 import { Spinner } from "@heroui/spinner";
+import { Button } from "@heroui/button";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import FuzzyText from "../components/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
+import { ResumePDF } from "../components/ResumePDF";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
 
 import DefaultLayout from "@/layouts/default";
@@ -224,7 +227,48 @@ export default function ResumePage() {
               <Spinner label="Loading resume..." size="lg" />
             </div>
           ) : resumeData ? (
-            <ResumeContent data={resumeData} />
+            <div className="space-y-6">
+              {/* PDF Download Button */}
+              <div className="max-w-6xl mx-auto px-6">
+                <div className="flex justify-end mb-4">
+                  <PDFDownloadLink
+                    document={<ResumePDF data={resumeData} />}
+                    fileName={`${resumeData.basics.name.replace(/\s+/g, "_")}_Resume.pdf`}
+                  >
+                    {({ loading }: { loading: boolean }) => (
+                      <Button
+                        color="primary"
+                        isLoading={loading}
+                        size="md"
+                        startContent={
+                          !loading ? (
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                              />
+                            </svg>
+                          ) : null
+                        }
+                        variant="shadow"
+                      >
+                        {loading ? "Generating PDF..." : "Download PDF"}
+                      </Button>
+                    )}
+                  </PDFDownloadLink>
+                </div>
+              </div>
+
+              {/* Resume Content */}
+              <ResumeContent data={resumeData} />
+            </div>
           ) : (
             <div className="flex justify-center items-center min-h-[50vh]">
               <p className="text-gray-500">Failed to load resume content</p>

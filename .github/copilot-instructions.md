@@ -143,6 +143,30 @@
 
 # 最新更新記錄
 
+## 2025-05-30 履歷PDF導出功能實現
+- **專業PDF履歷生成**: 實現了完整的PDF履歷生成和下載功能
+  - 創建 `src/components/ResumePDF.tsx` 使用 `@react-pdf/renderer` 生成專業履歷格式
+  - 在 Resume 頁面添加 "Download PDF" 按鈕，支援一鍵下載
+  - PDF版本採用正式的單欄佈局，包含完整的履歷內容
+- **PDF設計特色**:
+  - 使用 Helvetica 字體提供可靠的內建排版
+  - 藍色主題配色方案，專業且美觀
+  - 單欄佈局：Skills 和 Research Interests 各自獨立顯示
+  - 移除圖標：聯絡資訊使用純文字格式，更加正式
+  - 簡化技能顯示：使用子彈點分隔的文字格式取代背景框
+  - 自動格式化日期顯示和聯絡資訊
+  - 支援 GitHub 連結等社群媒體資訊
+- **技術實現**:
+  - 添加 `@react-pdf/renderer` 依賴包到 package.json
+  - 創建自定義 TypeScript 類型定義 `src/types/react-pdf.d.ts`
+  - 實現動態文件名生成（基於姓名）
+  - 完整的錯誤處理和載入狀態管理
+- **用戶體驗優化**:
+  - PDF 下載按鈕位於頁面右上角，方便存取
+  - 生成過程中顯示載入動畫和狀態提示
+  - PDF 文件自動命名為 `姓名_Resume.pdf` 格式
+- **套件需求**: 需要執行 `yarn add @react-pdf/renderer` 安裝PDF生成依賴
+
 ## 2025-05-30 自定義 ROOT PATH 功能實現
 - **多環境部署支援**: 實現了完整的自定義根路徑功能，支援不同部署環境
   - 創建 `src/utils/pathUtils.ts` 提供路徑處理工具函數
