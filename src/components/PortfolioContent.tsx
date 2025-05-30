@@ -122,7 +122,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {contributions.map((contribution) => (
           <motion.div key={contribution.repository.id} variants={itemVariants}>
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+            <Card className="h-full hover:shadow-lg transition-shadow duration-300 flex flex-col">
               <CardHeader className="pb-3">
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-start justify-between">
@@ -172,7 +172,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                 </div>
               </CardHeader>
 
-              <CardBody className="pt-0">
+              <CardBody className="pt-0 flex-grow flex flex-col">
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
                   {contribution.repository.description ||
                     "No description available"}
@@ -198,7 +198,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                   </div>
                 )}
 
-                <div className="space-y-2">
+                <div className="space-y-2 flex-grow">
                   <h4 className="text-sm font-semibold">Recent Commits:</h4>
                   {contribution.commits.slice(0, 2).map((commit) => (
                     <div
@@ -220,7 +220,8 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                   ))}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                {/* 底部固定區域 - 始終保持在卡片底部 */}
+                <div className="mt-auto pt-3 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex justify-between items-center text-xs text-gray-500">
                     <span>
                       Updated: {formatDate(contribution.repository.updated_at)}
