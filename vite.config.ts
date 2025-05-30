@@ -6,4 +6,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   assetsInclude: ["**/*.yaml", "**/*.yml"],
+  // 支援自定義 ROOT PATH，從環境變數 VITE_ROOT_PATH 讀取
+  base: process.env.VITE_ROOT_PATH || "/",
 });

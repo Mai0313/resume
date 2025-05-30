@@ -109,6 +109,13 @@
   - 動態載入 `public/resume.yaml` 配置文件
   - 錯誤處理和類型安全
 
+### 路徑工具函數
+- **`utils/pathUtils.ts`**: 自定義 ROOT PATH 支援工具函數
+  - `getRootPath()`: 從環境變數 `VITE_ROOT_PATH` 獲取根路徑，預設為 '/'
+  - `buildPath(path)`: 建構完整路徑，包含根路徑前綴 (例如：`/my-app/resume`)
+  - `getBasename()`: 獲取 React Router 的 basename 配置
+  - 支援不同部署環境的路徑配置（根目錄、子目錄、GitHub Pages 等）
+
 ## 樣式與類型系統
 
 ### CSS 工具類
@@ -135,6 +142,33 @@
 - **`provider.tsx`**: HeroUI 主題提供者配置，支援深色模式
 
 # 最新更新記錄
+
+## 2025-05-30 自定義 ROOT PATH 功能實現
+- **多環境部署支援**: 實現了完整的自定義根路徑功能，支援不同部署環境
+  - 創建 `src/utils/pathUtils.ts` 提供路徑處理工具函數
+  - 支援環境變數 `VITE_ROOT_PATH` 配置根路徑
+  - 更新 `vite.config.ts` 支援 Vite base 路徑配置
+  - 更新 `main.tsx` 支援 React Router basename 配置
+- **路徑工具函數系統**:
+  - `getRootPath()`: 從環境變數獲取並正規化根路徑
+  - `buildPath(path)`: 自動建構包含根路徑前綴的完整路徑
+  - `getBasename()`: 提供 React Router 兼容的 basename
+- **配置系統更新**:
+  - 更新 `config/site.ts` 使用動態路徑建構
+  - 更新 `components/navbar.tsx` 的首頁連結使用 `buildPath`
+  - 所有內部導覽連結自動支援根路徑前綴
+- **環境變數文檔**:
+  - 更新 `.env.example` 添加 `VITE_ROOT_PATH` 說明和使用範例
+  - 支援多種部署場景：根目錄、子目錄、GitHub Pages 專案目錄
+- **使用場景**:
+  - **根目錄部署**: `VITE_ROOT_PATH=/` 或不設定（預設）
+  - **子目錄部署**: `VITE_ROOT_PATH=/my-app`
+  - **GitHub Pages**: `VITE_ROOT_PATH=/your-repo-name`
+- **技術特色**:
+  - 自動路徑正規化，處理斜線問題
+  - React Router 和 Vite 完全兼容
+  - 保持所有現有功能和主題切換
+  - 向下相容，不影響現有部署
 
 ## 2025-05-30 Portfolio 卡片佈局優化
 - **底部連結固定**: 優化 PortfolioContent 組件的卡片佈局

@@ -13,6 +13,7 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon, DiscordIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
+import { buildPath } from "@/utils/pathUtils";
 
 export const Navbar = () => {
   return (
@@ -22,7 +23,7 @@ export const Navbar = () => {
           <Link
             className="flex justify-start items-center gap-1"
             color="foreground"
-            href="/"
+            href={buildPath("/")}
           >
             <Logo />
             <p className="font-bold text-inherit">Mai</p>
