@@ -81,9 +81,13 @@
 - **智能 PIN 碼保護**: 根據環境變數 `VITE_PIN_CODE` 的設定狀態決定是否需要 PIN 碼驗證
   - 未設定 `VITE_PIN_CODE` 時：直接顯示履歷內容，適合開發和測試環境
   - 設定 `VITE_PIN_CODE` 時：需要輸入正確 PIN 碼才能訪問履歷，保護個人隱私
+- **動態 Resume 文件載入**: 透過環境變數 `VITE_RESUME_FILE` 指定要載入的履歷文件
+  - 未設定 `VITE_RESUME_FILE` 時：自動載入 `public/example.yaml` 作為預設履歷
+  - 設定 `VITE_RESUME_FILE` 時：載入指定的 YAML 文件（例如：`resume.yaml`）
+  - 支援靈活的文件名配置，便於多環境部署和個人化設定
 - 當輸入錯誤的 `pin code` 時，會透過 `FuzzyText` 來顯示 404 NotFound
 - **履歷系統已完成實現**:
-  - 使用 YAML 配置文件 (`public/resume.yaml`) 管理履歷數據
+  - 使用 YAML 配置文件動態載入履歷數據
   - 透過 `ResumeContent` 組件優雅展示履歷內容
   - 支持響應式設計和主題切換
   - 包含完整的個人信息、教育背景、研究經驗、工作經歷、技能、獲獎等欄位
@@ -106,8 +110,11 @@
 
 ### 資料載入
 - **`utils/resumeLoader.ts`**: YAML 履歷資料載入工具
-  - 動態載入 `public/resume.yaml` 配置文件
+  - 動態載入環境變數指定的 YAML 配置文件
+  - 支援 `VITE_RESUME_FILE` 環境變數自定義文件路徑
+  - 預設載入 `public/example.yaml`，未設定環境變數時的後備選項
   - 錯誤處理和類型安全
+  - HTTP 響應狀態檢查和詳細錯誤資訊
 
 ### 路徑工具函數
 - **`utils/pathUtils.ts`**: 自定義 ROOT PATH 支援工具函數
