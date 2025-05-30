@@ -20,6 +20,7 @@ import DefaultLayout from "@/layouts/default";
 
 // Read PIN code from .env via VITE_PIN_CODE
 const PIN_CODE = import.meta.env.VITE_PIN_CODE;
+const IS_PIN_ENABLED = PIN_CODE && PIN_CODE.trim() !== "";
 
 export default function ResumePage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -31,9 +32,15 @@ export default function ResumePage() {
 
   useEffect(() => {
     setIsMounted(true);
+    // 如果沒有設定 PIN 碼，直接載入履歷內容
+    if (!IS_PIN_ENABLED) {
+      setAuthenticated(true);
+      loadResumeContent();
+    }
   }, []);
+
   const [pin, setPin] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED); // 如果沒有 PIN 碼，預設為已驗證
   const [failCount, setFailCount] = useState(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const controls = useAnimation();
@@ -81,12 +88,18 @@ export default function ResumePage() {
     return () => observer.disconnect();
   }, [currentTheme]);
 
-  useEffect(onOpen, []);
+  useEffect(() => {
+    if (IS_PIN_ENABLED) {
+      onOpen();
+    }
+  }, [onOpen]);
 
   // 動態取得 PIN 長度
   const pinLength = PIN_CODE?.length || 4;
 
   function handleSubmit(onClose: () => void) {
+    if (!IS_PIN_ENABLED) return; // 如果沒有啟用 PIN 碼，直接返回
+
     if (!pin) {
       setFailCount((c) => c + 1);
 
@@ -130,20 +143,20 @@ export default function ResumePage() {
 
   // 監聽 pin 長度
   useEffect(() => {
-    if (pin.length === pinLength) {
+    if (IS_PIN_ENABLED && pin.length === pinLength) {
       handleSubmit(onOpenChange);
     }
-  }, [pin, pinLength]);
+  }, [pin, pinLength, onOpenChange]);
 
-  // 監聽 Modal 關閉事件，若未驗證則直接 404
+  // 監聽 Modal 關閉事件，若未驗證則直接 404 (僅在啟用 PIN 碼時)
   useEffect(() => {
-    if (!isOpen && !authenticated && isMounted) {
+    if (IS_PIN_ENABLED && !isOpen && !authenticated && isMounted) {
       setFailCount(3);
     }
   }, [isOpen, authenticated, isMounted]);
 
-  // 3次錯誤才顯示404，並包在DefaultLayout下
-  if (failCount >= 3) {
+  // 3次錯誤才顯示404，並包在DefaultLayout下 (僅在啟用 PIN 碼時)
+  if (IS_PIN_ENABLED && failCount >= 3) {
     const textColor = currentTheme === "dark" ? "#ffffff" : "#000000";
 
     return (
@@ -178,24 +191,32 @@ export default function ResumePage() {
 
   return (
     <DefaultLayout>
-      {/* Display resume after authentication */}
-      <Modal isOpen={isOpen && !authenticated} onOpenChange={onOpenChange}>
-        <ModalContent className="overflow-hidden">
-          {/* 移除未使用的 onClose 參數 */}
-          <motion.div
-            animate={controls}
-            className="flex flex-col items-center gap-4 p-4"
-            initial={{ x: 0 }}
-          >
-            <ModalHeader className="text-center">
-              輸入 {pinLength} 位 PIN 碼
-            </ModalHeader>
-            <ModalBody className="flex justify-center">
-              <InputOtp length={pinLength} value={pin} onValueChange={setPin} />
-            </ModalBody>
-          </motion.div>
-        </ModalContent>
-      </Modal>
+      {/* Display PIN modal only if PIN is enabled */}
+      {IS_PIN_ENABLED && (
+        <Modal isOpen={isOpen && !authenticated} onOpenChange={onOpenChange}>
+          <ModalContent className="overflow-hidden">
+            {/* 移除未使用的 onClose 參數 */}
+            <motion.div
+              animate={controls}
+              className="flex flex-col items-center gap-4 p-4"
+              initial={{ x: 0 }}
+            >
+              <ModalHeader className="text-center">
+                輸入 {pinLength} 位 PIN 碼
+              </ModalHeader>
+              <ModalBody className="flex justify-center">
+                <InputOtp
+                  length={pinLength}
+                  value={pin}
+                  onValueChange={setPin}
+                />
+              </ModalBody>
+            </motion.div>
+          </ModalContent>
+        </Modal>
+      )}
+
+      {/* Display resume content */}
       {authenticated && (
         <div className="min-h-screen">
           {isLoadingResume ? (

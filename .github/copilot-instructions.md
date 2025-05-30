@@ -21,9 +21,10 @@
 * `Gradient Text` 可透過 `import GradientText from './GradientText';` 使用
 
 ## `Resume` 頁面
-- 該頁面需要透過輸入 `pin code` 解鎖我的個人履歷 因為我不希望每個人都能訪問到我的履歷
-- 當輸入正確的 `pin code` 時，會顯示我的個人履歷
-- 當輸入錯誤的 `pin code` 時，會透過 `FuzzyText` 來 404 NotFound
+- **智能 PIN 碼保護**: 根據環境變數 `VITE_PIN_CODE` 的設定狀態決定是否需要 PIN 碼驗證
+  - 未設定 `VITE_PIN_CODE` 時：直接顯示履歷內容，適合開發和測試環境
+  - 設定 `VITE_PIN_CODE` 時：需要輸入正確 PIN 碼才能訪問履歷，保護個人隱私
+- 當輸入錯誤的 `pin code` 時，會透過 `FuzzyText` 來顯示 404 NotFound
 - **履歷系統已完成實現**:
   - 使用 YAML 配置文件 (`public/resume.yaml`) 管理履歷數據
   - 透過 `ResumeContent` 組件優雅展示履歷內容
@@ -38,6 +39,23 @@
 - **環境變數配置**: 使用 `VITE_GITHUB_TOKEN` 環境變數來存取 GitHub API
 
 # 最新更新記錄
+
+## 2025-05-30 Resume PIN 碼條件邏輯優化
+- **條件性 PIN 碼驗證**: 實現了智能的 PIN 碼驗證機制
+  - 當 `VITE_PIN_CODE` 環境變數未設定或為空時，直接顯示履歷內容，無需 PIN 碼驗證
+  - 當設定了 `VITE_PIN_CODE` 時，保持原有的 PIN 碼驗證保護機制
+  - 使用 `IS_PIN_ENABLED` 常數控制整個驗證流程
+- **自動初始化邏輯**:
+  - 組件載入時自動檢查 PIN 碼啟用狀態
+  - 未啟用時自動設定 `authenticated = true` 並載入履歷資料
+  - 啟用時維持原有的 Modal 驗證流程
+- **使用場景優化**:
+  - **開發環境**: 不設定或清空 `VITE_PIN_CODE`，直接訪問履歷內容，便於開發測試
+  - **生產環境**: 設定 `VITE_PIN_CODE`，需要正確 PIN 碼才能查看履歷，保護隱私
+- **保持向下相容**:
+  - 所有原有功能完全保留：主題切換、FuzzyText 404 效果、動畫效果
+  - 錯誤處理機制僅在啟用 PIN 碼時觸發
+  - Modal 組件條件性渲染，避免不必要的 UI 元素
 
 ## 2025-05-30 Portfolio 功能完整實現
 - **GitHub API 整合系統**: 實現了完整的 GitHub API 整合，支援動態載入個人專案
