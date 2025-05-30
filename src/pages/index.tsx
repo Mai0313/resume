@@ -14,7 +14,7 @@ export default function IndexPage() {
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center min-h-[70vh] gap-6 relative">
         {/* Particles 作為背景層 */}
-        <div className="absolute inset-0 w-full h-full -z-10">
+        <div className="fixed inset-0 w-screen h-screen -z-10">
           <Particles
             alphaParticles={false}
             disableRotation={false}
