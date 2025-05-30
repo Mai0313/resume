@@ -30,7 +30,7 @@ export default function ResumePage() {
   const [renderKey, setRenderKey] = useState(0);
   const [forceRender, setForceRender] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<string>("light");
-  const [resumeData, setResumeData] = useState<ResumeData | null>(null);
+  const [resumeData, setResumeData] = useState<(ResumeData & { sectionOrder: string[] }) | null>(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
 
   useEffect(() => {

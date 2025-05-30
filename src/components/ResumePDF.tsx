@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
 });
 
 interface ResumePDFProps {
-  data: ResumeData;
+  data: ResumeData & { sectionOrder: string[] };
 }
 
 export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
@@ -175,6 +175,221 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
     } catch {
       return dateString;
     }
+  };
+
+  // 動態渲染區域的函數
+  const renderSection = (sectionName: string) => {
+    switch (sectionName) {
+      case 'work':
+        return renderWorkSection();
+      case 'volunteer':
+        return renderVolunteerSection();
+      case 'education':
+        return renderEducationSection();
+      case 'awards':
+        return renderAwardsSection();
+      case 'publications':
+        return renderPublicationsSection();
+      case 'skills':
+        return renderSkillsSection();
+      case 'interests':
+        return renderInterestsSection();
+      case 'languages':
+        // languages 已經在 header section 中顯示，這裡跳過
+        return null;
+      default:
+        return null;
+    }
+  };
+
+  const renderWorkSection = () => {
+    if (!data.work || data.work.length === 0) return null;
+    
+    return (
+      <View key="work" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>Work Experience</Text>
+        {data.work.map((job, index) => (
+          <View key={index} style={styles.workItem}>
+            <View style={styles.workHeader}>
+              <View>
+                <Text style={styles.company}>{job.name}</Text>
+                <Text style={styles.position}>{job.position}</Text>
+              </View>
+              <Text style={styles.dateRange}>
+                {formatDate(job.startDate)} - {formatDate(job.endDate)}
+              </Text>
+            </View>
+            {job.summary && (
+              <Text style={styles.description}>{job.summary}</Text>
+            )}
+            {job.highlights && job.highlights.length > 0 && (
+              <View style={styles.highlights}>
+                {job.highlights.map((highlight, hIndex) => (
+                  <Text key={hIndex} style={styles.highlight}>
+                    • {highlight}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderVolunteerSection = () => {
+    if (!data.volunteer || data.volunteer.length === 0) return null;
+    
+    return (
+      <View key="volunteer" style={[styles.section, styles.largeSection]}>
+        <Text style={styles.sectionTitle}>Volunteer Experience</Text>
+        {data.volunteer.map((vol, index) => (
+          <View key={index} style={styles.workItem}>
+            <View style={styles.workHeader}>
+              <View>
+                <Text style={styles.company}>{vol.organization}</Text>
+                <Text style={styles.position}>{vol.position}</Text>
+              </View>
+              <Text style={styles.dateRange}>
+                {formatDate(vol.startDate)} - {formatDate(vol.endDate)}
+              </Text>
+            </View>
+            {vol.summary && (
+              <Text style={styles.description}>{vol.summary}</Text>
+            )}
+            {vol.highlights && vol.highlights.length > 0 && (
+              <View style={styles.highlights}>
+                {vol.highlights.map((highlight, hIndex) => (
+                  <Text key={hIndex} style={styles.highlight}>
+                    • {highlight}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderEducationSection = () => {
+    if (!data.education || data.education.length === 0) return null;
+    
+    return (
+      <View key="education" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>Education</Text>
+        {data.education.map((edu, index) => (
+          <View key={index} style={styles.educationItem}>
+            <View style={styles.educationLeft}>
+              <Text style={styles.degree}>
+                {edu.studyType} in {edu.area}
+              </Text>
+              <Text style={styles.institution}>{edu.institution}</Text>
+              {edu.gpa && <Text style={styles.gpa}>GPA: {edu.gpa}</Text>}
+            </View>
+            <View style={styles.educationRight}>
+              <Text style={styles.dateRange}>
+                {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderAwardsSection = () => {
+    if (!data.awards || data.awards.length === 0) return null;
+    
+    return (
+      <View key="awards" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>Awards & Achievements</Text>
+        {data.awards.map((award, index) => (
+          <View key={index} style={styles.workItem}>
+            <View style={styles.workHeader}>
+              <Text style={styles.company}>{award.title}</Text>
+              <Text style={styles.dateRange}>{formatDate(award.date)}</Text>
+            </View>
+            <Text style={styles.position}>{award.awarder}</Text>
+            {award.summary && (
+              <Text style={styles.description}>{award.summary}</Text>
+            )}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderPublicationsSection = () => {
+    if (!data.publications || data.publications.length === 0) return null;
+    
+    return (
+      <View key="publications" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>Research Publications</Text>
+        {data.publications.map((pub, index) => (
+          <View key={index} style={styles.workItem}>
+            <View style={styles.workHeader}>
+              <Text style={styles.company}>{pub.name}</Text>
+              <Text style={styles.dateRange}>{formatDate(pub.releaseDate)}</Text>
+            </View>
+            <Text style={styles.position}>{pub.publisher}</Text>
+            {pub.summary && (
+              <Text style={styles.description}>{pub.summary}</Text>
+            )}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderSkillsSection = () => {
+    if (!data.skills || data.skills.length === 0) return null;
+    
+    return (
+      <View key="skills" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>Skills</Text>
+        {data.skills.map((skillCategory, index) => (
+          <View key={index} style={{ marginBottom: 10 }}>
+            <Text
+              style={[
+                styles.description,
+                { fontWeight: "bold", marginBottom: 5 },
+              ]}
+            >
+              {skillCategory.name}
+            </Text>
+            <Text style={styles.description}>
+              {skillCategory.keywords?.join(" • ") || ""}
+            </Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderInterestsSection = () => {
+    if (!data.interests || data.interests.length === 0) return null;
+    
+    return (
+      <View key="interests" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>Research Interests</Text>
+        {data.interests.map((interest, index) => (
+          <View key={index} style={{ marginBottom: 8 }}>
+            <Text
+              style={[
+                styles.description,
+                { fontWeight: "bold", marginBottom: 3 },
+              ]}
+            >
+              {interest.name}
+            </Text>
+            <Text style={styles.description}>
+              {interest.keywords?.join(" • ") || ""}
+            </Text>
+          </View>
+        ))}
+      </View>
+    );
   };
 
   return (
@@ -205,155 +420,8 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
           </View>
         )}
 
-        {/* Work Experience */}
-        {data.work && data.work.length > 0 && (
-          <View style={[styles.section, styles.sectionWrapper]}>
-            <Text style={styles.sectionTitle}>Work Experience</Text>
-            {data.work.map((job, index) => (
-              <View key={index} style={styles.workItem}>
-                <View style={styles.workHeader}>
-                  <View>
-                    <Text style={styles.company}>{job.name}</Text>
-                    <Text style={styles.position}>{job.position}</Text>
-                  </View>
-                  <Text style={styles.dateRange}>
-                    {formatDate(job.startDate)} - {formatDate(job.endDate)}
-                  </Text>
-                </View>
-                {job.summary && (
-                  <Text style={styles.description}>{job.summary}</Text>
-                )}
-                {job.highlights && job.highlights.length > 0 && (
-                  <View style={styles.highlights}>
-                    {job.highlights.map((highlight, hIndex) => (
-                      <Text key={hIndex} style={styles.highlight}>
-                        • {highlight}
-                      </Text>
-                    ))}
-                  </View>
-                )}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Education */}
-        {data.education && data.education.length > 0 && (
-          <View style={[styles.section, styles.sectionWrapper]}>
-            <Text style={styles.sectionTitle}>Education</Text>
-            {data.education.map((edu, index) => (
-              <View key={index} style={styles.educationItem}>
-                <View style={styles.educationLeft}>
-                  <Text style={styles.degree}>
-                    {edu.studyType} in {edu.area}
-                  </Text>
-                  <Text style={styles.institution}>{edu.institution}</Text>
-                  {edu.gpa && <Text style={styles.gpa}>GPA: {edu.gpa}</Text>}
-                </View>
-                <View style={styles.educationRight}>
-                  <Text style={styles.dateRange}>
-                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Skills */}
-        {data.skills && data.skills.length > 0 && (
-          <View style={[styles.section, styles.sectionWrapper]}>
-            <Text style={styles.sectionTitle}>Skills</Text>
-            {data.skills.map((skillCategory, index) => (
-              <View key={index} style={{ marginBottom: 10 }}>
-                <Text
-                  style={[
-                    styles.description,
-                    { fontWeight: "bold", marginBottom: 5 },
-                  ]}
-                >
-                  {skillCategory.name}
-                </Text>
-                <Text style={styles.description}>
-                  {skillCategory.keywords?.join(" • ") || ""}
-                </Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Research Interests */}
-        {data.interests && data.interests.length > 0 && (
-          <View style={[styles.section, styles.sectionWrapper]}>
-            <Text style={styles.sectionTitle}>Research Interests</Text>
-            {data.interests.map((interest, index) => (
-              <View key={index} style={{ marginBottom: 8 }}>
-                <Text
-                  style={[
-                    styles.description,
-                    { fontWeight: "bold", marginBottom: 3 },
-                  ]}
-                >
-                  {interest.name}
-                </Text>
-                <Text style={styles.description}>
-                  {interest.keywords?.join(" • ") || ""}
-                </Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Awards */}
-        {data.awards && data.awards.length > 0 && (
-          <View style={[styles.section, styles.sectionWrapper]}>
-            <Text style={styles.sectionTitle}>Awards & Achievements</Text>
-            {data.awards.map((award, index) => (
-              <View key={index} style={styles.workItem}>
-                <View style={styles.workHeader}>
-                  <Text style={styles.company}>{award.title}</Text>
-                  <Text style={styles.dateRange}>{formatDate(award.date)}</Text>
-                </View>
-                <Text style={styles.position}>{award.awarder}</Text>
-                {award.summary && (
-                  <Text style={styles.description}>{award.summary}</Text>
-                )}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Volunteer Experience */}
-        {data.volunteer && data.volunteer.length > 0 && (
-          <View style={[styles.section, styles.largeSection]}>
-            <Text style={styles.sectionTitle}>Volunteer Experience</Text>
-            {data.volunteer.map((vol, index) => (
-              <View key={index} style={styles.workItem}>
-                <View style={styles.workHeader}>
-                  <View>
-                    <Text style={styles.company}>{vol.organization}</Text>
-                    <Text style={styles.position}>{vol.position}</Text>
-                  </View>
-                  <Text style={styles.dateRange}>
-                    {formatDate(vol.startDate)} - {formatDate(vol.endDate)}
-                  </Text>
-                </View>
-                {vol.summary && (
-                  <Text style={styles.description}>{vol.summary}</Text>
-                )}
-                {vol.highlights && vol.highlights.length > 0 && (
-                  <View style={styles.highlights}>
-                    {vol.highlights.map((highlight, hIndex) => (
-                      <Text key={hIndex} style={styles.highlight}>
-                        • {highlight}
-                      </Text>
-                    ))}
-                  </View>
-                )}
-              </View>
-            ))}
-          </View>
-        )}
+        {/* 動態渲染其他區域，根據 YAML 文件中的順序 */}
+        {data.sectionOrder.map((sectionName: string) => renderSection(sectionName))}
       </Page>
     </Document>
   );

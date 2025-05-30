@@ -139,7 +139,7 @@ function getResumeFilePath(): string {
   return "/example.yaml";
 }
 
-export async function loadResumeData(): Promise<ResumeData> {
+export async function loadResumeData(): Promise<ResumeData & { sectionOrder: string[] }> {
   try {
     const resumeFilePath = getResumeFilePath();
     const response = await fetch(resumeFilePath);
@@ -153,8 +153,34 @@ export async function loadResumeData(): Promise<ResumeData> {
     const yamlText = await response.text();
     const data = yaml.load(yamlText) as ResumeData;
 
-    return data;
+    // 從原始 YAML 中提取鍵值順序
+    const sectionOrder = extractSectionOrder(yamlText);
+
+    return { ...data, sectionOrder };
   } catch (error) {
     throw error;
   }
+}
+
+/**
+ * 從 YAML 文字中提取頂層鍵值的順序
+ * 這樣可以保持原始的區域順序
+ */
+function extractSectionOrder(yamlText: string): string[] {
+  const lines = yamlText.split('\n');
+  const sectionOrder: string[] = [];
+  
+  for (const line of lines) {
+    // 匹配頂層鍵值 (不以空格或 # 開頭的行，且包含冒號)
+    const match = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\s*:/);
+    if (match) {
+      const sectionName = match[1];
+      // 只添加 basics 以外的有效區域，因為 basics 總是在最前面
+      if (sectionName !== 'basics' && !sectionOrder.includes(sectionName)) {
+        sectionOrder.push(sectionName);
+      }
+    }
+  }
+  
+  return sectionOrder;
 }
