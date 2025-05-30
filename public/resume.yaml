@@ -18,6 +18,12 @@ basics:
       username: Mai0313
       url: https://github.com/Mai0313
 
+languages:
+  - language: Chinese
+    fluency: Native speaker
+  - language: English
+    fluency: Fluent (U.S. university graduate with advanced proficiency; TOEIC Listening Full Marks)
+
 work:
   - name: MediaTek
     position: Junior Machine Learning Engineer
@@ -107,12 +113,6 @@ skills:
   - name: DevOps & Tools
     level: Intermediate
     keywords: [Docker, Kubernetes, GitHub Actions, Pydantic]
-
-languages:
-  - language: Chinese
-    fluency: Native speaker
-  - language: English
-    fluency: Fluent (U.S. university graduate with advanced proficiency; TOEIC Listening Full Marks)
 
 interests:
   - name: Multi-Agent & Multimodal LLMs
