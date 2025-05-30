@@ -32,7 +32,11 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
           </CardHeader>
           <CardBody className="text-center space-y-4">
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              需要設定 <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono">VITE_GITHUB_TOKEN</code> 環境變數來獲取 GitHub 專案和 Pinned repositories。
+              需要設定{" "}
+              <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono">
+                VITE_GITHUB_TOKEN
+              </code>{" "}
+              環境變數來獲取 GitHub 專案和 Pinned repositories。
             </p>
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
               <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
@@ -42,15 +46,17 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                 <li>
                   1. 前往{" "}
                   <Link
-                    href="https://github.com/settings/tokens"
                     isExternal
                     className="text-blue-600 dark:text-blue-400 underline"
+                    href="https://github.com/settings/tokens"
                   >
                     GitHub Personal Access Tokens
                   </Link>
                 </li>
-                <li>2. 點擊 "Generate new token (classic)"</li>
-                <li>3. 勾選 "public_repo" 權限（用於存取公開儲存庫）</li>
+                <li>2. 點擊 &quot;Generate new token (classic)&quot;</li>
+                <li>
+                  3. 勾選 &quot;public_repo&quot; 權限（用於存取公開儲存庫）
+                </li>
                 <li>4. 複製產生的 token</li>
                 <li>
                   5. 在專案根目錄建立 <code>.env</code> 檔案，加入：

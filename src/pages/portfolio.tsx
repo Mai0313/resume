@@ -4,7 +4,10 @@ import { useState, useEffect } from "react";
 
 import DefaultLayout from "@/layouts/default";
 import PortfolioContent from "@/components/PortfolioContent";
-import { getUserContributions, isGitHubTokenAvailable } from "@/utils/githubApi";
+import {
+  getUserContributions,
+  isGitHubTokenAvailable,
+} from "@/utils/githubApi";
 
 export default function PortfolioPage() {
   const [contributions, setContributions] = useState<GitHubContribution[]>([]);
@@ -17,6 +20,7 @@ export default function PortfolioPage() {
     if (!isGitHubTokenAvailable()) {
       setIsTokenMissing(true);
       setLoading(false);
+
       return;
     }
 
@@ -52,8 +56,8 @@ export default function PortfolioPage() {
           <PortfolioContent
             contributions={contributions}
             error={error}
-            loading={loading}
             isTokenMissing={isTokenMissing}
+            loading={loading}
           />
         </div>
       </section>
