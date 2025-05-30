@@ -117,8 +117,7 @@ export default function ResumePage() {
       const data = await loadResumeData();
 
       setResumeData(data);
-    } catch (error) {
-      console.log("Error loading resume data:", error);
+    } catch {
       addToast({
         title: "Error",
         description: "Failed to load resume data",

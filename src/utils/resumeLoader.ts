@@ -130,7 +130,6 @@ export async function loadResumeData(): Promise<ResumeData> {
 
     return data;
   } catch (error) {
-    console.error("Error loading resume data:", error);
     throw error;
   }
 }
