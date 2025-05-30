@@ -22,7 +22,7 @@ export default function ResumePage() {
   const [isMounted, setIsMounted] = useState(false);
   const [renderKey, setRenderKey] = useState(0);
   const [forceRender, setForceRender] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<string>('light');
+  const [currentTheme, setCurrentTheme] = useState<string>("light");
 
   useEffect(() => {
     setIsMounted(true);
@@ -36,29 +36,27 @@ export default function ResumePage() {
 
   // 雙重監聽主題變化
   useEffect(() => {
-    console.log('ResumePage: useTheme hook detected theme change to:', theme);
     setCurrentTheme(theme);
-    setRenderKey(prev => prev + 1);
+    setRenderKey((prev) => prev + 1);
     setForceRender(false);
     const timer = setTimeout(() => {
       setForceRender(true);
     }, 100);
-    
+
     return () => clearTimeout(timer);
   }, [theme]);
 
   // 額外監聽 DOM 的 class 變化 (作為備用方案)
   useEffect(() => {
     const detectThemeChange = () => {
-      const isDark = document.documentElement.classList.contains('dark') || 
-                    document.documentElement.getAttribute('data-theme') === 'dark';
-      const detectedTheme = isDark ? 'dark' : 'light';
-      console.log('ResumePage: DOM theme detection:', detectedTheme);
-      
+      const isDark =
+        document.documentElement.classList.contains("dark") ||
+        document.documentElement.getAttribute("data-theme") === "dark";
+      const detectedTheme = isDark ? "dark" : "light";
+
       if (detectedTheme !== currentTheme) {
-        console.log('ResumePage: DOM detected theme change from', currentTheme, 'to', detectedTheme);
         setCurrentTheme(detectedTheme);
-        setRenderKey(prev => prev + 1);
+        setRenderKey((prev) => prev + 1);
         setForceRender(false);
         setTimeout(() => setForceRender(true), 100);
       }
@@ -66,9 +64,10 @@ export default function ResumePage() {
 
     // 監聽 DOM 變化
     const observer = new MutationObserver(detectThemeChange);
+
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class', 'data-theme']
+      attributeFilter: ["class", "data-theme"],
     });
 
     // 初始檢測
@@ -123,6 +122,7 @@ export default function ResumePage() {
   // 3次錯誤才顯示404，並包在DefaultLayout下
   if (failCount >= 3) {
     const textColor = currentTheme === "dark" ? "#ffffff" : "#000000";
+
     return (
       <DefaultLayout>
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2">

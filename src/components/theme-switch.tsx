@@ -30,7 +30,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     isSelected: theme === "light",
     onChange: () => {
       const newTheme = theme === "light" ? "dark" : "light";
-      console.log('ThemeSwitch: changing theme from', theme, 'to', newTheme);
+
       setTheme(newTheme);
     },
   });

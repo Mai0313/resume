@@ -38,9 +38,10 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
 
     // 完全清理 canvas
     const ctx = canvas.getContext("2d");
+
     if (ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      canvas.width = 0;  // 強制重置
+      canvas.width = 0; // 強制重置
       canvas.height = 0; // 強制重置
     }
 

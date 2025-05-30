@@ -117,7 +117,7 @@ const Particles: React.FC<ParticlesProps> = ({
     if (particleColors && particleColors.length > 0) {
       return particleColors;
     }
-    
+
     // 根據主題返回不同的顏色
     if (theme === "dark") {
       return ["#ffffff", "#e2e8f0", "#cbd5e1"]; // 白色和淺灰色用於暗主題
