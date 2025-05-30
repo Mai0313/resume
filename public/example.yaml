@@ -15,6 +15,12 @@ basics:
       username: ElonMusk
       url: https://twitter.com/elonmusk
 
+languages:
+  - language: English
+    fluency: Native
+  - language: Afrikaans
+    fluency: Conversational
+
 work:
   - company: Zip2 Corporation
     position: Co-Founder & CEO
@@ -92,12 +98,6 @@ skills:
   - name: Renewable Energy
     level: Advanced
     keywords: ["Solar Power", "Battery Technology", "Grid Integration"]
-
-languages:
-  - language: English
-    fluency: Native
-  - language: Afrikaans
-    fluency: Conversational
 
 projects:
   - name: Falcon 1 Flight 4
