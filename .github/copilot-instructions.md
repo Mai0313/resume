@@ -153,6 +153,32 @@
 
 # 最新更新記錄
 
+## 2025-05-30 Portfolio GitHub Token 缺失處理功能實現
+- **智能 Token 檢測機制**: 實現了完整的 GitHub Token 缺失檢測和用戶引導系統
+  - 修改 `src/utils/githubApi.ts` 添加 `isGitHubTokenAvailable()` 函數檢查 Token 可用性
+  - 所有 GitHub API 函數在 Token 缺失時拋出專用的 `GITHUB_TOKEN_MISSING` 錯誤
+  - 移除初始化時的強制 Token 檢查，改為按需檢查避免阻塞應用啟動
+- **Portfolio 頁面優化**:
+  - 更新 `src/pages/portfolio.tsx` 添加 `isTokenMissing` 狀態管理
+  - 使用 `isGitHubTokenAvailable()` 在組件載入時檢查 Token 狀態
+  - 當 Token 缺失時直接顯示設定指南，無需嘗試 API 請求
+  - 保持原有的錯誤處理機制用於其他類型的 API 錯誤
+- **用戶友善的設定指南**:
+  - 更新 `src/components/PortfolioContent.tsx` 添加 `isTokenMissing` 屬性支援
+  - 實現美觀的 Token 設定指南卡片，包含完整的步驟說明
+  - 提供 GitHub Personal Access Tokens 直接連結
+  - 詳細的設定步驟：從創建 Token 到配置環境變數的完整流程
+  - 使用 HeroUI 組件構建現代化的提示界面
+- **技術特色**:
+  - 條件性渲染：Token 缺失時顯示設定指南，Token 正常時顯示 Portfolio 內容
+  - 保持響應式設計和深色/淺色主題兼容性
+  - 錯誤處理分層：Token 缺失、API 錯誤、載入狀態各自獨立處理
+  - 向下相容：原有的 Portfolio 功能完全保留，僅添加 Token 檢查邏輯
+- **用戶體驗提升**:
+  - 新用戶無需猜測為何 Portfolio 頁面無法載入，直接看到設定指南
+  - 明確的操作步驟降低設定門檻
+  - 專業的視覺設計提升設定過程的用戶體驗
+
 ## 2025-05-30 Resume 文件動態載入功能實現
 - **環境變數驅動的文件載入**: 實現了基於環境變數的 Resume 文件動態載入系統
   - 新增 `VITE_RESUME_FILE` 環境變數，支援自定義履歷文件路徑

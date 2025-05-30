@@ -4,14 +4,22 @@ import { useState, useEffect } from "react";
 
 import DefaultLayout from "@/layouts/default";
 import PortfolioContent from "@/components/PortfolioContent";
-import { getUserContributions } from "@/utils/githubApi";
+import { getUserContributions, isGitHubTokenAvailable } from "@/utils/githubApi";
 
 export default function PortfolioPage() {
   const [contributions, setContributions] = useState<GitHubContribution[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isTokenMissing, setIsTokenMissing] = useState(false);
 
   useEffect(() => {
+    // 檢查 GitHub Token 是否可用
+    if (!isGitHubTokenAvailable()) {
+      setIsTokenMissing(true);
+      setLoading(false);
+      return;
+    }
+
     const fetchContributions = async () => {
       try {
         setLoading(true);
@@ -22,9 +30,13 @@ export default function PortfolioPage() {
 
         setContributions(userContributions);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
+        if (err instanceof Error && err.message === "GITHUB_TOKEN_MISSING") {
+          setIsTokenMissing(true);
+        } else {
+          setError(
+            err instanceof Error ? err.message : "An unknown error occurred",
+          );
+        }
       } finally {
         setLoading(false);
       }
@@ -41,6 +53,7 @@ export default function PortfolioPage() {
             contributions={contributions}
             error={error}
             loading={loading}
+            isTokenMissing={isTokenMissing}
           />
         </div>
       </section>

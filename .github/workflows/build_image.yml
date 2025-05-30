@@ -78,8 +78,6 @@ jobs:
 
       - name: ${{ matrix.target.name }}
         uses: docker/build-push-action@v6
-        env:
-          VITE_PIN_CODE: ${{ secrets.VITE_PIN_CODE }}
         with:
           push: true
           context: .

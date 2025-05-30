@@ -27,6 +27,11 @@ jobs:
         uses: actions/setup-node@v4
 
       - name: Deploy website
+        env:
+          VITE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_PIN_CODE: ${{ secrets.VITE_PIN_CODE }}
+          VITE_RESUME_FILE: example.yaml
+          VITE_ROOT_PATH: /${{ github.event.repository.name }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "<41898282+github-actions[bot]@users.noreply.github.com>"

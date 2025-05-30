@@ -7,10 +7,11 @@ import type {
 const GITHUB_API_BASE = "https://api.github.com";
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
-if (!GITHUB_TOKEN) {
-  throw new Error(
-    "GitHub token is required. Please set VITE_GITHUB_TOKEN in your environment variables.",
-  );
+/**
+ * 檢查 GitHub Token 是否已設定
+ */
+export function isGitHubTokenAvailable(): boolean {
+  return Boolean(GITHUB_TOKEN);
 }
 
 const headers = {
@@ -31,6 +32,10 @@ const graphqlHeaders = {
 export async function getUserPinnedRepositories(
   username: string,
 ): Promise<GitHubRepository[]> {
+  if (!GITHUB_TOKEN) {
+    throw new Error("GITHUB_TOKEN_MISSING");
+  }
+
   try {
     const query = `
       query($username: String!) {
@@ -126,6 +131,10 @@ export async function getUserPinnedRepositories(
 export async function getUserRepositories(
   username: string,
 ): Promise<GitHubRepository[]> {
+  if (!GITHUB_TOKEN) {
+    throw new Error("GITHUB_TOKEN_MISSING");
+  }
+
   try {
     const response = await fetch(
       `${GITHUB_API_BASE}/users/${username}/repos?type=public&sort=updated&per_page=100`,
@@ -184,6 +193,10 @@ export async function getRepositoryCommits(
 export async function getUserContributions(
   username: string,
 ): Promise<GitHubContribution[]> {
+  if (!GITHUB_TOKEN) {
+    throw new Error("GITHUB_TOKEN_MISSING");
+  }
+
   try {
     // 先獲取 Pinned 儲存庫
     const pinnedRepos = await getUserPinnedRepositories(username);

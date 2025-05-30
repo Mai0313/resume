@@ -11,13 +11,66 @@ interface PortfolioContentProps {
   contributions: GitHubContribution[];
   loading: boolean;
   error: string | null;
+  isTokenMissing?: boolean;
 }
 
 const PortfolioContent: React.FC<PortfolioContentProps> = ({
   contributions,
   loading,
   error,
+  isTokenMissing = false,
 }) => {
+  // 如果沒有設定 GitHub Token，顯示設定提示
+  if (isTokenMissing) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <Card className="max-w-2xl">
+          <CardHeader className="text-center">
+            <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              設定 GitHub Token
+            </h3>
+          </CardHeader>
+          <CardBody className="text-center space-y-4">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              需要設定 <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono">VITE_GITHUB_TOKEN</code> 環境變數來獲取 GitHub 專案和 Pinned repositories。
+            </p>
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+              <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+                如何設定：
+              </h4>
+              <ol className="text-left text-sm text-yellow-700 dark:text-yellow-300 space-y-2">
+                <li>
+                  1. 前往{" "}
+                  <Link
+                    href="https://github.com/settings/tokens"
+                    isExternal
+                    className="text-blue-600 dark:text-blue-400 underline"
+                  >
+                    GitHub Personal Access Tokens
+                  </Link>
+                </li>
+                <li>2. 點擊 "Generate new token (classic)"</li>
+                <li>3. 勾選 "public_repo" 權限（用於存取公開儲存庫）</li>
+                <li>4. 複製產生的 token</li>
+                <li>
+                  5. 在專案根目錄建立 <code>.env</code> 檔案，加入：
+                  <br />
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded block mt-1 font-mono">
+                    VITE_GITHUB_TOKEN=your_token_here
+                  </code>
+                </li>
+                <li>6. 重新啟動開發伺服器</li>
+              </ol>
+            </div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              設定完成後即可查看 GitHub 專案和貢獻記錄
+            </p>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
