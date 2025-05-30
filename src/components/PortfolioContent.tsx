@@ -232,7 +232,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                         rel="noopener noreferrer"
                         target="_blank"
                       >
-                        🔗 Demo
+                        🔗 Link
                       </Link>
                     )}
                   </div>
