@@ -1,55 +1,126 @@
 import yaml from "js-yaml";
 
-export interface ResumeData {
-  personal: {
-    name: string;
-    email: string;
-    linkedin: { text: string; url: string };
-    github: { text: string; url: string };
-    languages: Array<{ name: string; level: string }>;
+// JSON Resume Schema interfaces
+export interface JSONResumeBasics {
+  name: string;
+  label?: string;
+  image?: string;
+  email?: string;
+  phone?: string;
+  url?: string;
+  summary?: string;
+  location?: {
+    address?: string;
+    postalCode?: string;
+    city?: string;
+    countryCode?: string;
+    region?: string;
   };
-  education: Array<{
-    institution: string;
-    degree: string;
-    date: string;
-    description: string[];
-  }>;
-  research: Array<{
-    title: string;
-    subtitle: string;
-    conference: string;
-    url?: string;
-    description: string;
-  }>;
-  experience: Array<{
-    company: string;
-    location: string;
-    position: string;
-    period: string;
-    achievements: Array<{
-      category: string;
-      items: string[];
-    }>;
-  }>;
-  skills: Array<{
-    category: string;
-    items: string[];
-  }>;
-  awards: Array<{
-    title: string;
-    venue: string;
-    url?: string;
-    role: string;
-  }>;
-  community: Array<{
-    category: string;
-    items: string[];
-  }>;
-  interests: Array<{
-    title: string;
-    description: string;
+  profiles?: Array<{
+    network: string;
+    username: string;
+    url: string;
   }>;
 }
+
+export interface JSONResumeWork {
+  name: string;
+  position: string;
+  url?: string;
+  startDate?: string;
+  endDate?: string;
+  summary?: string;
+  highlights?: string[];
+}
+
+export interface JSONResumeVolunteer {
+  organization: string;
+  position: string;
+  url?: string;
+  startDate?: string;
+  endDate?: string;
+  summary?: string;
+  highlights?: string[];
+}
+
+export interface JSONResumeEducation {
+  institution: string;
+  url?: string;
+  area?: string;
+  studyType?: string;
+  startDate?: string;
+  endDate?: string;
+  gpa?: string;
+  courses?: string[];
+}
+
+export interface JSONResumeAward {
+  title: string;
+  date?: string;
+  awarder: string;
+  summary?: string;
+  url?: string;
+}
+
+export interface JSONResumePublication {
+  name: string;
+  publisher: string;
+  releaseDate?: string;
+  url?: string;
+  summary?: string;
+}
+
+export interface JSONResumeSkill {
+  name: string;
+  level?: string;
+  keywords?: string[];
+}
+
+export interface JSONResumeLanguage {
+  language: string;
+  fluency: string;
+}
+
+export interface JSONResumeInterest {
+  name: string;
+  keywords?: string[];
+}
+
+export interface JSONResumeReference {
+  name: string;
+  reference: string;
+}
+
+export interface JSONResumeProject {
+  name: string;
+  description?: string;
+  highlights?: string[];
+  keywords?: string[];
+  startDate?: string;
+  endDate?: string;
+  url?: string;
+  roles?: string[];
+  entity?: string;
+  type?: string;
+}
+
+// Main JSON Resume interface
+export interface JSONResumeData {
+  basics: JSONResumeBasics;
+  work?: JSONResumeWork[];
+  volunteer?: JSONResumeVolunteer[];
+  education?: JSONResumeEducation[];
+  awards?: JSONResumeAward[];
+  publications?: JSONResumePublication[];
+  skills?: JSONResumeSkill[];
+  languages?: JSONResumeLanguage[];
+  interests?: JSONResumeInterest[];
+  references?: JSONResumeReference[];
+  projects?: JSONResumeProject[];
+}
+
+// Type alias for backward compatibility
+export type ResumeData = JSONResumeData;
 
 export async function loadResumeData(): Promise<ResumeData> {
   try {

@@ -118,6 +118,7 @@ export default function ResumePage() {
 
       setResumeData(data);
     } catch (error) {
+      console.log("Error loading resume data:", error);
       addToast({
         title: "Error",
         description: "Failed to load resume data",
