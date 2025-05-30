@@ -129,25 +129,27 @@ export type ResumeData = JSONResumeData;
  */
 function getResumeFilePath(): string {
   const customPath = import.meta.env.VITE_RESUME_FILE;
-  
+
   // 如果有設定環境變數且不為空，使用自定義路徑
-  if (customPath && customPath.trim() !== '') {
-    return customPath.startsWith('/') ? customPath : `/${customPath}`;
+  if (customPath && customPath.trim() !== "") {
+    return customPath.startsWith("/") ? customPath : `/${customPath}`;
   }
-  
+
   // 預設使用 example.yaml
-  return '/example.yaml';
+  return "/example.yaml";
 }
 
 export async function loadResumeData(): Promise<ResumeData> {
   try {
     const resumeFilePath = getResumeFilePath();
     const response = await fetch(resumeFilePath);
-    
+
     if (!response.ok) {
-      throw new Error(`Failed to load resume file: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to load resume file: ${response.status} ${response.statusText}`,
+      );
     }
-    
+
     const yamlText = await response.text();
     const data = yaml.load(yamlText) as ResumeData;
 

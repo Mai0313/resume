@@ -142,6 +142,9 @@
   - `GitHubCommit`: GitHub 提交記錄結構
   - `GitHubContribution`: GitHub 貢獻資料結構 (包含 `isPinned` 標記)
 - **`types/ogl.d.ts`**: OGL 3D 圖形庫類型聲明
+- **`vite-env.d.ts`**: Vite 環境變數類型定義
+  - 包含所有專案環境變數的 TypeScript 類型定義
+  - `VITE_GITHUB_TOKEN`, `VITE_PIN_CODE`, `VITE_ROOT_PATH`, `VITE_RESUME_FILE` 等
 
 ### 應用程式核心
 - **`App.tsx`**: 主應用程式組件，包含路由配置
@@ -149,6 +152,26 @@
 - **`provider.tsx`**: HeroUI 主題提供者配置，支援深色模式
 
 # 最新更新記錄
+
+## 2025-05-30 Resume 文件動態載入功能實現
+- **環境變數驅動的文件載入**: 實現了基於環境變數的 Resume 文件動態載入系統
+  - 新增 `VITE_RESUME_FILE` 環境變數，支援自定義履歷文件路徑
+  - 未設定環境變數時自動使用 `public/example.yaml` 作為預設履歷
+  - 設定環境變數時載入指定的 YAML 文件（例如：`resume.yaml`）
+- **resumeLoader.ts 工具函數增強**:
+  - 新增 `getResumeFilePath()` 函數處理文件路徑邏輯
+  - 改善錯誤處理機制，添加 HTTP 響應狀態檢查
+  - 支援相對路徑和絕對路徑的靈活配置
+  - 提供詳細的錯誤訊息，便於除錯
+- **環境變數配置系統擴展**:
+  - 更新 `.env.example` 添加 `VITE_RESUME_FILE` 說明和使用範例
+  - 更新 `vite-env.d.ts` 添加完整的環境變數 TypeScript 類型定義
+  - 包含 `VITE_GITHUB_TOKEN`, `VITE_PIN_CODE`, `VITE_ROOT_PATH`, `VITE_RESUME_FILE` 等所有環境變數
+- **使用場景優化**:
+  - **開發環境**: 不設定 `VITE_RESUME_FILE`，使用 `example.yaml` 範例資料
+  - **個人部署**: 設定 `VITE_RESUME_FILE=resume.yaml` 載入真實履歷
+  - **多版本管理**: 支援載入不同的履歷文件（例如：`resume-en.yaml`, `resume-zh.yaml`）
+- **向下相容性**: 保持所有現有功能，不影響既有的 PIN 碼驗證和主題切換機制
 
 ## 2025-05-30 履歷PDF導出功能實現
 - **專業PDF履歷生成**: 實現了完整的PDF履歷生成和下載功能
@@ -293,7 +316,7 @@
 
 ## 2025-05-30 履歷系統完整實現
 - **YAML 驅動的履歷系統**: 實現了基於 YAML 配置的完整履歷管理系統
-  - 創建 `public/resume.yaml` 作為履歷數據源，支持結構化配置
+  - 支援透過環境變數 `VITE_RESUME_FILE` 指定履歷數據源文件
   - 實現 `src/utils/resumeLoader.ts` 用於動態加載 YAML 數據
 - **Resume 頁面功能完善**:
   - 保持原有的 PIN 碼驗證機制 (環境變數 `VITE_PIN_CODE`)

@@ -1,12 +1,7 @@
-import React from 'react';
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from '@react-pdf/renderer';
-import type { ResumeData } from '../utils/resumeLoader';
+import type { ResumeData } from "../utils/resumeLoader";
+
+import React from "react";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
 // Use built-in Helvetica font family for reliability
 // This approach avoids external font loading issues
@@ -194,8 +189,9 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
           <View style={styles.contactInfo}>
             <Text style={styles.contactItem}>
               {data.basics.email}
-              {data.basics.location && ` | ${data.basics.location.city}, ${data.basics.location.region}`}
-              {data.basics.profiles?.find((p) => p.network === "GitHub") && 
+              {data.basics.location &&
+                ` | ${data.basics.location.city}, ${data.basics.location.region}`}
+              {data.basics.profiles?.find((p) => p.network === "GitHub") &&
                 ` | ${data.basics.profiles.find((p) => p.network === "GitHub")?.url}`}
             </Text>
           </View>
