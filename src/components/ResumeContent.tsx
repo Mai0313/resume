@@ -44,6 +44,8 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
         return renderEducationSection();
       case 'awards':
         return renderAwardsSection();
+      case 'certificates':
+        return renderCertificatesSection();
       case 'publications':
         return renderPublicationsSection();
       case 'skills':
@@ -53,6 +55,10 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
       case 'languages':
         // languages 已經在 header section 中顯示，這裡跳過
         return null;
+      case 'references':
+        return renderReferencesSection();
+      case 'projects':
+        return renderProjectsSection();
       default:
         return null;
     }
@@ -233,6 +239,38 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
     );
   };
 
+  const renderCertificatesSection = () => {
+    if (!data.certificates || data.certificates.length === 0) return null;
+    return (
+      <motion.div variants={itemVariants} key="certificates">
+        <Card>
+          <CardHeader>
+            <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              Certificates
+            </h2>
+          </CardHeader>
+          <CardBody className="space-y-4">
+            {data.certificates.map((cert: any, idx: number) => (
+              <div key={idx}>
+                <h3 className="font-semibold">
+                  {cert.url ? (
+                    <Link isExternal href={cert.url} className="hover:text-blue-600">
+                      {cert.name}
+                    </Link>
+                  ) : (
+                    cert.name
+                  )}
+                  {cert.date && <span className="text-sm text-gray-500 ml-2">({cert.date})</span>}
+                </h3>
+                {cert.issuer && <p className="text-sm text-gray-600 dark:text-gray-300">Issuer: {cert.issuer}</p>}
+              </div>
+            ))}
+          </CardBody>
+        </Card>
+      </motion.div>
+    );
+  };
+
   const renderPublicationsSection = () => {
     if (!data.publications || data.publications.length === 0) return null;
     
@@ -350,6 +388,70 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                       </Chip>
                     ))}
                   </div>
+                )}
+              </div>
+            ))}
+          </CardBody>
+        </Card>
+      </motion.div>
+    );
+  };
+
+  const renderReferencesSection = () => {
+    if (!data.references || data.references.length === 0) return null;
+    return (
+      <motion.div variants={itemVariants} key="references">
+        <Card>
+          <CardHeader>
+            <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              References
+            </h2>
+          </CardHeader>
+          <CardBody className="space-y-4">
+            {data.references.map((ref: any, idx: number) => (
+              <div key={idx}>
+                <h3 className="font-semibold">{ref.name}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{ref.reference}</p>
+              </div>
+            ))}
+          </CardBody>
+        </Card>
+      </motion.div>
+    );
+  };
+
+  const renderProjectsSection = () => {
+    if (!data.projects || data.projects.length === 0) return null;
+    return (
+      <motion.div variants={itemVariants} key="projects">
+        <Card>
+          <CardHeader>
+            <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              Projects
+            </h2>
+          </CardHeader>
+          <CardBody className="space-y-6">
+            {data.projects.map((proj: any, idx: number) => (
+              <div key={idx} className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold">
+                    {proj.url ? (
+                      <Link isExternal href={proj.url} className="hover:text-blue-600">
+                        {proj.name}
+                      </Link>
+                    ) : (
+                      proj.name
+                    )}
+                  </h3>
+                  <span className="text-sm text-gray-500">
+                    {proj.startDate}{proj.endDate && ` - ${proj.endDate}`}
+                  </span>
+                </div>
+                {proj.description && <p className="text-gray-600 dark:text-gray-300 text-sm">{proj.description}</p>}
+                {proj.highlights && proj.highlights.length > 0 && (
+                  <ul className="space-y-1 ml-4 list-disc text-sm text-gray-600 dark:text-gray-300">
+                    {proj.highlights.map((h: string, i: number) => <li key={i}>{h}</li>)}
+                  </ul>
                 )}
               </div>
             ))}

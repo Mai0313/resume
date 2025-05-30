@@ -188,6 +188,8 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
         return renderEducationSection();
       case 'awards':
         return renderAwardsSection();
+      case 'certificates':
+        return renderCertificatesSection();
       case 'publications':
         return renderPublicationsSection();
       case 'skills':
@@ -197,6 +199,10 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
       case 'languages':
         // languages 已經在 header section 中顯示，這裡跳過
         return null;
+      case 'references':
+        return renderReferencesSection();
+      case 'projects':
+        return renderProjectsSection();
       default:
         return null;
     }
@@ -320,6 +326,24 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
     );
   };
 
+  const renderCertificatesSection = () => {
+    if (!data.certificates || data.certificates.length === 0) return null;
+    return (
+      <View key="certificates" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>Certificates</Text>
+        {data.certificates.map((cert, idx) => (
+          <View key={idx} style={{ marginBottom: 8 }}>
+            <Text style={[styles.description, { fontWeight: 'bold' }]}>
+              {cert.name}
+              {cert.date && ` (${formatDate(cert.date)})`}
+            </Text>
+            {cert.issuer && <Text style={styles.description}>Issuer: {cert.issuer}</Text>}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderPublicationsSection = () => {
     if (!data.publications || data.publications.length === 0) return null;
     
@@ -386,6 +410,48 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
             <Text style={styles.description}>
               {interest.keywords?.join(" • ") || ""}
             </Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderReferencesSection = () => {
+    if (!data.references || data.references.length === 0) return null;
+    return (
+      <View key="references" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>References</Text>
+        {data.references.map((ref, idx) => (
+          <View key={idx} style={{ marginBottom: 8 }}>
+            <Text style={[styles.description, { fontWeight: 'bold' }]}>{ref.name}</Text>
+            <Text style={styles.description}>{ref.reference}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderProjectsSection = () => {
+    if (!data.projects || data.projects.length === 0) return null;
+    return (
+      <View key="projects" style={[styles.section, styles.sectionWrapper]}>
+        <Text style={styles.sectionTitle}>Projects</Text>
+        {data.projects.map((proj, idx) => (
+          <View key={idx} style={{ marginBottom: 12 }}>
+            <View style={[styles.workHeader, { justifyContent: 'space-between' }]}>
+              <Text style={styles.company}>{proj.name}</Text>
+              <Text style={styles.dateRange}>
+                {formatDate(proj.startDate)}{proj.endDate ? ` - ${formatDate(proj.endDate)}` : ''}
+              </Text>
+            </View>
+            {proj.description && <Text style={styles.description}>{proj.description}</Text>}
+            {proj.highlights && (
+              <View style={styles.highlights}>
+                {proj.highlights.map((h, i) => (
+                  <Text key={i} style={styles.highlight}>• {h}</Text>
+                ))}
+              </View>
+            )}
           </View>
         ))}
       </View>

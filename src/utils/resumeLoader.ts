@@ -91,6 +91,13 @@ export interface JSONResumeReference {
   reference: string;
 }
 
+export interface JSONResumeCertificate {
+  name: string;
+  date?: string;
+  issuer?: string;
+  url?: string;
+}
+
 export interface JSONResumeProject {
   name: string;
   description?: string;
@@ -111,6 +118,7 @@ export interface JSONResumeData {
   volunteer?: JSONResumeVolunteer[];
   education?: JSONResumeEducation[];
   awards?: JSONResumeAward[];
+  certificates?: JSONResumeCertificate[];
   publications?: JSONResumePublication[];
   skills?: JSONResumeSkill[];
   languages?: JSONResumeLanguage[];

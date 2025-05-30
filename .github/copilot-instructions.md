@@ -391,3 +391,10 @@
   - `src/utils/resumeLoader.ts`: 移除 `console.error` 語句，保持錯誤傳播機制
 - **結果**: ESLint 檢查現在完全通過，無任何警告或錯誤，達到 100% 代碼品質標準
 - **影響**: 保持了原有的錯誤處理功能，僅移除了調試輸出，符合生產環境代碼要求
+
+## 2025-05-30 履歷系統動態區域順序與完整 JSON Resume 支援
+- `src/utils/resumeLoader.ts` 增加 `extractSectionOrder()`，自動從 YAML/JSON 提取頂層區域順序
+- 返回的 `data` 結構中包含 `sectionOrder` 陣列，ResumeContent 與 ResumePDF 動態根據此順序渲染各區域
+- 支援完整 JSON Resume 標準欄位：`certificates`, `references`, `projects`, 以及現有的 `work`, `education`, `skills`, `languages`, `interests`, `awards`, `publications`, `volunteer`
+- `languages` 與 `basics` 資訊同時顯示於 Header Section，其餘區域嚴格按照 `sectionOrder` 陣列順序顯示，無需硬編碼順序
+- 網頁和 PDF 版本都保持一致的渲染邏輯，動態順序調整後無需修改程式碼即可顯示最新配置
