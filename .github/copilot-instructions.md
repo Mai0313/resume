@@ -12,15 +12,72 @@
 
 # 專案需求
 
-## `Home` 頁面
+## 核心架構組件
+
+### UI 組件系統
+- **`components/primitives.ts`**: 提供 TailwindCSS 變體工具函數
+  - `title`: 支援多種漸變色彩和尺寸的標題樣式 (violet, yellow, blue, cyan, green, pink, foreground)
+  - `subtitle`: 響應式副標題樣式
+  - 所有樣式支援 `bg-clip-text text-transparent bg-gradient-to-b` 漸變效果
+
+### 圖標系統
+- **`components/icons.tsx`**: 完整的 SVG 圖標組件庫
+  - `Logo`: 品牌標誌圖標
+  - `GithubIcon`: GitHub 社群媒體圖標  
+  - `DiscordIcon`: Discord 社群媒體圖標
+  - `SunFilledIcon` / `MoonFilledIcon`: 主題切換圖標
+  - 所有圖標支援尺寸自定義和 `IconSvgProps` 類型定義
+
+### 導覽系統
+- **`components/navbar.tsx`**: 主導覽列組件
+  - 響應式設計，支援手機和桌面佈局
+  - 整合主題切換功能
+  - 品牌 LOGO 連結到首頁
+  - 社群媒體圖標連結 (GitHub, Discord)
+
+### 佈局系統
+- **`layouts/default.tsx`**: 預設頁面佈局組件
+  - 包含固定的 `Navbar` 導覽列
+  - 響應式容器佈局 (`max-w-7xl mx-auto`)
+  - 彈性高度設計 (`flex-grow pt-16`)
+
+### 主題系統
+- **`components/theme-switch.tsx`**: 深色/淺色主題切換組件
+  - 使用 `@heroui/use-theme` hook 管理主題狀態
+  - 防止 SSR 水合不匹配問題
+  - 支援鍵盤無障礙操作
+
+### 配置系統
+- **`config/site.ts`**: 網站核心配置
+  - 導覽項目定義 (`Resume`, `Portfolio`)
+  - 社群媒體連結配置 (`github`, `discord`)
+  - 統一的網站名稱和描述管理
+
+### 特效組件系統
+- **`components/SplitText.tsx`**: 分割文字動畫組件，用於首頁標題顯示
+- **`components/Orb.tsx`**: 3D 球體背景效果組件，使用 OGL 3D 圖形庫
+- **`components/Particles.tsx`**: 背景粒子系統，支援主題切換和互動效果
+- **`components/FuzzyText.tsx`**: 模糊文字特效組件，用於 404 錯誤頁面
+
+### 內容組件系統
+- **`components/PortfolioContent.tsx`**: Portfolio 頁面內容組件
+  - 使用 HeroUI 組件構建現代化卡片式佈局
+  - 支援 GitHub API 資料展示和動畫效果
+- **`components/ResumeContent.tsx`**: Resume 頁面內容組件
+  - 基於 YAML 配置的履歷展示系統
+  - 響應式設計和 Framer Motion 動畫
+
+## `Home` 頁面 (`pages/index.tsx`)
 - 透過 `@react-spring/web` 提供的元件來做生動的頁面
-- 首頁透過 `Orb` 當背景，中間透過 `Split Text` 顯示 Github 名字 `Mai0313`
-- 透過 `Gradient Text` 或其他套件設計位置顯示聯繫資訊：Discord `mai9999`、Github `Mai0313`、Email `mai@mai0313.com`
+- 首頁透過 `Orb` 當背景，中間透過 `Split Text` 顯示 Github 名字 `Mai`
+- 透過 `Particles` 作為背景粒子系統，支援主題切換和互動效果
+- 聯繫資訊透過 `Navbar` 中的圖標連結顯示：Discord、Github
 * `Split Text` 可透過 `import SplitText from "./SplitText";` 使用
 * `Orb` 可透過 `import Orb from './Orb';` 使用
-* `Gradient Text` 可透過 `import GradientText from './GradientText';` 使用
+* `Particles` 可透過 `import Particles from './Particles';` 使用
+* 漸變文字效果可透過 `title` utility 從 `@/components/primitives` 實現
 
-## `Resume` 頁面
+## `Resume` 頁面 (`pages/resume.tsx`)
 - **智能 PIN 碼保護**: 根據環境變數 `VITE_PIN_CODE` 的設定狀態決定是否需要 PIN 碼驗證
   - 未設定 `VITE_PIN_CODE` 時：直接顯示履歷內容，適合開發和測試環境
   - 設定 `VITE_PIN_CODE` 時：需要輸入正確 PIN 碼才能訪問履歷，保護個人隱私
@@ -31,14 +88,88 @@
   - 支持響應式設計和主題切換
   - 包含完整的個人信息、教育背景、研究經驗、工作經歷、技能、獲獎等欄位
 
-## `Portfolio` 頁面
+## `Portfolio` 頁面 (`pages/portfolio.tsx`)
 - **GitHub API 整合完成**: 透過 GitHub API 自動獲取並展示個人專案和貢獻記錄
 - **Pinned 專案優先**: 自動獲取 GitHub Pinned repositories 並優先展示在最上方
 - **完整專案資訊**: 顯示專案語言、星星數、fork 數、最新 commit、主題標籤等
 - **響應式設計**: 支援深色/淺色主題，具備完整的動畫效果
 - **環境變數配置**: 使用 `VITE_GITHUB_TOKEN` 環境變數來存取 GitHub API
+- **用戶體驗優化**: homepage 連結顯示為 "🔗 Link"，適用於各種類型的專案連結
+
+## 工具函數系統
+
+### GitHub API 整合
+- **`utils/githubApi.ts`**: GitHub API 操作工具函數
+  - 支援 REST API 和 GraphQL API 混合使用
+  - 實現 Pinned repositories 獲取功能
+  - 錯誤處理和速率限制管理
+
+### 資料載入
+- **`utils/resumeLoader.ts`**: YAML 履歷資料載入工具
+  - 動態載入 `public/resume.yaml` 配置文件
+  - 錯誤處理和類型安全
+
+## 樣式與類型系統
+
+### CSS 工具類
+- **`styles/globals.css`**: 全域樣式定義
+  - 包含 Tailwind CSS 基礎樣式
+  - 自定義 `line-clamp-1`, `line-clamp-2`, `line-clamp-3` 工具類
+  - 用於文字截斷和省略號顯示
+
+### 特殊效果樣式
+- **`styles/Orb.css`**: Orb 組件專用樣式
+- **`styles/Particles.css`**: Particles 組件專用樣式
+
+### TypeScript 類型定義
+- **`types/index.ts`**: 核心類型定義
+  - `IconSvgProps`: SVG 圖標組件屬性類型
+  - `GitHubRepository`: GitHub 倉庫資料結構
+  - `GitHubCommit`: GitHub 提交記錄結構
+  - `GitHubContribution`: GitHub 貢獻資料結構 (包含 `isPinned` 標記)
+- **`types/ogl.d.ts`**: OGL 3D 圖形庫類型聲明
+
+### 應用程式核心
+- **`App.tsx`**: 主應用程式組件，包含路由配置
+- **`main.tsx`**: 應用程式入口點，渲染根組件
+- **`provider.tsx`**: HeroUI 主題提供者配置，支援深色模式
 
 # 最新更新記錄
+
+## 2025-05-30 Portfolio 功能優化與文檔完善
+- **用戶體驗優化**: 用戶手動調整 PortfolioContent 組件
+  - 將 homepage 連結文字從 "🔗 Demo" 改為 "🔗 Link"
+  - 提升用戶體驗，因為 homepage 可能是專案主頁、文檔或其他類型連結
+- **文檔架構完善**: 完整記錄所有專案組件和功能
+  - 新增特效組件系統說明 (SplitText, Orb, Particles, FuzzyText)
+  - 新增內容組件系統說明 (PortfolioContent, ResumeContent)
+  - 新增工具函數系統說明 (githubApi, resumeLoader)
+  - 添加導覽系統記錄 (navbar.tsx)
+  - 確保所有 `src` 目錄中的組件都被正確記錄
+- **專案架構透明化**: 
+  - 所有頁面組件 (`pages/`) 都已被詳細記錄
+  - 所有核心組件 (`components/`) 都已被分類說明
+  - 所有工具函數 (`utils/`) 都已被記錄
+  - 確保文檔與實際程式碼完全一致
+
+## 2025-05-30 專案架構文檔完善
+- **文檔錯誤修正**: 修正了不存在的 `GradientText` 組件引用
+  - 移除錯誤的 `import GradientText from './GradientText';` 說明
+  - 更新為使用 `title` utility 從 `@/components/primitives` 實現漸變文字效果
+  - 修正 Home 頁面描述，反映實際的實現狀態
+- **核心架構組件文檔化**:
+  - 新增完整的 UI 組件系統說明 (`primitives.ts`)
+  - 記錄圖標系統的所有組件 (`icons.tsx`)
+  - 文檔化佈局系統 (`default.tsx`) 和主題系統 (`theme-switch.tsx`)
+  - 添加配置系統說明 (`site.ts`)
+- **樣式與類型系統記錄**:
+  - 文檔化 CSS 工具類和特殊效果樣式
+  - 記錄完整的 TypeScript 類型定義
+  - 添加應用程式核心組件說明 (`App.tsx`, `main.tsx`, `provider.tsx`)
+- **確保文檔完整性**:
+  - 檢查 `src` 目錄中所有組件都已被正確記錄
+  - 移除不實或過時的組件引用
+  - 所有功能描述符合實際實現狀態
 
 ## 2025-05-30 Resume PIN 碼條件邏輯優化
 - **條件性 PIN 碼驗證**: 實現了智能的 PIN 碼驗證機制
