@@ -10,8 +10,11 @@ import {
 import { addToast } from "@heroui/toast";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "@heroui/use-theme";
+import { Spinner } from "@heroui/spinner";
 
 import FuzzyText from "../components/FuzzyText";
+import { ResumeContent } from "../components/ResumeContent";
+import { loadResumeData, ResumeData } from "../utils/resumeLoader";
 
 import DefaultLayout from "@/layouts/default";
 
@@ -23,6 +26,8 @@ export default function ResumePage() {
   const [renderKey, setRenderKey] = useState(0);
   const [forceRender, setForceRender] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<string>("light");
+  const [resumeData, setResumeData] = useState<ResumeData | null>(null);
+  const [isLoadingResume, setIsLoadingResume] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -89,6 +94,7 @@ export default function ResumePage() {
     }
     if (pin === PIN_CODE) {
       setAuthenticated(true);
+      loadResumeContent();
       onClose();
     } else {
       setFailCount((c) => c + 1);
@@ -102,6 +108,23 @@ export default function ResumePage() {
         color: "danger",
       });
       setPin("");
+    }
+  }
+
+  async function loadResumeContent() {
+    setIsLoadingResume(true);
+    try {
+      const data = await loadResumeData();
+
+      setResumeData(data);
+    } catch (error) {
+      addToast({
+        title: "Error",
+        description: "Failed to load resume data",
+        color: "danger",
+      });
+    } finally {
+      setIsLoadingResume(false);
     }
   }
 
@@ -129,7 +152,7 @@ export default function ResumePage() {
           {isMounted && forceRender && (
             <div key={`fuzzy-container-${renderKey}`}>
               <FuzzyText
-                baseIntensity={0.2}
+                baseIntensity={0.15}
                 color={textColor}
                 enableHover={true}
                 fontSize="clamp(2rem, 8vw, 8rem)"
@@ -142,7 +165,7 @@ export default function ResumePage() {
                 color={textColor}
                 enableHover={true}
                 fontSize="clamp(2rem, 4vw, 4rem)"
-                hoverIntensity={0.4}
+                hoverIntensity={0.5}
               >
                 Not Found
               </FuzzyText>
@@ -173,7 +196,21 @@ export default function ResumePage() {
           </motion.div>
         </ModalContent>
       </Modal>
-      {authenticated && <div>{/* TODO: Resume content */}</div>}
+      {authenticated && (
+        <div className="min-h-screen">
+          {isLoadingResume ? (
+            <div className="flex justify-center items-center min-h-[50vh]">
+              <Spinner label="Loading resume..." size="lg" />
+            </div>
+          ) : resumeData ? (
+            <ResumeContent data={resumeData} />
+          ) : (
+            <div className="flex justify-center items-center min-h-[50vh]">
+              <p className="text-gray-500">Failed to load resume content</p>
+            </div>
+          )}
+        </div>
+      )}
     </DefaultLayout>
   );
 }
