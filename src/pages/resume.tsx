@@ -20,6 +20,9 @@ const PIN_CODE = import.meta.env.VITE_PIN_CODE;
 
 export default function ResumePage() {
   const [isMounted, setIsMounted] = useState(false);
+  const [renderKey, setRenderKey] = useState(0);
+  const [forceRender, setForceRender] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<string>('light');
 
   useEffect(() => {
     setIsMounted(true);
@@ -30,6 +33,49 @@ export default function ResumePage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const controls = useAnimation();
   const { theme } = useTheme();
+
+  // 雙重監聽主題變化
+  useEffect(() => {
+    console.log('ResumePage: useTheme hook detected theme change to:', theme);
+    setCurrentTheme(theme);
+    setRenderKey(prev => prev + 1);
+    setForceRender(false);
+    const timer = setTimeout(() => {
+      setForceRender(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [theme]);
+
+  // 額外監聽 DOM 的 class 變化 (作為備用方案)
+  useEffect(() => {
+    const detectThemeChange = () => {
+      const isDark = document.documentElement.classList.contains('dark') || 
+                    document.documentElement.getAttribute('data-theme') === 'dark';
+      const detectedTheme = isDark ? 'dark' : 'light';
+      console.log('ResumePage: DOM theme detection:', detectedTheme);
+      
+      if (detectedTheme !== currentTheme) {
+        console.log('ResumePage: DOM detected theme change from', currentTheme, 'to', detectedTheme);
+        setCurrentTheme(detectedTheme);
+        setRenderKey(prev => prev + 1);
+        setForceRender(false);
+        setTimeout(() => setForceRender(true), 100);
+      }
+    };
+
+    // 監聽 DOM 變化
+    const observer = new MutationObserver(detectThemeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'data-theme']
+    });
+
+    // 初始檢測
+    detectThemeChange();
+
+    return () => observer.disconnect();
+  }, [currentTheme]);
 
   useEffect(onOpen, []);
 
@@ -76,14 +122,15 @@ export default function ResumePage() {
 
   // 3次錯誤才顯示404，並包在DefaultLayout下
   if (failCount >= 3) {
+    const textColor = currentTheme === "dark" ? "#ffffff" : "#000000";
     return (
       <DefaultLayout>
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2">
-          {isMounted && (
-            <>
+          {isMounted && forceRender && (
+            <div key={`fuzzy-container-${renderKey}`}>
               <FuzzyText
                 baseIntensity={0.2}
-                color={theme === "dark" ? "#fff" : "#222"}
+                color={textColor}
                 enableHover={true}
                 fontSize="clamp(2rem, 8vw, 8rem)"
                 hoverIntensity={0.5}
@@ -92,14 +139,14 @@ export default function ResumePage() {
               </FuzzyText>
               <FuzzyText
                 baseIntensity={0.15}
-                color={theme === "dark" ? "#fff" : "#222"}
+                color={textColor}
                 enableHover={true}
                 fontSize="clamp(2rem, 4vw, 4rem)"
                 hoverIntensity={0.4}
               >
                 Not Found
               </FuzzyText>
-            </>
+            </div>
           )}
         </div>
       </DefaultLayout>

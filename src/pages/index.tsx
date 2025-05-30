@@ -20,7 +20,6 @@ export default function IndexPage() {
             disableRotation={false}
             moveParticlesOnHover={true}
             particleBaseSize={100}
-            particleColors={["#ffffff", "#ffffff"]}
             particleCount={200}
             particleSpread={10}
             speed={0.1}
