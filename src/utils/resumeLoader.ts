@@ -53,7 +53,7 @@ export interface ResumeData {
 
 export async function loadResumeData(): Promise<ResumeData> {
   try {
-    const response = await fetch("/data/resume.yaml");
+    const response = await fetch("/resume.yaml");
     const yamlText = await response.text();
     const data = yaml.load(yamlText) as ResumeData;
 

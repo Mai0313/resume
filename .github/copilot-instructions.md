@@ -25,7 +25,7 @@
 - 當輸入正確的 `pin code` 時，會顯示我的個人履歷
 - 當輸入錯誤的 `pin code` 時，會透過 `FuzzyText` 來 404 NotFound
 - **履歷系統已完成實現**:
-  - 使用 YAML 配置文件 (`public/data/resume.yaml`) 管理履歷數據
+  - 使用 YAML 配置文件 (`public/resume.yaml`) 管理履歷數據
   - 透過 `ResumeContent` 組件優雅展示履歷內容
   - 支持響應式設計和主題切換
   - 包含完整的個人信息、教育背景、研究經驗、工作經歷、技能、獲獎等欄位
@@ -39,9 +39,8 @@
 
 ## 2025-05-30 履歷系統完整實現
 - **YAML 驅動的履歷系統**: 實現了基於 YAML 配置的完整履歷管理系統
-  - 創建 `public/data/resume.yaml` 作為履歷數據源，支持結構化配置
+  - 創建 `public/resume.yaml` 作為履歷數據源，支持結構化配置
   - 實現 `src/utils/resumeLoader.ts` 用於動態加載 YAML 數據
-  - 移除重複的 `src/data/resume.yaml` 文件，避免數據冗余
 - **Resume 頁面功能完善**:
   - 保持原有的 PIN 碼驗證機制 (環境變數 `VITE_PIN_CODE`)
   - 整合新的 `ResumeContent` 組件，實現美觀的履歷展示
