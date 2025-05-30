@@ -24,12 +24,12 @@ work:
     startDate: "2021-08-08"
     summary: "Research and development in machine learning applications for semiconductor design"
     highlights:
-      - "Co-authored a NeurIPS 2023 workshop paper: 'Fast SoC Thermal Simulation with Physics-aware U-Net.'"
       - "Integrated thermodynamics principles into U-Net/Transformer-based simulations, cutting maximum temperature error by 34%."
-      - "Co-authored 2024 International VLSI Symposium publication achieving 10% reduction in pre/post-silicon leakage estimate discrepancy."
-      - "First-authored IEEE International Conference on LLM-Aided Design: 'MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design'"
-      - "Created visualization framework to streamline voltage-related algorithm validation."
-      - "Integrated Multi-Agent task automation and refinement strategies to improve reasoning in large language models."
+      - "Demonstrated the ability to translate theoretical insights into engineering solutions at scale."
+      - "Achieved a 10% reduction in discrepancy between pre- and post-silicon leakage estimates."
+      - "Applied statistical optimizations that enhanced model accuracy and improved validation workflows."
+      - "Integrated Multi-Agent task automation and refinement strategies to improve reasoning and task planning in large language models."
+      - "Engaged in research activities resulting in a forthcoming (2025) publication on optimizing decision-making frameworks with Monte Carlo Tree Search (MCTS) for multimodal LLMs."
       - "Received encouragement from management for graduate-level research with potential sponsorships."
 
 volunteer:
