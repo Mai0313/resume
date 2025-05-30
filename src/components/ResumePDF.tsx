@@ -49,6 +49,15 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 20,
+    wrap: false, // 不允許section跨頁分割
+  },
+  sectionWrapper: {
+    minPresenceAhead: 150, // 增加到150pt，確保有足夠空間
+    wrap: false, // 強制不分割
+  },
+  largeSection: {
+    minPresenceAhead: 200, // 對於內容較多的section使用更大的值
+    wrap: false,
   },
   sectionTitle: {
     fontSize: 14,
@@ -60,9 +69,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e5e7eb",
     textTransform: "uppercase",
     letterSpacing: 0.5,
+    wrap: false, // 標題不允許分割
   },
   workItem: {
     marginBottom: 15,
+    wrap: false, // 工作項目不允許分割
   },
   workHeader: {
     flexDirection: "row",
@@ -192,7 +203,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
         {/* Summary */}
         {data.basics.summary && (
-          <View style={styles.section}>
+          <View style={[styles.section, styles.sectionWrapper]}>
             <Text style={styles.sectionTitle}>Professional Summary</Text>
             <Text style={styles.summaryText}>{data.basics.summary}</Text>
           </View>
@@ -200,7 +211,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
         {/* Work Experience */}
         {data.work && data.work.length > 0 && (
-          <View style={styles.section}>
+          <View style={[styles.section, styles.sectionWrapper]}>
             <Text style={styles.sectionTitle}>Work Experience</Text>
             {data.work.map((job, index) => (
               <View key={index} style={styles.workItem}>
@@ -232,7 +243,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
         {/* Education */}
         {data.education && data.education.length > 0 && (
-          <View style={styles.section}>
+          <View style={[styles.section, styles.sectionWrapper]}>
             <Text style={styles.sectionTitle}>Education</Text>
             {data.education.map((edu, index) => (
               <View key={index} style={styles.educationItem}>
@@ -255,7 +266,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
         {/* Skills */}
         {data.skills && data.skills.length > 0 && (
-          <View style={styles.section}>
+          <View style={[styles.section, styles.sectionWrapper]}>
             <Text style={styles.sectionTitle}>Skills</Text>
             {data.skills.map((skillCategory, index) => (
               <View key={index} style={{ marginBottom: 10 }}>
@@ -277,7 +288,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
         {/* Research Interests */}
         {data.interests && data.interests.length > 0 && (
-          <View style={styles.section}>
+          <View style={[styles.section, styles.sectionWrapper]}>
             <Text style={styles.sectionTitle}>Research Interests</Text>
             {data.interests.map((interest, index) => (
               <View key={index} style={{ marginBottom: 8 }}>
@@ -299,7 +310,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
         {/* Awards */}
         {data.awards && data.awards.length > 0 && (
-          <View style={styles.section}>
+          <View style={[styles.section, styles.sectionWrapper]}>
             <Text style={styles.sectionTitle}>Awards & Achievements</Text>
             {data.awards.map((award, index) => (
               <View key={index} style={styles.workItem}>
@@ -318,7 +329,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
         {/* Volunteer Experience */}
         {data.volunteer && data.volunteer.length > 0 && (
-          <View style={styles.section}>
+          <View style={[styles.section, styles.largeSection]}>
             <Text style={styles.sectionTitle}>Volunteer Experience</Text>
             {data.volunteer.map((vol, index) => (
               <View key={index} style={styles.workItem}>
