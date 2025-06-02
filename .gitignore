@@ -29,3 +29,6 @@ yarn.lock
 package-lock.json
 bun.lockb
 .env
+/public/*.yaml
+/public/*.yml
+!/public/example.yaml

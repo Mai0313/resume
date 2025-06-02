@@ -180,28 +180,28 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
   // 動態渲染區域的函數
   const renderSection = (sectionName: string) => {
     switch (sectionName) {
-      case 'work':
+      case "work":
         return renderWorkSection();
-      case 'volunteer':
+      case "volunteer":
         return renderVolunteerSection();
-      case 'education':
+      case "education":
         return renderEducationSection();
-      case 'awards':
+      case "awards":
         return renderAwardsSection();
-      case 'certificates':
+      case "certificates":
         return renderCertificatesSection();
-      case 'publications':
+      case "publications":
         return renderPublicationsSection();
-      case 'skills':
+      case "skills":
         return renderSkillsSection();
-      case 'interests':
+      case "interests":
         return renderInterestsSection();
-      case 'languages':
+      case "languages":
         // languages 已經在 header section 中顯示，這裡跳過
         return null;
-      case 'references':
+      case "references":
         return renderReferencesSection();
-      case 'projects':
+      case "projects":
         return renderProjectsSection();
       default:
         return null;
@@ -210,7 +210,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderWorkSection = () => {
     if (!data.work || data.work.length === 0) return null;
-    
+
     return (
       <View key="work" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>Work Experience</Text>
@@ -245,7 +245,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderVolunteerSection = () => {
     if (!data.volunteer || data.volunteer.length === 0) return null;
-    
+
     return (
       <View key="volunteer" style={[styles.section, styles.largeSection]}>
         <Text style={styles.sectionTitle}>Volunteer Experience</Text>
@@ -280,7 +280,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderEducationSection = () => {
     if (!data.education || data.education.length === 0) return null;
-    
+
     return (
       <View key="education" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>Education</Text>
@@ -306,7 +306,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderAwardsSection = () => {
     if (!data.awards || data.awards.length === 0) return null;
-    
+
     return (
       <View key="awards" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>Awards & Achievements</Text>
@@ -328,16 +328,19 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderCertificatesSection = () => {
     if (!data.certificates || data.certificates.length === 0) return null;
+
     return (
       <View key="certificates" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>Certificates</Text>
         {data.certificates.map((cert, idx) => (
           <View key={idx} style={{ marginBottom: 8 }}>
-            <Text style={[styles.description, { fontWeight: 'bold' }]}>
+            <Text style={[styles.description, { fontWeight: "bold" }]}>
               {cert.name}
               {cert.date && ` (${formatDate(cert.date)})`}
             </Text>
-            {cert.issuer && <Text style={styles.description}>Issuer: {cert.issuer}</Text>}
+            {cert.issuer && (
+              <Text style={styles.description}>Issuer: {cert.issuer}</Text>
+            )}
           </View>
         ))}
       </View>
@@ -346,7 +349,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderPublicationsSection = () => {
     if (!data.publications || data.publications.length === 0) return null;
-    
+
     return (
       <View key="publications" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>Research Publications</Text>
@@ -354,7 +357,9 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
           <View key={index} style={styles.workItem}>
             <View style={styles.workHeader}>
               <Text style={styles.company}>{pub.name}</Text>
-              <Text style={styles.dateRange}>{formatDate(pub.releaseDate)}</Text>
+              <Text style={styles.dateRange}>
+                {formatDate(pub.releaseDate)}
+              </Text>
             </View>
             <Text style={styles.position}>{pub.publisher}</Text>
             {pub.summary && (
@@ -368,7 +373,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderSkillsSection = () => {
     if (!data.skills || data.skills.length === 0) return null;
-    
+
     return (
       <View key="skills" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>Skills</Text>
@@ -393,7 +398,7 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderInterestsSection = () => {
     if (!data.interests || data.interests.length === 0) return null;
-    
+
     return (
       <View key="interests" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>Research Interests</Text>
@@ -418,12 +423,15 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderReferencesSection = () => {
     if (!data.references || data.references.length === 0) return null;
+
     return (
       <View key="references" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>References</Text>
         {data.references.map((ref, idx) => (
           <View key={idx} style={{ marginBottom: 8 }}>
-            <Text style={[styles.description, { fontWeight: 'bold' }]}>{ref.name}</Text>
+            <Text style={[styles.description, { fontWeight: "bold" }]}>
+              {ref.name}
+            </Text>
             <Text style={styles.description}>{ref.reference}</Text>
           </View>
         ))}
@@ -433,22 +441,30 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
 
   const renderProjectsSection = () => {
     if (!data.projects || data.projects.length === 0) return null;
+
     return (
       <View key="projects" style={[styles.section, styles.sectionWrapper]}>
         <Text style={styles.sectionTitle}>Projects</Text>
         {data.projects.map((proj, idx) => (
           <View key={idx} style={{ marginBottom: 12 }}>
-            <View style={[styles.workHeader, { justifyContent: 'space-between' }]}>
+            <View
+              style={[styles.workHeader, { justifyContent: "space-between" }]}
+            >
               <Text style={styles.company}>{proj.name}</Text>
               <Text style={styles.dateRange}>
-                {formatDate(proj.startDate)}{proj.endDate ? ` - ${formatDate(proj.endDate)}` : ''}
+                {formatDate(proj.startDate)}
+                {proj.endDate ? ` - ${formatDate(proj.endDate)}` : ""}
               </Text>
             </View>
-            {proj.description && <Text style={styles.description}>{proj.description}</Text>}
+            {proj.description && (
+              <Text style={styles.description}>{proj.description}</Text>
+            )}
             {proj.highlights && (
               <View style={styles.highlights}>
                 {proj.highlights.map((h, i) => (
-                  <Text key={i} style={styles.highlight}>• {h}</Text>
+                  <Text key={i} style={styles.highlight}>
+                    • {h}
+                  </Text>
                 ))}
               </View>
             )}
@@ -487,7 +503,9 @@ export const ResumePDF: React.FC<ResumePDFProps> = ({ data }) => {
         )}
 
         {/* 動態渲染其他區域，根據 YAML 文件中的順序 */}
-        {data.sectionOrder.map((sectionName: string) => renderSection(sectionName))}
+        {data.sectionOrder.map((sectionName: string) =>
+          renderSection(sectionName),
+        )}
       </Page>
     </Document>
   );

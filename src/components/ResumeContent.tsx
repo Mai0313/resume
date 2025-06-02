@@ -36,28 +36,28 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
   // 動態渲染區域的函數
   const renderSection = (sectionName: string) => {
     switch (sectionName) {
-      case 'work':
+      case "work":
         return renderWorkSection();
-      case 'volunteer':
+      case "volunteer":
         return renderVolunteerSection();
-      case 'education':
+      case "education":
         return renderEducationSection();
-      case 'awards':
+      case "awards":
         return renderAwardsSection();
-      case 'certificates':
+      case "certificates":
         return renderCertificatesSection();
-      case 'publications':
+      case "publications":
         return renderPublicationsSection();
-      case 'skills':
+      case "skills":
         return renderSkillsSection();
-      case 'interests':
+      case "interests":
         return renderInterestsSection();
-      case 'languages':
+      case "languages":
         // languages 已經在 header section 中顯示，這裡跳過
         return null;
-      case 'references':
+      case "references":
         return renderReferencesSection();
-      case 'projects':
+      case "projects":
         return renderProjectsSection();
       default:
         return null;
@@ -66,9 +66,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderWorkSection = () => {
     if (!data.work || data.work.length === 0) return null;
-    
+
     return (
-      <motion.div variants={itemVariants} key="work">
+      <motion.div key="work" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -116,9 +116,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderVolunteerSection = () => {
     if (!data.volunteer || data.volunteer.length === 0) return null;
-    
+
     return (
-      <motion.div variants={itemVariants} key="volunteer">
+      <motion.div key="volunteer" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -160,9 +160,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderEducationSection = () => {
     if (!data.education || data.education.length === 0) return null;
-    
+
     return (
-      <motion.div variants={itemVariants} key="education">
+      <motion.div key="education" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -198,9 +198,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderAwardsSection = () => {
     if (!data.awards || data.awards.length === 0) return null;
-    
+
     return (
-      <motion.div variants={itemVariants} key="awards">
+      <motion.div key="awards" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -241,8 +241,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderCertificatesSection = () => {
     if (!data.certificates || data.certificates.length === 0) return null;
+
     return (
-      <motion.div variants={itemVariants} key="certificates">
+      <motion.div key="certificates" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -254,15 +255,27 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
               <div key={idx}>
                 <h3 className="font-semibold">
                   {cert.url ? (
-                    <Link isExternal href={cert.url} className="hover:text-blue-600">
+                    <Link
+                      isExternal
+                      className="hover:text-blue-600"
+                      href={cert.url}
+                    >
                       {cert.name}
                     </Link>
                   ) : (
                     cert.name
                   )}
-                  {cert.date && <span className="text-sm text-gray-500 ml-2">({cert.date})</span>}
+                  {cert.date && (
+                    <span className="text-sm text-gray-500 ml-2">
+                      ({cert.date})
+                    </span>
+                  )}
                 </h3>
-                {cert.issuer && <p className="text-sm text-gray-600 dark:text-gray-300">Issuer: {cert.issuer}</p>}
+                {cert.issuer && (
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Issuer: {cert.issuer}
+                  </p>
+                )}
               </div>
             ))}
           </CardBody>
@@ -273,9 +286,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderPublicationsSection = () => {
     if (!data.publications || data.publications.length === 0) return null;
-    
+
     return (
-      <motion.div variants={itemVariants} key="publications">
+      <motion.div key="publications" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -319,9 +332,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderSkillsSection = () => {
     if (!data.skills || data.skills.length === 0) return null;
-    
+
     return (
-      <motion.div variants={itemVariants} key="skills">
+      <motion.div key="skills" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -365,9 +378,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderInterestsSection = () => {
     if (!data.interests || data.interests.length === 0) return null;
-    
+
     return (
-      <motion.div variants={itemVariants} key="interests">
+      <motion.div key="interests" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -399,8 +412,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderReferencesSection = () => {
     if (!data.references || data.references.length === 0) return null;
+
     return (
-      <motion.div variants={itemVariants} key="references">
+      <motion.div key="references" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -411,7 +425,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
             {data.references.map((ref: any, idx: number) => (
               <div key={idx}>
                 <h3 className="font-semibold">{ref.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{ref.reference}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {ref.reference}
+                </p>
               </div>
             ))}
           </CardBody>
@@ -422,8 +438,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
   const renderProjectsSection = () => {
     if (!data.projects || data.projects.length === 0) return null;
+
     return (
-      <motion.div variants={itemVariants} key="projects">
+      <motion.div key="projects" variants={itemVariants}>
         <Card>
           <CardHeader>
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -436,7 +453,11 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-semibold">
                     {proj.url ? (
-                      <Link isExternal href={proj.url} className="hover:text-blue-600">
+                      <Link
+                        isExternal
+                        className="hover:text-blue-600"
+                        href={proj.url}
+                      >
                         {proj.name}
                       </Link>
                     ) : (
@@ -444,13 +465,20 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                     )}
                   </h3>
                   <span className="text-sm text-gray-500">
-                    {proj.startDate}{proj.endDate && ` - ${proj.endDate}`}
+                    {proj.startDate}
+                    {proj.endDate && ` - ${proj.endDate}`}
                   </span>
                 </div>
-                {proj.description && <p className="text-gray-600 dark:text-gray-300 text-sm">{proj.description}</p>}
+                {proj.description && (
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    {proj.description}
+                  </p>
+                )}
                 {proj.highlights && proj.highlights.length > 0 && (
                   <ul className="space-y-1 ml-4 list-disc text-sm text-gray-600 dark:text-gray-300">
-                    {proj.highlights.map((h: string, i: number) => <li key={i}>{h}</li>)}
+                    {proj.highlights.map((h: string, i: number) => (
+                      <li key={i}>{h}</li>
+                    ))}
                   </ul>
                 )}
               </div>
@@ -523,7 +551,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
       </motion.div>
 
       {/* 動態渲染其他區域，根據 YAML 文件中的順序 */}
-      {data.sectionOrder.map((sectionName: string) => renderSection(sectionName))}
+      {data.sectionOrder.map((sectionName: string) =>
+        renderSection(sectionName),
+      )}
     </motion.div>
   );
 };
