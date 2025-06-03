@@ -1,6 +1,6 @@
 <!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
 
-**每一次代碼修改 請隨時更新此文件 以便後續其他人能快速了解專案狀態**
+**每一次代碼修改 請隨時更新 `.github/copilot-instructions.md` 以便後續其他人能快速了解專案狀態**
 
 # 個人網站開發專案
 - 透過 HeroUI 提供的框架構建一個可用於 Github Pages 的個人網站
