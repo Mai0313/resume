@@ -37,10 +37,26 @@ export default function ResumePage() {
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // 檢查 URL 參數中是否包含 PIN 碼
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlPin = urlParams.get('pin');
+    
     // 如果沒有設定 PIN 碼，直接載入履歷內容
     if (!IS_PIN_ENABLED) {
       setAuthenticated(true);
       loadResumeContent();
+      return;
+    }
+    
+    // 如果 URL 中有 PIN 碼，檢查是否正確
+    if (urlPin && urlPin === PIN_CODE) {
+      setAuthenticated(true);
+      loadResumeContent();
+      // 從 URL 中移除 PIN 參數以保護隱私
+      urlParams.delete('pin');
+      const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+      window.history.replaceState({}, '', newUrl);
     }
   }, []);
 

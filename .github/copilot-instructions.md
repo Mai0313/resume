@@ -81,6 +81,11 @@
 - **智能 PIN 碼保護**: 根據環境變數 `VITE_PIN_CODE` 的設定狀態決定是否需要 PIN 碼驗證
   - 未設定 `VITE_PIN_CODE` 時：直接顯示履歷內容，適合開發和測試環境
   - 設定 `VITE_PIN_CODE` 時：需要輸入正確 PIN 碼才能訪問履歷，保護個人隱私
+- **URL PIN 碼支援**: 支援透過 URL 參數直接傳遞 PIN 碼解鎖履歷頁面
+  - 使用方式：`/resume?pin=your_pin_code`
+  - 自動驗證 URL 中的 PIN 碼，正確時直接解鎖並載入履歷內容
+  - 為保護隱私，驗證成功後會自動從 URL 中移除 PIN 參數
+  - 支援與傳統 Modal 輸入方式並存，提供更靈活的存取方式
 - **動態 Resume 文件載入**: 透過環境變數 `VITE_RESUME_FILE` 指定要載入的履歷文件
   - 未設定 `VITE_RESUME_FILE` 時：自動載入 `public/example.yaml` 作為預設履歷
   - 設定 `VITE_RESUME_FILE` 時：載入指定的 YAML 文件（例如：`resume.yaml`）
@@ -152,6 +157,22 @@
 - **`provider.tsx`**: HeroUI 主題提供者配置，支援深色模式
 
 # 最新更新記錄
+
+## 2025-06-03 Resume URL PIN 碼支援功能實現
+- **URL PIN 碼解鎖功能**: 實現了透過 URL 參數直接傳遞 PIN 碼解鎖履歷頁面的功能
+  - 支援 `/resume?pin=your_pin_code` 格式的 URL 直接解鎖
+  - 組件載入時自動檢查 URL 參數中的 `pin` 值並驗證
+  - 驗證成功後自動解鎖履歷並載入內容，無需手動輸入 PIN 碼
+  - 為保護隱私，驗證成功後會使用 `window.history.replaceState()` 自動從 URL 中移除 PIN 參數
+- **靈活的存取方式**:
+  - **URL 直接解鎖**: 適合透過連結分享，接收者點擊即可直接訪問
+  - **傳統 Modal 輸入**: 保留原有的 Modal PIN 碼輸入方式，兩種方式並存
+  - **智能條件判斷**: 只有在啟用 PIN 碼保護時才進行 URL PIN 碼檢查
+- **安全性考量**:
+  - PIN 碼驗證成功後立即從瀏覽器 URL 中移除，避免 PIN 碼在歷史記錄中殘留
+  - 保持原有的錯誤處理機制，錯誤的 URL PIN 碼不會影響傳統輸入方式
+  - 符合現有的安全邏輯，所有驗證流程保持一致
+- **向下相容性**: 完全保留現有的 PIN 碼功能，不影響任何既有的使用方式
 
 ## 2025-05-30 Portfolio GitHub Token 缺失處理功能實現
 - **智能 Token 檢測機制**: 實現了完整的 GitHub Token 缺失檢測和用戶引導系統
