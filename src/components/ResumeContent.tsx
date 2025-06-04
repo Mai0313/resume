@@ -12,6 +12,15 @@ interface ResumeContentProps {
 }
 
 export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
+  // 防護性檢查：確保資料結構完整
+  if (!data || !data.basics || !data.basics.name) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <p className="text-gray-500">Resume data is incomplete or missing</p>
+      </div>
+    );
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

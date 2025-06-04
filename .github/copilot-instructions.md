@@ -158,6 +158,22 @@
 
 # 最新更新記錄
 
+## 2025-06-04 履歷頁面 PDF 輸出功能完全移除
+- **PDF 功能清理**: 完全移除了履歷頁面的 PDF 輸出相關功能
+  - 移除 `src/pages/resume.tsx` 中的 `@react-pdf/renderer` 和 `PDFDownloadLink` 相關 import
+  - 刪除 PDF 下載按鈕和相關的 UI 組件
+  - 移除 `src/components/ResumePDF.tsx` 組件文件
+  - 刪除 `src/types/react-pdf.d.ts` TypeScript 類型定義文件
+  - 從 `package.json` 中移除 `@react-pdf/renderer` 依賴
+- **文檔更新**: 更新 `.github/copilot-instructions.md`
+  - 移除所有與PDF功能相關的描述和說明
+  - 清理過時的功能記錄，保持文檔與實際程式碼狀態一致
+- **程式碼簡化**:
+  - 履歷頁面現在只專注於網頁版履歷展示
+  - 保持所有現有功能：PIN 碼驗證、主題切換、YAML 動態載入等
+  - Resume 頁面佈局更加簡潔，移除了 PDF 下載區域
+- **向下相容性**: 所有其他功能完全保留，不影響現有的使用者體驗
+
 ## 2025-06-03 Resume URL PIN 碼支援功能實現
 - **URL PIN 碼解鎖功能**: 實現了透過 URL 參數直接傳遞 PIN 碼解鎖履歷頁面的功能
   - 支援 `/resume?pin=your_pin_code` 格式的 URL 直接解鎖
@@ -219,33 +235,6 @@
   - **個人部署**: 設定 `VITE_RESUME_FILE=resume.yaml` 載入真實履歷
   - **多版本管理**: 支援載入不同的履歷文件（例如：`resume-en.yaml`, `resume-zh.yaml`）
 - **向下相容性**: 保持所有現有功能，不影響既有的 PIN 碼驗證和主題切換機制
-
-## 2025-05-30 履歷PDF導出功能實現
-- **專業PDF履歷生成**: 實現了完整的PDF履歷生成和下載功能
-  - 創建 `src/components/ResumePDF.tsx` 使用 `@react-pdf/renderer` 生成專業履歷格式
-  - 在 Resume 頁面添加 "Download PDF" 按鈕，支援一鍵下載
-  - PDF版本採用正式的單欄佈局，包含完整的履歷內容
-- **PDF設計特色**:
-  - 使用 Helvetica 字體提供可靠的內建排版
-  - 藍色主題配色方案，專業且美觀
-  - 單欄佈局：Skills 和 Research Interests 各自獨立顯示
-  - 移除圖標：聯絡資訊使用純文字格式，更加正式
-  - 簡化技能顯示：使用子彈點分隔的文字格式取代背景框
-  - 自動格式化日期顯示和聯絡資訊
-  - 支援 GitHub 連結等社群媒體資訊
-- **技術實現**:
-  - 添加 `@react-pdf/renderer` 依賴包到 package.json
-  - 創建自定義 TypeScript 類型定義 `src/types/react-pdf.d.ts`
-  - 實現動態文件名生成（基於姓名）
-  - 完整的錯誤處理和載入狀態管理
-  - **智能分頁控制**: 添加 `breakInside: "avoid"`, `minPresenceAhead`, `orphans`, `widows` 屬性
-  - **section 完整性保護**: 確保標題和內容不會被分離到不同頁面
-  - **工作項目分頁優化**: 單個工作經歷項目保持完整，不會被中途分頁
-- **用戶體驗優化**:
-  - PDF 下載按鈕位於頁面右上角，方便存取
-  - 生成過程中顯示載入動畫和狀態提示
-  - PDF 文件自動命名為 `姓名_Resume.pdf` 格式
-- **套件需求**: 需要執行 `yarn add @react-pdf/renderer` 安裝PDF生成依賴
 
 ## 2025-05-30 自定義 ROOT PATH 功能實現
 - **多環境部署支援**: 實現了完整的自定義根路徑功能，支援不同部署環境
@@ -415,7 +404,7 @@
 
 ## 2025-05-30 履歷系統動態區域順序與完整 JSON Resume 支援
 - `src/utils/resumeLoader.ts` 增加 `extractSectionOrder()`，自動從 YAML/JSON 提取頂層區域順序
-- 返回的 `data` 結構中包含 `sectionOrder` 陣列，ResumeContent 與 ResumePDF 動態根據此順序渲染各區域
+- 返回的 `data` 結構中包含 `sectionOrder` 陣列，ResumeContent 動態根據此順序渲染各區域
 - 支援完整 JSON Resume 標準欄位：`certificates`, `references`, `projects`, 以及現有的 `work`, `education`, `skills`, `languages`, `interests`, `awards`, `publications`, `volunteer`
 - `languages` 與 `basics` 資訊同時顯示於 Header Section，其餘區域嚴格按照 `sectionOrder` 陣列順序顯示，無需硬編碼順序
-- 網頁和 PDF 版本都保持一致的渲染邏輯，動態順序調整後無需修改程式碼即可顯示最新配置
+- 網頁版本使用一致的渲染邏輯，動態順序調整後無需修改程式碼即可顯示最新配置

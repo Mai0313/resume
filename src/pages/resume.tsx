@@ -11,12 +11,9 @@ import { addToast } from "@heroui/toast";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "@heroui/use-theme";
 import { Spinner } from "@heroui/spinner";
-import { Button } from "@heroui/button";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import FuzzyText from "../components/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
-import { ResumePDF } from "../components/ResumePDF";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
 
 import DefaultLayout from "@/layouts/default";
@@ -37,26 +34,30 @@ export default function ResumePage() {
 
   useEffect(() => {
     setIsMounted(true);
-    
+
     // 檢查 URL 參數中是否包含 PIN 碼
     const urlParams = new URLSearchParams(window.location.search);
-    const urlPin = urlParams.get('pin');
-    
+    const urlPin = urlParams.get("pin");
+
     // 如果沒有設定 PIN 碼，直接載入履歷內容
     if (!IS_PIN_ENABLED) {
       setAuthenticated(true);
       loadResumeContent();
+
       return;
     }
-    
+
     // 如果 URL 中有 PIN 碼，檢查是否正確
     if (urlPin && urlPin === PIN_CODE) {
       setAuthenticated(true);
       loadResumeContent();
       // 從 URL 中移除 PIN 參數以保護隱私
-      urlParams.delete('pin');
-      const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
-      window.history.replaceState({}, '', newUrl);
+      urlParams.delete("pin");
+      const newUrl =
+        window.location.pathname +
+        (urlParams.toString() ? "?" + urlParams.toString() : "");
+
+      window.history.replaceState({}, "", newUrl);
     }
   }, []);
 
@@ -150,13 +151,20 @@ export default function ResumePage() {
     try {
       const data = await loadResumeData();
 
+      // 驗證資料結構的完整性
+      if (!data || !data.basics || !data.basics.name) {
+        throw new Error("Resume data is incomplete or missing required fields");
+      }
+
       setResumeData(data);
-    } catch {
+    } catch (error) {
       addToast({
         title: "Error",
-        description: "Failed to load resume data",
+        description:
+          error instanceof Error ? error.message : "Failed to load resume data",
         color: "danger",
       });
+      setResumeData(null);
     } finally {
       setIsLoadingResume(false);
     }
@@ -244,46 +252,8 @@ export default function ResumePage() {
             <div className="flex justify-center items-center min-h-[50vh]">
               <Spinner label="Loading resume..." size="lg" />
             </div>
-          ) : resumeData ? (
+          ) : resumeData && resumeData.basics && resumeData.basics.name ? (
             <div className="space-y-6">
-              {/* PDF Download Button */}
-              <div className="max-w-6xl mx-auto px-6">
-                <div className="flex justify-end mb-4">
-                  <PDFDownloadLink
-                    document={<ResumePDF data={resumeData} />}
-                    fileName={`${resumeData.basics.name.replace(/\s+/g, "_")}_Resume.pdf`}
-                  >
-                    {({ loading }: { loading: boolean }) => (
-                      <Button
-                        color="primary"
-                        isLoading={loading}
-                        size="md"
-                        startContent={
-                          !loading ? (
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                              />
-                            </svg>
-                          ) : null
-                        }
-                        variant="shadow"
-                      >
-                        {loading ? "Generating PDF..." : "Download PDF"}
-                      </Button>
-                    )}
-                  </PDFDownloadLink>
-                </div>
-              </div>
-
               {/* Resume Content */}
               <ResumeContent data={resumeData} />
             </div>

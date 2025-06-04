@@ -161,14 +161,41 @@ export async function loadResumeData(): Promise<
     }
 
     const yamlText = await response.text();
+
+    // 確保 YAML 內容不為空
+    if (!yamlText.trim()) {
+      throw new Error("Resume file is empty");
+    }
+
     const data = yaml.load(yamlText) as ResumeData;
+
+    // 驗證解析後的資料結構
+    if (!data || typeof data !== "object") {
+      throw new Error("Invalid YAML format: data is not an object");
+    }
+
+    if (!data.basics || typeof data.basics !== "object") {
+      throw new Error(
+        "Invalid resume format: missing or invalid 'basics' section",
+      );
+    }
+
+    if (!data.basics.name) {
+      throw new Error(
+        "Invalid resume format: missing 'name' in basics section",
+      );
+    }
 
     // 從原始 YAML 中提取鍵值順序
     const sectionOrder = extractSectionOrder(yamlText);
 
     return { ...data, sectionOrder };
   } catch (error) {
-    throw error;
+    // 重新拋出錯誤以便上層處理
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Unknown error occurred while loading resume data");
   }
 }
 
