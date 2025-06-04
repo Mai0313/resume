@@ -16,7 +16,48 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
   if (!data || !data.basics || !data.basics.name) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
-        <p className="text-gray-500">Resume data is incomplete or missing</p>
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center max-w-lg mx-auto p-8"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="mb-6">
+            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+              <svg
+                className="w-10 h-10 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+              Invalid Resume Data
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+              The resume data appears to be incomplete or corrupted. Essential
+              information like basic details are missing.
+            </p>
+          </div>
+          <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+            <h4 className="font-semibold text-orange-800 dark:text-orange-200 mb-2">
+              Expected Structure:
+            </h4>
+            <pre className="text-xs text-left text-orange-700 dark:text-orange-300 font-mono bg-orange-100 dark:bg-orange-800/30 p-2 rounded">
+              {`basics:
+  name: "Your Name"
+  email: "your@email.com"
+  # ... other fields`}
+            </pre>
+          </div>
+        </motion.div>
       </div>
     );
   }
