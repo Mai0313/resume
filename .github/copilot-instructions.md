@@ -66,6 +66,16 @@
 - **`components/ResumeContent.tsx`**: Resume 頁面內容組件
   - 基於 YAML 配置的履歷展示系統
   - 響應式設計和 Framer Motion 動畫
+- **`components/PinProtection.tsx`**: PIN 碼驗證保護組件
+  - 處理 PIN 碼輸入驗證邏輯
+  - 支援 URL PIN 碼參數自動解鎖
+  - 整合 Modal 和動畫效果
+- **`components/NotFoundPage.tsx`**: 404 錯誤頁面組件
+  - 使用 FuzzyText 特效顯示 404 訊息
+  - 支援主題切換和響應式設計
+- **`components/ResumeErrorDisplay.tsx`**: 履歷錯誤展示組件
+  - 統一的錯誤處理界面
+  - 提供詳細的錯誤資訊和解決建議
 
 ## `Home` 頁面 (`pages/index.tsx`)
 - 透過 `@react-spring/web` 提供的元件來做生動的頁面
@@ -106,6 +116,12 @@
 - **用戶體驗優化**: homepage 連結顯示為 "🔗 Link"，適用於各種類型的專案連結
 
 ## 工具函數系統
+
+### 自定義 Hooks
+- **`hooks/useResumeData.ts`**: 履歷資料載入 Hook
+  - 封裝履歷資料載入邏輯和狀態管理
+  - 提供載入狀態、錯誤處理和重新載入功能
+  - 自動驗證資料結構完整性
 
 ### GitHub API 整合
 - **`utils/githubApi.ts`**: GitHub API 操作工具函數
@@ -157,6 +173,37 @@
 - **`provider.tsx`**: HeroUI 主題提供者配置，支援深色模式
 
 # 最新更新記錄
+
+## 2025-06-05 Resume 頁面重構與架構簡化
+- **代碼架構大幅簡化**: 完成了 Resume 頁面的全面重構，提升代碼可讀性和維護性
+  - **組件化分離**: 將原本複雜的單一組件拆分為多個專職組件
+    - `PinProtection`: 專門處理 PIN 碼驗證邏輯，包含 URL PIN 碼支援
+    - `NotFoundPage`: 簡化的 404 頁面組件，支援主題切換
+    - `ResumeErrorDisplay`: 專門的錯誤展示組件，統一錯誤處理界面
+    - `useResumeData`: 自定義 Hook 處理履歷資料載入邏輯
+  - **狀態管理簡化**: 
+    - 移除了複雜的主題檢測邏輯（雙重檢測機制）
+    - 減少狀態變數：從 8 個狀態減少到 3 個主要狀態
+    - 移除不必要的 renderKey、forceRender、currentTheme 等狀態
+  - **邏輯職責清晰**: 
+    - Resume 主頁面只負責路由和總體佈局
+    - PIN 碼驗證邏輯完全獨立，支援 URL 參數和 Modal 輸入
+    - 資料載入邏輯抽取到 useResumeData Hook
+    - 錯誤處理統一管理，提供一致的用戶體驗
+- **技術優化**:
+  - 移除了過度複雜的主題監聽機制
+  - 簡化了 useEffect 的使用，從多個複雜的副作用減少到最小必要集合
+  - TypeScript 類型安全性提升，修復所有類型錯誤
+  - ESLint 檢查 100% 通過，無任何警告
+- **向下相容性**: 保持所有現有功能完全不變
+  - PIN 碼驗證：環境變數控制、URL PIN 碼支援
+  - 履歷載入：YAML 動態載入、錯誤處理
+  - 主題切換：深色/淺色模式支援
+  - 404 頁面：FuzzyText 特效保留
+- **代碼品質提升**:
+  - 組件職責單一，易於測試和維護
+  - 減少代碼重複，提高復用性
+  - 清晰的檔案結構，便於後續開發
 
 ## 2025-06-04 錯誤訊息美化與用戶體驗優化
 - **錯誤訊息視覺化升級**: 實現了美觀且用戶友善的錯誤展示界面
