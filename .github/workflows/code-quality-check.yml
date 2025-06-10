@@ -44,7 +44,11 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
 
-      - name: Eslint Check
+      - name: Install Dependencies
         run: |
           yarn install
-          yarn lint
+
+      - name: Prettier and Eslint Check
+        run: |
+          yarn format:nofix
+          yarn lint:nofix

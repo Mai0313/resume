@@ -1,180 +1,190 @@
-# 個人網站開發專案
+<center>
 
-這是一個基於 Vite 和 HeroUI 框架構建的個人網站，可用於 GitHub Pages 部署。
+# Personal Resume
 
-## 功能特色
+[![React](https://img.shields.io/badge/-React_19.1-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/-TypeScript_5.8-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
+[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
+[![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
 
-- **動態首頁**: 使用 @react-spring/web 和自定義組件 (Orb, SplitText, GradientText) 創建生動的視覺效果
-- **PIN 碼保護的履歷**: 基於 YAML 配置的履歷系統，支援 PIN 碼驗證保護隱私
-- **GitHub Portfolio**: 透過 GitHub API 自動獲取並展示個人專案和貢獻記錄
-- **響應式設計**: 支援深色/淺色主題切換，完全響應式佈局
-- **現代化 UI**: 使用 HeroUI 組件庫和 Framer Motion 動畫效果
+</center>
 
-## 技術棧
+This is a personal website built with Vite and the HeroUI framework, suitable for deployment on GitHub Pages.
 
-- [Vite](https://vitejs.dev/guide/) - 快速的前端構建工具
-- [HeroUI](https://heroui.com) - React UI 組件庫
-- [Tailwind CSS](https://tailwindcss.com) - CSS 框架
-- [TypeScript](https://www.typescriptlang.org) - 類型安全的 JavaScript
-- [Framer Motion](https://www.framer.com/motion) - React 動畫庫
-- [React Spring](https://react-spring.dev/) - 彈簧動畫庫
-- [GitHub API](https://docs.github.com/en/rest) - 獲取專案數據
+## Features
 
-## 環境設置
+- **Dynamic Home Page**: Uses @react-spring/web and custom components (Orb, SplitText, GradientText) to create vivid visual effects
+- **PIN-Protected Resume**: Resume system based on YAML configuration, supports PIN code verification for privacy protection
+- **GitHub Portfolio**: Automatically fetches and displays personal projects and contributions via the GitHub API
+- **Responsive Design**: Supports dark/light theme switching and fully responsive layouts
+- **Modern UI**: Built with the HeroUI component library and Framer Motion animations
 
-### 環境變數
+## Tech Stack
 
-創建 `.env` 文件並設置以下變數：
+- [Vite](https://vitejs.dev/guide/) - Fast frontend build tool
+- [HeroUI](https://heroui.com) - React UI component library
+- [Tailwind CSS](https://tailwindcss.com) - CSS framework
+- [TypeScript](https://www.typescriptlang.org) - Type-safe JavaScript
+- [Framer Motion](https://www.framer.com/motion) - React animation library
+- [React Spring](https://react-spring.dev/) - Spring animation library
+- [GitHub API](https://docs.github.com/en/rest) - Fetch project data
+
+## Environment Setup
+
+### Environment Variables
+
+Create a `.env` file and set the following variables:
 
 ```bash
-# Resume PIN 碼保護
+# Resume PIN code protection
 VITE_PIN_CODE=123456
 
-# GitHub API Token (用於 Portfolio 功能)
+# GitHub API Token (for Portfolio feature)
 VITE_GITHUB_TOKEN=your_github_token_here
 ```
 
-**重要**:
+**Important**:
 
-- 請將 `your_github_token_here` 替換為你的 GitHub Personal Access Token
-- GitHub Token 需要 `public_repo` 權限來讀取公開儲存庫
-- 不要將真實的 token 提交到版本控制系統
+- Replace `your_github_token_here` with your GitHub Personal Access Token
+- The GitHub Token requires `public_repo` permission to read public repositories
+- Do not commit your real token to version control
 
-### 安裝依賴
+### Install Dependencies
 
-推薦使用 `yarn`:
+It is recommended to use `yarn`:
 
 ```bash
 yarn install
 ```
 
-或使用 `npm`:
+Or use `npm`:
 
 ```bash
 npm install
 ```
 
-### 運行開發服務器
+### Run Development Server
 
 ```bash
 yarn dev
 ```
 
-或
+Or
 
 ```bash
 npm run dev
 ```
 
-## 頁面功能
+## Page Features
 
-### Home 頁面 (`/`)
+### Home Page (`/`)
 
-- 動態 Orb 背景效果
-- Split Text 動畫顯示 GitHub 用戶名
-- Gradient Text 展示聯繫資訊
-- 響應式設計和主題切換
+- Dynamic Orb background effect
+- Split Text animation displays GitHub username
+- Gradient Text shows contact information
+- Responsive design and theme switching
 
-### Resume 頁面 (`/resume`)
+### Resume Page (`/resume`)
 
-- PIN 碼驗證保護
-- YAML 驅動的履歷數據管理
-- 結構化展示個人信息、教育背景、工作經歷等
-- 響應式設計和動畫效果
+- PIN code verification protection
+- YAML-driven resume data management
+- Structured display of personal info, education, work experience, etc.
+- Responsive design and animation effects
 
-### Portfolio 頁面 (`/portfolio`)
+### Portfolio Page (`/portfolio`)
 
-- 自動獲取 GitHub 儲存庫和貢獻記錄
-- 顯示專案詳情：語言、星數、fork 數、主題標籤
-- 展示最近的 commit 記錄
-- 支援專案 demo 連結和 GitHub 連結
+- Automatically fetches GitHub repositories and contributions
+- Displays project details: language, stars, forks, topic tags
+- Shows recent commit records
+- Supports project demo links and GitHub links
 
-## 自定義配置
+## Custom Configuration
 
-### 修改 GitHub 用戶名
+### Change GitHub Username
 
-在 `src/pages/portfolio.tsx` 中修改:
+Edit in `src/pages/portfolio.tsx`:
 
 ```typescript
 const userContributions = await getUserContributions("your_github_username");
 ```
 
-### 修改履歷內容
+### Edit Resume Content
 
-編輯 `public/resume.yaml` 文件來更新履歷內容。
+Edit the `public/resume.yaml` file to update your resume content.
 
-### 修改 PIN 碼
+### Change PIN Code
 
-在 `.env` 文件中修改 `VITE_PIN_CODE` 的值。
+Edit the value of `VITE_PIN_CODE` in the `.env` file.
 
-## 部署
+## Deployment
 
-### GitHub Pages 部署
+### Deploy to GitHub Pages
 
 ```bash
 yarn build
 yarn deploy
 ```
 
-### Vercel 部署
+### Deploy to Vercel
 
-項目已配置 `vercel.json`，可直接部署到 Vercel。
+The project is pre-configured with `vercel.json` and can be deployed directly to Vercel.
 
-## 專案結構
+## Project Structure
 
 ```
 src/
-├── components/          # 可重用組件
-│   ├── FuzzyText.tsx   # 404 文字效果
-│   ├── Orb.tsx         # 動態背景球體
-│   ├── SplitText.tsx   # 文字分割動畫
-│   ├── PortfolioContent.tsx  # Portfolio 內容組件
-│   └── ResumeContent.tsx     # Resume 內容組件
-├── pages/              # 頁面組件
-│   ├── index.tsx       # 首頁
-│   ├── portfolio.tsx   # Portfolio 頁面
-│   └── resume.tsx      # Resume 頁面
-├── utils/              # 工具函數
-│   ├── githubApi.ts    # GitHub API 相關函數
-│   └── resumeLoader.ts # Resume YAML 載入器
-└── types/              # TypeScript 類型定義
-    └── index.ts        # 通用類型定義
+├── components/          # Reusable components
+│   ├── FuzzyText.tsx   # 404 text effect
+│   ├── Orb.tsx         # Dynamic background orb
+│   ├── SplitText.tsx   # Split text animation
+│   ├── PortfolioContent.tsx  # Portfolio content component
+│   └── ResumeContent.tsx     # Resume content component
+├── pages/              # Page components
+│   ├── index.tsx       # Home page
+│   ├── portfolio.tsx   # Portfolio page
+│   └── resume.tsx      # Resume page
+├── utils/              # Utility functions
+│   ├── githubApi.ts    # GitHub API related functions
+│   └── resumeLoader.ts # Resume YAML loader
+└── types/              # TypeScript type definitions
+    └── index.ts        # Common type definitions
 ```
 
-## 開發指南
+## Development Guide
 
-### 添加新頁面
+### Add a New Page
 
-1. 在 `src/pages/` 創建新組件
-2. 在 `src/App.tsx` 中添加路由
-3. 在 `src/components/navbar.tsx` 中添加導航連結
+1. Create a new component in `src/pages/`
+2. Add a route in `src/App.tsx`
+3. Add a navigation link in `src/components/navbar.tsx`
 
-### 修改主題
+### Modify Theme
 
-HeroUI 主題配置位於 `tailwind.config.js`，可根據需要自定義顏色和樣式。
+HeroUI theme configuration is in `tailwind.config.js`, where you can customize colors and styles as needed.
 
-### API 限制
+### API Limitations
 
-GitHub API 有速率限制，建議：
+GitHub API has rate limits. Recommendations:
 
-- 使用 Personal Access Token 獲得更高限額
-- 實現適當的緩存機制
-- 考慮分頁載入大量數據
+- Use a Personal Access Token for higher limits
+- Implement proper caching
+- Consider paginated loading for large data sets
 
-## 故障排除
+## Troubleshooting
 
-### GitHub API 403 錯誤
+### GitHub API 403 Error
 
-- 檢查 token 是否正確設置
-- 確認 token 有 `public_repo` 權限
-- 檢查是否超出 API 速率限制
+- Check if the token is set correctly
+- Ensure the token has `public_repo` permission
+- Check if you have exceeded the API rate limit
 
-### 建構錯誤
+### Build Errors
 
-- 確保所有依賴都已安裝: `yarn install`
-- 檢查 TypeScript 類型錯誤: `yarn lint`
-- 清除 node_modules 重新安裝
+- Make sure all dependencies are installed: `yarn install`
+- Check TypeScript type errors: `yarn lint`
+- Clear node_modules and reinstall if needed
 
-## 授權
+## License
 
 Licensed under the [MIT license](https://github.com/frontio-ai/Mai/blob/main/LICENSE).
