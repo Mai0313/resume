@@ -11,11 +11,9 @@ import { addToast } from "@heroui/toast";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "@heroui/use-theme";
 import { Spinner } from "@heroui/spinner";
-import { pdf } from "@react-pdf/renderer";
 
 import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
-import { ResumePDF } from "../components/ResumePDF";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
 
 import { env, envHelpers } from "@/utils/env";
@@ -120,53 +118,6 @@ export default function ResumePage() {
 
   // Dynamically get PIN length
   const pinLength = env.PIN_CODE?.length || 4;
-
-  // PDF download function
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-
-  const downloadPDF = async () => {
-    if (!resumeData) {
-      addToast({
-        title: "Error",
-        description: "Resume data not available for PDF generation",
-        color: "danger",
-      });
-
-      return;
-    }
-
-    setIsGeneratingPDF(true);
-    try {
-      const doc = <ResumePDF data={resumeData} />;
-      const pdfBlob = await pdf(doc).toBlob();
-
-      // Create download link
-      const url = URL.createObjectURL(pdfBlob);
-      const link = document.createElement("a");
-
-      link.href = url;
-      link.download = `${resumeData.basics.name.replace(/\s+/g, "_")}_Resume.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-      addToast({
-        title: "Success",
-        description: "Resume PDF downloaded successfully",
-        color: "success",
-      });
-    } catch (error) {
-      console.error("PDF generation error:", error);
-      addToast({
-        title: "Error",
-        description: "Failed to generate PDF. Please try again.",
-        color: "danger",
-      });
-    } finally {
-      setIsGeneratingPDF(false);
-    }
-  };
 
   function handleSubmit(onClose: () => void) {
     if (!IS_PIN_ENABLED) return; // If PIN code is not enabled, return directly
@@ -303,12 +254,8 @@ export default function ResumePage() {
             </div>
           ) : resumeData && resumeData.basics && resumeData.basics.name ? (
             <div className="space-y-6">
-              {/* Resume Content with integrated PDF download */}
-              <ResumeContent
-                data={resumeData}
-                isGeneratingPDF={isGeneratingPDF}
-                onDownloadPDF={downloadPDF}
-              />
+              {/* Resume Content */}
+              <ResumeContent data={resumeData} />
             </div>
           ) : (
             <div className="flex justify-center items-center min-h-[50vh]">
