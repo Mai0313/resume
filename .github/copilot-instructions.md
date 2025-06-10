@@ -120,6 +120,7 @@
   - Uses HeroUI design system for consistent error display style
   - Responsive design and Framer Motion animations
   - Complete JSON Resume standard support including dynamic section order rendering
+  - **PDF Export Removed**: All PDF generation functionality has been completely removed for simplified web-only experience
 
 ## `Home` Page (`pages/index.tsx`)
 
@@ -291,7 +292,7 @@ The personal website development project is **feature-complete** with the follow
 ## Core Features Implemented
 
 - ✅ **Complete GitHub API Integration**: Portfolio page with pinned repositories, smart token detection, and beautiful error handling
-- ✅ **Advanced Resume System**: YAML-driven with PIN code protection, URL unlocking, dynamic file loading, and JSON Resume standard support
+- ✅ **Advanced Resume System**: YAML-driven with PIN code protection, URL unlocking, dynamic file loading, and JSON Resume standard support (PDF export removed)
 - ✅ **Enhanced Theme System**: Seamless dark/light mode switching across all visual effects including Particles and FuzzyText
 - ✅ **Multi-Environment Deployment**: Custom ROOT PATH support for various deployment scenarios (GitHub Pages, subdirectories)
 - ✅ **Professional Error Handling**: Beautiful error displays with gradient icons, animations, and user-friendly guidance
