@@ -8,8 +8,8 @@
 // Environment variables that require values (will throw error if not provided)
 const REQUIRED_ENV_VARS = [
   "VITE_WEBSITE_TITLE",
-  "VITE_GITHUB_USERNAME",
   "VITE_GITHUB_TOKEN",
+  "VITE_RESUME_FILE",
 ] as const;
 
 // Environment variables with default values
@@ -75,11 +75,8 @@ validateRequiredEnvVars();
 export const env = {
   // Required environment variables (will throw error if not set)
   WEBSITE_TITLE: getEnvVar("VITE_WEBSITE_TITLE", true),
-  GITHUB_USERNAME: getEnvVar("VITE_GITHUB_USERNAME", true),
   GITHUB_TOKEN: getEnvVar("VITE_GITHUB_TOKEN", true),
-
-  // Optional environment variables
-  RESUME_FILE: getEnvVar("VITE_RESUME_FILE", false),
+  RESUME_FILE: getEnvVar("VITE_RESUME_FILE", true),
 
   // Optional environment variables with defaults
   PIN_CODE: getEnvVarWithDefault("VITE_PIN_CODE", DEFAULT_VALUES.VITE_PIN_CODE),
@@ -116,11 +113,23 @@ export const envHelpers = {
    * Get resume file path with validation
    */
   getResumeFilePath(): string {
-    if (!env.RESUME_FILE || env.RESUME_FILE.trim() === "") {
-      return "example.yaml"; // Return default instead of throwing error
+    return env.RESUME_FILE;
+  },
+
+  /**
+   * Get GitHub username asynchronously through API
+   * This eliminates the need for VITE_GITHUB_USERNAME environment variable
+   */
+  async getGitHubUsername(): Promise<string> {
+    if (!this.isGitHubTokenAvailable()) {
+      throw new Error("GITHUB_TOKEN is required to fetch username");
     }
 
-    return env.RESUME_FILE;
+    // Dynamic import to avoid circular dependency
+    const { getAuthenticatedUser } = await import("@/utils/githubApi");
+    const user = await getAuthenticatedUser();
+
+    return user.login;
   },
 } as const;
 

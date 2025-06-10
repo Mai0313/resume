@@ -15,6 +15,42 @@ export function isGitHubTokenAvailable(): boolean {
   return envHelpers.isGitHubTokenAvailable();
 }
 
+/**
+ * 獲取當前認證用戶的信息（通過 GitHub Token）
+ */
+export async function getAuthenticatedUser(): Promise<{
+  login: string;
+  name: string;
+  avatar_url: string;
+}> {
+  if (!envHelpers.isGitHubTokenAvailable()) {
+    throw new Error("GITHUB_TOKEN_MISSING");
+  }
+
+  try {
+    const response = await fetch(`${GITHUB_API_BASE}/user`, {
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `GitHub API Error: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    const userData = await response.json();
+
+    return {
+      login: userData.login,
+      name: userData.name || userData.login,
+      avatar_url: userData.avatar_url,
+    };
+  } catch (error) {
+    console.error("Error fetching authenticated user:", error);
+    throw error;
+  }
+}
+
 const headers = {
   "Authorization": `token ${env.GITHUB_TOKEN}`,
   "Accept": "application/vnd.github.v3+json",
