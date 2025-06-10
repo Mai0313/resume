@@ -24,26 +24,12 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   globalIgnores([
-    ".now/*",
-    "**/*.css",
-    "**/.changeset",
     "**/dist",
-    "esm/*",
-    "public/*",
-    "tests/*",
-    "scripts/*",
-    "**/*.config.js",
-    "**/.DS_Store",
     "**/node_modules",
     "**/coverage",
+    "**/.DS_Store",
     "**/.next",
     "**/build",
-    "!**/.commitlintrc.cjs",
-    "!**/.lintstagedrc.cjs",
-    "!**/jest.config.js",
-    "!**/plopfile.js",
-    "!**/react-shim.js",
-    "!**/tsup.config.ts",
   ]),
   {
     extends: fixupConfigRules(
@@ -54,7 +40,6 @@ export default defineConfig([
         "plugin:jsx-a11y/recommended",
       ),
     ),
-
     plugins: {
       "react": fixupPluginRules(react),
       "unused-imports": unusedImports,
@@ -63,7 +48,6 @@ export default defineConfig([
       "jsx-a11y": fixupPluginRules(jsxA11Y),
       "prettier": fixupPluginRules(prettier),
     },
-
     languageOptions: {
       globals: {
         ...Object.fromEntries(
@@ -71,28 +55,23 @@ export default defineConfig([
         ),
         ...globals.node,
       },
-
       parser: tsParser,
       ecmaVersion: 12,
       sourceType: "module",
-
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
         },
       },
     },
-
     settings: {
       react: {
         version: "detect",
       },
     },
-
-    files: ["**/*.ts", "**/*.tsx"],
-
+    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
     rules: {
-      "no-console": "warn",
+      "no-console": ["warn", { allow: ["warn", "error", "log"] }],
       "react/prop-types": "off",
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
@@ -103,7 +82,6 @@ export default defineConfig([
       "no-unused-vars": "off",
       "unused-imports/no-unused-vars": "off",
       "unused-imports/no-unused-imports": "warn",
-
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
@@ -112,7 +90,6 @@ export default defineConfig([
           argsIgnorePattern: "^_.*?$",
         },
       ],
-
       "import/order": [
         "warn",
         {
@@ -126,7 +103,6 @@ export default defineConfig([
             "sibling",
             "index",
           ],
-
           "pathGroups": [
             {
               pattern: "~/**",
@@ -134,13 +110,10 @@ export default defineConfig([
               position: "after",
             },
           ],
-
           "newlines-between": "always",
         },
       ],
-
       "react/self-closing-comp": "warn",
-
       "react/jsx-sort-props": [
         "warn",
         {
@@ -150,7 +123,6 @@ export default defineConfig([
           reservedFirst: true,
         },
       ],
-
       "padding-line-between-statements": [
         "warn",
         {

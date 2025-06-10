@@ -34,7 +34,8 @@ VITE_PIN_CODE=123456
 VITE_GITHUB_TOKEN=your_github_token_here
 ```
 
-**重要**: 
+**重要**:
+
 - 請將 `your_github_token_here` 替換為你的 GitHub Personal Access Token
 - GitHub Token 需要 `public_repo` 權限來讀取公開儲存庫
 - 不要將真實的 token 提交到版本控制系統
@@ -68,18 +69,21 @@ npm run dev
 ## 頁面功能
 
 ### Home 頁面 (`/`)
+
 - 動態 Orb 背景效果
 - Split Text 動畫顯示 GitHub 用戶名
 - Gradient Text 展示聯繫資訊
 - 響應式設計和主題切換
 
 ### Resume 頁面 (`/resume`)
+
 - PIN 碼驗證保護
 - YAML 驅動的履歷數據管理
 - 結構化展示個人信息、教育背景、工作經歷等
 - 響應式設計和動畫效果
 
 ### Portfolio 頁面 (`/portfolio`)
+
 - 自動獲取 GitHub 儲存庫和貢獻記錄
 - 顯示專案詳情：語言、星數、fork 數、主題標籤
 - 展示最近的 commit 記錄
@@ -88,15 +92,19 @@ npm run dev
 ## 自定義配置
 
 ### 修改 GitHub 用戶名
+
 在 `src/pages/portfolio.tsx` 中修改:
+
 ```typescript
-const userContributions = await getUserContributions('your_github_username');
+const userContributions = await getUserContributions("your_github_username");
 ```
 
 ### 修改履歷內容
+
 編輯 `public/resume.yaml` 文件來更新履歷內容。
 
 ### 修改 PIN 碼
+
 在 `.env` 文件中修改 `VITE_PIN_CODE` 的值。
 
 ## 部署
@@ -136,15 +144,19 @@ src/
 ## 開發指南
 
 ### 添加新頁面
+
 1. 在 `src/pages/` 創建新組件
 2. 在 `src/App.tsx` 中添加路由
 3. 在 `src/components/navbar.tsx` 中添加導航連結
 
 ### 修改主題
+
 HeroUI 主題配置位於 `tailwind.config.js`，可根據需要自定義顏色和樣式。
 
 ### API 限制
+
 GitHub API 有速率限制，建議：
+
 - 使用 Personal Access Token 獲得更高限額
 - 實現適當的緩存機制
 - 考慮分頁載入大量數據
@@ -152,11 +164,13 @@ GitHub API 有速率限制，建議：
 ## 故障排除
 
 ### GitHub API 403 錯誤
+
 - 檢查 token 是否正確設置
 - 確認 token 有 `public_repo` 權限
 - 檢查是否超出 API 速率限制
 
 ### 建構錯誤
+
 - 確保所有依賴都已安裝: `yarn install`
 - 檢查 TypeScript 類型錯誤: `yarn lint`
 - 清除 node_modules 重新安裝

@@ -15,13 +15,13 @@ export function isGitHubTokenAvailable(): boolean {
 }
 
 const headers = {
-  Authorization: `token ${GITHUB_TOKEN}`,
-  Accept: "application/vnd.github.v3+json",
+  "Authorization": `token ${GITHUB_TOKEN}`,
+  "Accept": "application/vnd.github.v3+json",
   "User-Agent": "Portfolio-App",
 };
 
 const graphqlHeaders = {
-  Authorization: `Bearer ${GITHUB_TOKEN}`,
+  "Authorization": `Bearer ${GITHUB_TOKEN}`,
   "Content-Type": "application/json",
   "User-Agent": "Portfolio-App",
 };
