@@ -16,11 +16,11 @@ import FuzzyText from "../components/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
 
+import { env, envHelpers } from "@/utils/env";
 import DefaultLayout from "@/layouts/default";
 
 // Read PIN code from .env via VITE_PIN_CODE
-const PIN_CODE = import.meta.env.VITE_PIN_CODE;
-const IS_PIN_ENABLED = PIN_CODE && PIN_CODE.trim() !== "";
+const IS_PIN_ENABLED = envHelpers.isPinEnabled();
 
 export default function ResumePage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -48,7 +48,7 @@ export default function ResumePage() {
     }
 
     // 如果 URL 中有 PIN 碼，檢查是否正確
-    if (urlPin && urlPin === PIN_CODE) {
+    if (urlPin && urlPin === env.PIN_CODE) {
       setAuthenticated(true);
       loadResumeContent();
       // 從 URL 中移除 PIN 參數以保護隱私
@@ -117,7 +117,7 @@ export default function ResumePage() {
   }, [onOpen]);
 
   // 動態取得 PIN 長度
-  const pinLength = PIN_CODE?.length || 4;
+  const pinLength = env.PIN_CODE?.length || 4;
 
   function handleSubmit(onClose: () => void) {
     if (!IS_PIN_ENABLED) return; // 如果沒有啟用 PIN 碼，直接返回
@@ -127,7 +127,7 @@ export default function ResumePage() {
 
       return;
     }
-    if (pin === PIN_CODE) {
+    if (pin === env.PIN_CODE) {
       setAuthenticated(true);
       loadResumeContent();
       onClose();

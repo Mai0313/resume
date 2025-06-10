@@ -14,8 +14,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon, DiscordIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
 import { buildPath } from "@/utils/pathUtils";
-
-const WEBSITE_TITLE = import.meta.env.VITE_WEBSITE_TITLE;
+import { env } from "@/utils/env";
 
 export const Navbar = () => {
   return (
@@ -28,7 +27,7 @@ export const Navbar = () => {
             href={buildPath("/")}
           >
             <Logo />
-            <p className="font-bold text-inherit">{WEBSITE_TITLE}</p>
+            <p className="font-bold text-inherit">{env.WEBSITE_TITLE}</p>
           </Link>
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">

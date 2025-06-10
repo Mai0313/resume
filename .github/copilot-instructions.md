@@ -62,8 +62,9 @@
 - **`config/site.ts`**: Website core configuration
   - Navigation item definitions (`Resume`, `Portfolio`)
   - Social media link configuration (`github`, `discord`)
-  - Unified website name and description management
+  - Unified website name and description management using centralized environment access
   - Updated to use dynamic path construction with `buildPath()` function
+  - Uses `env.WEBSITE_TITLE` from centralized environment management
 
 ### Effects Component System
 
@@ -113,20 +114,21 @@
 
 ## `Resume` Page (`pages/resume.tsx`)
 
-- **Smart PIN Code Protection**: Determines whether PIN code verification is needed based on the `VITE_PIN_CODE` environment variable setting
+- **Smart PIN Code Protection**: Determines whether PIN code verification is needed using centralized environment management
+  - Uses `envHelpers.isPinEnabled()` to check if PIN protection is active
   - When `VITE_PIN_CODE` is not set: Directly displays resume content, suitable for development and testing environments
   - When `VITE_PIN_CODE` is set: Requires correct PIN code input to access resume, protecting personal privacy
   - **Conditional PIN Code Verification**: Uses `IS_PIN_ENABLED` constant to control entire verification process
   - **Automatic Initialization Logic**: Automatically sets `authenticated = true` when PIN is not enabled
 - **URL PIN Code Support**: Supports directly passing PIN code through URL parameters to unlock resume page
   - Usage: `/resume?pin=your_pin_code`
-  - Automatically verifies PIN code in URL, unlocks and loads resume content when correct
+  - Automatically verifies PIN code in URL using `env.PIN_CODE`, unlocks and loads resume content when correct
   - For privacy protection, automatically removes PIN parameter from URL after successful verification using `window.history.replaceState()`
   - Supports coexistence with traditional Modal input method, providing more flexible access
   - **Smart Conditional Judgment**: Only checks URL PIN code when PIN code protection is enabled
-- **Dynamic Resume File Loading**: Specifies which resume file to load through `VITE_RESUME_FILE` environment variable
-  - When `VITE_RESUME_FILE` is not set: Automatically loads `public/example.yaml` as default resume
-  - When `VITE_RESUME_FILE` is set: Loads specified YAML file (e.g., `resume.yaml`)
+- **Dynamic Resume File Loading**: Uses centralized environment management for resume file configuration
+  - Accesses `VITE_RESUME_FILE` through `envHelpers.getResumeFilePath()` with built-in validation
+  - Throws clear error messages when `VITE_RESUME_FILE` is not properly configured
   - Supports flexible filename configuration for multi-environment deployment and personalization
   - **Multi-version Management**: Supports loading different resume files (e.g., `resume-en.yaml`, `resume-zh.yaml`)
 - **Error Handling Optimization**: Enhanced error display with beautiful and user-friendly interface
@@ -150,9 +152,11 @@
 - **Pinned Projects Priority**: Automatically fetches GitHub Pinned repositories and displays them at the top with priority
 - **Complete Project Information**: Displays project language, star count, fork count, latest commits, topic tags, etc.
 - **Responsive Design**: Supports dark/light themes with complete animation effects
-- **Environment Variable Configuration**: Uses `VITE_GITHUB_TOKEN` environment variable to access GitHub API
+- **Environment Variable Configuration**: Uses centralized environment management for GitHub integration
+  - **Automatic Username Detection**: No longer requires `VITE_GITHUB_USERNAME` - automatically fetches username via GitHub Token using `envHelpers.getGitHubUsername()`
+  - Uses `VITE_GITHUB_TOKEN` through `env.GITHUB_TOKEN` with built-in availability checking
 - **Smart Token Detection**: Implements complete GitHub Token missing detection and user guidance system
-  - Uses `isGitHubTokenAvailable()` function to check Token availability
+  - Uses `envHelpers.isGitHubTokenAvailable()` function to check Token availability
   - Shows beautiful Token setup guide directly when Token is missing
   - Provides step-by-step instructions and direct links to GitHub Personal Access Tokens
   - Conditional rendering: shows setup guide when Token is missing, shows Portfolio content when normal
@@ -172,22 +176,25 @@
   - Supports mixed use of REST API and GraphQL API
   - Implements Pinned repositories fetch functionality
   - Error handling and rate limit management
-  - **Smart Token Detection**: Added `isGitHubTokenAvailable()` function to check Token availability
+  - **Centralized Environment Access**: Uses `env.GITHUB_TOKEN` from centralized environment management
+  - **Smart Token Detection**: Uses `envHelpers.isGitHubTokenAvailable()` function to check Token availability
   - **Dedicated Error Handling**: Throws `GITHUB_TOKEN_MISSING` error when Token is missing
   - **On-demand Token Check**: Removed mandatory Token check at initialization to avoid blocking application startup
+  - **Automatic User Information**: Added `getAuthenticatedUser()` function to fetch user details via GitHub Token
+  - **Eliminates Username Dependency**: No longer requires `VITE_GITHUB_USERNAME` environment variable
 
 ### Data Loading
 
 - **`utils/resumeLoader.ts`**: YAML resume data loading utility
-  - Dynamically loads YAML configuration files specified by environment variables
+  - Uses centralized environment management for file path configuration
+  - Accesses resume file path through `envHelpers.getResumeFilePath()` with validation
   - Supports `VITE_RESUME_FILE` environment variable for custom file paths
-  - Defaults to loading `public/example.yaml` as fallback when environment variable is not set
-  - Error handling and type safety
+  - Error handling and type safety with clear configuration guidance
   - HTTP response status checking and detailed error information
   - **Dynamic Section Order**: Added `extractSectionOrder()` function to automatically extract top-level section order from YAML/JSON
   - **Complete JSON Resume Support**: Supports all JSON Resume standard fields including `certificates`, `references`, `projects`
   - **Enhanced Error Handling**: Provides detailed error messages and debugging information
-  - **File Path Logic**: Added `getResumeFilePath()` function to handle flexible configuration of relative and absolute paths
+  - **Centralized Configuration**: All file path logic handled through centralized environment system
 
 ### Path Utility Functions
 
@@ -196,6 +203,24 @@
   - `buildPath(path)`: Constructs complete path including root path prefix (e.g., `/my-app/resume`)
   - `getBasename()`: Gets React Router's basename configuration
   - Supports path configuration for different deployment environments (root directory, subdirectory, GitHub Pages, etc.)
+
+### Environment Variable Management
+
+- **`utils/env.ts`**: Centralized environment variable management system
+  - **Required Environment Variables**: `VITE_WEBSITE_TITLE`, `VITE_GITHUB_TOKEN`, `VITE_RESUME_FILE` - throw error if not provided
+  - **Optional with Defaults**: `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/")
+  - **Validation on Load**: Automatically validates all required environment variables when module is imported
+  - **Type-Safe Access**: Exports `env` object with strongly typed environment variable values
+  - **Helper Functions**: Provides `envHelpers` with utility methods:
+    - `isPinEnabled()`: Check if PIN code protection is enabled
+    - `getRootPath()`: Get root path with fallback
+    - `isGitHubTokenAvailable()`: Check if GitHub token is available
+    - `getResumeFilePath()`: Get resume file path with validation
+    - `getGitHubUsername()`: Asynchronously fetch GitHub username via API token
+  - **Error Handling**: Clear error messages when required variables are missing
+  - **Centralized Import**: All components now import from `@/utils/env` instead of direct `import.meta.env` access
+  - **Eliminates Duplication**: Single source of truth for all environment variable logic
+  - **Reduced Configuration**: Removed `VITE_GITHUB_USERNAME` requirement - automatically fetched via token
 
 ## Styles and Type System
 
@@ -221,8 +246,9 @@
 - **`types/ogl.d.ts`**: OGL 3D graphics library type declarations
 - **`vite-env.d.ts`**: Vite environment variable type definitions
   - Contains TypeScript type definitions for all project environment variables
-  - `VITE_GITHUB_TOKEN`, `VITE_PIN_CODE`, `VITE_ROOT_PATH`, `VITE_RESUME_FILE`, etc.
+  - `VITE_WEBSITE_TITLE`, `VITE_GITHUB_TOKEN`, `VITE_PIN_CODE`, `VITE_ROOT_PATH`, `VITE_RESUME_FILE`
   - **Complete Environment Variable Support**: Enhanced with comprehensive type definitions for multi-environment deployment
+  - **Centralized Management**: All environment variable access now goes through `@/utils/env` for type safety and validation
 
 ### Application Core
 
@@ -243,6 +269,7 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Professional Error Handling**: Beautiful error displays with gradient icons, animations, and user-friendly guidance
 - ✅ **Responsive Design**: Modern UI using HeroUI components with complete mobile/desktop compatibility
 - ✅ **Type Safety**: Complete TypeScript coverage with comprehensive environment variable definitions
+- ✅ **Optimized Environment Configuration**: Automatic GitHub username detection via token eliminates `VITE_GITHUB_USERNAME` requirement
 
 ## Technical Quality
 
@@ -250,10 +277,11 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Component Architecture**: Well-structured, maintainable codebase with clear separation of concerns
 - ✅ **Performance Optimized**: Efficient API usage, proper error boundaries, and optimized rendering
 - ✅ **Documentation**: Comprehensive inline documentation matching actual implementation
+- ✅ **Centralized Environment Management**: Unified environment variable system with validation, type safety, and clear error handling
 
 ## User Experience Features
 
-- ✅ **Smart Configuration**: Environment variable-driven setup for easy customization
+- ✅ **Smart Configuration**: Simplified environment variable setup with automatic GitHub username detection
 - ✅ **Accessibility**: Keyboard navigation, screen reader support, and proper ARIA labels
 - ✅ **Visual Polish**: Smooth animations, consistent design language, and professional appearance
 - ✅ **Error Recovery**: Graceful fallbacks, retry mechanisms, and clear user guidance

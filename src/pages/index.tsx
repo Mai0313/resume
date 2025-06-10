@@ -8,8 +8,7 @@ import Particles from "../components/Particles";
 import { siteConfig } from "@/config/site";
 import { GithubIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
-
-const WEBSITE_TITLE = import.meta.env.VITE_WEBSITE_TITLE;
+import { env } from "@/utils/env";
 
 export default function IndexPage() {
   return (
@@ -43,7 +42,7 @@ export default function IndexPage() {
               delay={150}
               easing={(t) => t}
               rootMargin="50px"
-              text={WEBSITE_TITLE}
+              text={env.WEBSITE_TITLE}
               threshold={0.2}
               onLetterAnimationComplete={() => {}}
             />
