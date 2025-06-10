@@ -5,13 +5,20 @@ import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Divider } from "@heroui/divider";
 import { Link } from "@heroui/link";
+import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 
 interface ResumeContentProps {
   data: ResumeData & { sectionOrder: string[] };
+  onDownloadPDF?: () => void;
+  isGeneratingPDF?: boolean;
 }
 
-export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
+export const ResumeContent: React.FC<ResumeContentProps> = ({
+  data,
+  onDownloadPDF,
+  isGeneratingPDF,
+}) => {
   // 防護性檢查：確保資料結構完整
   if (!data || !data.basics || !data.basics.name) {
     return (
@@ -549,7 +556,41 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
       {/* Header Section - 總是在最前面 */}
       <motion.div variants={itemVariants}>
         <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950 dark:to-indigo-950">
-          <CardBody className="p-8">
+          <CardBody className="p-8 relative">
+            {/* PDF Download Button - 右上角浮動 */}
+            {onDownloadPDF && (
+              <div className="absolute top-4 right-4">
+                <Button
+                  className="shadow-md hover:shadow-lg transition-all duration-200"
+                  color="primary"
+                  isLoading={isGeneratingPDF}
+                  size="sm"
+                  startContent={
+                    !isGeneratingPDF && (
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                        />
+                      </svg>
+                    )
+                  }
+                  title="Download PDF Resume"
+                  variant="solid"
+                  onClick={onDownloadPDF}
+                >
+                  {isGeneratingPDF ? "Generating..." : "PDF"}
+                </Button>
+              </div>
+            )}
+
             <div className="text-center">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
                 {data.basics.name}

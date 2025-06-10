@@ -1,3 +1,10 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "Personal Website",
+  "framework": "vite",
+  "devCommand": "yarn dev",
+  "buildCommand": "yarn run build",
+  "installCommand": "yarn install",
+  "outputDirectory": "dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
