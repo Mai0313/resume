@@ -18,7 +18,7 @@ export default function IndexPage() {
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center min-h-[70vh] gap-6 relative">
-        {/* Particles 作為背景層 */}
+        {/* Particles as background layer */}
         <div className="fixed inset-0 w-screen h-screen -z-10">
           <Particles
             alphaParticles={false}
@@ -30,7 +30,7 @@ export default function IndexPage() {
             speed={0.1}
           />
         </div>
-        {/* Orb 與 SplitText 內容置中於上層 */}
+        {/* Orb and SplitText content centered on top layer */}
         <div style={{ width: "100%", height: "600px", position: "relative" }}>
           <Orb
             forceHoverState={false}

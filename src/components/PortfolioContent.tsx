@@ -7,6 +7,8 @@ import { Link } from "@heroui/link";
 import { Spinner } from "@heroui/spinner";
 import { motion } from "framer-motion";
 
+import SpotlightCard from "@/components/SpotlightCard/SpotlightCard";
+
 interface PortfolioContentProps {
   contributions: GitHubContribution[];
   loading: boolean;
@@ -20,31 +22,32 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
   error,
   isTokenMissing = false,
 }) => {
-  // 如果沒有設定 GitHub Token，顯示設定提示
+  // If GitHub Token is not configured, show setup instructions
   if (isTokenMissing) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <Card className="max-w-2xl">
           <CardHeader className="text-center">
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              設定 GitHub Token
+              Setup GitHub Token
             </h3>
           </CardHeader>
           <CardBody className="text-center space-y-4">
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              需要設定{" "}
+              Need to configure{" "}
               <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono">
                 VITE_GITHUB_TOKEN
               </code>{" "}
-              環境變數來獲取 GitHub 專案和 Pinned repositories。
+              environment variable to fetch GitHub projects and Pinned
+              repositories.
             </p>
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
               <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
-                如何設定：
+                How to setup:
               </h4>
               <ol className="text-left text-sm text-yellow-700 dark:text-yellow-300 space-y-2">
                 <li>
-                  1. 前往{" "}
+                  1. Go to{" "}
                   <Link
                     isExternal
                     className="text-blue-600 dark:text-blue-400 underline"
@@ -53,23 +56,24 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                     GitHub Personal Access Tokens
                   </Link>
                 </li>
-                <li>2. 點擊 &quot;Generate new token (classic)&quot;</li>
+                <li>2. Click &quot;Generate new token (classic)&quot;</li>
                 <li>
-                  3. 勾選 &quot;public_repo&quot; 權限（用於存取公開儲存庫）
+                  3. Check &quot;public_repo&quot; permission (for accessing
+                  public repositories)
                 </li>
-                <li>4. 複製產生的 token</li>
+                <li>4. Copy the generated token</li>
                 <li>
-                  5. 在專案根目錄建立 <code>.env</code> 檔案，加入：
+                  5. Create <code>.env</code> file in project root, add:
                   <br />
                   <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded block mt-1 font-mono">
                     VITE_GITHUB_TOKEN=your_token_here
                   </code>
                 </li>
-                <li>6. 重新啟動開發伺服器</li>
+                <li>6. Restart development server</li>
               </ol>
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              設定完成後即可查看 GitHub 專案和貢獻記錄
+              After setup, you can view GitHub projects and contribution records
             </p>
           </CardBody>
         </Card>
@@ -242,124 +246,134 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {contributions.map((contribution) => (
           <motion.div key={contribution.repository.id} variants={itemVariants}>
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300 flex flex-col">
-              <CardHeader className="pb-3">
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-start justify-between">
-                    <Link
-                      className="text-lg font-semibold hover:text-primary truncate flex-1 min-w-0 mr-2"
-                      href={contribution.repository.html_url}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {contribution.repository.name}
-                    </Link>
-                    <div className="flex items-center space-x-2 shrink-0">
-                      {contribution.repository.isPinned && (
-                        <Chip
-                          className="text-xs"
-                          color="primary"
-                          size="sm"
-                          variant="flat"
-                        >
-                          📌 Pinned
-                        </Chip>
-                      )}
-                      <div className="flex items-center space-x-2 text-sm text-gray-500">
-                        <span>
-                          ⭐ {contribution.repository.stargazers_count}
-                        </span>
-                        <span>🍴 {contribution.repository.forks_count}</span>
+            <SpotlightCard
+              className="h-full transition-shadow duration-300 flex flex-col"
+              spotlightColor="rgba(0, 229, 255, 0.2)"
+            >
+              <Card className="h-full bg-transparent border-none shadow-none flex flex-col">
+                <CardHeader className="pb-3">
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-start justify-between">
+                      <Link
+                        className="text-lg font-semibold hover:text-primary truncate flex-1 min-w-0 mr-2"
+                        href={contribution.repository.html_url}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {contribution.repository.name}
+                      </Link>
+                      <div className="flex items-center space-x-2 shrink-0">
+                        {contribution.repository.isPinned && (
+                          <Chip
+                            className="text-xs"
+                            color="primary"
+                            size="sm"
+                            variant="flat"
+                          >
+                            📌 Pinned
+                          </Chip>
+                        )}
+                        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-500">
+                          <span>
+                            ⭐ {contribution.repository.stargazers_count}
+                          </span>
+                          <span>🍴 {contribution.repository.forks_count}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {contribution.repository.language && (
-                    <div className="flex items-center space-x-2">
-                      <div
-                        className="w-3 h-3 rounded-full"
-                        style={{
-                          backgroundColor: getLanguageColor(
-                            contribution.repository.language,
-                          ),
-                        }}
-                      />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {contribution.repository.language}
-                      </span>
+                    {contribution.repository.language && (
+                      <div className="flex items-center space-x-2">
+                        <div
+                          className="w-3 h-3 rounded-full"
+                          style={{
+                            backgroundColor: getLanguageColor(
+                              contribution.repository.language,
+                            ),
+                          }}
+                        />
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                          {contribution.repository.language}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </CardHeader>
+
+                <CardBody className="pt-0 flex-grow flex flex-col">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
+                    {contribution.repository.description ||
+                      "No description available"}
+                  </p>
+
+                  {contribution.repository.topics.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {contribution.repository.topics
+                        .slice(0, 3)
+                        .map((topic) => (
+                          <Chip
+                            key={topic}
+                            className="text-xs"
+                            size="sm"
+                            variant="flat"
+                          >
+                            {topic}
+                          </Chip>
+                        ))}
+                      {contribution.repository.topics.length > 3 && (
+                        <Chip className="text-xs" size="sm" variant="flat">
+                          +{contribution.repository.topics.length - 3}
+                        </Chip>
+                      )}
                     </div>
                   )}
-                </div>
-              </CardHeader>
 
-              <CardBody className="pt-0 flex-grow flex flex-col">
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
-                  {contribution.repository.description ||
-                    "No description available"}
-                </p>
-
-                {contribution.repository.topics.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {contribution.repository.topics.slice(0, 3).map((topic) => (
-                      <Chip
-                        key={topic}
-                        className="text-xs"
-                        size="sm"
-                        variant="flat"
+                  <div className="space-y-2 flex-grow">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      Recent Commits:
+                    </h4>
+                    {contribution.commits.slice(0, 2).map((commit) => (
+                      <div
+                        key={commit.sha}
+                        className="text-xs text-gray-600 dark:text-gray-400"
                       >
-                        {topic}
-                      </Chip>
+                        <Link
+                          className="hover:text-primary truncate block"
+                          href={commit.html_url}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {commit.commit.message.split("\n")[0]}
+                        </Link>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          {formatDate(commit.commit.author.date)}
+                        </span>
+                      </div>
                     ))}
-                    {contribution.repository.topics.length > 3 && (
-                      <Chip className="text-xs" size="sm" variant="flat">
-                        +{contribution.repository.topics.length - 3}
-                      </Chip>
-                    )}
                   </div>
-                )}
 
-                <div className="space-y-2 flex-grow">
-                  <h4 className="text-sm font-semibold">Recent Commits:</h4>
-                  {contribution.commits.slice(0, 2).map((commit) => (
-                    <div
-                      key={commit.sha}
-                      className="text-xs text-gray-500 dark:text-gray-400"
-                    >
-                      <Link
-                        className="hover:text-primary truncate block"
-                        href={commit.html_url}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {commit.commit.message.split("\n")[0]}
-                      </Link>
-                      <span className="text-gray-400">
-                        {formatDate(commit.commit.author.date)}
+                  {/* Fixed bottom area - always stays at card bottom */}
+                  <div className="mt-auto pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex justify-between items-center text-xs text-gray-600 dark:text-gray-500">
+                      <span>
+                        Updated:{" "}
+                        {formatDate(contribution.repository.updated_at)}
                       </span>
+                      {contribution.repository.homepage && (
+                        <Link
+                          className="hover:text-primary"
+                          href={contribution.repository.homepage}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          🔗 Link
+                        </Link>
+                      )}
                     </div>
-                  ))}
-                </div>
-
-                {/* 底部固定區域 - 始終保持在卡片底部 */}
-                <div className="mt-auto pt-3 border-t border-gray-200 dark:border-gray-700">
-                  <div className="flex justify-between items-center text-xs text-gray-500">
-                    <span>
-                      Updated: {formatDate(contribution.repository.updated_at)}
-                    </span>
-                    {contribution.repository.homepage && (
-                      <Link
-                        className="hover:text-primary"
-                        href={contribution.repository.homepage}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        🔗 Link
-                      </Link>
-                    )}
                   </div>
-                </div>
-              </CardBody>
-            </Card>
+                </CardBody>
+              </Card>
+            </SpotlightCard>
           </motion.div>
         ))}
       </div>

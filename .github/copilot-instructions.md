@@ -86,12 +86,27 @@
   - Enhanced canvas handling and theme change response
   - Complete canvas cleanup and reset mechanism for improved stability
   - Self-contained component folder structure for better organization
+- **`components/SpotlightCard/SpotlightCard.tsx`**: Interactive spotlight hover effect component
+  - **`components/SpotlightCard/SpotlightCard.css`**: Component-specific styles for spotlight effects
+  - Provides mouse-following spotlight effects with customizable colors
+  - Uses CSS custom properties and radial gradients for smooth visual effects
+  - Self-contained component folder structure for better organization
+  - Supports customizable `spotlightColor` prop with rgba values
+  - Integrated into Portfolio page repository cards for enhanced visual appeal
+  - **Complete Theme Support**: Fully supports both light and dark modes with appropriate styling
+  - **Dynamic Background Colors**: Automatically adapts border and background colors based on current theme
+  - **Theme-Aware Color Scheme**: Light mode uses white background with gray borders, dark mode uses dark background with darker borders
 
 ### Content Component System
 
 - **`components/PortfolioContent.tsx`**: Portfolio page content component with enhanced user experience
   - Uses HeroUI components to build modern card-based layouts
   - Supports GitHub API data display and animation effects
+  - **SpotlightCard Integration**: All repository cards now use `SpotlightCard` component for interactive hover effects
+  - **Interactive Spotlight Effects**: Mouse-following blue spotlight effects on repository cards using `rgba(0, 229, 255, 0.2)` color
+  - **Hybrid Card Design**: Combines `SpotlightCard` wrapper with transparent HeroUI `Card` content for optimal visual appeal
+  - **Complete Theme Compatibility**: Enhanced text colors and contrast for both light and dark modes
+  - **Optimized Color Schemes**: Improved text readability with theme-appropriate gray scales
   - **Error Handling Beautification**: Shows detailed error information and retry buttons when GitHub API errors occur
   - **GitHub Token Missing Guide**: Beautiful Token setup guide card with step-by-step instructions when `VITE_GITHUB_TOKEN` is missing
   - **Card Layout Optimization**: Fixed bottom link positioning using `flex flex-col`, `flex-grow`, and `mt-auto` classes
@@ -173,6 +188,11 @@
   - All error messages adopt consistent design language and visual style
 - **User Experience Optimization**: Homepage links display as "🔗 Link", suitable for various types of project links
 - **Card Layout Optimization**: Fixed bottom link positioning for consistent visual appearance across all project cards
+- **SpotlightCard Visual Enhancement**: All repository cards now feature interactive spotlight hover effects
+  - Uses `SpotlightCard` component wrapper with cyan spotlight color (`rgba(0, 229, 255, 0.2)`)
+  - Mouse-following spotlight effects provide enhanced visual feedback on hover
+  - Maintains all existing functionality while adding premium visual appeal
+  - Seamlessly integrates with existing HeroUI card content and responsive design
 
 ## Utility Functions System
 
@@ -242,6 +262,7 @@
 - Component-specific styles are now co-located with their TypeScript files in dedicated folders:
   - **`components/Orb/Orb.css`**: Orb component specific styles
   - **`components/Particles/Particles.css`**: Particles component specific styles
+  - **`components/SpotlightCard/SpotlightCard.css`**: SpotlightCard component specific styles for interactive hover effects
 
 ### TypeScript Type Definitions
 
@@ -263,7 +284,7 @@
 - **`main.tsx`**: Application entry point, renders root component
 - **`provider.tsx`**: HeroUI theme provider configuration, supports dark mode
 
-# Current Status (Updated June 10, 2025)
+# Current Status (Updated June 11, 2025)
 
 The personal website development project is **feature-complete** with the following major implementations:
 
@@ -277,6 +298,7 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Responsive Design**: Modern UI using HeroUI components with complete mobile/desktop compatibility
 - ✅ **Type Safety**: Complete TypeScript coverage with comprehensive environment variable definitions
 - ✅ **Optimized Environment Configuration**: Automatic GitHub username detection via token eliminates `VITE_GITHUB_USERNAME` requirement
+- ✅ **Interactive Visual Effects**: SpotlightCard integration provides premium hover effects across portfolio repository cards
 
 ## Technical Quality
 
@@ -292,5 +314,6 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Accessibility**: Keyboard navigation, screen reader support, and proper ARIA labels
 - ✅ **Visual Polish**: Smooth animations, consistent design language, and professional appearance
 - ✅ **Error Recovery**: Graceful fallbacks, retry mechanisms, and clear user guidance
+- ✅ **Premium Interactive Effects**: Mouse-following spotlight effects on portfolio cards for enhanced visual appeal
 
 The project is ready for production deployment with all major features implemented and tested.

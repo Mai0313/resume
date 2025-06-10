@@ -1,0 +1,42 @@
+/* SpotlightCard component with light/dark theme support */
+.card-spotlight {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  overflow: hidden;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --spotlight-color: rgba(255, 255, 255, 0.05);
+
+  /* Light mode styles */
+  border: 1px solid rgb(229, 231, 235); /* border-gray-200 */
+  background-color: rgb(255, 255, 255); /* bg-white */
+}
+
+/* Dark mode styles */
+.dark .card-spotlight {
+  border: 1px solid rgb(55, 65, 81); /* border-gray-700 */
+  background-color: rgb(17, 24, 39); /* bg-gray-900 */
+}
+
+.card-spotlight::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x) var(--mouse-y),
+    var(--spotlight-color),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.card-spotlight:hover::before,
+.card-spotlight:focus-within::before {
+  opacity: 0.6;
+}
