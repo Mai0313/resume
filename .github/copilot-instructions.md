@@ -86,9 +86,6 @@
   - Enhanced canvas handling and theme change response
   - Complete canvas cleanup and reset mechanism for improved stability
   - Self-contained component folder structure for better organization
-- **`components/GooeyNav/GooeyNav.tsx`**: Gooey navigation effects component
-  - **`components/GooeyNav/GooeyNav.css`**: Component-specific gooey navigation styles
-  - Integrated TypeScript and CSS files in dedicated folder structure
 
 ### Content Component System
 
@@ -245,7 +242,6 @@
 - Component-specific styles are now co-located with their TypeScript files in dedicated folders:
   - **`components/Orb/Orb.css`**: Orb component specific styles
   - **`components/Particles/Particles.css`**: Particles component specific styles
-  - **`components/GooeyNav/GooeyNav.css`**: GooeyNav component specific styles
 
 ### TypeScript Type Definitions
 
