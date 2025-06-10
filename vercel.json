@@ -3,7 +3,7 @@
   "name": "Personal Website",
   "framework": "vite",
   "devCommand": "yarn dev",
-  "buildCommand": "yarn run build",
+  "buildCommand": "yarn build",
   "installCommand": "yarn install",
   "outputDirectory": "dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
