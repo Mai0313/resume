@@ -21,11 +21,7 @@ interface ChatBotProps {
 }
 
 export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
-  // Only render if OpenAI is available
-  if (!envHelpers.isOpenAIChatBotAvailable()) {
-    return null;
-  }
-
+  // Always call hooks at the top level
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
@@ -53,6 +49,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
+
+  // Only render if OpenAI is available
+  if (!envHelpers.isOpenAIChatBotAvailable()) {
+    return null;
+  }
 
   const handleSendMessage = async () => {
     if (!currentMessage.trim() || isLoading) return;
@@ -168,7 +169,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
                   <div>
                     <h3 className="text-lg font-semibold">AI Assistant</h3>
                     <p className="text-sm text-default-500">
-                      Ask me about this page's content
+                      Ask me about this page&apos;s content
                     </p>
                   </div>
                   <Button
@@ -202,8 +203,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
                           />
                         </svg>
                         <p>
-                          Hi! I'm here to help you with questions about this
-                          page.
+                          Hi! I&apos;m here to help you with questions about
+                          this page.
                         </p>
                         <p className="text-sm mt-2">
                           Ask me about the resume, portfolio, or any content you
