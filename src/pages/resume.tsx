@@ -13,7 +13,7 @@ import { useTheme } from "@heroui/use-theme";
 import { Spinner } from "@heroui/spinner";
 import { pdf } from "@react-pdf/renderer";
 
-import FuzzyText from "../components/FuzzyText";
+import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
 import { ResumePDF } from "../components/ResumePDF";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";

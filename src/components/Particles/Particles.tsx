@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl";
-import { useTheme } from "@heroui/use-theme";
 
-import "../styles/Particles.css";
+import "./Particles.css";
 
 interface ParticlesProps {
   particleCount?: number;
@@ -18,6 +17,8 @@ interface ParticlesProps {
   disableRotation?: boolean;
   className?: string;
 }
+
+const defaultColors: string[] = ["#ffffff", "#ffffff", "#ffffff"];
 
 const hexToRgb = (hex: string): [number, number, number] => {
   hex = hex.replace(/^#/, "");
@@ -110,21 +111,6 @@ const Particles: React.FC<ParticlesProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const { theme } = useTheme();
-
-  // 根據主題動態設置粒子顏色
-  const getThemeColors = () => {
-    if (particleColors && particleColors.length > 0) {
-      return particleColors;
-    }
-
-    // 根據主題返回不同的顏色
-    if (theme === "dark") {
-      return ["#ffffff", "#e2e8f0", "#cbd5e1"]; // 白色和淺灰色用於暗主題
-    } else {
-      return ["#1e293b", "#334155", "#475569"]; // 深灰色用於亮主題
-    }
-  };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -168,7 +154,10 @@ const Particles: React.FC<ParticlesProps> = ({
     const positions = new Float32Array(count * 3);
     const randoms = new Float32Array(count * 4);
     const colors = new Float32Array(count * 3);
-    const palette = getThemeColors();
+    const palette =
+      particleColors && particleColors.length > 0
+        ? particleColors
+        : defaultColors;
 
     for (let i = 0; i < count; i++) {
       let x: number, y: number, z: number, len: number;
@@ -259,7 +248,6 @@ const Particles: React.FC<ParticlesProps> = ({
     particleCount,
     particleSpread,
     speed,
-    particleColors,
     moveParticlesOnHover,
     particleHoverFactor,
     alphaParticles,
@@ -267,7 +255,6 @@ const Particles: React.FC<ParticlesProps> = ({
     sizeRandomness,
     cameraDistance,
     disableRotation,
-    theme, // 添加 theme 到依賴項
   ]);
 
   return (

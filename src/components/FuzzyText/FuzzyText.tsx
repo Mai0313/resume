@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { useTheme } from "@heroui/use-theme";
 
 interface FuzzyTextProps {
   children: React.ReactNode;
@@ -25,25 +24,13 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
   const canvasRef = useRef<
     HTMLCanvasElement & { cleanupFuzzyText?: () => void }
   >(null);
-  const { theme } = useTheme();
 
   useEffect(() => {
     let animationFrameId: number;
     let isCancelled = false;
     const canvas = canvasRef.current;
 
-    if (!canvas) {
-      return;
-    }
-
-    // 完全清理 canvas
-    const ctx = canvas.getContext("2d");
-
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      canvas.width = 0; // 強制重置
-      canvas.height = 0; // 強制重置
-    }
+    if (!canvas) return;
 
     const init = async () => {
       if (document.fonts?.ready) {
@@ -113,9 +100,6 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
       const horizontalMargin = 50;
       const verticalMargin = 0;
 
-      // 強制重置 canvas 尺寸，確保重新渲染
-      canvas.width = 0;
-      canvas.height = 0;
       canvas.width = offscreenWidth + horizontalMargin * 2;
       canvas.height = tightHeight + verticalMargin * 2;
       ctx.translate(horizontalMargin, verticalMargin);
@@ -232,7 +216,6 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
     enableHover,
     baseIntensity,
     hoverIntensity,
-    theme, // 添加 theme 到依賴數組
   ]);
 
   return <canvas ref={canvasRef} />;

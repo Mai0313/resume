@@ -15,7 +15,6 @@ import { GithubIcon, DiscordIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
 import { buildPath } from "@/utils/pathUtils";
 import { env } from "@/utils/env";
-import GradientText from "@/components/GradientText";
 
 export const Navbar = () => {
   return (
@@ -28,16 +27,7 @@ export const Navbar = () => {
             href={buildPath("/")}
           >
             <Logo />
-            <div className="font-bold text-inherit">
-              <GradientText
-                animationSpeed={3}
-                className="text-inherit"
-                colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
-                showBorder={false}
-              >
-                {env.WEBSITE_TITLE}
-              </GradientText>
-            </div>
+            <p className="font-bold text-inherit">{env.WEBSITE_TITLE}</p>
           </Link>
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">
@@ -51,20 +41,7 @@ export const Navbar = () => {
                 color="foreground"
                 href={item.href}
               >
-                <GradientText
-                  animationSpeed={3}
-                  className="text-inherit"
-                  colors={[
-                    "#40ffaa",
-                    "#4079ff",
-                    "#40ffaa",
-                    "#4079ff",
-                    "#40ffaa",
-                  ]}
-                  showBorder={false}
-                >
-                  {item.label}
-                </GradientText>
+                {item.label}
               </Link>
             </NavbarItem>
           ))}
