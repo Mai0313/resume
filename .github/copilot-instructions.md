@@ -176,7 +176,7 @@
 - **`main.tsx`**: Application entry point, renders root component
 - **`provider.tsx`**: HeroUI theme provider configuration, supports dark mode
 
-# Changs
+# Changes
 
 ## 2025-06-04 Error Message Beautification and User Experience Optimization
 
