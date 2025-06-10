@@ -9,6 +9,8 @@ import {
   isGitHubTokenAvailable,
 } from "@/utils/githubApi";
 
+const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USERNAME;
+
 export default function PortfolioPage() {
   const [contributions, setContributions] = useState<GitHubContribution[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,8 +31,7 @@ export default function PortfolioPage() {
         setLoading(true);
         setError(null);
 
-        // 使用你的 GitHub 用戶名
-        const userContributions = await getUserContributions("Mai0313");
+        const userContributions = await getUserContributions(GITHUB_USERNAME);
 
         setContributions(userContributions);
       } catch (err) {

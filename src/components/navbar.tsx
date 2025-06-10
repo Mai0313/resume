@@ -15,6 +15,8 @@ import { GithubIcon, DiscordIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
 import { buildPath } from "@/utils/pathUtils";
 
+const WEBSITE_TITLE = import.meta.env.VITE_WEBSITE_TITLE;
+
 export const Navbar = () => {
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
@@ -26,7 +28,7 @@ export const Navbar = () => {
             href={buildPath("/")}
           >
             <Logo />
-            <p className="font-bold text-inherit">Mai</p>
+            <p className="font-bold text-inherit">{WEBSITE_TITLE}</p>
           </Link>
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">

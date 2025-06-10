@@ -9,6 +9,8 @@ import { siteConfig } from "@/config/site";
 import { GithubIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
 
+const WEBSITE_TITLE = import.meta.env.VITE_WEBSITE_TITLE;
+
 export default function IndexPage() {
   return (
     <DefaultLayout>
@@ -41,7 +43,7 @@ export default function IndexPage() {
               delay={150}
               easing={(t) => t}
               rootMargin="50px"
-              text="Mai"
+              text={WEBSITE_TITLE}
               threshold={0.2}
               onLetterAnimationComplete={() => {}}
             />

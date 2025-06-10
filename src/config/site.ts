@@ -1,9 +1,10 @@
 import { buildPath } from "@/utils/pathUtils";
 
 export type SiteConfig = typeof siteConfig;
+const WEBSITE_TITLE = import.meta.env.VITE_WEBSITE_TITLE;
 
 export const siteConfig = {
-  name: "Mai",
+  name: WEBSITE_TITLE,
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
     { label: "Resume", href: buildPath("/resume") },
