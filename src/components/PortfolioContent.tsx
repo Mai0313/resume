@@ -271,7 +271,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                             📌 Pinned
                           </Chip>
                         )}
-                        <div className="flex items-center space-x-2 text-sm text-gray-500">
+                        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-500">
                           <span>
                             ⭐ {contribution.repository.stargazers_count}
                           </span>
@@ -327,11 +327,11 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                   )}
 
                   <div className="space-y-2 flex-grow">
-                    <h4 className="text-sm font-semibold">Recent Commits:</h4>
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Recent Commits:</h4>
                     {contribution.commits.slice(0, 2).map((commit) => (
                       <div
                         key={commit.sha}
-                        className="text-xs text-gray-500 dark:text-gray-400"
+                        className="text-xs text-gray-600 dark:text-gray-400"
                       >
                         <Link
                           className="hover:text-primary truncate block"
@@ -341,7 +341,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                         >
                           {commit.commit.message.split("\n")[0]}
                         </Link>
-                        <span className="text-gray-400">
+                        <span className="text-gray-500 dark:text-gray-400">
                           {formatDate(commit.commit.author.date)}
                         </span>
                       </div>
@@ -350,7 +350,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
 
                   {/* 底部固定區域 - 始終保持在卡片底部 */}
                   <div className="mt-auto pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex justify-between items-center text-xs text-gray-500">
+                    <div className="flex justify-between items-center text-xs text-gray-600 dark:text-gray-500">
                       <span>
                         Updated:{" "}
                         {formatDate(contribution.repository.updated_at)}
