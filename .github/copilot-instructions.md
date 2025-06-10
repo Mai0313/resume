@@ -46,6 +46,7 @@
   - Contains fixed `Navbar` navigation bar
   - Responsive container layout (`max-w-7xl mx-auto`)
   - Flexible height design (`flex-grow pt-16`)
+  - **ChatBot Integration**: Includes the AI chat assistant component that appears when OpenAI is configured
 
 ### Theme System
 
@@ -96,6 +97,27 @@
   - **Complete Theme Support**: Fully supports both light and dark modes with appropriate styling
   - **Dynamic Background Colors**: Automatically adapts border and background colors based on current theme
   - **Theme-Aware Color Scheme**: Light mode uses white background with gray borders, dark mode uses dark background with darker borders
+
+### AI Chat Assistant System
+
+- **`components/ChatBot/ChatBot.tsx`**: Intelligent chat assistant component with OpenAI integration
+  - **Floating Action Button**: Right-bottom corner chat button with smooth animations
+  - **Context-Aware AI**: Automatically includes current page content in conversations for relevant responses
+  - **Strict Topic Control**: AI is programmed to only respond to questions about current page content
+  - **Streaming Support**: Real-time streaming responses for better user experience
+  - **Modal Interface**: Clean, professional chat interface using HeroUI Modal components
+  - **Environment-Dependent**: Only appears when both `VITE_OPENAI_API_KEY` and `VITE_OPENAI_MODEL` are configured
+  - **Smart Page Context**: Extracts page title, URL, and main content to provide context to AI
+  - **Error Handling**: Graceful error handling with user-friendly error messages
+  - **Responsive Design**: Optimized for both desktop and mobile devices
+  - **Theme Compatibility**: Seamlessly integrates with dark/light theme system
+- **`utils/getOpenAIResponse.ts`**: OpenAI API integration utility with advanced features
+  - **Environment Management**: Uses centralized environment variable system
+  - **Streaming Support**: Implements real-time token streaming for responsive chat experience
+  - **Context Injection**: Automatically injects current page information into AI conversations
+  - **Topic Restriction**: System prompts ensure AI only discusses current page content
+  - **Error Handling**: Comprehensive error handling with detailed logging
+  - **Type Safety**: Complete TypeScript coverage with proper type definitions
 
 ### Content Component System
 
@@ -235,7 +257,7 @@
 
 - **`utils/env.ts`**: Centralized environment variable management system
   - **Required Environment Variables**: `VITE_WEBSITE_TITLE`, `VITE_RESUME_FILE` - throw error if not provided
-  - **Optional with Defaults**: `VITE_GITHUB_TOKEN` (defaults to null), `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/")
+  - **Optional with Defaults**: `VITE_GITHUB_TOKEN` (defaults to null), `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/"), `VITE_OPENAI_API_KEY` (defaults to null), `VITE_OPENAI_MODEL` (defaults to null)
   - **Validation on Load**: Automatically validates all required environment variables when module is imported
   - **Type-Safe Access**: Exports `env` object with strongly typed environment variable values
   - **Helper Functions**: Provides `envHelpers` with utility methods:
@@ -244,6 +266,7 @@
     - `isGitHubTokenAvailable()`: Check if GitHub token is available
     - `getResumeFilePath()`: Get resume file path with validation
     - `getGitHubUsername()`: Asynchronously fetch GitHub username via API token
+    - `isOpenAIChatBotAvailable()`: Check if OpenAI chatbot is available (both API key and model configured)
   - **Error Handling**: Clear error messages when required variables are missing
   - **Centralized Import**: All components now import from `@/utils/env` instead of direct `import.meta.env` access
   - **Eliminates Duplication**: Single source of truth for all environment variable logic
@@ -275,7 +298,7 @@
 - **`types/ogl.d.ts`**: OGL 3D graphics library type declarations
 - **`vite-env.d.ts`**: Vite environment variable type definitions
   - Contains TypeScript type definitions for all project environment variables
-  - `VITE_WEBSITE_TITLE`, `VITE_GITHUB_TOKEN`, `VITE_PIN_CODE`, `VITE_ROOT_PATH`, `VITE_RESUME_FILE`
+  - `VITE_WEBSITE_TITLE`, `VITE_GITHUB_TOKEN`, `VITE_PIN_CODE`, `VITE_ROOT_PATH`, `VITE_RESUME_FILE`, `VITE_OPENAI_API_KEY`, `VITE_OPENAI_MODEL`
   - **Complete Environment Variable Support**: Enhanced with comprehensive type definitions for multi-environment deployment
   - **Centralized Management**: All environment variable access now goes through `@/utils/env` for type safety and validation
 
@@ -300,6 +323,7 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Type Safety**: Complete TypeScript coverage with comprehensive environment variable definitions
 - ✅ **Optimized Environment Configuration**: `VITE_GITHUB_TOKEN` now optional with graceful fallback, automatic GitHub username detection eliminates `VITE_GITHUB_USERNAME` requirement
 - ✅ **Interactive Visual Effects**: SpotlightCard integration provides premium hover effects across portfolio repository cards
+- ✅ **AI Chat Assistant**: Intelligent OpenAI-powered chat bot with page context awareness, streaming responses, and strict topic control
 
 ## Technical Quality
 
@@ -316,5 +340,6 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Visual Polish**: Smooth animations, consistent design language, and professional appearance
 - ✅ **Error Recovery**: Graceful fallbacks, retry mechanisms, and clear user guidance
 - ✅ **Premium Interactive Effects**: Mouse-following spotlight effects on portfolio cards for enhanced visual appeal
+- ✅ **Intelligent Chat Assistant**: Context-aware AI assistant that only discusses current page content with streaming responses and professional UI
 
 The project is ready for production deployment with all major features implemented and tested.

@@ -36,13 +36,13 @@ work:
       Key contributions across thermal simulation, leakage analysis, voltage analysis & visualization, multimodal LLM enhancement, and supporting industry-academia collaboration.
     highlights:
       - 'Co-authored a NeurIPS 2023 workshop paper: "Fast SoC Thermal Simulation with Physics-aware U-Net."'
-      - 'Integrated thermodynamics principles into U-Net/Transformer-based simulations, cutting maximum temperature error by 34%.'
+      - "Integrated thermodynamics principles into U-Net/Transformer-based simulations, cutting maximum temperature error by 34%."
       - 'Co-authored a VLSI TSA 2024 publication: "A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects," reducing leakage estimation discrepancy by 10%.'
-      - 'Created a visualization framework to streamline voltage-related algorithm validation, enhancing model accuracy and workflows.'
+      - "Created a visualization framework to streamline voltage-related algorithm validation, enhancing model accuracy and workflows."
       - 'First-authored IEEE ICLAD 2025 paper: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design."'
-      - 'Integrated multi-agent task automation and refinement strategies, improving reasoning and task planning in LLMs.'
-      - 'Engaged in research on Monte Carlo Tree Search (MCTS) for multimodal LLM decision frameworks (forthcoming 2025).'
-      - 'Supported industry-academia collaboration with sponsorship opportunities for graduate research.'
+      - "Integrated multi-agent task automation and refinement strategies, improving reasoning and task planning in LLMs."
+      - "Engaged in research on Monte Carlo Tree Search (MCTS) for multimodal LLM decision frameworks (forthcoming 2025)."
+      - "Supported industry-academia collaboration with sponsorship opportunities for graduate research."
 
 publications:
   - name: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design"
