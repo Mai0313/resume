@@ -93,6 +93,9 @@
   - Self-contained component folder structure for better organization
   - Supports customizable `spotlightColor` prop with rgba values
   - Integrated into Portfolio page repository cards for enhanced visual appeal
+  - **Complete Theme Support**: Fully supports both light and dark modes with appropriate styling
+  - **Dynamic Background Colors**: Automatically adapts border and background colors based on current theme
+  - **Theme-Aware Color Scheme**: Light mode uses white background with gray borders, dark mode uses dark background with darker borders
 
 ### Content Component System
 
@@ -102,6 +105,8 @@
   - **SpotlightCard Integration**: All repository cards now use `SpotlightCard` component for interactive hover effects
   - **Interactive Spotlight Effects**: Mouse-following blue spotlight effects on repository cards using `rgba(0, 229, 255, 0.2)` color
   - **Hybrid Card Design**: Combines `SpotlightCard` wrapper with transparent HeroUI `Card` content for optimal visual appeal
+  - **Complete Theme Compatibility**: Enhanced text colors and contrast for both light and dark modes
+  - **Optimized Color Schemes**: Improved text readability with theme-appropriate gray scales
   - **Error Handling Beautification**: Shows detailed error information and retry buttons when GitHub API errors occur
   - **GitHub Token Missing Guide**: Beautiful Token setup guide card with step-by-step instructions when `VITE_GITHUB_TOKEN` is missing
   - **Card Layout Optimization**: Fixed bottom link positioning using `flex flex-col`, `flex-grow`, and `mt-auto` classes
