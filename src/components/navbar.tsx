@@ -15,7 +15,7 @@ import { GithubIcon, DiscordIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
 import { buildPath } from "@/utils/pathUtils";
 import { env } from "@/utils/env";
-import GradientText from "@/components/GradientText";
+import GradientText from "@/components/GradientText/GradientText";
 
 export const Navbar = () => {
   return (

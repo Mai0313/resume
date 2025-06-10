@@ -1,9 +1,9 @@
 import { Link } from "@heroui/link";
 import { button as buttonStyles } from "@heroui/theme";
 
-import SplitText from "../components/SplitText";
-import Orb from "../components/Orb";
-import Particles from "../components/Particles";
+import SplitText from "../components/SplitText/SplitText";
+import Orb from "../components/Orb/Orb";
+import Particles from "../components/Particles/Particles";
 
 import { siteConfig } from "@/config/site";
 import { GithubIcon } from "@/components/icons";

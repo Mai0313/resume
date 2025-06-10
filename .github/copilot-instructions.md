@@ -68,18 +68,30 @@
 
 ### Effects Component System
 
-- **`components/SplitText.tsx`**: Split text animation component for homepage title display
-- **`components/Orb.tsx`**: 3D sphere background effects component using OGL 3D graphics library
-- **`components/Particles.tsx`**: Background particle system with enhanced theme switching support
+- **`components/SplitText/SplitText.tsx`**: Split text animation component for homepage title display
+  - Self-contained component folder structure for better organization
+- **`components/Orb/Orb.tsx`**: 3D sphere background effects component using OGL 3D graphics library
+  - **`components/Orb/Orb.css`**: Component-specific styles for Orb effects
+  - Integrated TypeScript and CSS files in dedicated folder structure
+- **`components/Particles/Particles.tsx`**: Background particle system with enhanced theme switching support
+  - **`components/Particles/Particles.css`**: Component-specific styles for particle effects
   - Uses `useTheme` hook for theme awareness and automatic color adaptation
   - Dynamic color selection: dark mode uses white/gray particles, light mode uses dark gray particles
   - Removed hardcoded colors in favor of automatic theme detection
   - Supports interactive effects and seamless theme transitions
-- **`components/FuzzyText.tsx`**: Enhanced fuzzy text effects component for 404 error pages
+  - Integrated TypeScript and CSS files in dedicated folder structure
+- **`components/FuzzyText/FuzzyText.tsx`**: Enhanced fuzzy text effects component for 404 error pages
   - Dual theme detection system: useTheme hook + DOM MutationObserver
   - Component re-rendering mechanism using renderKey and forceRender state
   - Enhanced canvas handling and theme change response
   - Complete canvas cleanup and reset mechanism for improved stability
+  - Self-contained component folder structure for better organization
+- **`components/GradientText/GradientText.tsx`**: Gradient text effects component
+  - **`components/GradientText/GradientText.css`**: Component-specific gradient text styles
+  - Integrated TypeScript and CSS files in dedicated folder structure
+- **`components/GooeyNav/GooeyNav.tsx`**: Gooey navigation effects component
+  - **`components/GooeyNav/GooeyNav.css`**: Component-specific gooey navigation styles
+  - Integrated TypeScript and CSS files in dedicated folder structure
 
 ### Content Component System
 
@@ -107,9 +119,9 @@
 - Uses `Particles` as background particle system, supporting theme switching and interactive effects
 - Contact information displayed through icon links in `Navbar`: Discord, Github
 
-* `Split Text` can be used via `import SplitText from "./SplitText";`
-* `Orb` can be used via `import Orb from './Orb';`
-* `Particles` can be used via `import Particles from './Particles';`
+* `Split Text` can be used via `import SplitText from "@/components/SplitText/SplitText";`
+* `Orb` can be used via `import Orb from '@/components/Orb/Orb';`
+* `Particles` can be used via `import Particles from '@/components/Particles/Particles';`
 * Gradient text effects can be achieved using the `title` utility from `@/components/primitives`
 
 ## `Resume` Page (`pages/resume.tsx`)
@@ -233,8 +245,11 @@
 
 ### Special Effects Styles
 
-- **`styles/Orb.css`**: Orb component specific styles
-- **`styles/Particles.css`**: Particles component specific styles
+- Component-specific styles are now co-located with their TypeScript files in dedicated folders:
+  - **`components/Orb/Orb.css`**: Orb component specific styles
+  - **`components/Particles/Particles.css`**: Particles component specific styles
+  - **`components/GradientText/GradientText.css`**: GradientText component specific styles
+  - **`components/GooeyNav/GooeyNav.css`**: GooeyNav component specific styles
 
 ### TypeScript Type Definitions
 
