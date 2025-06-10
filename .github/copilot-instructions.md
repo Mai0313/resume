@@ -234,8 +234,8 @@
 ### Environment Variable Management
 
 - **`utils/env.ts`**: Centralized environment variable management system
-  - **Required Environment Variables**: `VITE_WEBSITE_TITLE`, `VITE_GITHUB_TOKEN`, `VITE_RESUME_FILE` - throw error if not provided
-  - **Optional with Defaults**: `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/")
+  - **Required Environment Variables**: `VITE_WEBSITE_TITLE`, `VITE_RESUME_FILE` - throw error if not provided
+  - **Optional with Defaults**: `VITE_GITHUB_TOKEN` (defaults to null), `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/")
   - **Validation on Load**: Automatically validates all required environment variables when module is imported
   - **Type-Safe Access**: Exports `env` object with strongly typed environment variable values
   - **Helper Functions**: Provides `envHelpers` with utility methods:
@@ -298,7 +298,7 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Professional Error Handling**: Beautiful error displays with gradient icons, animations, and user-friendly guidance
 - ✅ **Responsive Design**: Modern UI using HeroUI components with complete mobile/desktop compatibility
 - ✅ **Type Safety**: Complete TypeScript coverage with comprehensive environment variable definitions
-- ✅ **Optimized Environment Configuration**: Automatic GitHub username detection via token eliminates `VITE_GITHUB_USERNAME` requirement
+- ✅ **Optimized Environment Configuration**: `VITE_GITHUB_TOKEN` now optional with graceful fallback, automatic GitHub username detection eliminates `VITE_GITHUB_USERNAME` requirement
 - ✅ **Interactive Visual Effects**: SpotlightCard integration provides premium hover effects across portfolio repository cards
 
 ## Technical Quality

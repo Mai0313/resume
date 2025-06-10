@@ -29,7 +29,7 @@ export async function getAuthenticatedUser(): Promise<{
 
   try {
     const response = await fetch(`${GITHUB_API_BASE}/user`, {
-      headers,
+      headers: getAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -51,17 +51,35 @@ export async function getAuthenticatedUser(): Promise<{
   }
 }
 
-const headers = {
-  "Authorization": `token ${env.GITHUB_TOKEN}`,
-  "Accept": "application/vnd.github.v3+json",
-  "User-Agent": "Portfolio-App",
-};
+/**
+ * Get authorization headers for GitHub API
+ */
+function getAuthHeaders() {
+  if (!envHelpers.isGitHubTokenAvailable()) {
+    throw new Error("GITHUB_TOKEN_MISSING");
+  }
 
-const graphqlHeaders = {
-  "Authorization": `Bearer ${env.GITHUB_TOKEN}`,
-  "Content-Type": "application/json",
-  "User-Agent": "Portfolio-App",
-};
+  return {
+    "Authorization": `token ${env.GITHUB_TOKEN}`,
+    "Accept": "application/vnd.github.v3+json",
+    "User-Agent": "Portfolio-App",
+  };
+}
+
+/**
+ * Get authorization headers for GitHub GraphQL API
+ */
+function getGraphQLHeaders() {
+  if (!envHelpers.isGitHubTokenAvailable()) {
+    throw new Error("GITHUB_TOKEN_MISSING");
+  }
+
+  return {
+    "Authorization": `Bearer ${env.GITHUB_TOKEN}`,
+    "Content-Type": "application/json",
+    "User-Agent": "Portfolio-App",
+  };
+}
 
 /**
  * Get user's pinned repositories (using GraphQL API)
@@ -113,7 +131,7 @@ export async function getUserPinnedRepositories(
 
     const response = await fetch("https://api.github.com/graphql", {
       method: "POST",
-      headers: graphqlHeaders,
+      headers: getGraphQLHeaders(),
       body: JSON.stringify({
         query,
         variables: { username },
@@ -176,7 +194,7 @@ export async function getUserRepositories(
     const response = await fetch(
       `${GITHUB_API_BASE}/users/${username}/repos?type=public&sort=updated&per_page=100`,
       {
-        headers,
+        headers: getAuthHeaders(),
       },
     );
 
@@ -207,7 +225,7 @@ export async function getRepositoryCommits(
     const authorParam = author ? `&author=${author}` : "";
     const response = await fetch(
       `${GITHUB_API_BASE}/repos/${owner}/${repo}/commits?per_page=${limit}${authorParam}`,
-      { headers },
+      { headers: getAuthHeaders() },
     );
 
     if (!response.ok) {
@@ -323,7 +341,7 @@ export async function getUserContributions(
 export async function getUserProfile(username: string) {
   try {
     const response = await fetch(`${GITHUB_API_BASE}/users/${username}`, {
-      headers,
+      headers: getAuthHeaders(),
     });
 
     if (!response.ok) {

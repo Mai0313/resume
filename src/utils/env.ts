@@ -6,16 +6,13 @@
  */
 
 // Environment variables that require values (will throw error if not provided)
-const REQUIRED_ENV_VARS = [
-  "VITE_WEBSITE_TITLE",
-  "VITE_GITHUB_TOKEN",
-  "VITE_RESUME_FILE",
-] as const;
+const REQUIRED_ENV_VARS = ["VITE_WEBSITE_TITLE", "VITE_RESUME_FILE"] as const;
 
 // Environment variables with default values
 const DEFAULT_VALUES = {
   VITE_PIN_CODE: null,
   VITE_ROOT_PATH: "/",
+  VITE_GITHUB_TOKEN: null,
 } as const;
 
 /**
@@ -75,10 +72,13 @@ validateRequiredEnvVars();
 export const env = {
   // Required environment variables (will throw error if not set)
   WEBSITE_TITLE: getEnvVar("VITE_WEBSITE_TITLE", true),
-  GITHUB_TOKEN: getEnvVar("VITE_GITHUB_TOKEN", true),
   RESUME_FILE: getEnvVar("VITE_RESUME_FILE", true),
 
   // Optional environment variables with defaults
+  GITHUB_TOKEN: getEnvVarWithDefault(
+    "VITE_GITHUB_TOKEN",
+    DEFAULT_VALUES.VITE_GITHUB_TOKEN,
+  ),
   PIN_CODE: getEnvVarWithDefault("VITE_PIN_CODE", DEFAULT_VALUES.VITE_PIN_CODE),
   ROOT_PATH: getEnvVarWithDefault(
     "VITE_ROOT_PATH",
@@ -106,7 +106,11 @@ export const envHelpers = {
    * Check if GitHub token is available
    */
   isGitHubTokenAvailable(): boolean {
-    return env.GITHUB_TOKEN !== null && env.GITHUB_TOKEN.trim() !== "";
+    return (
+      env.GITHUB_TOKEN !== null &&
+      env.GITHUB_TOKEN !== "" &&
+      env.GITHUB_TOKEN.trim() !== ""
+    );
   },
 
   /**
