@@ -4,24 +4,25 @@ import type {
   GitHubContribution,
 } from "@/types";
 
+import { env, envHelpers } from "@/utils/env";
+
 const GITHUB_API_BASE = "https://api.github.com";
-const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
 /**
  * 檢查 GitHub Token 是否已設定
  */
 export function isGitHubTokenAvailable(): boolean {
-  return Boolean(GITHUB_TOKEN);
+  return envHelpers.isGitHubTokenAvailable();
 }
 
 const headers = {
-  "Authorization": `token ${GITHUB_TOKEN}`,
+  "Authorization": `token ${env.GITHUB_TOKEN}`,
   "Accept": "application/vnd.github.v3+json",
   "User-Agent": "Portfolio-App",
 };
 
 const graphqlHeaders = {
-  "Authorization": `Bearer ${GITHUB_TOKEN}`,
+  "Authorization": `Bearer ${env.GITHUB_TOKEN}`,
   "Content-Type": "application/json",
   "User-Agent": "Portfolio-App",
 };
@@ -32,7 +33,7 @@ const graphqlHeaders = {
 export async function getUserPinnedRepositories(
   username: string,
 ): Promise<GitHubRepository[]> {
-  if (!GITHUB_TOKEN) {
+  if (!envHelpers.isGitHubTokenAvailable()) {
     throw new Error("GITHUB_TOKEN_MISSING");
   }
 
@@ -131,7 +132,7 @@ export async function getUserPinnedRepositories(
 export async function getUserRepositories(
   username: string,
 ): Promise<GitHubRepository[]> {
-  if (!GITHUB_TOKEN) {
+  if (!envHelpers.isGitHubTokenAvailable()) {
     throw new Error("GITHUB_TOKEN_MISSING");
   }
 
@@ -193,7 +194,7 @@ export async function getRepositoryCommits(
 export async function getUserContributions(
   username: string,
 ): Promise<GitHubContribution[]> {
-  if (!GITHUB_TOKEN) {
+  if (!envHelpers.isGitHubTokenAvailable()) {
     throw new Error("GITHUB_TOKEN_MISSING");
   }
 

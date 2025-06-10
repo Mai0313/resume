@@ -1,5 +1,7 @@
 import yaml from "js-yaml";
 
+import { envHelpers } from "@/utils/env";
+
 // JSON Resume Schema interfaces
 export interface JSONResumeBasics {
   name: string;
@@ -132,19 +134,15 @@ export type ResumeData = JSONResumeData;
 
 /**
  * 獲取 resume 文件的路徑
+ /**
+ * 取得履歷檔案路徑
  * 優先使用環境變數 VITE_RESUME_FILE 指定的路徑
  * 如果未設定，則使用預設的 example.yaml
  */
 function getResumeFilePath(): string {
-  const customPath = import.meta.env.VITE_RESUME_FILE;
+  const customPath = envHelpers.getResumeFilePath();
 
-  // 如果有設定環境變數且不為空，使用自定義路徑
-  if (customPath && customPath.trim() !== "") {
-    return customPath.startsWith("/") ? customPath : `/${customPath}`;
-  }
-
-  // 預設使用 example.yaml
-  return "/example.yaml";
+  return customPath.startsWith("/") ? customPath : `/${customPath}`;
 }
 
 export async function loadResumeData(): Promise<

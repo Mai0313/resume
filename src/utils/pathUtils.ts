@@ -3,12 +3,14 @@
  * 用於處理自定義 ROOT PATH 功能，支援不同的部署環境
  */
 
+import { envHelpers } from "@/utils/env";
+
 /**
  * 從環境變數獲取根路徑，預設為 '/'
  * 支援 VITE_ROOT_PATH 環境變數
  */
 export const getRootPath = (): string => {
-  const rootPath = import.meta.env.VITE_ROOT_PATH || "/";
+  const rootPath = envHelpers.getRootPath();
 
   // 確保路徑以 '/' 開頭和結尾（除非是根路徑 '/'）
   if (rootPath === "/") {
