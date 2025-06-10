@@ -133,11 +133,9 @@ export interface JSONResumeData {
 export type ResumeData = JSONResumeData;
 
 /**
- * 獲取 resume 文件的路徑
- /**
- * 取得履歷檔案路徑
- * 優先使用環境變數 VITE_RESUME_FILE 指定的路徑
- * 如果未設定，則使用預設的 example.yaml
+ * Get resume file path
+ * Priority use environment variable VITE_RESUME_FILE specified path
+ * If not set, use default example.yaml
  */
 function getResumeFilePath(): string {
   const customPath = envHelpers.getResumeFilePath();
@@ -160,14 +158,14 @@ export async function loadResumeData(): Promise<
 
     const yamlText = await response.text();
 
-    // 確保 YAML 內容不為空
+    // Ensure YAML content is not empty
     if (!yamlText.trim()) {
       throw new Error("Resume file is empty");
     }
 
     const data = yaml.load(yamlText) as ResumeData;
 
-    // 驗證解析後的資料結構
+    // Validate parsed data structure
     if (!data || typeof data !== "object") {
       throw new Error("Invalid YAML format: data is not an object");
     }
@@ -184,12 +182,12 @@ export async function loadResumeData(): Promise<
       );
     }
 
-    // 從原始 YAML 中提取鍵值順序
+    // Extract key order from original YAML
     const sectionOrder = extractSectionOrder(yamlText);
 
     return { ...data, sectionOrder };
   } catch (error) {
-    // 重新拋出錯誤以便上層處理
+    // Re-throw error for upper layer handling
     if (error instanceof Error) {
       throw error;
     }
@@ -198,21 +196,21 @@ export async function loadResumeData(): Promise<
 }
 
 /**
- * 從 YAML 文字中提取頂層鍵值的順序
- * 這樣可以保持原始的區域順序
+ * Extract top-level key order from YAML text
+ * This way the original section order can be maintained
  */
 function extractSectionOrder(yamlText: string): string[] {
   const lines = yamlText.split("\n");
   const sectionOrder: string[] = [];
 
   for (const line of lines) {
-    // 匹配頂層鍵值 (不以空格或 # 開頭的行，且包含冒號)
+    // Match top-level key-value pairs (lines not starting with space or # and containing colon)
     const match = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\s*:/);
 
     if (match) {
       const sectionName = match[1];
 
-      // 只添加 basics 以外的有效區域，因為 basics 總是在最前面
+      // Only add valid sections other than basics, because basics is always at the front
       if (sectionName !== "basics" && !sectionOrder.includes(sectionName)) {
         sectionOrder.push(sectionName);
       }

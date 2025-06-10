@@ -37,11 +37,11 @@ export default function ResumePage() {
   useEffect(() => {
     setIsMounted(true);
 
-    // 檢查 URL 參數中是否包含 PIN 碼
+    // Check if URL parameters contain PIN code
     const urlParams = new URLSearchParams(window.location.search);
     const urlPin = urlParams.get("pin");
 
-    // 如果沒有設定 PIN 碼，直接載入履歷內容
+    // If PIN code is not set, directly load resume content
     if (!IS_PIN_ENABLED) {
       setAuthenticated(true);
       loadResumeContent();
@@ -49,11 +49,11 @@ export default function ResumePage() {
       return;
     }
 
-    // 如果 URL 中有 PIN 碼，檢查是否正確
+    // If URL contains PIN code, check if it's correct
     if (urlPin && urlPin === env.PIN_CODE) {
       setAuthenticated(true);
       loadResumeContent();
-      // 從 URL 中移除 PIN 參數以保護隱私
+      // Remove PIN parameter from URL to protect privacy
       urlParams.delete("pin");
       const newUrl =
         window.location.pathname +
@@ -64,13 +64,13 @@ export default function ResumePage() {
   }, []);
 
   const [pin, setPin] = useState("");
-  const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED); // 如果沒有 PIN 碼，預設為已驗證
+  const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED); // If no PIN code, default to authenticated
   const [failCount, setFailCount] = useState(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const controls = useAnimation();
   const { theme } = useTheme();
 
-  // 雙重監聽主題變化
+  // Dual theme change listening
   useEffect(() => {
     setCurrentTheme(theme);
     setRenderKey((prev) => prev + 1);
@@ -82,7 +82,7 @@ export default function ResumePage() {
     return () => clearTimeout(timer);
   }, [theme]);
 
-  // 額外監聽 DOM 的 class 變化 (作為備用方案)
+  // Additional listening for DOM class changes (as backup)
   useEffect(() => {
     const detectThemeChange = () => {
       const isDark =
@@ -98,7 +98,7 @@ export default function ResumePage() {
       }
     };
 
-    // 監聽 DOM 變化
+    // Listen for DOM changes
     const observer = new MutationObserver(detectThemeChange);
 
     observer.observe(document.documentElement, {
@@ -106,7 +106,7 @@ export default function ResumePage() {
       attributeFilter: ["class", "data-theme"],
     });
 
-    // 初始檢測
+    // Initial detection
     detectThemeChange();
 
     return () => observer.disconnect();
@@ -118,7 +118,7 @@ export default function ResumePage() {
     }
   }, [onOpen]);
 
-  // 動態取得 PIN 長度
+  // Dynamically get PIN length
   const pinLength = env.PIN_CODE?.length || 4;
 
   // PDF download function
@@ -169,7 +169,7 @@ export default function ResumePage() {
   };
 
   function handleSubmit(onClose: () => void) {
-    if (!IS_PIN_ENABLED) return; // 如果沒有啟用 PIN 碼，直接返回
+    if (!IS_PIN_ENABLED) return; // If PIN code is not enabled, return directly
 
     if (!pin) {
       setFailCount((c) => c + 1);
@@ -200,7 +200,7 @@ export default function ResumePage() {
     try {
       const data = await loadResumeData();
 
-      // 驗證資料結構的完整性
+      // Verify data structure integrity
       if (!data || !data.basics || !data.basics.name) {
         throw new Error("Resume data is incomplete or missing required fields");
       }
@@ -219,21 +219,21 @@ export default function ResumePage() {
     }
   }
 
-  // 監聽 pin 長度
+  // Listen for pin length
   useEffect(() => {
     if (IS_PIN_ENABLED && pin.length === pinLength) {
       handleSubmit(onOpenChange);
     }
   }, [pin, pinLength, onOpenChange]);
 
-  // 監聽 Modal 關閉事件，若未驗證則直接 404 (僅在啟用 PIN 碼時)
+  // Listen for Modal close event, if not authenticated show 404 directly (only when PIN code is enabled)
   useEffect(() => {
     if (IS_PIN_ENABLED && !isOpen && !authenticated && isMounted) {
       setFailCount(3);
     }
   }, [isOpen, authenticated, isMounted]);
 
-  // 3次錯誤才顯示404，並包在DefaultLayout下 (僅在啟用 PIN 碼時)
+  // Show 404 after 3 errors, wrapped in DefaultLayout (only when PIN code is enabled)
   if (IS_PIN_ENABLED && failCount >= 3) {
     const textColor = currentTheme === "dark" ? "#ffffff" : "#000000";
 
@@ -273,7 +273,7 @@ export default function ResumePage() {
       {IS_PIN_ENABLED && (
         <Modal isOpen={isOpen && !authenticated} onOpenChange={onOpenChange}>
           <ModalContent className="overflow-hidden">
-            {/* 移除未使用的 onClose 參數 */}
+            {/* Remove unused onClose parameter */}
             <motion.div
               animate={controls}
               className="flex flex-col items-center gap-4 p-4"

@@ -17,7 +17,7 @@ export default function PortfolioPage() {
   const [isTokenMissing, setIsTokenMissing] = useState(false);
 
   useEffect(() => {
-    // 檢查 GitHub Token 是否可用
+    // Check if GitHub Token is available
     if (!isGitHubTokenAvailable()) {
       setIsTokenMissing(true);
       setLoading(false);
@@ -30,7 +30,7 @@ export default function PortfolioPage() {
         setLoading(true);
         setError(null);
 
-        // 動態獲取 GitHub 用戶名
+        // Dynamically get GitHub username
         const username = await envHelpers.getGitHubUsername();
         const userContributions = await getUserContributions(username);
 

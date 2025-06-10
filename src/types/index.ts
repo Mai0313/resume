@@ -4,7 +4,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
-// GitHub API 相關類型定義
+// GitHub API related type definitions
 export interface GitHubRepository {
   id: number;
   name: string;
@@ -17,7 +17,7 @@ export interface GitHubRepository {
   updated_at: string;
   topics: string[];
   homepage: string | null;
-  isPinned?: boolean; // 標記是否為 Pinned repository
+  isPinned?: boolean; // Mark if it's a Pinned repository
   owner: {
     login: string;
     avatar_url: string;

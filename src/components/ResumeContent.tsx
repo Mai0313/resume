@@ -19,7 +19,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({
   onDownloadPDF,
   isGeneratingPDF,
 }) => {
-  // 防護性檢查：確保資料結構完整
+  // Defensive check: ensure data structure is complete
   if (!data || !data.basics || !data.basics.name) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
@@ -90,7 +90,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({
     },
   };
 
-  // 動態渲染區域的函數
+  // Dynamic section rendering function
   const renderSection = (sectionName: string) => {
     switch (sectionName) {
       case "work":
@@ -110,7 +110,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({
       case "interests":
         return renderInterestsSection();
       case "languages":
-        // languages 已經在 header section 中顯示，這裡跳過
+        // languages already displayed in header section, skip here
         return null;
       case "references":
         return renderReferencesSection();
@@ -553,11 +553,11 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({
       initial="hidden"
       variants={containerVariants}
     >
-      {/* Header Section - 總是在最前面 */}
+      {/* Header Section - Always at the front */}
       <motion.div variants={itemVariants}>
         <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950 dark:to-indigo-950">
           <CardBody className="p-8 relative">
-            {/* PDF Download Button - 右上角浮動 */}
+            {/* PDF Download Button - Floating top right */}
             {onDownloadPDF && (
               <div className="absolute top-4 right-4">
                 <Button
@@ -641,7 +641,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({
         </Card>
       </motion.div>
 
-      {/* 動態渲染其他區域，根據 YAML 文件中的順序 */}
+      {/* Dynamically render other sections according to YAML file order */}
       {data.sectionOrder.map((sectionName: string) =>
         renderSection(sectionName),
       )}

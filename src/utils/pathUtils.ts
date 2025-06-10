@@ -1,18 +1,18 @@
 /**
- * 路徑工具函數
- * 用於處理自定義 ROOT PATH 功能，支援不同的部署環境
+ * Path utility functions
+ * For handling custom ROOT PATH functionality, supporting different deployment environments
  */
 
 import { envHelpers } from "@/utils/env";
 
 /**
- * 從環境變數獲取根路徑，預設為 '/'
- * 支援 VITE_ROOT_PATH 環境變數
+ * Get root path from environment variable, default to '/'
+ * Supports VITE_ROOT_PATH environment variable
  */
 export const getRootPath = (): string => {
   const rootPath = envHelpers.getRootPath();
 
-  // 確保路徑以 '/' 開頭和結尾（除非是根路徑 '/'）
+  // Ensure path starts and ends with '/' (unless it's root path '/')
   if (rootPath === "/") {
     return "/";
   }
@@ -30,22 +30,22 @@ export const getRootPath = (): string => {
 };
 
 /**
- * 建構完整的路徑，包含根路徑前綴
- * @param path - 相對路徑（例如：'/resume', '/portfolio'）
- * @returns 完整路徑（例如：'/my-app/resume', '/my-app/portfolio'）
+ * Construct complete path including root path prefix
+ * @param path - Relative path (e.g., '/resume', '/portfolio')
+ * @returns Complete path (e.g., '/my-app/resume', '/my-app/portfolio')
  */
 export const buildPath = (path: string): string => {
   const rootPath = getRootPath();
 
-  // 如果是根路徑，直接返回輸入路徑
+  // If it's root path, return input path directly
   if (rootPath === "/") {
     return path;
   }
 
-  // 移除路徑開頭的 '/' 以避免雙重斜線
+  // Remove leading '/' from path to avoid double slashes
   const cleanPath = path.startsWith("/") ? path.slice(1) : path;
 
-  // 如果是空路徑或根路徑，返回根路徑（移除末尾的 '/'）
+  // If it's empty path or root path, return root path (remove trailing '/')
   if (!cleanPath || cleanPath === "/") {
     return rootPath.slice(0, -1) || "/";
   }
@@ -54,17 +54,17 @@ export const buildPath = (path: string): string => {
 };
 
 /**
- * 獲取 Router 的 basename（用於 React Router）
- * @returns basename 字串，用於 BrowserRouter
+ * Get Router's basename (for React Router)
+ * @returns basename string for BrowserRouter
  */
 export const getBasename = (): string => {
   const rootPath = getRootPath();
 
-  // 如果是根路徑，返回 undefined（React Router 預設行為）
+  // If it's root path, return undefined (React Router default behavior)
   if (rootPath === "/") {
     return "";
   }
 
-  // 移除末尾的 '/' 作為 basename
+  // Remove trailing '/' as basename
   return rootPath.slice(0, -1);
 };

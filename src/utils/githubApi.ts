@@ -9,14 +9,14 @@ import { env, envHelpers } from "@/utils/env";
 const GITHUB_API_BASE = "https://api.github.com";
 
 /**
- * 檢查 GitHub Token 是否已設定
+ * Check if GitHub Token is configured
  */
 export function isGitHubTokenAvailable(): boolean {
   return envHelpers.isGitHubTokenAvailable();
 }
 
 /**
- * 獲取當前認證用戶的信息（通過 GitHub Token）
+ * Get current authenticated user information (via GitHub Token)
  */
 export async function getAuthenticatedUser(): Promise<{
   login: string;
@@ -64,7 +64,7 @@ const graphqlHeaders = {
 };
 
 /**
- * 獲取使用者的 Pinned 儲存庫 (使用 GraphQL API)
+ * Get user's pinned repositories (using GraphQL API)
  */
 export async function getUserPinnedRepositories(
   username: string,
@@ -134,7 +134,7 @@ export async function getUserPinnedRepositories(
 
     const pinnedNodes = data.data?.user?.pinnedItems?.nodes || [];
 
-    // 轉換為標準的 GitHubRepository 格式
+    // Convert to standard GitHubRepository format
     const pinnedRepos: GitHubRepository[] = pinnedNodes.map((node: any) => ({
       id:
         parseInt(node.id.replace("MDEwOlJlcG9zaXRvcnk=", ""), 10) ||
@@ -163,7 +163,7 @@ export async function getUserPinnedRepositories(
 }
 
 /**
- * 獲取使用者的公開儲存庫
+ * Get user's public repositories
  */
 export async function getUserRepositories(
   username: string,
@@ -195,7 +195,7 @@ export async function getUserRepositories(
 }
 
 /**
- * 獲取儲存庫的提交記錄
+ * Get repository commit records
  */
 export async function getRepositoryCommits(
   owner: string,
@@ -225,7 +225,7 @@ export async function getRepositoryCommits(
 }
 
 /**
- * 獲取使用者的貢獻統計，優先顯示 Pinned 專案
+ * Get user's contribution statistics, prioritizing Pinned projects
  */
 export async function getUserContributions(
   username: string,
@@ -235,17 +235,17 @@ export async function getUserContributions(
   }
 
   try {
-    // 先獲取 Pinned 儲存庫
+    // First get Pinned repositories
     const pinnedRepos = await getUserPinnedRepositories(username);
 
-    // 再獲取所有儲存庫
+    // Then get all repositories
     const allRepositories = await getUserRepositories(username);
 
-    // 獲取每個儲存庫的貢獻記錄
+    // Get contribution records for each repository
     const contributions: GitHubContribution[] = [];
     const processedRepoIds = new Set<string>();
 
-    // 首先處理 Pinned 儲存庫
+    // First process Pinned repositories
     for (const repo of pinnedRepos) {
       try {
         const commits = await getRepositoryCommits(
@@ -263,15 +263,15 @@ export async function getUserContributions(
 
         processedRepoIds.add(repo.full_name);
       } catch {
-        // 如果某個儲存庫獲取失敗，繼續處理其他儲存庫
+        // If a repository fails to fetch, continue processing other repositories
         continue;
       }
     }
 
-    // 然後處理其他儲存庫（排除已處理的 Pinned 儲存庫）
+    // Then process other repositories (excluding already processed Pinned repositories)
     const remainingRepos = allRepositories
       .filter((repo) => !processedRepoIds.has(repo.full_name))
-      .slice(0, 15); // 限制數量
+      .slice(0, 15); // Limit quantity
 
     for (const repo of remainingRepos) {
       try {
@@ -290,21 +290,21 @@ export async function getUserContributions(
           });
         }
       } catch {
-        // 如果某個儲存庫獲取失敗，繼續處理其他儲存庫
+        // If a repository fails to fetch, continue processing other repositories
         continue;
       }
     }
 
-    // 按照 Pinned 狀態和最後更新時間排序
+    // Sort by Pinned status and last update time
     contributions.sort((a, b) => {
-      // Pinned 儲存庫優先
+      // Pinned repositories have priority
       const aPinned = (a.repository as any).isPinned;
       const bPinned = (b.repository as any).isPinned;
 
       if (aPinned && !bPinned) return -1;
       if (!aPinned && bPinned) return 1;
 
-      // 相同 pinned 狀態時按更新時間排序
+      // Sort by update time when same pinned status
       return (
         new Date(b.repository.updated_at).getTime() -
         new Date(a.repository.updated_at).getTime()
@@ -318,7 +318,7 @@ export async function getUserContributions(
 }
 
 /**
- * 獲取使用者基本資訊
+ * Get user basic information
  */
 export async function getUserProfile(username: string) {
   try {
