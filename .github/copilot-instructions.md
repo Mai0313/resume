@@ -153,7 +153,7 @@
 - **Complete Project Information**: Displays project language, star count, fork count, latest commits, topic tags, etc.
 - **Responsive Design**: Supports dark/light themes with complete animation effects
 - **Environment Variable Configuration**: Uses centralized environment management for GitHub integration
-  - Accesses `VITE_GITHUB_USERNAME` through `env.GITHUB_USERNAME` with validation
+  - **Automatic Username Detection**: No longer requires `VITE_GITHUB_USERNAME` - automatically fetches username via GitHub Token using `envHelpers.getGitHubUsername()`
   - Uses `VITE_GITHUB_TOKEN` through `env.GITHUB_TOKEN` with built-in availability checking
 - **Smart Token Detection**: Implements complete GitHub Token missing detection and user guidance system
   - Uses `envHelpers.isGitHubTokenAvailable()` function to check Token availability
@@ -180,6 +180,8 @@
   - **Smart Token Detection**: Uses `envHelpers.isGitHubTokenAvailable()` function to check Token availability
   - **Dedicated Error Handling**: Throws `GITHUB_TOKEN_MISSING` error when Token is missing
   - **On-demand Token Check**: Removed mandatory Token check at initialization to avoid blocking application startup
+  - **Automatic User Information**: Added `getAuthenticatedUser()` function to fetch user details via GitHub Token
+  - **Eliminates Username Dependency**: No longer requires `VITE_GITHUB_USERNAME` environment variable
 
 ### Data Loading
 
@@ -205,7 +207,7 @@
 ### Environment Variable Management
 
 - **`utils/env.ts`**: Centralized environment variable management system
-  - **Required Environment Variables**: `VITE_WEBSITE_TITLE`, `VITE_GITHUB_USERNAME`, `VITE_GITHUB_TOKEN`, `VITE_RESUME_FILE` - throw error if not provided
+  - **Required Environment Variables**: `VITE_WEBSITE_TITLE`, `VITE_GITHUB_TOKEN`, `VITE_RESUME_FILE` - throw error if not provided
   - **Optional with Defaults**: `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/")
   - **Validation on Load**: Automatically validates all required environment variables when module is imported
   - **Type-Safe Access**: Exports `env` object with strongly typed environment variable values
@@ -214,9 +216,11 @@
     - `getRootPath()`: Get root path with fallback
     - `isGitHubTokenAvailable()`: Check if GitHub token is available
     - `getResumeFilePath()`: Get resume file path with validation
+    - `getGitHubUsername()`: Asynchronously fetch GitHub username via API token
   - **Error Handling**: Clear error messages when required variables are missing
   - **Centralized Import**: All components now import from `@/utils/env` instead of direct `import.meta.env` access
   - **Eliminates Duplication**: Single source of truth for all environment variable logic
+  - **Reduced Configuration**: Removed `VITE_GITHUB_USERNAME` requirement - automatically fetched via token
 
 ## Styles and Type System
 
@@ -242,7 +246,7 @@
 - **`types/ogl.d.ts`**: OGL 3D graphics library type declarations
 - **`vite-env.d.ts`**: Vite environment variable type definitions
   - Contains TypeScript type definitions for all project environment variables
-  - `VITE_WEBSITE_TITLE`, `VITE_GITHUB_USERNAME`, `VITE_GITHUB_TOKEN`, `VITE_PIN_CODE`, `VITE_ROOT_PATH`, `VITE_RESUME_FILE`
+  - `VITE_WEBSITE_TITLE`, `VITE_GITHUB_TOKEN`, `VITE_PIN_CODE`, `VITE_ROOT_PATH`, `VITE_RESUME_FILE`
   - **Complete Environment Variable Support**: Enhanced with comprehensive type definitions for multi-environment deployment
   - **Centralized Management**: All environment variable access now goes through `@/utils/env` for type safety and validation
 
@@ -265,6 +269,7 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Professional Error Handling**: Beautiful error displays with gradient icons, animations, and user-friendly guidance
 - ✅ **Responsive Design**: Modern UI using HeroUI components with complete mobile/desktop compatibility
 - ✅ **Type Safety**: Complete TypeScript coverage with comprehensive environment variable definitions
+- ✅ **Optimized Environment Configuration**: Automatic GitHub username detection via token eliminates `VITE_GITHUB_USERNAME` requirement
 
 ## Technical Quality
 
@@ -276,7 +281,7 @@ The personal website development project is **feature-complete** with the follow
 
 ## User Experience Features
 
-- ✅ **Smart Configuration**: Environment variable-driven setup for easy customization
+- ✅ **Smart Configuration**: Simplified environment variable setup with automatic GitHub username detection
 - ✅ **Accessibility**: Keyboard navigation, screen reader support, and proper ARIA labels
 - ✅ **Visual Polish**: Smooth animations, consistent design language, and professional appearance
 - ✅ **Error Recovery**: Graceful fallbacks, retry mechanisms, and clear user guidance
