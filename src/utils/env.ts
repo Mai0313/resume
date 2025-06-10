@@ -13,6 +13,8 @@ const DEFAULT_VALUES = {
   VITE_PIN_CODE: null,
   VITE_ROOT_PATH: "/",
   VITE_GITHUB_TOKEN: null,
+  VITE_OPENAI_API_KEY: null,
+  VITE_OPENAI_MODEL: null,
 } as const;
 
 /**
@@ -84,6 +86,14 @@ export const env = {
     "VITE_ROOT_PATH",
     DEFAULT_VALUES.VITE_ROOT_PATH,
   ),
+  OPENAI_API_KEY: getEnvVarWithDefault(
+    "VITE_OPENAI_API_KEY",
+    DEFAULT_VALUES.VITE_OPENAI_API_KEY,
+  ),
+  OPENAI_MODEL: getEnvVarWithDefault(
+    "VITE_OPENAI_MODEL",
+    DEFAULT_VALUES.VITE_OPENAI_MODEL,
+  ),
 } as const;
 
 // Helper functions for specific use cases
@@ -134,6 +144,20 @@ export const envHelpers = {
     const user = await getAuthenticatedUser();
 
     return user.login;
+  },
+
+  /**
+   * Check if OpenAI chatbot is available
+   */
+  isOpenAIChatBotAvailable(): boolean {
+    return (
+      env.OPENAI_API_KEY !== null &&
+      env.OPENAI_API_KEY !== "" &&
+      env.OPENAI_API_KEY.trim() !== "" &&
+      env.OPENAI_MODEL !== null &&
+      env.OPENAI_MODEL !== "" &&
+      env.OPENAI_MODEL.trim() !== ""
+    );
   },
 } as const;
 
