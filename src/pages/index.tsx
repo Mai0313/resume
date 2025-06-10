@@ -10,6 +10,10 @@ import { GithubIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
 import { env } from "@/utils/env";
 
+const handleAnimationComplete = () => {
+  console.log("All letters have animated!");
+};
+
 export default function IndexPage() {
   return (
     <DefaultLayout>
@@ -36,15 +40,18 @@ export default function IndexPage() {
           />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <SplitText
-              animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
-              animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
               className="text-5xl font-bold text-center"
               delay={150}
-              easing={(t) => t}
+              duration={0.6}
+              ease={(t) => t}
+              from={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
               rootMargin="50px"
+              splitType="words, chars"
               text={env.WEBSITE_TITLE}
+              textAlign="center"
               threshold={0.2}
-              onLetterAnimationComplete={() => {}}
+              to={{ opacity: 1, transform: "translate3d(0,0,0)" }}
+              onLetterAnimationComplete={handleAnimationComplete}
             />
           </div>
         </div>
