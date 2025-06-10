@@ -327,7 +327,9 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
                   )}
 
                   <div className="space-y-2 flex-grow">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Recent Commits:</h4>
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      Recent Commits:
+                    </h4>
                     {contribution.commits.slice(0, 2).map((commit) => (
                       <div
                         key={commit.sha}

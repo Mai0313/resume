@@ -7,7 +7,7 @@
   --mouse-x: 50%;
   --mouse-y: 50%;
   --spotlight-color: rgba(255, 255, 255, 0.05);
-  
+
   /* Light mode styles */
   border: 1px solid rgb(229, 231, 235); /* border-gray-200 */
   background-color: rgb(255, 255, 255); /* bg-white */
