@@ -1,0 +1,167 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
+  "basics": {
+    "name": "Wei Cheng Lee",
+    "label": "Junior Machine Learning Engineer",
+    "email": "weichenglee0313@gmail.com",
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "Wei Lee",
+        "url": "https://www.linkedin.com/in/wei-lee-b28153229/"
+      },
+      {
+        "network": "GitHub",
+        "username": "Mai0313",
+        "url": "https://github.com/Mai0313"
+      }
+    ]
+  },
+  "languages": [
+    {
+      "language": "Chinese",
+      "fluency": "Native"
+    },
+    {
+      "language": "English",
+      "fluency": "Advanced"
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California, San Diego",
+      "area": "Psychology",
+      "url": "https://ucsd.edu/",
+      "studyType": "Bachelor",
+      "endDate": "2021-09",
+      "score": "3.8/4.0",
+      "summary": "Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning. Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities."
+    }
+  ],
+  "work": [
+    {
+      "company": "MediaTek",
+      "position": "Junior Machine Learning Engineer",
+      "location": "Hsinchu, Taiwan",
+      "startDate": "2022-08",
+      "summary": "Key contributions across thermal simulation, leakage analysis, voltage analysis & visualization, multimodal LLM enhancement, and supporting industry-academia collaboration.",
+      "highlights": [
+        "Co-authored a NeurIPS 2023 workshop paper: 'Fast SoC Thermal Simulation with Physics-aware U-Net.'",
+        "Integrated thermodynamics principles into U-Net/Transformer-based simulations, cutting maximum temperature error by 34%.",
+        "Co-authored a VLSI TSA 2024 publication: 'A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects' reducing leakage estimation discrepancy by 10%.",
+        "Created a visualization framework to streamline voltage-related algorithm validation, enhancing model accuracy and workflows.",
+        "First-authored IEEE ICLAD 2025 paper: 'MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design.'",
+        "Integrated multi-agent task automation and refinement strategies, improving reasoning and task planning in LLMs.",
+        "Engaged in research on Monte Carlo Tree Search (MCTS) for multimodal LLM decision frameworks (forthcoming 2025).",
+        "Supported industry-academia collaboration with sponsorship opportunities for graduate research."
+      ]
+    },
+    {
+      "company": "Google Inc.",
+      "position": "Student Researcher",
+      "location": "Mountain View, California, United States",
+      "startDate": "2020-10",
+      "endDate": "2021-09",
+      "summary": "Conducted research on user experience (UX) in collaboration with engineers and data scientists, focusing on empirical methods to quantify and improve UX through data analysis.",
+      "highlights": [
+        "Collaborate with engineers, data scientists, and others to define and quantify UX goals and metrics",
+        "Develop code and statistical models (quantitative data) to understand user experience",
+        "Conduct empirical research using methods from computer science, quantitative social science, statistics, etc., to understand user behavior and extract needed information from large datasets (e.g., ANOVA, ChiSquared, T-tests for data quantification, validation, etc.)",
+        "Generate hypotheses and plans for research based on existing data (big data) and product design",
+        "Conduct iterative investigations of research results, ensuring persuasiveness and feasibility",
+        "Determine priorities and drive research to improve user experience, communicating findings to relevant departments within the company for practical application and reference"
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "name": "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design",
+      "url": "https://arxiv.org/abs/2505.22990",
+      "publisher": "IEEE International Conference on LLM-Aided Design (IEEE ICLAD)",
+      "releaseDate": "2025",
+      "website": "https://arxiv.org/abs/2505.22990",
+      "summary": "Proposing MenTeR, a novel multi-agent AI workflow that automates and accelerates end-to-end RF/analog circuit design by reducing trial-and-error and expanding design space exploration, laying the foundation for future AI-assisted analog design tools."
+    },
+    {
+      "name": "A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects",
+      "url": "https://ieeexplore.ieee.org/document/10546410",
+      "publisher": "2024 International VLSI Symposium on Technology, Systems and Applications (VLSI TSA)",
+      "releaseDate": "2024",
+      "summary": "A methodology for digital logic IP-level leakage analysis that incorporates both intra-cell and inter-cell layout-dependent effects as well as cell abutment information. This approach improves pre-silicon leakage estimation accuracy, reducing the gap with post-silicon measurements by more than 10%, especially for mixed-Vt digital designs."
+    },
+    {
+      "name": "Fast SoC Thermal Simulation with Physics-aware U-Net",
+      "url": "https://neurips.cc/virtual/2023/76089",
+      "publisher": "NeurIPS Workshop",
+      "releaseDate": "2023",
+      "summary": "Proposed a U-Net trained with Physics-Informed Neural Network (PINN) loss for System-on-Chip (SoC) thermal simulation. Incorporated the Sobel operator into the loss function to enforce adherence to the governing thermal equation (Fourier-Biot) during training."
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming Languages",
+      "level": "Expert",
+      "keywords": [
+        "Python",
+        "JavaScript",
+        "C++",
+        "TypeScript",
+        "Golang",
+        "Rust",
+        "LaTeX"
+      ]
+    },
+    {
+      "name": "AI Frameworks",
+      "level": "Advanced",
+      "keywords": ["PyTorch", "PyTorch Lightning"]
+    },
+    {
+      "name": "DevOps & Tools",
+      "level": "Expert",
+      "keywords": ["Docker", "BigQuery", "Kubernetes", "GitHub Actions"]
+    },
+    {
+      "name": "Models & Architectures",
+      "level": "Advanced",
+      "keywords": ["U-Net", "RNNs", "GANs", "Transformers", "Diffusion Models"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Intern Mentorship",
+      "description": "Guided interns in project planning, encouraging independent problem-solving and professional growth; fostered a collaborative learning environment aligned with educational accessibility and knowledge democratization."
+    },
+    {
+      "name": "Open Source Project Contributions",
+      "description": "Enhanced framework reliability and usability through code reviews, bug fixes, and feature development; collaborated closely with researchers from DeepMind and Penn State University for cross-institutional insights."
+    }
+  ],
+  "interests": [
+    {
+      "name": "Multi-Agent & Multimodal LLMs",
+      "keywords": [
+        "Multi-Agent Systems",
+        "Multimodal Learning",
+        "Reinforcement Learning",
+        "Decision Making"
+      ]
+    },
+    {
+      "name": "Integrative Tokenization & Knowledge Distillation",
+      "keywords": ["Tokenization Techniques", "Knowledge Distillation"]
+    },
+    {
+      "name": "Process-Oriented Evaluation Frameworks",
+      "keywords": ["Evaluation Metrics", "Process Optimization"]
+    },
+    {
+      "name": "Educational Access & Democratization of AI",
+      "keywords": [
+        "Educational Equity",
+        "AI for Social Good",
+        "Knowledge Democratization"
+      ]
+    }
+  ]
+}
