@@ -1,10 +1,12 @@
 services:
   resume:
-    image: ghcr.io/mai0313/resume:latest
+    # image: ghcr.io/mai0313/resume:latest
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-      target: prod
+      target: runtime
+    env_file:
+      - .env
     command:
       - yarn
       - preview

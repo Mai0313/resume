@@ -14,5 +14,12 @@ FROM builder AS prod
 WORKDIR /app
 COPY . .
 RUN yarn install && \
-    yarn build && \
+    yarn cache clean -f
+
+# build for runtime
+FROM prod AS runtime
+WORKDIR /app
+COPY . .
+COPY --from=prod /app/node_modules ./node_modules
+RUN yarn build && \
     yarn cache clean -f
