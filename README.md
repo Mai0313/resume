@@ -112,7 +112,7 @@ const userContributions = await getUserContributions("your_github_username");
 
 ### Edit Resume Content
 
-Edit the `public/resume.yaml` file to update your resume content.
+Edit the `public/example.yaml` file to update your resume content.
 
 ### Change PIN Code
 

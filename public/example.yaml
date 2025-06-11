@@ -35,14 +35,29 @@ work:
     summary: >
       Key contributions across thermal simulation, leakage analysis, voltage analysis & visualization, multimodal LLM enhancement, and supporting industry-academia collaboration.
     highlights:
-      - 'Co-authored a NeurIPS 2023 workshop paper: "Fast SoC Thermal Simulation with Physics-aware U-Net."'
+      - "Co-authored a NeurIPS 2023 workshop paper: 'Fast SoC Thermal Simulation with Physics-aware U-Net.'"
       - "Integrated thermodynamics principles into U-Net/Transformer-based simulations, cutting maximum temperature error by 34%."
-      - 'Co-authored a VLSI TSA 2024 publication: "A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects," reducing leakage estimation discrepancy by 10%.'
+      - "Co-authored a VLSI TSA 2024 publication: 'A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects' reducing leakage estimation discrepancy by 10%."
       - "Created a visualization framework to streamline voltage-related algorithm validation, enhancing model accuracy and workflows."
-      - 'First-authored IEEE ICLAD 2025 paper: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design."'
+      - "First-authored IEEE ICLAD 2025 paper: 'MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design.'"
       - "Integrated multi-agent task automation and refinement strategies, improving reasoning and task planning in LLMs."
       - "Engaged in research on Monte Carlo Tree Search (MCTS) for multimodal LLM decision frameworks (forthcoming 2025)."
       - "Supported industry-academia collaboration with sponsorship opportunities for graduate research."
+
+  - company: "Google Inc."
+    position: "Student Researcher"
+    location: "Mountain View, California, United States"
+    startDate: "2020-10"
+    endDate: "2021-09"
+    summary: >
+      Conducted research on user experience (UX) in collaboration with engineers and data scientists, focusing on empirical methods to quantify and improve UX through data analysis.
+    highlights:
+      - Collaborate with engineers, data scientists, and others to define and quantify UX goals and metrics
+      - Develop code and statistical models (quantitative data) to understand user experience
+      - Conduct empirical research using methods from computer science, quantitative social science, statistics, etc., to understand user behavior and extract needed information from large datasets (e.g., ANOVA, ChiSquared, T-tests for data quantification, validation, etc.)
+      - Generate hypotheses and plans for research based on existing data (big data) and product design
+      - Conduct iterative investigations of research results, ensuring persuasiveness and feasibility
+      - Determine priorities and drive research to improve user experience, communicating findings to relevant departments within the company for practical application and reference
 
 publications:
   - name: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design"
@@ -87,16 +102,16 @@ skills:
     level: Expert
     keywords:
       - "Docker"
+      - "BigQuery"
       - "Kubernetes"
       - "GitHub Actions"
-      - "Pydantic"
   - name: "Models & Architectures"
     level: Advanced
     keywords:
-      - "Transformers"
       - "U-Net"
       - "RNNs"
       - "GANs"
+      - "Transformers"
       - "Diffusion Models"
 
 projects:
