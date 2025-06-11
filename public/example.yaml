@@ -4,6 +4,9 @@ basics:
   name: "Wei Cheng Lee"
   label: "Junior Machine Learning Engineer"
   email: "weichenglee0313@gmail.com"
+  location:
+    postgalCode: "300"
+    city: "Hsinchu"
   profiles:
     - network: "LinkedIn"
       username: "Wei Lee"
