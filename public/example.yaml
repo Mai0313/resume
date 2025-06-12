@@ -38,16 +38,16 @@ work:
     location: "Hsinchu, Taiwan"
     startDate: "2022-08"
     summary: >
-      Leading ML research initiatives in semiconductor design optimization, with focus on thermal simulation, leakage analysis, and multimodal AI systems. 
-      Bridging academic research with industrial applications through innovative machine learning approaches.
+      Spearheaded machine learning research and industrialization for semiconductor design, with a focus on thermal simulation, leakage analysis, and multi-agent AI systems.
+      Bridged academic research with industry by driving innovative machine learning deployment and enabling cross-disciplinary collaboration.
     highlights:
-      - "Developed physics-aware deep learning models for SoC thermal simulation, achieving 34% reduction in maximum temperature prediction error"
-      - "Designed novel leakage analysis methodology incorporating layout-dependent effects, improving pre-silicon estimation accuracy by 10%"
-      - "Built comprehensive visualization frameworks for voltage analysis workflows, enhancing algorithm validation processes"
-      - "Pioneered multi-agent LLM systems for automated RF/analog circuit design, integrating MCTS for enhanced decision-making"
-      - "Published 3 peer-reviewed papers in top-tier conferences (NeurIPS, IEEE VLSI TSA, IEEE ICLAD) as first/co-author"
-      - "Established industry-academia partnerships, securing research sponsorship opportunities for graduate students"
-      - "Mentored junior engineers and interns, fostering collaborative learning environments aligned with knowledge democratization goals"
+      - "Developed and deployed physics-aware deep learning models for SoC thermal simulation, reducing maximum temperature prediction error by 34%."
+      - "Engineered layout-dependent leakage analysis methodology, enhancing pre-silicon estimation accuracy by 10% across multiple product lines."
+      - "Built scalable data analysis and visualization pipelines for IC design, improving decision-making speed and accuracy."
+      - "Led automation of RF/analog circuit design using multi-agent LLM systems, driving Pass@1 success rate to over 84% on complex tasks."
+      - "Published 3 peer-reviewed papers in top conferences (NeurIPS, IEEE VLSI TSA, IEEE ICLAD) as first/co-author."
+      - "Established industry-academia partnerships and secured research sponsorships, supporting talent development and knowledge exchange."
+      - "Mentored junior engineers and interns, fostering open collaboration and a culture of continuous learning."
 
   - company: "Google Inc."
     position: "Student Researcher"
@@ -55,75 +55,67 @@ work:
     startDate: "2020-10"
     endDate: "2021-09"
     summary: >
-      Conducted quantitative UX research in collaboration with cross-functional teams, developing statistical models and empirical methods to improve user experience through data-driven insights.
+      Conducted quantitative UX research, developed statistical models and empirical methods to extract actionable insights from large-scale user data, and worked with cross-functional teams to improve user experience.
     highlights:
-      - "Collaborated with engineers and data scientists to define and quantify UX goals and metrics across multiple product areas"
-      - "Developed statistical models and code to analyze user behavior patterns from large-scale datasets"
-      - "Applied empirical research methods (ANOVA, Chi-Squared, T-tests) for data validation and hypothesis testing"
-      - "Generated actionable research insights based on big data analysis and product design principles"
-      - "Conducted iterative investigations ensuring research feasibility and practical applicability"
-      - "Communicated findings to stakeholders across departments for product improvement implementation"
+      - "Defined and quantified UX goals across multiple product areas with engineers and data scientists."
+      - "Developed statistical models for behavioral pattern analysis on large datasets."
+      - "Applied empirical methods (ANOVA, Chi-Squared, T-tests) for hypothesis testing and data validation."
+      - "Communicated findings to diverse stakeholders, driving product improvements."
 
 publications:
   - name: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design"
     url: https://arxiv.org/abs/2505.22990
-    publisher: "IEEE International Conference on LLM-Aided Design (IEEE ICLAD)"
+    publisher: "IEEE International Conference on LLM-Aided Design (ICLAD)"
     releaseDate: "2025"
     summary: >
-      First-authored paper proposing a scalable multi-agent AI framework for automating RF/analog circuit design. Introduced Diagram-Aware RAG and Chain-of-Stage reasoning to improve LLM capabilities in complex analog design tasks, achieving state-of-the-art results on industry benchmarks:contentReference[oaicite:0]{index=0}.
+      Proposed a scalable, fully-automated multi-agent workflow for RF/Analog circuit netlist design, integrating Diagram-Aware Retrieval-Augmented Generation and Chain-of-Stage reasoning. Achieved state-of-the-art results on real-world analog circuit design tasks, validating the potential of AI-assisted EDA systems.
 
   - name: "A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects"
     url: https://ieeexplore.ieee.org/document/10546410
-    publisher: "2024 International VLSI Symposium on Technology, Systems and Applications (VLSI TSA)"
+    publisher: "IEEE VLSI TSA"
     releaseDate: "2024"
     summary: >
-      Co-authored methodology for layout-dependent leakage estimation, improving pre-silicon and post-silicon correlation by over 10% for mixed-Vt digital designs, bridging design and manufacturing accuracy gaps.
+      Co-authored a novel methodology for digital logic IP-level leakage analysis, incorporating both intra-cell and inter-cell layout-dependent effects. Improved pre-silicon and post-silicon correlation by over 10% in industrial mixed-Vt designs.
 
   - name: "Fast SoC Thermal Simulation with Physics-aware U-Net"
     url: https://neurips.cc/virtual/2023/76089
-    publisher: "NeurIPS Workshop"
+    publisher: "NeurIPS ML4PS Workshop"
     releaseDate: "2023"
     summary: >
-      Co-authored paper proposing a U-Net trained with Physics-Informed Neural Network (PINN) loss for System-on-Chip (SoC) thermal simulation. 
-      Incorporated the Sobel operator into the loss function to enforce adherence to the governing thermal equation (Fourier-Biot) during training.
+      Co-authored a physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools.
 
 projects:
-  - name: "MenTeR: Multi-Agent Circuit Design System"
+  - name: "MenTeR: Multi-Agent Analog Circuit Design System"
     description: >
-      Led the architecture and implementation of MenTeR, a multi-agent workflow that automates RF/analog circuit netlist design. Integrated LLM agents for specification parsing, circuit synthesis, and simulation validation. Built reusable knowledge bases and streamlined workflow, significantly reducing manual workload and increasing Pass@1 success rate to 84%.
+      Led engineering and system integration for MenTeR, an end-to-end automated workflow for RF/analog circuit netlist design based on LLM agents. Focused on cross-agent collaboration, reusable knowledge base construction, and seamless integration with industrial flows.
     highlights:
-      - "Implemented a Primary Investigator (PI) agent for task decomposition and domain knowledge integration via DA-RAG."
-      - "Engineered Circuit Agent utilizing Chain-of-Stage (CoS) reasoning and Executor agents for netlist validation."
-      - "Created a Testbench Agent to automate comprehensive simulations, reducing manual verification workload significantly."
-      - "Built Circuit Think Tank knowledge base capturing reusable circuit patterns and facilitating faster future developments."
-      - "Achieved 84.2% first-attempt success rate (Pass@1) on complex analog design tasks, outperforming baseline approaches by over 14%."
-      - "Validated performance on practical real-world analog circuits like Bandgap References (BGR) and Phase-Locked Loops (PLL)."
+      - "Architected and engineered PI, Circuit, and Testbench agents for automation of specification analysis, netlist generation, and simulation validation."
+      - "Built the Circuit Think Tank, a reusable domain knowledge base for design pattern acceleration."
+      - "Significantly reduced manual workload and boosted design success rates on real-world analog circuits."
+      - "Drove practical adoption through industry-academia collaboration."
 
-  - name: "Open Source Contributions"
+  - name: "AI Thermal Simulation Platform"
     description: >
-      Enhanced framework reliability and usability through code reviews, bug fixes, and feature development; 
-      collaborated closely with researchers from DeepMind and Penn State University for cross-institutional insights.
+      Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.
     highlights:
-      - "Contributed to multiple PyTorch ecosystem projects"
-      - "Established collaborative relationships with top-tier research institutions"
+      - "Integrated thermal gradient and laplacian constraints, improving data efficiency and model fidelity."
+      - "Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup."
+      - "Explored and prototyped transformer-based variants for future research directions."
 
   - name: "Leakage Analysis Automation"
     description: >
-      Built comprehensive methodology and toolchain for semiconductor leakage analysis, incorporating layout-dependent effects and improving pre-silicon prediction accuracy for industrial applications.
+      Developed scalable toolchains and visualization dashboards for automated semiconductor leakage analysis, enabling efficient cross-team data-driven validation and model refinement.
     highlights:
-      - "Reduced post-silicon validation discrepancies by over 10%"
-      - "Deployed across multiple product lines at MediaTek"
+      - "Automated extraction and modeling of layout-dependent leakage effects, deployed across multiple product lines."
+      - "Enabled real-time silicon measurement analysis for rapid debugging and yield improvement."
 
-  - name: "Physics-Aware Thermal Simulator for SoC Design"
+  - name: "Open Source & Research Collaboration"
     description: >
-      Developed a fast, physics-aware thermal simulation framework using a modified U-Net architecture incorporating Fourier's law and Fourier-Biot equations.
-      Designed specialized physics-informed loss functions to improve data efficiency, accuracy, and physical realism in thermal predictions.
+      Advanced engineering productivity and research integration through open-source contributions and academic partnerships.
     highlights:
-      - "Reduced Maximum Temperature Error (MTE) by 34%, significantly improving prediction accuracy."
-      - "Achieved over 100x speedup compared to conventional Computational Fluid Dynamics (CFD) tools."
-      - "Implemented thermal gradient and Laplacian modeling to enhance realism in thermal simulations."
-      - "Demonstrated improved performance with fewer data points, effectively increasing data efficiency."
-      - "Validated simulation accuracy against commercial CFD tool (Ansys-Icepak), demonstrating superior physical fidelity."
+      - "Contributed to major ML and LLM open-source projects (AutoGen, LangChain, Langraph, MLflow), resolving critical bugs and improving framework reliability."
+      - "Initiated technical collaborations with leading researchers (e.g., DeepMind, Penn State) and facilitated knowledge sharing with external partners."
+      - "Improved internal workflow efficiency through DevOps pipeline optimization and technical mentoring."
 
 skills:
   - name: "Multi-Agent Systems"
