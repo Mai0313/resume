@@ -13,11 +13,11 @@ import { useTheme } from "@heroui/use-theme";
 import { Spinner } from "@heroui/spinner";
 
 import FuzzyText from "../components/FuzzyText/FuzzyText";
-import { ResumeContent } from "../components/ResumeContent";
+import { ProfessionalResumeContent } from "../components/ProfessionalResumeContent";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
+import { Navbar } from "../components/navbar";
 
 import { env, envHelpers } from "@/utils/env";
-import DefaultLayout from "@/layouts/default";
 
 // Read PIN code from .env via VITE_PIN_CODE
 const IS_PIN_ENABLED = envHelpers.isPinEnabled();
@@ -184,13 +184,14 @@ export default function ResumePage() {
     }
   }, [isOpen, authenticated, isMounted]);
 
-  // Show 404 after 3 errors, wrapped in DefaultLayout (only when PIN code is enabled)
+  // Show 404 after 3 errors, wrapped in full page layout (only when PIN code is enabled)
   if (IS_PIN_ENABLED && failCount >= 3) {
     const textColor = currentTheme === "dark" ? "#ffffff" : "#000000";
 
     return (
-      <DefaultLayout>
-        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2">
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        <Navbar />
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2 pt-16">
           {isMounted && forceRender && (
             <div key={`fuzzy-container-${renderKey}`}>
               <FuzzyText
@@ -214,12 +215,15 @@ export default function ResumePage() {
             </div>
           )}
         </div>
-      </DefaultLayout>
+      </div>
     );
   }
 
   return (
-    <DefaultLayout>
+    <div className="min-h-screen bg-white dark:bg-gray-900">
+      {/* Navigation Bar */}
+      <Navbar />
+
       {/* Display PIN modal only if PIN is enabled */}
       {IS_PIN_ENABLED && (
         <Modal isOpen={isOpen && !authenticated} onOpenChange={onOpenChange}>
@@ -247,18 +251,20 @@ export default function ResumePage() {
 
       {/* Display resume content */}
       {authenticated && (
-        <div className="min-h-screen">
+        <div className="min-h-screen pt-16">
+          {" "}
+          {/* Add top padding for navbar */}
           {isLoadingResume ? (
             <div className="flex justify-center items-center min-h-[50vh]">
               <Spinner label="Loading resume..." size="lg" />
             </div>
           ) : resumeData && resumeData.basics && resumeData.basics.name ? (
-            <div className="space-y-6">
-              {/* Resume Content */}
-              <ResumeContent data={resumeData} />
+            <div className="space-y-0">
+              {/* Professional Resume Content */}
+              <ProfessionalResumeContent data={resumeData} />
             </div>
           ) : (
-            <div className="flex justify-center items-center min-h-[50vh]">
+            <div className="flex justify-center items-center min-h-[50vh] p-8">
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center max-w-md mx-auto p-8"
@@ -303,6 +309,6 @@ export default function ResumePage() {
           )}
         </div>
       )}
-    </DefaultLayout>
+    </div>
   );
 }
