@@ -38,10 +38,21 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 Create a `.env` file and set the following variables:
 
 ```bash
-# Resume PIN code protection
+# Required: Website title
+VITE_WEBSITE_TITLE=Mai
+
+# Required: Resume file - supports both local files and URLs
+# Local file example:
+VITE_RESUME_FILE=example.yaml
+# GitHub Gist example:
+# VITE_RESUME_FILE=https://gist.github.com/username/gist_id
+# Raw URL example:
+# VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
+
+# Optional: Resume PIN code protection
 VITE_PIN_CODE=123456
 
-# GitHub API Token (for Portfolio feature)
+# Optional: GitHub API Token (for Portfolio feature)
 VITE_GITHUB_TOKEN=your_github_token_here
 ```
 
@@ -88,7 +99,11 @@ npm run dev
 
 ### Resume Page (`/resume`)
 
-- PIN code verification protection
+- PIN code verification protection (optional)
+- **Flexible Resume Loading**: Supports multiple resume sources:
+  - **Local YAML files**: `example.yaml`, `resume.yaml` (loaded from `public/` directory)
+  - **GitHub Gist**: Direct Gist URLs automatically converted to raw format
+  - **Raw URLs**: Any accessible YAML file URL
 - YAML-driven resume data management
 - Structured display of personal info, education, work experience, etc.
 - Responsive design and animation effects
@@ -112,7 +127,40 @@ const userContributions = await getUserContributions("your_github_username");
 
 ### Edit Resume Content
 
-Edit the `public/example.yaml` file to update your resume content.
+You have multiple options to set up your resume:
+
+#### Option 1: Local YAML File
+
+Edit the `public/example.yaml` file or create your own YAML file in the `public/` directory:
+
+```bash
+# In .env file
+VITE_RESUME_FILE=my-resume.yaml
+```
+
+#### Option 2: GitHub Gist (Recommended)
+
+Create a GitHub Gist with your resume YAML file and use the Gist URL:
+
+```bash
+# In .env file
+VITE_RESUME_FILE=https://gist.github.com/your-username/your-gist-id
+```
+
+Benefits of using GitHub Gist:
+
+- Easy to update without redeploying your website
+- Version control for your resume
+- Privacy control (private/public gists)
+
+#### Option 3: Raw URL
+
+Use any accessible YAML file URL:
+
+```bash
+# In .env file
+VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
+```
 
 ### Change PIN Code
 
