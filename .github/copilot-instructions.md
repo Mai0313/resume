@@ -237,7 +237,12 @@
 - **`utils/resumeLoader.ts`**: YAML resume data loading utility
   - Uses centralized environment management for file path configuration
   - Accesses resume file path through `envHelpers.getResumeFilePath()` with validation
-  - Supports `VITE_RESUME_FILE` environment variable for custom file paths
+  - **Enhanced URL Support**: `VITE_RESUME_FILE` now supports both local files and remote URLs:
+    - **Local Files**: `resume.yaml`, `example.yaml` (loaded from `public/` directory)
+    - **GitHub Gist URLs**: `https://gist.github.com/username/gist_id` (automatically converted to raw format)
+    - **Raw URLs**: Any accessible YAML file URL (e.g., `https://raw.githubusercontent.com/user/repo/main/resume.yaml`)
+    - **Smart URL Detection**: Automatically detects if input is a URL or local file path
+    - **Gist URL Conversion**: Converts GitHub Gist URLs to raw format for direct file access
   - Error handling and type safety with clear configuration guidance
   - HTTP response status checking and detailed error information
   - **Dynamic Section Order**: Added `extractSectionOrder()` function to automatically extract top-level section order from YAML/JSON
@@ -257,6 +262,12 @@
 
 - **`utils/env.ts`**: Centralized environment variable management system
   - **Required Environment Variables**: `VITE_WEBSITE_TITLE`, `VITE_RESUME_FILE` - throw error if not provided
+  - **Enhanced Resume File Support**: `VITE_RESUME_FILE` now supports both local files and remote URLs:
+    - **Local Files**: `resume.yaml`, `example.yaml` (loaded from `public/` directory)
+    - **GitHub Gist URLs**: `https://gist.github.com/username/gist_id` (automatically converted to raw format)
+    - **Raw URLs**: Any accessible YAML file URL (e.g., `https://raw.githubusercontent.com/user/repo/main/resume.yaml`)
+  - **Smart URL Detection**: Automatically detects if `VITE_RESUME_FILE` is a URL or local file path
+  - **Gist URL Conversion**: Converts GitHub Gist URLs to raw format for direct file access
   - **Optional with Defaults**: `VITE_GITHUB_TOKEN` (defaults to null), `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/"), `VITE_OPENAI_API_KEY` (defaults to null), `VITE_OPENAI_MODEL` (defaults to null)
   - **Validation on Load**: Automatically validates all required environment variables when module is imported
   - **Type-Safe Access**: Exports `env` object with strongly typed environment variable values

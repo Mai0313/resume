@@ -285,18 +285,38 @@ export default function ResumePage() {
                     Resume Loading Failed
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Unable to load resume content. Please check your resume file
+                    Unable to load resume content. Please check your resume
                     configuration or try refreshing the page.
                   </p>
                 </div>
                 <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                  <p className="text-sm text-red-700 dark:text-red-300">
-                    Check if{" "}
+                  <p className="text-sm text-red-700 dark:text-red-300 mb-3">
+                    Check your{" "}
                     <code className="bg-red-100 dark:bg-red-800 px-1 py-0.5 rounded text-xs font-mono">
                       VITE_RESUME_FILE
                     </code>{" "}
-                    environment variable points to a valid YAML file.
+                    environment variable:
                   </p>
+                  <div className="text-xs text-red-600 dark:text-red-400 space-y-1">
+                    <div>
+                      • <strong>Local file:</strong>{" "}
+                      <code className="bg-red-100 dark:bg-red-800 px-1 py-0.5 rounded font-mono">
+                        resume.yaml
+                      </code>
+                    </div>
+                    <div>
+                      • <strong>GitHub Gist:</strong>{" "}
+                      <code className="bg-red-100 dark:bg-red-800 px-1 py-0.5 rounded font-mono">
+                        https://gist.github.com/user/gist_id
+                      </code>
+                    </div>
+                    <div>
+                      • <strong>Raw URL:</strong>{" "}
+                      <code className="bg-red-100 dark:bg-red-800 px-1 py-0.5 rounded font-mono">
+                        https://raw.githubusercontent.com/user/repo/main/resume.yaml
+                      </code>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </div>
