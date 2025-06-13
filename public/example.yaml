@@ -5,7 +5,8 @@ basics:
   label: "Junior Machine Learning Engineer"
   email: "weichenglee0313@gmail.com"
   location:
-    postgalCode: "300"
+    countryCode: "TW"
+    postalCode: "300"
     city: "Hsinchu"
   profiles:
     - network: "LinkedIn"
