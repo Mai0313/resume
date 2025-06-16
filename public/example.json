@@ -39,7 +39,7 @@
       "studyType": "Bachelor",
       "endDate": "2021-09",
       "score": "3.8/4.0",
-      "summary": "Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning. Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.\n"
+      "summary": "Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning. Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities."
     }
   ],
   "work": [
@@ -48,7 +48,7 @@
       "position": "Junior Machine Learning Engineer",
       "location": "Hsinchu, Taiwan",
       "startDate": "2022-08",
-      "summary": "Spearheaded machine learning research and industrialization for semiconductor design, with a focus on thermal simulation, leakage analysis, and multi-agent AI systems. Bridged academic research with industry by driving innovative machine learning deployment and enabling cross-disciplinary collaboration.\n",
+      "summary": "Spearheaded machine learning research and industrialization for semiconductor design, with a focus on thermal simulation, leakage analysis, and multi-agent AI systems. Bridged academic research with industry by driving innovative machine learning deployment and enabling cross-disciplinary collaboration.",
       "highlights": [
         "Developed and deployed physics-aware deep learning models for SoC thermal simulation, reducing maximum temperature prediction error by 34%.",
         "Engineered layout-dependent leakage analysis methodology, enhancing pre-silicon estimation accuracy by 10% across multiple product lines.",
@@ -65,7 +65,7 @@
       "location": "Mountain View, California, United States",
       "startDate": "2020-10",
       "endDate": "2021-09",
-      "summary": "Conducted quantitative UX research, developed statistical models and empirical methods to extract actionable insights from large-scale user data, and worked with cross-functional teams to improve user experience.\n",
+      "summary": "Conducted quantitative UX research, developed statistical models and empirical methods to extract actionable insights from large-scale user data, and worked with cross-functional teams to improve user experience.",
       "highlights": [
         "Defined and quantified UX goals across multiple product areas with engineers and data scientists.",
         "Developed statistical models for behavioral pattern analysis on large datasets.",
@@ -80,27 +80,27 @@
       "url": "https://arxiv.org/abs/2505.22990",
       "publisher": "IEEE International Conference on LLM-Aided Design (ICLAD)",
       "releaseDate": "2025",
-      "summary": "Proposed a scalable, fully-automated multi-agent workflow for RF/Analog circuit netlist design, integrating Diagram-Aware Retrieval-Augmented Generation and Chain-of-Stage reasoning. Achieved state-of-the-art results on real-world analog circuit design tasks, validating the potential of AI-assisted EDA systems.\n"
+      "summary": "Proposed a scalable, fully-automated multi-agent workflow for RF/Analog circuit netlist design, integrating Diagram-Aware Retrieval-Augmented Generation and Chain-of-Stage reasoning. Achieved state-of-the-art results on real-world analog circuit design tasks, validating the potential of AI-assisted EDA systems."
     },
     {
       "name": "A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects",
       "url": "https://ieeexplore.ieee.org/document/10546410",
       "publisher": "IEEE VLSI TSA",
       "releaseDate": "2024",
-      "summary": "Co-authored a novel methodology for digital logic IP-level leakage analysis, incorporating both intra-cell and inter-cell layout-dependent effects. Improved pre-silicon and post-silicon correlation by over 10% in industrial mixed-Vt designs.\n"
+      "summary": "Co-authored a novel methodology for digital logic IP-level leakage analysis, incorporating both intra-cell and inter-cell layout-dependent effects. Improved pre-silicon and post-silicon correlation by over 10% in industrial mixed-Vt designs."
     },
     {
       "name": "Fast SoC Thermal Simulation with Physics-aware U-Net",
       "url": "https://neurips.cc/virtual/2023/76089",
       "publisher": "NeurIPS ML4PS Workshop",
       "releaseDate": "2023",
-      "summary": "Co-authored a physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools.\n"
+      "summary": "Co-authored a physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools."
     }
   ],
   "projects": [
     {
       "name": "MenTeR: Multi-Agent Analog Circuit Design System",
-      "description": "Led engineering and system integration for MenTeR, an end-to-end automated workflow for RF/analog circuit netlist design based on LLM agents. Focused on cross-agent collaboration, reusable knowledge base construction, and seamless integration with industrial flows.\n",
+      "description": "Led engineering and system integration for MenTeR, an end-to-end automated workflow for RF/analog circuit netlist design based on LLM agents. Focused on cross-agent collaboration, reusable knowledge base construction, and seamless integration with industrial flows.",
       "highlights": [
         "Architected and engineered PI, Circuit, and Testbench agents for automation of specification analysis, netlist generation, and simulation validation.",
         "Built the Circuit Think Tank, a reusable domain knowledge base for design pattern acceleration.",
@@ -110,7 +110,7 @@
     },
     {
       "name": "AI Thermal Simulation Platform",
-      "description": "Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.\n",
+      "description": "Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.",
       "highlights": [
         "Integrated thermal gradient and laplacian constraints, improving data efficiency and model fidelity.",
         "Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup.",
@@ -119,7 +119,7 @@
     },
     {
       "name": "Leakage Analysis Automation",
-      "description": "Developed scalable toolchains and visualization dashboards for automated semiconductor leakage analysis, enabling efficient cross-team data-driven validation and model refinement.\n",
+      "description": "Developed scalable toolchains and visualization dashboards for automated semiconductor leakage analysis, enabling efficient cross-team data-driven validation and model refinement.",
       "highlights": [
         "Automated extraction and modeling of layout-dependent leakage effects, deployed across multiple product lines.",
         "Enabled real-time silicon measurement analysis for rapid debugging and yield improvement."
@@ -127,7 +127,7 @@
     },
     {
       "name": "Open Source & Research Collaboration",
-      "description": "Advanced engineering productivity and research integration through open-source contributions and academic partnerships.\n",
+      "description": "Advanced engineering productivity and research integration through open-source contributions and academic partnerships.",
       "highlights": [
         "Contributed to major ML and LLM open-source projects (AutoGen, LangChain, Langraph, MLflow), resolving critical bugs and improving framework reliability.",
         "Initiated technical collaborations with leading researchers (e.g., DeepMind, Penn State) and facilitated knowledge sharing with external partners.",
