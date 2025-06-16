@@ -87,14 +87,14 @@
       "url": "https://ieeexplore.ieee.org/document/10546410",
       "publisher": "IEEE VLSI TSA",
       "releaseDate": "2024",
-      "summary": "Co-authored a novel methodology for digital logic IP-level leakage analysis, incorporating both intra-cell and inter-cell layout-dependent effects. Improved pre-silicon and post-silicon correlation by over 10% in industrial mixed-Vt designs."
+      "summary": "A novel methodology for digital logic IP-level leakage analysis, incorporating both intra-cell and inter-cell layout-dependent effects. Improved pre-silicon and post-silicon correlation by over 10% in industrial mixed-Vt designs."
     },
     {
       "name": "Fast SoC Thermal Simulation with Physics-aware U-Net",
       "url": "https://neurips.cc/virtual/2023/76089",
       "publisher": "NeurIPS ML4PS Workshop",
       "releaseDate": "2023",
-      "summary": "Co-authored a physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools."
+      "summary": "A physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools."
     }
   ],
   "projects": [
