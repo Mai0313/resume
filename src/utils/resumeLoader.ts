@@ -133,26 +133,70 @@ export interface JSONResumeData {
 export type ResumeData = JSONResumeData;
 
 /**
- * Get resume file path
- * Priority use environment variable VITE_RESUME_FILE specified path
- * If not set, use default example.yaml
+ * Check if a string is a valid URL
  */
-function getResumeFilePath(): string {
-  const customPath = envHelpers.getResumeFilePath();
+function isURL(str: string): boolean {
+  try {
+    new URL(str);
 
-  return customPath.startsWith("/") ? customPath : `/${customPath}`;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Convert GitHub Gist URL to raw URL
+ * Supports both:
+ * - https://gist.github.com/username/gist_id
+ * - https://gist.github.com/username/gist_id/raw/filename.yaml
+ */
+function convertGistToRawURL(url: string): string {
+  const gistMatch = url.match(
+    /https:\/\/gist\.github\.com\/([^\/]+)\/([a-f0-9]+)(?:\/raw\/(.+))?/,
+  );
+
+  if (gistMatch) {
+    const [, username, gistId, filename] = gistMatch;
+
+    // If already a raw URL, return as is
+    if (filename) {
+      return url;
+    }
+
+    // Convert to raw URL - for the first file in the gist
+    return `https://gist.githubusercontent.com/${username}/${gistId}/raw`;
+  }
+
+  return url;
+}
+
+/**
+ * Get resume file path or URL
+ * Supports both local files and remote URLs (including GitHub Gist)
+ */
+function getResumeSource(): string {
+  const resumeFile = envHelpers.getResumeFilePath();
+
+  // If it's a URL, return it directly (with Gist conversion if needed)
+  if (isURL(resumeFile)) {
+    return convertGistToRawURL(resumeFile);
+  }
+
+  // If it's a local file, ensure it starts with /
+  return resumeFile.startsWith("/") ? resumeFile : `/${resumeFile}`;
 }
 
 export async function loadResumeData(): Promise<
   ResumeData & { sectionOrder: string[] }
 > {
   try {
-    const resumeFilePath = getResumeFilePath();
-    const response = await fetch(resumeFilePath);
+    const resumeSource = getResumeSource();
+    const response = await fetch(resumeSource);
 
     if (!response.ok) {
       throw new Error(
-        `Failed to load resume file: ${response.status} ${response.statusText}`,
+        `Failed to load resume data: ${response.status} ${response.statusText}`,
       );
     }
 
