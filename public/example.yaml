@@ -135,15 +135,13 @@ skills:
     keywords:
       - "Physics-Informed Neural Networks (PINNs)"
       - "Fourier-Biot Equation"
-      - "Thermal Gradient and Laplacian Modeling"
-      - "Data Efficiency"
+      - "Gradient and Laplacian Modeling"
       - "Physics-aware Loss Functions"
   - name: "Programming Languages"
     level: Expert
     keywords:
       - "Python"
       - "JavaScript"
-      - "C++"
       - "TypeScript"
       - "Golang"
       - "Rust"
@@ -153,9 +151,7 @@ skills:
     keywords:
       - "PyTorch"
       - "PyTorch Lightning"
-      - "Physics-Informed Neural Networks (PINNs)"
-      - "Multi-Agent Systems"
-      - "Transformers & LLMs"
+      - "TensorFlow"
   - name: "DevOps & Infrastructure"
     level: Expert
     keywords:
@@ -163,12 +159,11 @@ skills:
       - "BigQuery"
       - "Kubernetes"
       - "GitHub Actions"
-      - "Cloud Computing"
   - name: "Research & Analysis"
     level: Advanced
     keywords:
       - "Statistical Modeling"
-      - "Data Analysis"
+      - "Data Analysis & Efficiency"
       - "Empirical Research Methods"
       - "Technical Writing"
 
@@ -182,8 +177,7 @@ interests:
   - name: "Multi-Agent & Multimodal AI"
     keywords:
       - "Multi-Agent Systems"
-      - "Multimodal Learning"
-      - "Reinforcement Learning"
+      - "Multimodal & Reinforcement Learning"
       - "Decision Making"
   - name: "Research Methodology"
     keywords:
@@ -194,6 +188,4 @@ interests:
   - name: "Educational Impact"
     keywords:
       - "Knowledge Democratization"
-      - "AI for Social Good"
-      - "Mentorship & Teaching"
-      - "Industry-Academia Collaboration"
+      - "Fair Access to AI Tools"
