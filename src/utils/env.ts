@@ -6,13 +6,14 @@
  */
 
 // Environment variables that require values (will throw error if not provided)
-const REQUIRED_ENV_VARS = ["VITE_WEBSITE_TITLE", "VITE_RESUME_FILE"] as const;
+const REQUIRED_ENV_VARS = ["VITE_WEBSITE_TITLE"] as const;
 
 // Environment variables with default values
 const DEFAULT_VALUES = {
   VITE_PIN_CODE: null,
   VITE_ROOT_PATH: "/",
   VITE_GITHUB_TOKEN: null,
+  VITE_RESUME_FILE: null,
   VITE_OPENAI_API_KEY: null,
   VITE_OPENAI_MODEL: null,
 } as const;
@@ -74,9 +75,12 @@ validateRequiredEnvVars();
 export const env = {
   // Required environment variables (will throw error if not set)
   WEBSITE_TITLE: getEnvVar("VITE_WEBSITE_TITLE", true),
-  RESUME_FILE: getEnvVar("VITE_RESUME_FILE", true),
 
   // Optional environment variables with defaults
+  RESUME_FILE: getEnvVarWithDefault(
+    "VITE_RESUME_FILE",
+    DEFAULT_VALUES.VITE_RESUME_FILE,
+  ),
   GITHUB_TOKEN: getEnvVarWithDefault(
     "VITE_GITHUB_TOKEN",
     DEFAULT_VALUES.VITE_GITHUB_TOKEN,
@@ -124,10 +128,28 @@ export const envHelpers = {
   },
 
   /**
+   * Check if resume file is configured
+   */
+  isResumeFileAvailable(): boolean {
+    return (
+      env.RESUME_FILE !== null &&
+      env.RESUME_FILE !== "" &&
+      env.RESUME_FILE.trim() !== ""
+    );
+  },
+
+  /**
    * Get resume file path with validation
+   * Throws error if VITE_RESUME_FILE is not configured
    */
   getResumeFilePath(): string {
-    return env.RESUME_FILE;
+    if (!this.isResumeFileAvailable()) {
+      throw new Error(
+        "VITE_RESUME_FILE is not configured. Please set this environment variable to load resume content.",
+      );
+    }
+
+    return env.RESUME_FILE!;
   },
 
   /**

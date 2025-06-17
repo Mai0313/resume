@@ -8,6 +8,9 @@ basics:
     countryCode: "TW"
     postalCode: "300"
     city: "Hsinchu"
+  summary: >
+    Junior Machine Learning Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
+    Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.
   profiles:
     - network: "LinkedIn"
       username: "Wei Lee"
@@ -39,8 +42,7 @@ work:
     location: "Hsinchu, Taiwan"
     startDate: "2022-08"
     summary: >
-      Spearheaded machine learning research and industrialization for semiconductor design, with a focus on thermal simulation, leakage analysis, and multi-agent AI systems.
-      Bridged academic research with industry by driving innovative machine learning deployment and enabling cross-disciplinary collaboration.
+      Spearheaded ML research and industrialization for semiconductor design—thermal simulation, leakage analysis, and multi-agent AI systems.
     highlights:
       - "Developed and deployed physics-aware deep learning models for SoC thermal simulation, reducing maximum temperature prediction error by 34%."
       - "Engineered layout-dependent leakage analysis methodology, enhancing pre-silicon estimation accuracy by 10% across multiple product lines."
