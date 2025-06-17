@@ -1,0 +1,485 @@
+{
+  "basics": {
+    "name": "Wei Cheng Lee",
+    "headline": "Junior Machine Learning Engineer",
+    "email": "weichenglee0313@gmail.com",
+    "phone": "",
+    "location": "",
+    "url": {
+      "label": "",
+      "href": "https://resume.mai0313.com"
+    },
+    "customFields": [],
+    "picture": {
+      "url": "",
+      "size": 64,
+      "aspectRatio": 1,
+      "borderRadius": 0,
+      "effects": {
+        "hidden": false,
+        "border": false,
+        "grayscale": false
+      }
+    }
+  },
+  "sections": {
+    "summary": {
+      "name": "Summary",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "summary",
+      "content": "<p>Junior Machine Learning Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.</p><p>Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.</p>"
+    },
+    "awards": {
+      "name": "Awards",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "awards",
+      "items": []
+    },
+    "certifications": {
+      "name": "Certifications",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "certifications",
+      "items": []
+    },
+    "education": {
+      "name": "Education",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "education",
+      "items": [
+        {
+          "id": "b6uubqu39fzzzzyhnm7ftmbn",
+          "visible": true,
+          "institution": "University of California, San Diego",
+          "studyType": "Bachelor",
+          "area": "Psychology",
+          "score": "3.8/4.0",
+          "date": "2017-09 - 2021-09",
+          "summary": "<p>Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through self-learning.</p><p>Explored human cognition and the social factors of learning, inspiring a shift toward computational solutions to real-world educational inequities.</p>",
+          "url": {
+            "label": "",
+            "href": "https://ucsd.edu/"
+          }
+        }
+      ]
+    },
+    "experience": {
+      "name": "Experience",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "experience",
+      "items": [
+        {
+          "id": "w1rqnp79f4dowqte6o7p38i6",
+          "visible": true,
+          "company": "MediaTek",
+          "position": "Junior Machine Learning Engineer",
+          "location": "",
+          "date": "2022-08 - 08",
+          "summary": "<p>Spearheaded ML research and industrialization for semiconductor design—thermal simulation, leakage analysis, and multi-agent AI systems.</p><p>• Developed and deployed physics-aware deep learning models for SoC thermal simulation, reducing maximum temperature prediction error by 34%. </p><p>• Engineered layout-dependent leakage analysis methodology, improving pre-silicon estimation accuracy by 10%.\n</p><p>• Led automation of RF/analog circuit design using multi-agent LLM systems, driving Pass@1 success rate over 84%.\n</p><p>• Published 3 peer-reviewed papers in top conferences (NeurIPS, IEEE VLSI TSA, IEEE ICLAD).\n</p><p>• Built scalable data analysis pipelines, and mentored junior engineers.</p>",
+          "url": {
+            "label": "",
+            "href": ""
+          }
+        },
+        {
+          "id": "d9w53tp4cg5d0c10bm4khj47",
+          "visible": false,
+          "company": "Google Inc.",
+          "position": "Student Researcher",
+          "location": "",
+          "date": "2020-10 - 2021-09",
+          "summary": "Conducted quantitative UX research, developed statistical models and empirical methods to extract insights from large-scale user data, and collaborated cross-functionally to improve user experience.\n\n• Defined and quantified UX goals with engineers and data scientists.\n• Built models for behavioral pattern analysis and applied empirical research methods (ANOVA, Chi-Squared, T-tests).\n• Communicated findings to stakeholders for product improvement.",
+          "url": {
+            "label": "",
+            "href": ""
+          }
+        }
+      ]
+    },
+    "volunteer": {
+      "name": "Volunteering",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "volunteer",
+      "items": []
+    },
+    "interests": {
+      "name": "Interests",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "interests",
+      "items": [
+        {
+          "id": "je2k2p32z9n4zgwou3s2ue51",
+          "visible": true,
+          "name": "AI for Semiconductor Design",
+          "keywords": [
+            "Physics-Informed Neural Networks",
+            "Circuit Design Automation",
+            "Thermal Modeling",
+            "Leakage Analysis"
+          ]
+        },
+        {
+          "id": "myy79dut1wnpz0fiixu6xf9j",
+          "visible": true,
+          "name": "Multi-Agent & Multimodal AI",
+          "keywords": [
+            "Multi-Agent Systems",
+            "Multimodal Learning",
+            "Reinforcement Learning",
+            "Decision Making"
+          ]
+        },
+        {
+          "id": "y9vppkjmdhzg5y4ko2uf0o8x",
+          "visible": true,
+          "name": "Research Methodology",
+          "keywords": [
+            "Integrative Tokenization",
+            "Knowledge Distillation",
+            "Process-Oriented Evaluation",
+            "Cross-disciplinary Research"
+          ]
+        },
+        {
+          "id": "pnyv1dxuuxbsz3dczz9gydjd",
+          "visible": true,
+          "name": "Educational Impact",
+          "keywords": [
+            "Knowledge Democratization",
+            "AI for Social Good",
+            "Mentorship & Teaching",
+            "Industry-Academia Collaboration"
+          ]
+        }
+      ]
+    },
+    "languages": {
+      "name": "Languages",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "languages",
+      "items": [
+        {
+          "id": "n04h7kfkddyuu8l31up7pxzz",
+          "visible": true,
+          "name": "Chinese",
+          "description": "Native",
+          "level": 5
+        },
+        {
+          "id": "v8px7m1z7qvqg6y6gilqzz9u",
+          "visible": true,
+          "name": "English",
+          "description": "Advanced",
+          "level": 5
+        }
+      ]
+    },
+    "profiles": {
+      "name": "Profiles",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "profiles",
+      "items": [
+        {
+          "id": "gf7vpeuila0y7id7upi261ks",
+          "visible": true,
+          "network": "LinkedIn",
+          "username": "Wei Lee",
+          "icon": "linkedin",
+          "url": {
+            "label": "",
+            "href": "https://www.linkedin.com/in/wei-lee-b28153229/"
+          }
+        },
+        {
+          "id": "iyjl9ax9fwacsknnf2mn6dhw",
+          "visible": true,
+          "network": "GitHub",
+          "username": "Mai0313",
+          "icon": "github",
+          "url": {
+            "label": "",
+            "href": "https://github.com/Mai0313"
+          }
+        }
+      ]
+    },
+    "projects": {
+      "name": "Projects",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "projects",
+      "items": [
+        {
+          "id": "qfx3uxdiq8vor3fmwekf2lxf",
+          "visible": true,
+          "name": "MenTeR: Multi-Agent Analog Circuit Design System",
+          "description": "",
+          "date": "",
+          "summary": "Led engineering and system integration for MenTeR, an end-to-end workflow for RF/analog circuit netlist design based on LLM agents. Architected PI, Circuit, and Testbench agents, and built the Circuit Think Tank for design pattern acceleration.",
+          "keywords": [],
+          "url": {
+            "label": "",
+            "href": ""
+          }
+        },
+        {
+          "id": "n4j6aq0t60a3uouvf8asaleg",
+          "visible": true,
+          "name": "Open Source & Research Collaboration",
+          "description": "",
+          "date": "",
+          "summary": "Contributed to ML and LLM open-source projects (AutoGen, LangChain, Langraph, MLflow), initiated collaborations with leading researchers, and improved workflow efficiency through DevOps pipeline optimization.",
+          "keywords": [],
+          "url": {
+            "label": "",
+            "href": ""
+          }
+        },
+        {
+          "id": "mpi0s9gc2mo6hjv11c6v5wn1",
+          "visible": true,
+          "name": "Leakage Analysis Automation",
+          "description": "",
+          "date": "",
+          "summary": "Developed scalable toolchains and visualization dashboards for automated semiconductor leakage analysis, enabling cross-team data-driven validation and real-time silicon measurement analysis.",
+          "keywords": [],
+          "url": {
+            "label": "",
+            "href": ""
+          }
+        },
+        {
+          "id": "fptpklyue71cj8w2q4adztak",
+          "visible": true,
+          "name": "AI Thermal Simulation Platform",
+          "description": "",
+          "date": "",
+          "summary": "Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Integrated thermal constraints and benchmarked system against commercial CFD tools, achieving 34% maximum temperature error reduction and 100x speedup.",
+          "keywords": [],
+          "url": {
+            "label": "",
+            "href": ""
+          }
+        }
+      ]
+    },
+    "publications": {
+      "name": "Publications",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "publications",
+      "items": [
+        {
+          "id": "iulpx71uqwgkz2kz9t3g6mjh",
+          "visible": true,
+          "name": "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design",
+          "publisher": "",
+          "date": "2025",
+          "summary": "Proposed a scalable, fully-automated multi-agent workflow for RF/Analog circuit netlist design, integrating Diagram-Aware RAG and Chain-of-Stage reasoning. Achieved state-of-the-art results on real-world analog circuit design tasks.",
+          "url": {
+            "label": "",
+            "href": "https://arxiv.org/abs/2505.22990"
+          }
+        },
+        {
+          "id": "w2yq1cyts82tbobhjqr7phjp",
+          "visible": true,
+          "name": "A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects",
+          "publisher": "",
+          "date": "2024",
+          "summary": "<p>A novel methodology for digital logic IP-level leakage analysis, incorporating intra-cell and inter-cell layout-dependent effects. Improved pre- and post-silicon correlation by over 10% in industrial designs.</p>",
+          "url": {
+            "label": "",
+            "href": "https://ieeexplore.ieee.org/document/10546410"
+          }
+        },
+        {
+          "id": "qih7ztk4ha012fe1jkk5x29c",
+          "visible": true,
+          "name": "Fast SoC Thermal Simulation with Physics-aware U-Net",
+          "publisher": "",
+          "date": "2023",
+          "summary": "<p>A physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced max temperature error by 34% and achieved &gt;100x speedup over CFD tools.</p>",
+          "url": {
+            "label": "",
+            "href": "https://neurips.cc/virtual/2023/76089"
+          }
+        }
+      ]
+    },
+    "references": {
+      "name": "References",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "references",
+      "items": []
+    },
+    "skills": {
+      "name": "Skills",
+      "columns": 1,
+      "separateLinks": true,
+      "visible": true,
+      "id": "skills",
+      "items": [
+        {
+          "id": "cmlv703ah2n4klzrwvby6s5k",
+          "visible": true,
+          "name": "Multi-Agent Systems",
+          "description": "Expert",
+          "level": 5,
+          "keywords": [
+            "Agent-Oriented Programming",
+            "Agent Orchestration",
+            "Chain-of-Stage Reasoning",
+            "DA-RAG",
+            "Executor Agent",
+            "Circuit Think Tank"
+          ]
+        },
+        {
+          "id": "d5debzyni1dwxuj455jk78kq",
+          "visible": true,
+          "name": "Physics-Informed ML",
+          "description": "Advanced",
+          "level": 3,
+          "keywords": [
+            "PINNs",
+            "Fourier-Biot Equation",
+            "Thermal Gradient Modeling",
+            "Physics-aware Loss Functions"
+          ]
+        },
+        {
+          "id": "f3v80q8vcxxdnodsrmfskd9z",
+          "visible": true,
+          "name": "Programming Languages",
+          "description": "Expert",
+          "level": 5,
+          "keywords": [
+            "Python",
+            "JavaScript",
+            "C++",
+            "TypeScript",
+            "Golang",
+            "Rust",
+            "LaTeX"
+          ]
+        },
+        {
+          "id": "dixmg3gxqgka3m9a0547yoqn",
+          "visible": true,
+          "name": "AI/ML Frameworks",
+          "description": "Advanced",
+          "level": 5,
+          "keywords": [
+            "PyTorch",
+            "PyTorch Lightning",
+            "Transformers",
+            "Multi-Agent Systems"
+          ]
+        },
+        {
+          "id": "yyx0wxf8orx0n54lql2tm4ro",
+          "visible": true,
+          "name": "DevOps & Infrastructure",
+          "description": "Expert",
+          "level": 5,
+          "keywords": [
+            "Docker",
+            "BigQuery",
+            "Kubernetes",
+            "GitHub Actions",
+            "Cloud Computing"
+          ]
+        },
+        {
+          "id": "sytvvlhkqhse9bo2kragz575",
+          "visible": true,
+          "name": "Research & Analysis",
+          "description": "Advanced",
+          "level": 5,
+          "keywords": [
+            "Statistical Modeling",
+            "Data Analysis",
+            "Empirical Research Methods",
+            "Technical Writing"
+          ]
+        }
+      ]
+    },
+    "custom": {}
+  },
+  "metadata": {
+    "template": "rhyhorn",
+    "layout": [
+      [
+        [
+          "profiles",
+          "summary",
+          "experience",
+          "education",
+          "projects",
+          "volunteer",
+          "references"
+        ],
+        [
+          "skills",
+          "interests",
+          "certifications",
+          "awards",
+          "publications",
+          "languages"
+        ]
+      ]
+    ],
+    "css": {
+      "value": "* {\n\toutline: 1px solid #000;\n\toutline-offset: 4px;\n}",
+      "visible": false
+    },
+    "page": {
+      "margin": 18,
+      "format": "a4",
+      "options": {
+        "breakLine": true,
+        "pageNumbers": true
+      }
+    },
+    "theme": {
+      "background": "#ffffff",
+      "text": "#000000",
+      "primary": "#dc2626"
+    },
+    "typography": {
+      "font": {
+        "family": "Roboto Condensed",
+        "subset": "latin",
+        "variants": ["regular"],
+        "size": 14
+      },
+      "lineHeight": 1.5,
+      "hideIcons": false,
+      "underlineLinks": true
+    },
+    "notes": ""
+  }
+}
