@@ -8,6 +8,9 @@ basics:
     countryCode: "TW"
     postalCode: "300"
     city: "Hsinchu"
+  summary: >
+    Junior Machine Learning Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
+    Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.
   profiles:
     - network: "LinkedIn"
       username: "Wei Lee"
@@ -39,8 +42,7 @@ work:
     location: "Hsinchu, Taiwan"
     startDate: "2022-08"
     summary: >
-      Spearheaded machine learning research and industrialization for semiconductor design, with a focus on thermal simulation, leakage analysis, and multi-agent AI systems.
-      Bridged academic research with industry by driving innovative machine learning deployment and enabling cross-disciplinary collaboration.
+      Spearheaded ML research and industrialization for semiconductor design—thermal simulation, leakage analysis, and multi-agent AI systems.
     highlights:
       - "Developed and deployed physics-aware deep learning models for SoC thermal simulation, reducing maximum temperature prediction error by 34%."
       - "Engineered layout-dependent leakage analysis methodology, enhancing pre-silicon estimation accuracy by 10% across multiple product lines."
@@ -133,15 +135,13 @@ skills:
     keywords:
       - "Physics-Informed Neural Networks (PINNs)"
       - "Fourier-Biot Equation"
-      - "Thermal Gradient and Laplacian Modeling"
-      - "Data Efficiency"
+      - "Gradient and Laplacian Modeling"
       - "Physics-aware Loss Functions"
   - name: "Programming Languages"
     level: Expert
     keywords:
       - "Python"
       - "JavaScript"
-      - "C++"
       - "TypeScript"
       - "Golang"
       - "Rust"
@@ -151,9 +151,7 @@ skills:
     keywords:
       - "PyTorch"
       - "PyTorch Lightning"
-      - "Physics-Informed Neural Networks (PINNs)"
-      - "Multi-Agent Systems"
-      - "Transformers & LLMs"
+      - "TensorFlow"
   - name: "DevOps & Infrastructure"
     level: Expert
     keywords:
@@ -161,12 +159,11 @@ skills:
       - "BigQuery"
       - "Kubernetes"
       - "GitHub Actions"
-      - "Cloud Computing"
   - name: "Research & Analysis"
     level: Advanced
     keywords:
       - "Statistical Modeling"
-      - "Data Analysis"
+      - "Data Analysis & Efficiency"
       - "Empirical Research Methods"
       - "Technical Writing"
 
@@ -180,8 +177,7 @@ interests:
   - name: "Multi-Agent & Multimodal AI"
     keywords:
       - "Multi-Agent Systems"
-      - "Multimodal Learning"
-      - "Reinforcement Learning"
+      - "Multimodal & Reinforcement Learning"
       - "Decision Making"
   - name: "Research Methodology"
     keywords:
@@ -192,6 +188,4 @@ interests:
   - name: "Educational Impact"
     keywords:
       - "Knowledge Democratization"
-      - "AI for Social Good"
-      - "Mentorship & Teaching"
-      - "Industry-Academia Collaboration"
+      - "Fair Access to AI Tools"

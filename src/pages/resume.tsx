@@ -28,7 +28,7 @@ export default function ResumePage() {
   const [forceRender, setForceRender] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<string>("light");
   const [resumeData, setResumeData] = useState<
-    (ResumeData & { sectionOrder: string[] }) | null
+    (ResumeData & { sectionOrder: string[] }) | null | "NOT_CONFIGURED"
   >(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
 
@@ -149,6 +149,11 @@ export default function ResumePage() {
   async function loadResumeContent() {
     setIsLoadingResume(true);
     try {
+      // Check if resume file is configured
+      if (!envHelpers.isResumeFileAvailable()) {
+        throw new Error("RESUME_FILE_NOT_CONFIGURED");
+      }
+
       const data = await loadResumeData();
 
       // Verify data structure integrity
@@ -158,13 +163,23 @@ export default function ResumePage() {
 
       setResumeData(data);
     } catch (error) {
-      addToast({
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to load resume data",
-        color: "danger",
-      });
-      setResumeData(null);
+      if (
+        error instanceof Error &&
+        error.message === "RESUME_FILE_NOT_CONFIGURED"
+      ) {
+        // Special handling for unconfigured resume file
+        setResumeData("NOT_CONFIGURED" as any);
+      } else {
+        addToast({
+          title: "Error",
+          description:
+            error instanceof Error
+              ? error.message
+              : "Failed to load resume data",
+          color: "danger",
+        });
+        setResumeData(null);
+      }
     } finally {
       setIsLoadingResume(false);
     }
@@ -247,10 +262,74 @@ export default function ResumePage() {
 
       {/* Display resume content */}
       {authenticated && (
-        <div className="min-h-screen">
+        <div className="min-h-[calc(100vh-4rem)]">
           {isLoadingResume ? (
             <div className="flex justify-center items-center min-h-[50vh]">
               <Spinner label="Loading resume..." size="lg" />
+            </div>
+          ) : resumeData === "NOT_CONFIGURED" ? (
+            // Display configuration prompt when VITE_RESUME_FILE is not set
+            <div className="flex justify-center items-center min-h-[50vh] px-4">
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center max-w-2xl mx-auto p-8"
+                initial={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="mb-6">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                    Resume Configuration Required
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    Please configure your resume file to display content on this
+                    page.
+                  </p>
+                </div>
+                <div className="p-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                  <p className="text-base text-yellow-700 dark:text-yellow-300 mb-4">
+                    Set the{" "}
+                    <code className="bg-yellow-100 dark:bg-yellow-800 px-2 py-1 rounded text-sm font-mono">
+                      VITE_RESUME_FILE
+                    </code>{" "}
+                    environment variable:
+                  </p>
+                  <div className="text-sm text-yellow-600 dark:text-yellow-400 space-y-2">
+                    <div>
+                      • <strong>Local file:</strong>{" "}
+                      <code className="bg-yellow-100 dark:bg-yellow-800 px-2 py-1 rounded font-mono">
+                        resume.yaml
+                      </code>
+                    </div>
+                    <div>
+                      • <strong>GitHub Gist:</strong>{" "}
+                      <code className="bg-yellow-100 dark:bg-yellow-800 px-2 py-1 rounded font-mono break-all">
+                        https://gist.github.com/user/gist_id
+                      </code>
+                    </div>
+                    <div>
+                      • <strong>Raw URL:</strong>{" "}
+                      <code className="bg-yellow-100 dark:bg-yellow-800 px-2 py-1 rounded font-mono break-all">
+                        https://raw.githubusercontent.com/user/repo/main/resume.yaml
+                      </code>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           ) : resumeData && resumeData.basics && resumeData.basics.name ? (
             <div className="space-y-6">
@@ -258,10 +337,10 @@ export default function ResumePage() {
               <ResumeContent data={resumeData} />
             </div>
           ) : (
-            <div className="flex justify-center items-center min-h-[50vh]">
+            <div className="flex justify-center items-center min-h-[50vh] px-4">
               <motion.div
                 animate={{ opacity: 1, y: 0 }}
-                className="text-center max-w-md mx-auto p-8"
+                className="text-center max-w-2xl mx-auto p-8"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.6 }}
               >
@@ -289,30 +368,30 @@ export default function ResumePage() {
                     configuration or try refreshing the page.
                   </p>
                 </div>
-                <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                  <p className="text-sm text-red-700 dark:text-red-300 mb-3">
+                <div className="p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                  <p className="text-base text-red-700 dark:text-red-300 mb-4">
                     Check your{" "}
-                    <code className="bg-red-100 dark:bg-red-800 px-1 py-0.5 rounded text-xs font-mono">
+                    <code className="bg-red-100 dark:bg-red-800 px-2 py-1 rounded text-sm font-mono">
                       VITE_RESUME_FILE
                     </code>{" "}
                     environment variable:
                   </p>
-                  <div className="text-xs text-red-600 dark:text-red-400 space-y-1">
+                  <div className="text-sm text-red-600 dark:text-red-400 space-y-2">
                     <div>
                       • <strong>Local file:</strong>{" "}
-                      <code className="bg-red-100 dark:bg-red-800 px-1 py-0.5 rounded font-mono">
+                      <code className="bg-red-100 dark:bg-red-800 px-2 py-1 rounded font-mono">
                         resume.yaml
                       </code>
                     </div>
                     <div>
                       • <strong>GitHub Gist:</strong>{" "}
-                      <code className="bg-red-100 dark:bg-red-800 px-1 py-0.5 rounded font-mono">
+                      <code className="bg-red-100 dark:bg-red-800 px-2 py-1 rounded font-mono break-all">
                         https://gist.github.com/user/gist_id
                       </code>
                     </div>
                     <div>
                       • <strong>Raw URL:</strong>{" "}
-                      <code className="bg-red-100 dark:bg-red-800 px-1 py-0.5 rounded font-mono">
+                      <code className="bg-red-100 dark:bg-red-800 px-2 py-1 rounded font-mono break-all">
                         https://raw.githubusercontent.com/user/repo/main/resume.yaml
                       </code>
                     </div>

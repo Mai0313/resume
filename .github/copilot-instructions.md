@@ -172,9 +172,13 @@
   - **Smart Conditional Judgment**: Only checks URL PIN code when PIN code protection is enabled
 - **Dynamic Resume File Loading**: Uses centralized environment management for resume file configuration
   - Accesses `VITE_RESUME_FILE` through `envHelpers.getResumeFilePath()` with built-in validation
-  - Throws clear error messages when `VITE_RESUME_FILE` is not properly configured
+  - When `VITE_RESUME_FILE` is not configured, displays user-friendly configuration prompt instead of blocking application
   - Supports flexible filename configuration for multi-environment deployment and personalization
   - **Multi-version Management**: Supports loading different resume files (e.g., `resume-en.yaml`, `resume-zh.yaml`)
+- **Smart Configuration Detection**: Added `envHelpers.isResumeFileAvailable()` to check if resume file is configured
+  - Shows beautiful configuration prompt when `VITE_RESUME_FILE` is not set
+  - Different error messages for missing configuration vs. file loading errors
+  - Configuration prompt appears only when entering Resume page, not on application startup
 - **Error Handling Optimization**: Enhanced error display with beautiful and user-friendly interface
   - Shows gradient icons and detailed descriptions when loading fails, replacing simple text prompts
   - Added environment variable configuration prompts to guide users in correctly setting `VITE_RESUME_FILE`
@@ -261,21 +265,23 @@
 ### Environment Variable Management
 
 - **`utils/env.ts`**: Centralized environment variable management system
-  - **Required Environment Variables**: `VITE_WEBSITE_TITLE`, `VITE_RESUME_FILE` - throw error if not provided
-  - **Enhanced Resume File Support**: `VITE_RESUME_FILE` now supports both local files and remote URLs:
+  - **Required Environment Variables**: `VITE_WEBSITE_TITLE` - throws error if not provided
+  - **Enhanced Resume File Support**: `VITE_RESUME_FILE` is now **optional** and supports both local files and remote URLs:
     - **Local Files**: `resume.yaml`, `example.yaml` (loaded from `public/` directory)
     - **GitHub Gist URLs**: `https://gist.github.com/username/gist_id` (automatically converted to raw format)
     - **Raw URLs**: Any accessible YAML file URL (e.g., `https://raw.githubusercontent.com/user/repo/main/resume.yaml`)
+    - **Development-Friendly**: When not configured, shows user-friendly configuration prompt instead of blocking application startup
   - **Smart URL Detection**: Automatically detects if `VITE_RESUME_FILE` is a URL or local file path
   - **Gist URL Conversion**: Converts GitHub Gist URLs to raw format for direct file access
-  - **Optional with Defaults**: `VITE_GITHUB_TOKEN` (defaults to null), `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/"), `VITE_OPENAI_API_KEY` (defaults to null), `VITE_OPENAI_MODEL` (defaults to null)
-  - **Validation on Load**: Automatically validates all required environment variables when module is imported
+  - **Optional with Defaults**: `VITE_GITHUB_TOKEN` (defaults to null), `VITE_PIN_CODE` (defaults to null), `VITE_ROOT_PATH` (defaults to "/"), `VITE_OPENAI_API_KEY` (defaults to null), `VITE_OPENAI_MODEL` (defaults to null), `VITE_RESUME_FILE` (defaults to null)
+  - **Validation on Load**: Automatically validates required environment variables when module is imported
   - **Type-Safe Access**: Exports `env` object with strongly typed environment variable values
   - **Helper Functions**: Provides `envHelpers` with utility methods:
     - `isPinEnabled()`: Check if PIN code protection is enabled
     - `getRootPath()`: Get root path with fallback
     - `isGitHubTokenAvailable()`: Check if GitHub token is available
-    - `getResumeFilePath()`: Get resume file path with validation
+    - `isResumeFileAvailable()`: Check if resume file is configured
+    - `getResumeFilePath()`: Get resume file path with validation (throws error if not configured)
     - `getGitHubUsername()`: Asynchronously fetch GitHub username via API token
     - `isOpenAIChatBotAvailable()`: Check if OpenAI chatbot is available (both API key and model configured)
   - **Error Handling**: Clear error messages when required variables are missing
