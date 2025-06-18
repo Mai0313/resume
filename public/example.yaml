@@ -52,18 +52,18 @@ work:
       - "Established industry-academia partnerships and secured research sponsorships, supporting talent development and knowledge exchange."
       - "Mentored junior engineers and interns, fostering open collaboration and a culture of continuous learning."
 
-  - company: "Google Inc."
-    position: "Student Researcher"
-    location: "Mountain View, California, United States"
-    startDate: "2020-10"
-    endDate: "2021-09"
-    summary: >
-      Conducted quantitative UX research, developed statistical models and empirical methods to extract actionable insights from large-scale user data, and worked with cross-functional teams to improve user experience.
-    highlights:
-      - "Defined and quantified UX goals across multiple product areas with engineers and data scientists."
-      - "Developed statistical models for behavioral pattern analysis on large datasets."
-      - "Applied empirical methods (ANOVA, Chi-Squared, T-tests) for hypothesis testing and data validation."
-      - "Communicated findings to diverse stakeholders, driving product improvements."
+  # - company: "Google Inc."
+  #   position: "Student Researcher"
+  #   location: "Mountain View, California, United States"
+  #   startDate: "2020-10"
+  #   endDate: "2021-09"
+  #   summary: >
+  #     Conducted quantitative UX research, developed statistical models and empirical methods to extract actionable insights from large-scale user data, and worked with cross-functional teams to improve user experience.
+  #   highlights:
+  #     - "Defined and quantified UX goals across multiple product areas with engineers and data scientists."
+  #     - "Developed statistical models for behavioral pattern analysis on large datasets."
+  #     - "Applied empirical methods (ANOVA, Chi-Squared, T-tests) for hypothesis testing and data validation."
+  #     - "Communicated findings to diverse stakeholders, driving product improvements."
 
 publications:
   - name: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design"
