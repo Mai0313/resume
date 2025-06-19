@@ -97,13 +97,14 @@ projects:
       - "Significantly reduced manual workload and boosted design success rates on real-world analog circuits."
       - "Drove practical adoption through industry-academia collaboration."
 
-  - name: "AI Thermal Simulation Platform"
+  - name: "Task Management Agent"
     description: >
-      Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.
+      Multi-Agent system for task management, including task assignment, progress tracking, and resource allocation.
+      Utilizes executor agents for efficient execution of tasks across various domains.
+      Support delegation of tasks to specialized agents, enhancing system flexibility and adaptability.
     highlights:
-      - "Integrated thermal gradient and laplacian constraints, improving data efficiency and model fidelity."
-      - "Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup."
-      - "Explored and prototyped transformer-based variants for future research directions."
+      - "Implemented a robust task management framework with multi-agent orchestration."
+      - "Enabled dynamic task assignment and resource allocation based on agent capabilities."
 
   - name: "Leakage Analysis Automation"
     description: >
@@ -112,13 +113,13 @@ projects:
       - "Automated extraction and modeling of layout-dependent leakage effects, deployed across multiple product lines."
       - "Enabled real-time silicon measurement analysis for rapid debugging and yield improvement."
 
-  - name: "Open Source & Research Collaboration"
+  - name: "AI Thermal Simulation"
     description: >
-      Advanced engineering productivity and research integration through open-source contributions and academic partnerships.
+      Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.
     highlights:
-      - "Contributed to major ML and LLM open-source projects (AutoGen, LangChain, Langraph, MLflow), resolving critical bugs and improving framework reliability."
-      - "Initiated technical collaborations with leading researchers (e.g., DeepMind, Penn State) and facilitated knowledge sharing with external partners."
-      - "Improved internal workflow efficiency through DevOps pipeline optimization and technical mentoring."
+      - "Integrated thermal gradient and laplacian constraints, improving data efficiency and model fidelity."
+      - "Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup."
+      - "Explored and prototyped transformer-based variants for future research directions."
 
 skills:
   - name: "Multi-Agent Systems"
