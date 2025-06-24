@@ -88,6 +88,14 @@ publications:
       A physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools.
 
 projects:
+  - name: "Automotive Assistant for Vechicle using multi-agent system"
+    description: >
+      Using multi-agent system to develop an automotive assistant for vehicle control, enabling real-time voice commands and automated task execution.
+      Focused on agent orchestration, executor agents, and chain-of-stage reasoning to enhance user experience and system efficiency.
+    highlights:
+      - "Implemented a multi-agent architecture for real-time voice command processing and task execution."
+      - "Developed executor agents for specialized tasks, improving system responsiveness and adaptability."
+
   - name: "MenTeR: Multi-Agent Analog Circuit Design System"
     description: >
       Led engineering and system integration for MenTeR, an end-to-end automated workflow for RF/analog circuit netlist design based on LLM agents. Focused on cross-agent collaboration, reusable knowledge base construction, and seamless integration with industrial flows.
@@ -97,13 +105,14 @@ projects:
       - "Significantly reduced manual workload and boosted design success rates on real-world analog circuits."
       - "Drove practical adoption through industry-academia collaboration."
 
-  - name: "Task Management Agent"
+  - name: "Task Management System with Multi-Agent Orchestration"
     description: >
       Multi-Agent system for task management, including task assignment, progress tracking, and resource allocation.
       Utilizes executor agents for efficient execution of tasks across various domains.
       Support delegation of tasks to specialized agents, enhancing system flexibility and adaptability.
     highlights:
       - "Implemented a robust task management framework with multi-agent orchestration."
+      - "Delegated tasks to specialized executor agents for efficient execution."
       - "Enabled dynamic task assignment and resource allocation based on agent capabilities."
 
   - name: "Leakage Analysis Automation"
