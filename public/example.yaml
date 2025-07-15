@@ -6,6 +6,7 @@ basics:
   email: "weichenglee0313@gmail.com"
   location:
     countryCode: "TW"
+    region: "Taiwan"
     postalCode: "300"
     city: "Hsinchu"
   summary: >
@@ -27,11 +28,11 @@ languages:
 
 education:
   - institution: "University of California, San Diego"
-    area: "Psychology"
+    area: "Psychology (Pre-Med)"
     url: "https://ucsd.edu/"
-    studyType: "Bachelor"
+    studyType: "Bachelor of Science"
     endDate: "2021-09"
-    score: "3.8/4.0"
+    score: "3.85/4.0"
     summary: >
       Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning.
       Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.
