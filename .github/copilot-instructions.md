@@ -61,7 +61,9 @@
 ### Configuration System
 
 - **`config/site.ts`**: Website core configuration
-  - Navigation item definitions (`Resume`, `Portfolio`)
+  - **Dynamic Navigation Generation**: Navigation items are now dynamically generated based on environment variable availability
+  - **Conditional Page Display**: Resume page only appears when `VITE_RESUME_FILE` is configured
+  - **Conditional Portfolio Display**: Portfolio page only appears when `VITE_GITHUB_TOKEN` is configured
   - Social media link configuration (`github`, `discord`)
   - Unified website name and description management using centralized environment access
   - Updated to use dynamic path construction with `buildPath()` function
@@ -158,6 +160,10 @@
 
 ## `Resume` Page (`pages/resume.tsx`)
 
+- **Conditional Page Rendering**: Resume page only appears when `VITE_RESUME_FILE` environment variable is configured
+  - Uses `envHelpers.isResumeFileAvailable()` in routing logic to conditionally render the page
+  - When `VITE_RESUME_FILE` is not set: Resume page and navigation option are completely hidden
+  - When `VITE_RESUME_FILE` is set but has errors: Shows beautiful error handling pages
 - **Smart PIN Code Protection**: Determines whether PIN code verification is needed using centralized environment management
   - Uses `envHelpers.isPinEnabled()` to check if PIN protection is active
   - When `VITE_PIN_CODE` is not set: Directly displays resume content, suitable for development and testing environments
@@ -172,13 +178,8 @@
   - **Smart Conditional Judgment**: Only checks URL PIN code when PIN code protection is enabled
 - **Dynamic Resume File Loading**: Uses centralized environment management for resume file configuration
   - Accesses `VITE_RESUME_FILE` through `envHelpers.getResumeFilePath()` with built-in validation
-  - When `VITE_RESUME_FILE` is not configured, displays user-friendly configuration prompt instead of blocking application
   - Supports flexible filename configuration for multi-environment deployment and personalization
   - **Multi-version Management**: Supports loading different resume files (e.g., `resume-en.yaml`, `resume-zh.yaml`)
-- **Smart Configuration Detection**: Added `envHelpers.isResumeFileAvailable()` to check if resume file is configured
-  - Shows beautiful configuration prompt when `VITE_RESUME_FILE` is not set
-  - Different error messages for missing configuration vs. file loading errors
-  - Configuration prompt appears only when entering Resume page, not on application startup
 - **Error Handling Optimization**: Enhanced error display with beautiful and user-friendly interface
   - Shows gradient icons and detailed descriptions when loading fails, replacing simple text prompts
   - Added environment variable configuration prompts to guide users in correctly setting `VITE_RESUME_FILE`
@@ -196,6 +197,10 @@
 
 ## `Portfolio` Page (`pages/portfolio.tsx`)
 
+- **Conditional Page Rendering**: Portfolio page only appears when `VITE_GITHUB_TOKEN` environment variable is configured
+  - Uses `envHelpers.isGitHubTokenAvailable()` in routing logic to conditionally render the page
+  - When `VITE_GITHUB_TOKEN` is not set: Portfolio page and navigation option are completely hidden
+  - When `VITE_GITHUB_TOKEN` is set but invalid: Shows beautiful error handling pages with retry functionality
 - **GitHub API Integration Complete**: Automatically fetches and displays personal projects and contribution records through GitHub API
 - **Pinned Projects Priority**: Automatically fetches GitHub Pinned repositories and displays them at the top with priority
 - **Complete Project Information**: Displays project language, star count, fork count, latest commits, topic tags, etc.
@@ -203,15 +208,10 @@
 - **Environment Variable Configuration**: Uses centralized environment management for GitHub integration
   - **Automatic Username Detection**: No longer requires `VITE_GITHUB_USERNAME` - automatically fetches username via GitHub Token using `envHelpers.getGitHubUsername()`
   - Uses `VITE_GITHUB_TOKEN` through `env.GITHUB_TOKEN` with built-in availability checking
-- **Smart Token Detection**: Implements complete GitHub Token missing detection and user guidance system
-  - Uses `envHelpers.isGitHubTokenAvailable()` function to check Token availability
-  - Shows beautiful Token setup guide directly when Token is missing
-  - Provides step-by-step instructions and direct links to GitHub Personal Access Tokens
-  - Conditional rendering: shows setup guide when Token is missing, shows Portfolio content when normal
 - **Error Handling Beautification**: Enhanced error display with professional visual design
   - Shows detailed error information and retry buttons when GitHub API errors occur
   - Optimized empty state display using icons and animations to enhance visual effects
-  - Layered error handling: Token missing, API errors, loading states are handled independently
+  - Layered error handling: API errors, loading states are handled independently
   - All error messages adopt consistent design language and visual style
 - **User Experience Optimization**: Homepage links display as "🔗 Link", suitable for various types of project links
 - **Card Layout Optimization**: Fixed bottom link positioning for consistent visual appearance across all project cards
@@ -322,10 +322,13 @@
 ### Application Core
 
 - **`App.tsx`**: Main application component, contains routing configuration
+  - **Conditional Route Rendering**: Routes are now conditionally rendered based on environment variable availability
+  - Resume route only renders when `VITE_RESUME_FILE` is configured via `envHelpers.isResumeFileAvailable()`
+  - Portfolio route only renders when `VITE_GITHUB_TOKEN` is configured via `envHelpers.isGitHubTokenAvailable()`
 - **`main.tsx`**: Application entry point, renders root component
 - **`provider.tsx`**: HeroUI theme provider configuration, supports dark mode
 
-# Current Status (Updated June 11, 2025)
+# Current Status (Updated July 15, 2025)
 
 The personal website development project is **feature-complete** with the following major implementations:
 
@@ -338,7 +341,8 @@ The personal website development project is **feature-complete** with the follow
 - ✅ **Professional Error Handling**: Beautiful error displays with gradient icons, animations, and user-friendly guidance
 - ✅ **Responsive Design**: Modern UI using HeroUI components with complete mobile/desktop compatibility
 - ✅ **Type Safety**: Complete TypeScript coverage with comprehensive environment variable definitions
-- ✅ **Optimized Environment Configuration**: `VITE_GITHUB_TOKEN` now optional with graceful fallback, automatic GitHub username detection eliminates `VITE_GITHUB_USERNAME` requirement
+- ✅ **Optimized Environment Configuration**: Environment variables now control page visibility - when not configured, pages are completely hidden from navigation and routing
+- ✅ **Smart Page Conditional Rendering**: Resume and Portfolio pages only appear when their respective environment variables are configured
 - ✅ **Interactive Visual Effects**: SpotlightCard integration provides premium hover effects across portfolio repository cards
 - ✅ **AI Chat Assistant**: Intelligent OpenAI-powered chat bot with page context awareness, streaming responses, and strict topic control
 
@@ -352,7 +356,8 @@ The personal website development project is **feature-complete** with the follow
 
 ## User Experience Features
 
-- ✅ **Smart Configuration**: Simplified environment variable setup with automatic GitHub username detection
+- ✅ **Smart Configuration**: Simplified environment variable setup with automatic GitHub username detection and conditional page rendering
+- ✅ **Conditional Navigation**: Navigation items only appear when their corresponding features are properly configured
 - ✅ **Accessibility**: Keyboard navigation, screen reader support, and proper ARIA labels
 - ✅ **Visual Polish**: Smooth animations, consistent design language, and professional appearance
 - ✅ **Error Recovery**: Graceful fallbacks, retry mechanisms, and clear user guidance
