@@ -3,15 +3,19 @@
 basics:
   name: "Wei Cheng Lee"
   label: "Junior Machine Learning Engineer"
+  image: "https://media.licdn.com/dms/image/v2/D5603AQErYVrCYpmxFw/profile-displayphoto-crop_800_800/B56Zeyh0dZHoAM-/0/1751046928636?e=1758153600&v=beta&t=pyCQGFOVnNpWscOOHt6-D8xmUa67DzC-9u8T_g_GZ0s"
   email: "weichenglee0313@gmail.com"
-  location:
-    countryCode: "TW"
-    region: "Taiwan"
-    postalCode: "300"
-    city: "Hsinchu"
+  # phone: "+886-912-345-678"
+  # url: "https://mai0313.github.io/resume"
   summary: >
     Junior Machine Learning Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
     Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.
+  location:
+    # address: "123 Tech Street\nApartment 4B"
+    postalCode: "300"
+    city: "Hsinchu"
+    countryCode: "TW"
+    region: "Taiwan"
   profiles:
     - network: "LinkedIn"
       username: "Wei Lee"
@@ -31,16 +35,24 @@ education:
     area: "Psychology (Pre-Med)"
     url: "https://ucsd.edu/"
     studyType: "Bachelor of Science"
+    startDate: "2017-09"
     endDate: "2021-09"
     score: "3.85/4.0"
     summary: >
       Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning.
       Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.
+    # courses:
+    #   - "PSYC 60 - Introduction to Statistics"
+    #   - "PSYC 201 - Research Methods in Psychology"
+    #   - "PSYC 179 - Neuroscience Laboratory"
+    #   - "COGS 9 - Introduction to Data Science"
 
 work:
-  - company: "MediaTek"
+  - name: "MediaTek"
     position: "Junior Machine Learning Engineer"
     location: "Hsinchu, Taiwan"
+    description: "Fabless semiconductor company that designs and manufactures a range of semiconductor products, providing chips for wireless communications, high-definition television, handheld mobile devices like smartphones and tablet computers, navigation systems, consumer multimedia products and digital subscriber line services as well as optical disc drives."
+    url: "https://www.mediatek.com"
     startDate: "2022-08"
     summary: >
       Spearheaded ML research and industrialization for semiconductor design—thermal simulation, leakage analysis, and multi-agent AI systems.
@@ -96,6 +108,19 @@ projects:
     highlights:
       - "Implemented a multi-agent architecture for real-time voice command processing and task execution."
       - "Developed executor agents for specialized tasks, improving system responsiveness and adaptability."
+    keywords:
+      - "Multi-Agent Systems"
+      - "Voice Recognition"
+      - "Automotive"
+      - "Real-time Processing"
+    startDate: "2025-01"
+    endDate: "2025-06"
+    url: "https://github.com/Mai0313/automotive-backend"
+    roles:
+      - "Technical Lead"
+      - "System Engineer"
+    entity: "MediaTek"
+    type: "application"
 
   - name: "MenTeR: Multi-Agent Analog Circuit Design System"
     description: >
@@ -105,6 +130,19 @@ projects:
       - "Built the Circuit Think Tank, a reusable domain knowledge base for design pattern acceleration."
       - "Significantly reduced manual workload and boosted design success rates on real-world analog circuits."
       - "Drove practical adoption through industry-academia collaboration."
+    keywords:
+      - "Circuit Design"
+      - "Multi-Agent Systems"
+      - "LLM"
+      - "Automation"
+    startDate: "2025-01"
+    endDate: "2025-05"
+    url: "https://arxiv.org/abs/2505.22990"
+    roles:
+      - "Technical Lead"
+      - "System Engineer"
+    entity: "MediaTek"
+    type: "application"
 
   - name: "Task Management System with Multi-Agent Orchestration"
     description: >
@@ -115,6 +153,17 @@ projects:
       - "Implemented a robust task management framework with multi-agent orchestration."
       - "Delegated tasks to specialized executor agents for efficient execution."
       - "Enabled dynamic task assignment and resource allocation based on agent capabilities."
+    startDate: "2024-01"
+    endDate: "2024-12"
+    keywords:
+      - "Task Management"
+      - "Multi-Agent Systems"
+      - "Resource Allocation"
+      - "Orchestration"
+    roles:
+      - "System Engineer"
+    entity: "MediaTek"
+    type: "application"
 
   - name: "Leakage Analysis Automation"
     description: >
@@ -122,6 +171,19 @@ projects:
     highlights:
       - "Automated extraction and modeling of layout-dependent leakage effects, deployed across multiple product lines."
       - "Enabled real-time silicon measurement analysis for rapid debugging and yield improvement."
+    keywords:
+      - "Semiconductor"
+      - "Leakage Analysis"
+      - "Automation"
+      - "Data Visualization"
+    startDate: "2024-01"
+    endDate: "2024-06"
+    url: https://ieeexplore.ieee.org/document/10546410
+    roles:
+      - "Lead Developer"
+      - "Data Scientist"
+    entity: "MediaTek"
+    type: "application"
 
   - name: "AI Thermal Simulation"
     description: >
@@ -130,6 +192,19 @@ projects:
       - "Integrated thermal gradient and laplacian constraints, improving data efficiency and model fidelity."
       - "Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup."
       - "Explored and prototyped transformer-based variants for future research directions."
+    keywords:
+      - "Thermal Simulation"
+      - "Physics-Informed Neural Networks"
+      - "SoC Design"
+      - "Deep Learning"
+    startDate: "2022-10"
+    endDate: "2023-06"
+    url: "https://neurips.cc/virtual/2023/76089"
+    roles:
+      - "Core Developer"
+      - "Research Engineer"
+    entity: "MediaTek"
+    type: "application"
 
 skills:
   - name: "Multi-Agent Systems"
@@ -200,3 +275,35 @@ interests:
     keywords:
       - "Knowledge Democratization"
       - "Fair Access to AI Tools"
+
+volunteer:
+  - organization: "Open Source Community"
+    position: "Contributor"
+    url: "https://github.com/mai0313"
+    startDate: "2022-01"
+    summary: >
+      Active contributor to open-source machine learning and semiconductor design tools.
+    highlights:
+      - "Contributed to 15+ open-source projects related to AI and EDA tools"
+      - "Maintained documentation and tutorials for newcomers"
+
+certificates:
+  - name: "Fundamentals of Accelerated Computing with CUDA Python"
+    date: "2024-12-06"
+    url: "https://learn.nvidia.com/certificates?id=wS6KBhmjTqiLOkau1wi0Tw"
+    issuer: "NVIDIA"
+
+references:
+  - name: "Jiayi Xu"
+    reference: "Wei Cheng Lee distinguished himself at MediaTek by developing a custom terabyte-scale data analysis platform for IC design, demonstrating remarkable adaptability in mastering complex technical domains and translating challenging requirements into robust, scalable solutions."
+
+  - name: "Yi-Chen Lin"
+    reference: "Wei Cheng Lee has proven himself as a proactive contributor to major open-source projects like AutoGen and LangChain, leveraging his community credibility to facilitate collaborations with leading researchers from DeepMind and Penn State while consistently enhancing team productivity through his dedication to knowledge sharing and process improvement."
+
+  - name: "Yu-Sheng Lin"
+    reference: "Wei Cheng Lee served as a key contributor to our AI Thermal Simulation project published at NeurIPS 2023, where he quickly mastered complex concepts like U-Net architecture and thermal gradient algorithms, proactively explored novel approaches such as integrating Swin Transformer V2 for thermal simulation, and demonstrated exceptional adaptability by rapidly re-engineering cutting-edge models for real-world applications while maintaining high code quality and conducting critical validation experiments."
+
+meta:
+  canonical: "https://resume.mai0313.com"
+  version: "v2.1.0"
+  lastModified: "2025-07-15T10:30:00"
