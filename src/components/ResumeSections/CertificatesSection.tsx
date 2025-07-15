@@ -8,7 +8,10 @@ interface CertificatesSectionProps {
   itemVariants: any;
 }
 
-export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ certificates, itemVariants }) => {
+export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
+  certificates,
+  itemVariants,
+}) => {
   if (!certificates || certificates.length === 0) return null;
 
   return (
@@ -40,7 +43,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({ certif
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {certificates.map((cert: any, index: number) => (
               <div
-                key={`certificate-${cert.name || 'unknown'}-${index}`}
+                key={`certificate-${cert.name || "unknown"}-${index}`}
                 className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="flex items-start gap-4">

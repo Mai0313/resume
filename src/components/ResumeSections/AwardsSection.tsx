@@ -8,7 +8,10 @@ interface AwardsSectionProps {
   itemVariants: any;
 }
 
-export const AwardsSection: React.FC<AwardsSectionProps> = ({ awards, itemVariants }) => {
+export const AwardsSection: React.FC<AwardsSectionProps> = ({
+  awards,
+  itemVariants,
+}) => {
   if (!awards || awards.length === 0) return null;
 
   return (
@@ -40,7 +43,7 @@ export const AwardsSection: React.FC<AwardsSectionProps> = ({ awards, itemVarian
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {awards.map((award: any, index: number) => (
               <div
-                key={`award-${award.title || 'unknown'}-${index}`}
+                key={`award-${award.title || "unknown"}-${index}`}
                 className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="flex items-start gap-4">

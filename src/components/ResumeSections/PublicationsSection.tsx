@@ -9,7 +9,10 @@ interface PublicationsSectionProps {
   itemVariants: any;
 }
 
-export const PublicationsSection: React.FC<PublicationsSectionProps> = ({ publications, itemVariants }) => {
+export const PublicationsSection: React.FC<PublicationsSectionProps> = ({
+  publications,
+  itemVariants,
+}) => {
   if (!publications || publications.length === 0) return null;
 
   return (
@@ -40,7 +43,7 @@ export const PublicationsSection: React.FC<PublicationsSectionProps> = ({ public
         <CardBody className="space-y-6">
           {publications.map((publication: any, index: number) => (
             <div
-              key={`publication-${publication.name || 'unknown'}-${index}`}
+              key={`publication-${publication.name || "unknown"}-${index}`}
               className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
             >
               <div className="flex items-start gap-4">

@@ -8,7 +8,10 @@ interface SkillsSectionProps {
   itemVariants: any;
 }
 
-export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills, itemVariants }) => {
+export const SkillsSection: React.FC<SkillsSectionProps> = ({
+  skills,
+  itemVariants,
+}) => {
   if (!skills || skills.length === 0) return null;
 
   return (
@@ -40,7 +43,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills, itemVarian
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {skills.map((skill: any, index: number) => (
               <div
-                key={`skill-${skill.name || 'unknown'}-${index}`}
+                key={`skill-${skill.name || "unknown"}-${index}`}
                 className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="flex items-center justify-between mb-4">
