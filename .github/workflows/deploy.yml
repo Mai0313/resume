@@ -46,10 +46,6 @@ jobs:
       - name: Deploy website
         env:
           VITE_WEBSITE_TITLE: Mai
-          VITE_GITHUB_USERNAME: ${{ github.event.repository.owner.login }}
-          VITE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_PIN_CODE: ${{ secrets.VITE_PIN_CODE }}
-          VITE_RESUME_FILE: example.yaml
           VITE_ROOT_PATH: /${{ github.event.repository.name }}
         run: |
           git config --global user.name "github-actions[bot]"

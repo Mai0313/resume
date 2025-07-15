@@ -4,27 +4,15 @@ import { useState, useEffect } from "react";
 
 import DefaultLayout from "@/layouts/default";
 import PortfolioContent from "@/components/PortfolioContent";
-import {
-  getUserContributions,
-  isGitHubTokenAvailable,
-} from "@/utils/githubApi";
+import { getUserContributions } from "@/utils/githubApi";
 import { envHelpers } from "@/utils/env";
 
 export default function PortfolioPage() {
   const [contributions, setContributions] = useState<GitHubContribution[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isTokenMissing, setIsTokenMissing] = useState(false);
 
   useEffect(() => {
-    // Check if GitHub Token is available
-    if (!isGitHubTokenAvailable()) {
-      setIsTokenMissing(true);
-      setLoading(false);
-
-      return;
-    }
-
     const fetchContributions = async () => {
       try {
         setLoading(true);
@@ -36,13 +24,9 @@ export default function PortfolioPage() {
 
         setContributions(userContributions);
       } catch (err) {
-        if (err instanceof Error && err.message === "GITHUB_TOKEN_MISSING") {
-          setIsTokenMissing(true);
-        } else {
-          setError(
-            err instanceof Error ? err.message : "An unknown error occurred",
-          );
-        }
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred",
+        );
       } finally {
         setLoading(false);
       }
@@ -58,7 +42,6 @@ export default function PortfolioPage() {
           <PortfolioContent
             contributions={contributions}
             error={error}
-            isTokenMissing={isTokenMissing}
             loading={loading}
           />
         </div>

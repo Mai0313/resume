@@ -16,6 +16,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 ## Features
 
 - **Dynamic Home Page**: Uses @react-spring/web and custom components (Orb, SplitText, GradientText) to create vivid visual effects
+- **Smart Page Rendering**: Pages only appear when properly configured - Resume requires `VITE_RESUME_FILE`, Portfolio requires `VITE_GITHUB_TOKEN`
 - **PIN-Protected Resume**: Resume system based on YAML configuration, supports PIN code verification for privacy protection
 - **GitHub Portfolio**: Automatically fetches and displays personal projects and contributions via the GitHub API
 - **Responsive Design**: Supports dark/light theme switching and fully responsive layouts
@@ -41,7 +42,8 @@ Create a `.env` file and set the following variables:
 # Required: Website title
 VITE_WEBSITE_TITLE=Mai
 
-# Required: Resume file - supports both local files and URLs
+# Optional: Resume file - when not set, Resume page will be hidden
+# Supports both local files and URLs
 # Local file example:
 VITE_RESUME_FILE=example.yaml
 # GitHub Gist example:
@@ -52,12 +54,15 @@ VITE_RESUME_FILE=example.yaml
 # Optional: Resume PIN code protection
 VITE_PIN_CODE=123456
 
-# Optional: GitHub API Token (for Portfolio feature)
+# Optional: GitHub API Token - when not set, Portfolio page will be hidden
 VITE_GITHUB_TOKEN=your_github_token_here
 ```
 
 **Important**:
 
+- **Smart Page Display**: Pages only appear in navigation and routing when their environment variables are properly configured
+  - Resume page (`/resume`) only appears when `VITE_RESUME_FILE` is set
+  - Portfolio page (`/portfolio`) only appears when `VITE_GITHUB_TOKEN` is set
 - Replace `your_github_token_here` with your GitHub Personal Access Token
 - The GitHub Token requires `public_repo` permission to read public repositories
 - Do not commit your real token to version control
@@ -99,6 +104,7 @@ npm run dev
 
 ### Resume Page (`/resume`)
 
+- **Conditional Display**: Only appears when `VITE_RESUME_FILE` is configured
 - PIN code verification protection (optional)
 - **Flexible Resume Loading**: Supports multiple resume sources:
   - **Local YAML files**: `example.yaml`, `resume.yaml` (loaded from `public/` directory)
@@ -110,6 +116,7 @@ npm run dev
 
 ### Portfolio Page (`/portfolio`)
 
+- **Conditional Display**: Only appears when `VITE_GITHUB_TOKEN` is configured
 - Automatically fetches GitHub repositories and contributions
 - Displays project details: language, stars, forks, topic tags
 - Shows recent commit records
@@ -117,13 +124,17 @@ npm run dev
 
 ## Custom Configuration
 
+### Configure Pages Display
+
+The website automatically shows/hides pages based on environment variable configuration:
+
+- **Resume Page**: Only appears when `VITE_RESUME_FILE` is set
+- **Portfolio Page**: Only appears when `VITE_GITHUB_TOKEN` is set
+- **Navigation Menu**: Dynamically updates to show only available pages
+
 ### Change GitHub Username
 
-Edit in `src/pages/portfolio.tsx`:
-
-```typescript
-const userContributions = await getUserContributions("your_github_username");
-```
+No manual configuration needed! The GitHub username is automatically fetched using your `VITE_GITHUB_TOKEN`.
 
 ### Edit Resume Content
 
@@ -227,6 +238,12 @@ GitHub API has rate limits. Recommendations:
 - Check if the token is set correctly
 - Ensure the token has `public_repo` permission
 - Check if you have exceeded the API rate limit
+
+### Pages Not Showing
+
+- **Resume page missing**: Check if `VITE_RESUME_FILE` is set in your `.env` file
+- **Portfolio page missing**: Check if `VITE_GITHUB_TOKEN` is set in your `.env` file
+- **Navigation empty**: Make sure at least one page environment variable is configured
 
 ### Build Errors
 
