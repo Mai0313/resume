@@ -3,7 +3,6 @@ import type { ResumeData } from "../utils/resumeLoader";
 import React from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
-import { Divider } from "@heroui/divider";
 import { Link } from "@heroui/link";
 import { motion } from "framer-motion";
 
@@ -11,6 +10,11 @@ import {
   WorkSection,
   VolunteerSection,
   EducationSection,
+  AwardsSection,
+  CertificatesSection,
+  PublicationsSection,
+  SkillsSection,
+  InterestsSection,
 } from "./ResumeSections/";
 
 interface ResumeContentProps {
@@ -117,15 +121,45 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
           />
         );
       case "awards":
-        return renderAwardsSection();
+        return (
+          <AwardsSection
+            key="awards"
+            awards={data.awards}
+            itemVariants={itemVariants}
+          />
+        );
       case "certificates":
-        return renderCertificatesSection();
+        return (
+          <CertificatesSection
+            key="certificates"
+            certificates={data.certificates}
+            itemVariants={itemVariants}
+          />
+        );
       case "publications":
-        return renderPublicationsSection();
+        return (
+          <PublicationsSection
+            key="publications"
+            publications={data.publications}
+            itemVariants={itemVariants}
+          />
+        );
       case "skills":
-        return renderSkillsSection();
+        return (
+          <SkillsSection
+            key="skills"
+            skills={data.skills}
+            itemVariants={itemVariants}
+          />
+        );
       case "interests":
-        return renderInterestsSection();
+        return (
+          <InterestsSection
+            key="interests"
+            interests={data.interests}
+            itemVariants={itemVariants}
+          />
+        );
       case "languages":
         // languages already displayed in header section, skip here
         return null;
@@ -136,567 +170,6 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
       default:
         return null;
     }
-  };
-
-  const renderAwardsSection = () => {
-    if (!data.awards || data.awards.length === 0) return null;
-
-    return (
-      <motion.div key="awards" variants={itemVariants}>
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                Awards & Recognition
-              </h2>
-            </div>
-          </CardHeader>
-          <CardBody>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {data.awards.map((award: any, index: number) => (
-                <div
-                  key={index}
-                  className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="w-6 h-6 text-white"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    </div>
-
-                    <div className="flex-grow">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
-                        {award.url ? (
-                          <Link
-                            isExternal
-                            className="hover:text-yellow-600 dark:hover:text-yellow-400 flex items-center gap-2"
-                            href={award.url}
-                          >
-                            {award.title}
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                              />
-                            </svg>
-                          </Link>
-                        ) : (
-                          award.title
-                        )}
-                      </h3>
-
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
-                        <div className="flex items-center gap-2">
-                          <svg
-                            className="w-4 h-4 text-yellow-600 dark:text-yellow-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              clipRule="evenodd"
-                              d="M10.496 2.132a1 1 0 00-.992 0l-7 4A1 1 0 003 8v7a1 1 0 100 2h14a1 1 0 100-2V8a1 1 0 00.496-1.868l-7-4zM6 9a1 1 0 000 2h8a1 1 0 100-2H6z"
-                              fillRule="evenodd"
-                            />
-                          </svg>
-                          <span className="text-yellow-700 dark:text-yellow-300 font-semibold">
-                            {award.awarder}
-                          </span>
-                        </div>
-                        {award.date && (
-                          <div className="flex items-center gap-2">
-                            <svg
-                              className="w-4 h-4 text-gray-500"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                clipRule="evenodd"
-                                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                fillRule="evenodd"
-                              />
-                            </svg>
-                            <span className="text-gray-600 dark:text-gray-400 text-sm">
-                              {award.date}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-
-                      {award.summary && (
-                        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                          {award.summary}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-      </motion.div>
-    );
-  };
-
-  const renderCertificatesSection = () => {
-    if (!data.certificates || data.certificates.length === 0) return null;
-
-    return (
-      <motion.div key="certificates" variants={itemVariants}>
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                Certificates
-              </h2>
-            </div>
-          </CardHeader>
-          <CardBody>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {data.certificates.map((cert: any, idx: number) => (
-                <div
-                  key={idx}
-                  className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="w-6 h-6 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                        />
-                      </svg>
-                    </div>
-
-                    <div className="flex-grow">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
-                        {cert.url ? (
-                          <Link
-                            isExternal
-                            className="hover:text-emerald-600 dark:hover:text-emerald-400 flex items-center gap-2"
-                            href={cert.url}
-                          >
-                            {cert.name}
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                              />
-                            </svg>
-                          </Link>
-                        ) : (
-                          cert.name
-                        )}
-                      </h3>
-
-                      {cert.issuer && (
-                        <div className="flex items-center gap-2 mb-3">
-                          <svg
-                            className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              clipRule="evenodd"
-                              d="M10.496 2.132a1 1 0 00-.992 0l-7 4A1 1 0 003 8v7a1 1 0 100 2h14a1 1 0 100-2V8a1 1 0 00.496-1.868l-7-4zM6 9a1 1 0 000 2h8a1 1 0 100-2H6z"
-                              fillRule="evenodd"
-                            />
-                          </svg>
-                          <span className="text-emerald-700 dark:text-emerald-300 font-semibold">
-                            {cert.issuer}
-                          </span>
-                        </div>
-                      )}
-
-                      {cert.date && (
-                        <div className="flex items-center gap-2">
-                          <svg
-                            className="w-4 h-4 text-gray-500"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              clipRule="evenodd"
-                              d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                              fillRule="evenodd"
-                            />
-                          </svg>
-                          <span className="text-gray-600 dark:text-gray-400 text-sm">
-                            Issued: {cert.date}
-                          </span>
-                        </div>
-                      )}
-
-                      {cert.summary && (
-                        <p className="text-gray-700 dark:text-gray-300 text-sm mt-3 leading-relaxed">
-                          {cert.summary}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-      </motion.div>
-    );
-  };
-
-  const renderPublicationsSection = () => {
-    if (!data.publications || data.publications.length === 0) return null;
-
-    return (
-      <motion.div key="publications" variants={itemVariants}>
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                Research Publications
-              </h2>
-            </div>
-          </CardHeader>
-          <CardBody className="space-y-6">
-            {data.publications.map((publication: any, index: number) => (
-              <div
-                key={index}
-                className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                      />
-                    </svg>
-                  </div>
-
-                  <div className="flex-grow">
-                    <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">
-                      {publication.url ? (
-                        <Link
-                          isExternal
-                          className="hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2"
-                          href={publication.url}
-                        >
-                          {publication.name}
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                            />
-                          </svg>
-                        </Link>
-                      ) : (
-                        publication.name
-                      )}
-                    </h3>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
-                      <div className="flex items-center gap-2">
-                        <svg
-                          className="w-4 h-4 text-green-600 dark:text-green-400"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            clipRule="evenodd"
-                            d="M10.496 2.132a1 1 0 00-.992 0l-7 4A1 1 0 003 8v7a1 1 0 100 2h14a1 1 0 100-2V8a1 1 0 00.496-1.868l-7-4zM6 9a1 1 0 000 2h8a1 1 0 100-2H6z"
-                            fillRule="evenodd"
-                          />
-                        </svg>
-                        <span className="text-green-700 dark:text-green-300 font-semibold">
-                          {publication.publisher}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <svg
-                          className="w-4 h-4 text-gray-500"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            clipRule="evenodd"
-                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                            fillRule="evenodd"
-                          />
-                        </svg>
-                        <span className="text-gray-600 dark:text-gray-400">
-                          {publication.releaseDate}
-                        </span>
-                      </div>
-                    </div>
-
-                    {publication.summary && (
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                        {publication.summary}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {index < (data.publications?.length ?? 0) - 1 && (
-                  <Divider className="mt-6" />
-                )}
-              </div>
-            ))}
-          </CardBody>
-        </Card>
-      </motion.div>
-    );
-  };
-
-  const renderSkillsSection = () => {
-    if (!data.skills || data.skills.length === 0) return null;
-
-    return (
-      <motion.div key="skills" variants={itemVariants}>
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                Skills & Expertise
-              </h2>
-            </div>
-          </CardHeader>
-          <CardBody>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {data.skills.map((skill: any, index: number) => (
-                <div
-                  key={index}
-                  className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                      {skill.name}
-                    </h3>
-                    {skill.level && (
-                      <span className="px-3 py-1 bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200 text-sm font-medium rounded-full">
-                        {skill.level}
-                      </span>
-                    )}
-                  </div>
-                  {skill.keywords && skill.keywords.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {skill.keywords.map((keyword: string, i: number) => (
-                        <Chip
-                          key={i}
-                          className="bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200 hover:bg-orange-200 dark:hover:bg-orange-800/50 transition-colors"
-                          color="secondary"
-                          size="sm"
-                          variant="flat"
-                        >
-                          {keyword}
-                        </Chip>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-      </motion.div>
-    );
-  };
-
-  const renderInterestsSection = () => {
-    if (!data.interests || data.interests.length === 0) return null;
-
-    return (
-      <motion.div key="interests" variants={itemVariants}>
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 7.172V5L8 4z"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                Research Interests
-              </h2>
-            </div>
-          </CardHeader>
-          <CardBody>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {data.interests.map((interest: any, index: number) => (
-                <div
-                  key={index}
-                  className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="w-6 h-6 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                        />
-                      </svg>
-                    </div>
-
-                    <div className="flex-grow">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
-                        {interest.name}
-                      </h3>
-
-                      {interest.keywords && interest.keywords.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 text-sm">
-                            Research Areas:
-                          </h4>
-                          <div className="flex flex-wrap gap-2">
-                            {interest.keywords.map(
-                              (keyword: string, i: number) => (
-                                <Chip
-                                  key={i}
-                                  className="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-200 hover:bg-cyan-200 dark:hover:bg-cyan-800/50 transition-colors"
-                                  color="primary"
-                                  size="sm"
-                                  variant="flat"
-                                >
-                                  {keyword}
-                                </Chip>
-                              ),
-                            )}
-                          </div>
-                        </div>
-                      )}
-
-                      {interest.summary && (
-                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                            {interest.summary}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-      </motion.div>
-    );
   };
 
   const renderReferencesSection = () => {
