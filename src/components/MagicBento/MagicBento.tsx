@@ -74,6 +74,7 @@ const createParticleElement = (
   color: string = DEFAULT_GLOW_COLOR,
 ): HTMLDivElement => {
   const el = document.createElement("div");
+
   el.className = "particle";
   el.style.cssText = `
     position: absolute;
@@ -87,6 +88,7 @@ const createParticleElement = (
     left: ${x}px;
     top: ${y}px;
   `;
+
   return el;
 };
 
@@ -145,6 +147,7 @@ const ParticleCard: React.FC<{
     if (particlesInitialized.current || !cardRef.current) return;
 
     const { width, height } = cardRef.current.getBoundingClientRect();
+
     memoizedParticles.current = Array.from({ length: particleCount }, () =>
       createParticleElement(
         Math.random() * width,
@@ -186,6 +189,7 @@ const ParticleCard: React.FC<{
         if (!isHoveredRef.current || !cardRef.current) return;
 
         const clone = particle.cloneNode(true) as HTMLDivElement;
+
         cardRef.current.appendChild(clone);
         particlesRef.current.push(clone);
 
@@ -311,6 +315,7 @@ const ParticleCard: React.FC<{
       );
 
       const ripple = document.createElement("div");
+
       ripple.style.cssText = `
         position: absolute;
         width: ${maxDistance * 2}px;
@@ -395,6 +400,7 @@ const GlobalSpotlight: React.FC<{
     if (disableAnimations || !gridRef?.current || !enabled) return;
 
     const spotlight = document.createElement("div");
+
     spotlight.className = "global-spotlight";
     spotlight.style.cssText = `
       position: fixed;
@@ -442,6 +448,7 @@ const GlobalSpotlight: React.FC<{
         cards.forEach((card) => {
           (card as HTMLElement).style.setProperty("--glow-intensity", "0");
         });
+
         return;
       }
 
@@ -462,6 +469,7 @@ const GlobalSpotlight: React.FC<{
         minDistance = Math.min(minDistance, effectiveDistance);
 
         let glowIntensity = 0;
+
         if (effectiveDistance <= proximity) {
           glowIntensity = 1;
         } else if (effectiveDistance <= fadeDistance) {
@@ -531,9 +539,9 @@ const BentoCardGrid: React.FC<{
   gridRef?: React.RefObject<HTMLDivElement | null>;
 }> = ({ children, gridRef }) => (
   <div
+    ref={gridRef}
     className="bento-section grid gap-2 p-3 max-w-[54rem] select-none relative"
     style={{ fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.5rem)" }}
-    ref={gridRef}
   >
     {children}
   </div>
@@ -703,11 +711,11 @@ const MagicBento: React.FC<BentoProps> = ({
 
       {enableSpotlight && (
         <GlobalSpotlight
-          gridRef={gridRef}
           disableAnimations={shouldDisableAnimations}
           enabled={enableSpotlight}
-          spotlightRadius={spotlightRadius}
           glowColor={glowColor}
+          gridRef={gridRef}
+          spotlightRadius={spotlightRadius}
         />
       )}
 
@@ -733,13 +741,13 @@ const MagicBento: React.FC<BentoProps> = ({
                 <ParticleCard
                   key={index}
                   className={baseClassName}
-                  style={cardStyle}
-                  disableAnimations={shouldDisableAnimations}
-                  particleCount={particleCount}
-                  glowColor={glowColor}
-                  enableTilt={enableTilt}
                   clickEffect={clickEffect}
+                  disableAnimations={shouldDisableAnimations}
                   enableMagnetism={enableMagnetism}
+                  enableTilt={enableTilt}
+                  glowColor={glowColor}
+                  particleCount={particleCount}
+                  style={cardStyle}
                 >
                   <div className="card__header flex justify-between gap-3 relative text-white">
                     <span className="card__label text-base">{card.label}</span>
@@ -763,8 +771,6 @@ const MagicBento: React.FC<BentoProps> = ({
             return (
               <div
                 key={index}
-                className={baseClassName}
-                style={cardStyle}
                 ref={(el) => {
                   if (!el) return;
 
@@ -840,6 +846,7 @@ const MagicBento: React.FC<BentoProps> = ({
                     );
 
                     const ripple = document.createElement("div");
+
                     ripple.style.cssText = `
                       position: absolute;
                       width: ${maxDistance * 2}px;
@@ -874,6 +881,8 @@ const MagicBento: React.FC<BentoProps> = ({
                   el.addEventListener("mouseleave", handleMouseLeave);
                   el.addEventListener("click", handleClick);
                 }}
+                className={baseClassName}
+                style={cardStyle}
               >
                 <div className="card__header flex justify-between gap-3 relative text-white">
                   <span className="card__label text-base">{card.label}</span>

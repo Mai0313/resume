@@ -346,7 +346,8 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                                 fillRule="evenodd"
                               />
                             </svg>
-                            {volunteer.startDate} - {volunteer.endDate || "Present"}
+                            {volunteer.startDate} -{" "}
+                            {volunteer.endDate || "Present"}
                           </span>
                         )}
                       </div>
@@ -358,26 +359,29 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                       </p>
                     )}
 
-                    {volunteer.highlights && volunteer.highlights.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                          Key Contributions:
-                        </h4>
-                        <ul className="space-y-2">
-                          {volunteer.highlights.map((highlight: string, i: number) => (
-                            <li
-                              key={i}
-                              className="flex items-start gap-3 text-gray-700 dark:text-gray-300"
-                            >
-                              <div className="w-1.5 h-1.5 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-                              <span className="text-sm leading-relaxed">
-                                {highlight}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {volunteer.highlights &&
+                      volunteer.highlights.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                            Key Contributions:
+                          </h4>
+                          <ul className="space-y-2">
+                            {volunteer.highlights.map(
+                              (highlight: string, i: number) => (
+                                <li
+                                  key={i}
+                                  className="flex items-start gap-3 text-gray-700 dark:text-gray-300"
+                                >
+                                  <div className="w-1.5 h-1.5 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
+                                  <span className="text-sm leading-relaxed">
+                                    {highlight}
+                                  </span>
+                                </li>
+                              ),
+                            )}
+                          </ul>
+                        </div>
+                      )}
 
                     {volunteer.url && (
                       <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
@@ -1087,17 +1091,19 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                             Research Areas:
                           </h4>
                           <div className="flex flex-wrap gap-2">
-                            {interest.keywords.map((keyword: string, i: number) => (
-                              <Chip
-                                key={i}
-                                className="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-200 hover:bg-cyan-200 dark:hover:bg-cyan-800/50 transition-colors"
-                                color="primary"
-                                size="sm"
-                                variant="flat"
-                              >
-                                {keyword}
-                              </Chip>
-                            ))}
+                            {interest.keywords.map(
+                              (keyword: string, i: number) => (
+                                <Chip
+                                  key={i}
+                                  className="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-200 hover:bg-cyan-200 dark:hover:bg-cyan-800/50 transition-colors"
+                                  color="primary"
+                                  size="sm"
+                                  variant="flat"
+                                >
+                                  {keyword}
+                                </Chip>
+                              ),
+                            )}
                           </div>
                         </div>
                       )}
@@ -1427,7 +1433,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
     >
       {/* Header Section with Photo - Always at the front */}
       <motion.div variants={itemVariants}>
-        <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950 dark:to-indigo-950">
+        <Card className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 hover:shadow-lg transition-all duration-300">
           <CardBody className="p-8">
             <div className="flex flex-col lg:flex-row items-center gap-8">
               {/* Profile Image */}
@@ -1436,7 +1442,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                   <div className="relative">
                     <img
                       alt={`${data.basics.name} profile`}
-                      className="w-48 h-48 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-xl"
+                      className="w-48 h-48 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-xl"
                       src={data.basics.image}
                       onError={(e) => {
                         // Fallback to a default avatar if image fails to load
@@ -1447,7 +1453,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                       }}
                     />
                     {/* Fallback avatar */}
-                    <div className="hidden w-48 h-48 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-white dark:border-gray-800 shadow-xl">
+                    <div className="hidden w-48 h-48 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center border-4 border-white dark:border-gray-700 shadow-xl">
                       <span className="text-white text-4xl font-bold">
                         {data.basics.name?.charAt(0) || "U"}
                       </span>
@@ -1458,22 +1464,22 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
               {/* Personal Information */}
               <div className="flex-grow text-center lg:text-left">
-                <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                   {data.basics.name}
                 </h1>
                 {data.basics.label && (
-                  <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-6 font-medium">
+                  <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-6 font-medium">
                     {data.basics.label}
                   </p>
                 )}
                 {data.basics.summary && (
-                  <p className="text-base text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                  <p className="text-base text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
                     {data.basics.summary}
                   </p>
                 )}
 
                 {/* Contact Information */}
-                <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
                   {data.basics.email && (
                     <div className="flex items-center gap-2">
                       <svg
@@ -1515,7 +1521,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                       <Link
                         key={index}
                         isExternal
-                        className="inline-flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-gray-800/50 rounded-lg text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-white/70 dark:bg-gray-700/70 rounded-lg text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300 transition-colors border border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
                         href={profile.url}
                       >
                         {profile.network === "GitHub" && (
@@ -1558,7 +1564,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                     {data.languages.map((lang: any, index: number) => (
                       <Chip
                         key={index}
-                        className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200"
+                        className="bg-gray-100 dark:bg-gray-700/50 text-gray-800 dark:text-gray-200"
                         color="primary"
                         size="sm"
                         variant="flat"
