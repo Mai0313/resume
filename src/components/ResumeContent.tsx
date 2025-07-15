@@ -1241,7 +1241,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                       {ref.reference && (
                         <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                           <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed italic">
-                            "{ref.reference}"
+                            &ldquo;{ref.reference}&rdquo;
                           </p>
                         </div>
                       )}
