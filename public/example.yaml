@@ -136,14 +136,14 @@ projects:
       - Automation
     startDate: 2025-01
     endDate: 2025-05
-    url: "https://arxiv.org/abs/2505.22990"
+    url: https://arxiv.org/abs/2505.22990
     roles:
       - Technical Lead
       - System Engineer
     entity: MediaTek
     type: conference
 
-  - name: "Task Management System with Multi-Agent Orchestration"
+  - name: Task Management System with Multi-Agent Orchestration
     description: >
       Multi-Agent system for task management, including task assignment, progress tracking, and resource allocation.
       Utilizes executor agents for efficient execution of tasks across various domains.
@@ -198,7 +198,7 @@ projects:
       - Deep Learning
     startDate: 2022-10
     endDate: 2023-06
-    url: "https://neurips.cc/virtual/2023/76089"
+    url: https://neurips.cc/virtual/2023/76089
     roles:
       - Core Developer
       - Research Engineer
@@ -288,7 +288,7 @@ volunteer:
 
 certificates:
   - name: Fundamentals of Accelerated Computing with CUDA Python
-    date: 2024-12-06
+    date: "2024-12-06"
     url: https://learn.nvidia.com/certificates?id=wS6KBhmjTqiLOkau1wi0Tw
     issuer: NVIDIA
 
