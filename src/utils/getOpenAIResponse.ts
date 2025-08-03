@@ -17,11 +17,16 @@ export interface ChatMessage {
  * Initialize OpenAI client
  */
 const createClient = () => {
+  if (!env.OPENAI_BASE_URL) {
+    throw new Error("OPENAI_BASE_URL is not configured");
+  }
+
   if (!env.OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is not configured");
   }
 
   return new OpenAI({
+    baseURL: env.OPENAI_BASE_URL,
     apiKey: env.OPENAI_API_KEY,
     dangerouslyAllowBrowser: true,
   });

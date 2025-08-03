@@ -14,6 +14,7 @@ const DEFAULT_VALUES = {
   VITE_ROOT_PATH: "/",
   VITE_GITHUB_TOKEN: null,
   VITE_RESUME_FILE: null,
+  VITE_OPENAI_BASE_URL: null,
   VITE_OPENAI_API_KEY: null,
   VITE_OPENAI_MODEL: null,
 } as const;
@@ -89,6 +90,10 @@ export const env = {
   ROOT_PATH: getEnvVarWithDefault(
     "VITE_ROOT_PATH",
     DEFAULT_VALUES.VITE_ROOT_PATH,
+  ),
+  OPENAI_BASE_URL: getEnvVarWithDefault(
+    "VITE_OPENAI_BASE_URL",
+    DEFAULT_VALUES.VITE_OPENAI_BASE_URL,
   ),
   OPENAI_API_KEY: getEnvVarWithDefault(
     "VITE_OPENAI_API_KEY",
@@ -173,6 +178,9 @@ export const envHelpers = {
    */
   isOpenAIChatBotAvailable(): boolean {
     return (
+      env.OPENAI_BASE_URL !== null &&
+      env.OPENAI_BASE_URL !== "" &&
+      env.OPENAI_BASE_URL.trim() !== "" &&
       env.OPENAI_API_KEY !== null &&
       env.OPENAI_API_KEY !== "" &&
       env.OPENAI_API_KEY.trim() !== "" &&
