@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH,GITHUB_TOKEN&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </center>
 
@@ -18,7 +18,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - **Dynamic Home Page**: Uses @react-spring/web and custom components (Orb, SplitText, GradientText) to create vivid visual effects
 - **Smart Page Rendering**: Pages only appear when properly configured - Resume requires `VITE_RESUME_FILE`, Portfolio requires `VITE_GITHUB_TOKEN`
 - **PIN-Protected Resume**: Resume system based on YAML configuration, supports PIN code verification for privacy protection
-- **GitHub Portfolio**: Automatically fetches and displays personal projects and contributions via the GitHub API
+- **GitHub Portfolio**: Serverless API aggregates repositories and commits with CDN-friendly caching; client has a resilient fallback
 - **Responsive Design**: Supports dark/light theme switching and fully responsive layouts
 - **Modern UI**: Built with the HeroUI component library and Framer Motion animations
 
@@ -54,18 +54,22 @@ VITE_RESUME_FILE=example.yaml
 # Optional: Resume PIN code protection
 VITE_PIN_CODE=123456
 
-# Optional: GitHub API Token - when not set, Portfolio page will be hidden
-VITE_GITHUB_TOKEN=your_github_token_here
+# Server-side (recommended): GitHub API Token for the serverless function
+# Do NOT prefix with VITE_. Keep this secret in your deployment platform.
+GITHUB_TOKEN=your_server_side_github_token
+
+# Optional client fallback: only used when the serverless API isn't available
+# Warning: VITE_ vars are embedded in the client bundle – avoid using real secrets
+VITE_GITHUB_TOKEN=your_public_or_test_token
 ```
 
 **Important**:
 
 - **Smart Page Display**: Pages only appear in navigation and routing when their environment variables are properly configured
   - Resume page (`/resume`) only appears when `VITE_RESUME_FILE` is set
-  - Portfolio page (`/portfolio`) only appears when `VITE_GITHUB_TOKEN` is set
-- Replace `your_github_token_here` with your GitHub Personal Access Token
-- The GitHub Token requires `public_repo` permission to read public repositories
-- Do not commit your real token to version control
+  - Portfolio page (`/portfolio`) prefers the serverless API (uses `GITHUB_TOKEN`). If you don't use the serverless deployment, set `VITE_GITHUB_TOKEN` for client-side fallback
+- Use a GitHub Personal Access Token with `public_repo` scope
+- Never commit real tokens. Prefer `GITHUB_TOKEN` (server-only). Use `VITE_GITHUB_TOKEN` only for local testing or GitHub Pages fallback
 
 ### Install Dependencies
 
@@ -189,6 +193,12 @@ yarn deploy
 ### Deploy to Vercel
 
 The project is pre-configured with `vercel.json` and can be deployed directly to Vercel.
+
+Serverless API `/api/portfolio`:
+
+- Uses `GITHUB_TOKEN` from environment (server-side only)
+- Caches results in-memory per function instance for 15 minutes and sets `Cache-Control: s-maxage=900, stale-while-revalidate=86400`
+- Returns `{ data: GitHubContribution[]; generatedAt: number }`
 
 ## Project Structure
 

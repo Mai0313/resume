@@ -1,40 +1,11 @@
 // Vercel Serverless Function: /api/portfolio
 // Aggregates GitHub portfolio data with server-side caching and CDN headers
-
-type GitHubRepository = {
-  id: number;
-  name: string;
-  full_name: string;
-  html_url: string;
-  description: string | null;
-  language: string | null;
-  stargazers_count: number;
-  forks_count: number;
-  updated_at: string;
-  topics: string[];
-  homepage: string | null;
-  owner: {
-    login: string;
-    avatar_url: string;
-    html_url: string;
-  };
-  isPinned?: boolean;
-};
-
-type GitHubCommit = {
-  sha: string;
-  commit: {
-    message: string;
-    author: { name: string; email: string; date: string };
-  };
-  html_url: string;
-};
-
-type GitHubContribution = {
-  repository: GitHubRepository;
-  commits: GitHubCommit[];
-  total_commits: number;
-};
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type {
+  GitHubRepository,
+  GitHubCommit,
+  GitHubContribution,
+} from "../src/types";
 
 // In-memory cache (per warm function instance)
 let cachedResponse: { data: GitHubContribution[]; generatedAt: number } | null =
@@ -42,11 +13,12 @@ let cachedResponse: { data: GitHubContribution[]; generatedAt: number } | null =
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
 
 const GITHUB_API_BASE = "https://api.github.com";
+const ERR_GITHUB_TOKEN_MISSING = "GITHUB_TOKEN_MISSING";
 
 function getToken(): string {
-  const token = process.env.GITHUB_TOKEN || process.env.VITE_GITHUB_TOKEN || "";
+  const token = process.env.GITHUB_TOKEN || "";
 
-  if (!token) throw new Error("GITHUB_TOKEN_MISSING");
+  if (!token) throw new Error(ERR_GITHUB_TOKEN_MISSING);
 
   return token;
 }
@@ -67,16 +39,7 @@ function getGraphQLHeaders(): Record<string, string> {
   };
 }
 
-function hashString(input: string): number {
-  let hash = 0;
-
-  for (let i = 0; i < input.length; i++) {
-    hash = (hash << 5) - hash + input.charCodeAt(i);
-    hash |= 0;
-  }
-
-  return Math.abs(hash);
-}
+// (hashString removed; using full repository name as unique id)
 
 async function fetchJSON(url: string, init?: RequestInit) {
   const res = await fetch(url, init);
@@ -106,6 +69,21 @@ async function getAuthenticatedUser(): Promise<{
     name: data.name || data.login,
     avatar_url: data.avatar_url,
   };
+}
+
+interface GraphQLRepositoryNode {
+  id: string;
+  name: string;
+  nameWithOwner: string;
+  url: string;
+  description: string | null;
+  primaryLanguage?: { name?: string | null } | null;
+  stargazerCount: number;
+  forkCount: number;
+  updatedAt: string;
+  repositoryTopics?: { nodes?: { topic?: { name?: string } | null }[] } | null;
+  homepageUrl?: string | null;
+  owner?: { login: string; avatarUrl: string; url: string };
 }
 
 async function getPinnedRepositories(
@@ -148,13 +126,14 @@ async function getPinnedRepositories(
 
   if (data.errors)
     throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
-  const nodes = data.data?.user?.pinnedItems?.nodes || [];
+  const nodes: GraphQLRepositoryNode[] =
+    data.data?.user?.pinnedItems?.nodes || [];
 
-  const repos: GitHubRepository[] = nodes.map((node: any) => {
+  const repos: GitHubRepository[] = nodes.map((node) => {
     const fullName: string = node.nameWithOwner;
 
     return {
-      id: hashString(fullName),
+      id: fullName,
       name: node.name,
       full_name: fullName,
       html_url: node.url,
@@ -163,14 +142,15 @@ async function getPinnedRepositories(
       stargazers_count: node.stargazerCount,
       forks_count: node.forkCount,
       updated_at: node.updatedAt,
-      topics: (node.repositoryTopics?.nodes || [])
-        .map((n: any) => n.topic?.name)
-        .filter(Boolean),
-      homepage: node.homepageUrl,
+      topics:
+        node.repositoryTopics?.nodes
+          ?.map((n) => n.topic?.name)
+          .filter((name): name is string => typeof name === "string") || [],
+      homepage: node.homepageUrl || null,
       owner: {
-        login: node.owner?.login,
-        avatar_url: node.owner?.avatarUrl,
-        html_url: node.owner?.url,
+        login: node.owner?.login || "",
+        avatar_url: node.owner?.avatarUrl || "",
+        html_url: node.owner?.url || "",
       },
       isPinned: true,
     };
@@ -188,7 +168,7 @@ async function getUserRepositories(
   );
 
   return repos.map((r) => ({
-    id: r.id,
+    id: r.full_name,
     name: r.name,
     full_name: r.full_name,
     html_url: r.html_url,
@@ -272,32 +252,30 @@ async function buildPortfolio(): Promise<GitHubContribution[]> {
   return results;
 }
 
-export default async function handler(req: any, res: any) {
+export default async function handler(
+  _req: VercelRequest,
+  res: VercelResponse,
+) {
   try {
     const now = Date.now();
+    let responseData = cachedResponse;
 
-    if (cachedResponse && now - cachedResponse.generatedAt < CACHE_TTL_MS) {
-      res.setHeader(
-        "Cache-Control",
-        "s-maxage=900, stale-while-revalidate=86400",
-      );
+    if (!responseData || now - responseData.generatedAt >= CACHE_TTL_MS) {
+      const data = await buildPortfolio();
 
-      return res.status(200).json(cachedResponse);
+      responseData = { data, generatedAt: now };
+      cachedResponse = responseData;
     }
-
-    const data = await buildPortfolio();
-
-    cachedResponse = { data, generatedAt: now };
 
     res.setHeader(
       "Cache-Control",
       "s-maxage=900, stale-while-revalidate=86400",
     );
 
-    return res.status(200).json(cachedResponse);
+    return res.status(200).json(responseData);
   } catch (error: any) {
     const message = error?.message || "Unknown error";
-    const status = message.includes("GITHUB_TOKEN_MISSING") ? 400 : 500;
+    const status = message.includes(ERR_GITHUB_TOKEN_MISSING) ? 400 : 500;
 
     return res.status(status).json({ error: message });
   }

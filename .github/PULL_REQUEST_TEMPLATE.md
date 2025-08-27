@@ -14,8 +14,12 @@ Fixes #\<issue_number>
 - [ ] Did you make sure **title is self-explanatory** and **the description concisely explains the PR**?
 - [ ] Did you make sure your **PR does only one thing**, instead of bundling different changes together?
 - [ ] Did you list all the **breaking changes** introduced by this pull request?
-- [ ] Did you **test your PR locally** with `pytest` command?
-- [ ] Did you **run pre-commit hooks** with `pre-commit run -a` command?
+- [ ] Did you ensure serverless functions import shared types from `src/types`?
+- [ ] Did you ensure no `VITE_` secrets are used in server code under `api/`?
+- [ ] Did you ensure `GitHubRepository.id` uses `full_name` (string) consistently?
+- [ ] Is the serverless handler typed with `@vercel/node` request/response types?
+- [ ] Are cache headers set once with no duplicated response code paths?
+- [ ] Does the client log and remove invalid cached items when parse fails?
 
 ## Did you have fun?
 

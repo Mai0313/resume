@@ -154,9 +154,7 @@ export async function getUserPinnedRepositories(
 
     // Convert to standard GitHubRepository format
     const pinnedRepos: GitHubRepository[] = pinnedNodes.map((node: any) => ({
-      id:
-        parseInt(node.id.replace("MDEwOlJlcG9zaXRvcnk=", ""), 10) ||
-        Math.random(),
+      id: node.nameWithOwner,
       name: node.name,
       full_name: node.nameWithOwner,
       html_url: node.url,
@@ -204,7 +202,26 @@ export async function getUserRepositories(
       );
     }
 
-    const repositories: GitHubRepository[] = await response.json();
+    const raw = await response.json();
+
+    const repositories: GitHubRepository[] = (raw as any[]).map((r) => ({
+      id: r.full_name,
+      name: r.name,
+      full_name: r.full_name,
+      html_url: r.html_url,
+      description: r.description,
+      language: r.language,
+      stargazers_count: r.stargazers_count,
+      forks_count: r.forks_count,
+      updated_at: r.updated_at,
+      topics: r.topics || [],
+      homepage: r.homepage,
+      owner: {
+        login: r.owner?.login,
+        avatar_url: r.owner?.avatar_url,
+        html_url: r.owner?.html_url,
+      },
+    }));
 
     return repositories;
   } catch (error) {

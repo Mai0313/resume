@@ -30,8 +30,12 @@ export default function PortfolioPage() {
               setContributions(parsed.data);
               setLoading(false);
             }
-          } catch {
-            // ignore cache parse errors
+          } catch (e) {
+            console.warn(
+              "Failed to parse portfolio cache. Removing invalid item.",
+              e,
+            );
+            localStorage.removeItem(CACHE_KEY);
           }
         }
 
