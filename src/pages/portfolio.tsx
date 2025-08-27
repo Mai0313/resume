@@ -20,9 +20,12 @@ export default function PortfolioPage() {
       try {
         // Serve cached data immediately if fresh
         const cached = localStorage.getItem(CACHE_KEY);
+
         if (cached) {
           try {
-            const parsed: { data: GitHubContribution[]; generatedAt: number } = JSON.parse(cached);
+            const parsed: { data: GitHubContribution[]; generatedAt: number } =
+              JSON.parse(cached);
+
             if (Date.now() - parsed.generatedAt < CACHE_TTL_MS) {
               setContributions(parsed.data);
               setLoading(false);
@@ -34,10 +37,13 @@ export default function PortfolioPage() {
 
         // Always try to refresh from serverless API
         const resp = await fetch("/api/portfolio", { cache: "no-store" });
+
         if (!resp.ok) {
           throw new Error(`API error: ${resp.status} ${resp.statusText}`);
         }
-        const apiData: { data: GitHubContribution[]; generatedAt: number } = await resp.json();
+        const apiData: { data: GitHubContribution[]; generatedAt: number } =
+          await resp.json();
+
         setContributions(apiData.data);
         localStorage.setItem(CACHE_KEY, JSON.stringify(apiData));
         setLoading(false);
@@ -50,10 +56,15 @@ export default function PortfolioPage() {
           ]);
           const username = await envHelpers.getGitHubUsername();
           const userContributions = await getUserContributions(username);
+
           setContributions(userContributions);
           setLoading(false);
         } catch (fallbackError) {
-          const err = fallbackError instanceof Error ? fallbackError : (apiError as Error);
+          const err =
+            fallbackError instanceof Error
+              ? fallbackError
+              : (apiError as Error);
+
           setError(err.message || "An unknown error occurred");
           setLoading(false);
         }
