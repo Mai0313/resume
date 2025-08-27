@@ -1,11 +1,9 @@
 import type { GitHubContribution } from "@/types";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import DefaultLayout from "@/layouts/default";
 import PortfolioContent from "@/components/PortfolioContent";
-import { getUserContributions } from "@/utils/githubApi";
-import { envHelpers } from "@/utils/env";
 
 export default function PortfolioPage() {
   const [contributions, setContributions] = useState<GitHubContribution[]>([]);
@@ -13,22 +11,52 @@ export default function PortfolioPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const CACHE_KEY = "portfolio_cache_v1";
+    const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
     const fetchContributions = async () => {
+      setError(null);
+
       try {
-        setLoading(true);
-        setError(null);
+        // Serve cached data immediately if fresh
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          try {
+            const parsed: { data: GitHubContribution[]; generatedAt: number } = JSON.parse(cached);
+            if (Date.now() - parsed.generatedAt < CACHE_TTL_MS) {
+              setContributions(parsed.data);
+              setLoading(false);
+            }
+          } catch {
+            // ignore cache parse errors
+          }
+        }
 
-        // Dynamically get GitHub username
-        const username = await envHelpers.getGitHubUsername();
-        const userContributions = await getUserContributions(username);
-
-        setContributions(userContributions);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
-      } finally {
+        // Always try to refresh from serverless API
+        const resp = await fetch("/api/portfolio", { cache: "no-store" });
+        if (!resp.ok) {
+          throw new Error(`API error: ${resp.status} ${resp.statusText}`);
+        }
+        const apiData: { data: GitHubContribution[]; generatedAt: number } = await resp.json();
+        setContributions(apiData.data);
+        localStorage.setItem(CACHE_KEY, JSON.stringify(apiData));
         setLoading(false);
+      } catch (apiError) {
+        // Fallback to direct GitHub fetch in dev or if API unavailable
+        try {
+          const [{ envHelpers }, { getUserContributions }] = await Promise.all([
+            import("@/utils/env"),
+            import("@/utils/githubApi"),
+          ]);
+          const username = await envHelpers.getGitHubUsername();
+          const userContributions = await getUserContributions(username);
+          setContributions(userContributions);
+          setLoading(false);
+        } catch (fallbackError) {
+          const err = fallbackError instanceof Error ? fallbackError : (apiError as Error);
+          setError(err.message || "An unknown error occurred");
+          setLoading(false);
+        }
       }
     };
 
