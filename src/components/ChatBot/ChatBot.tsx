@@ -28,6 +28,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState("");
+  const [streamingReasoning, setStreamingReasoning] = useState("");
+  // Store assistant reasoning per assistant message index (odd indices)
+  const [assistantReasonings, setAssistantReasonings] = useState<
+    Record<number, string>
+  >({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -39,7 +44,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, streamingMessage]);
+  }, [messages, streamingMessage, streamingReasoning]);
 
   // Focus input when modal opens
   useEffect(() => {
@@ -66,34 +71,64 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
     setCurrentMessage("");
     setIsLoading(true);
     setStreamingMessage("");
+    setStreamingReasoning("");
 
     try {
       // Stream AI response using new client
       let fullResponse = "";
+      let fullReasoning = "";
       const controller = new AbortController();
 
       abortControllerRef.current = controller;
 
-      await openAIClient.completionStream(
+      await openAIClient.responseStream(
         undefined,
         userText,
         (update) => {
-          if (update.channel !== "answer") return;
-          if (update.delta) {
-            fullResponse += update.delta;
-            setStreamingMessage(fullResponse);
+          if (update.channel === "answer") {
+            if (update.delta) {
+              fullResponse += update.delta;
+              setStreamingMessage(fullResponse);
+            }
+            if (update.text) {
+              fullResponse = update.text;
+              setStreamingMessage(fullResponse);
+            }
+
+            return;
           }
-          if (update.text) {
-            fullResponse = update.text;
-            setStreamingMessage(fullResponse);
+          if (update.channel === "reasoning") {
+            if (update.delta) {
+              fullReasoning += update.delta;
+              setStreamingReasoning((prev) => prev + update.delta);
+            }
+            if (update.text) {
+              fullReasoning = update.text;
+              setStreamingReasoning(update.text);
+            }
+
+            return;
           }
         },
         controller.signal,
       );
 
       // Add complete AI response to messages as text
-      setMessages((prev) => [...prev, fullResponse]);
+      setMessages((prev) => {
+        const nextMessages = [...prev, fullResponse];
+        const assistantIndex = nextMessages.length - 1; // assistant is last, odd index
+
+        if (fullReasoning) {
+          setAssistantReasonings((prevMap) => ({
+            ...prevMap,
+            [assistantIndex]: fullReasoning,
+          }));
+        }
+
+        return nextMessages;
+      });
       setStreamingMessage("");
+      setStreamingReasoning("");
     } catch (error) {
       console.error("Error getting AI response:", error);
       // Add error message (assistant)
@@ -102,6 +137,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
 
       setMessages((prev) => [...prev, errorMessage]);
       setStreamingMessage("");
+      setStreamingReasoning("");
     } finally {
       setIsLoading(false);
       abortControllerRef.current = null;
@@ -122,6 +158,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
     }
     setMessages([]);
     setStreamingMessage("");
+    setStreamingReasoning("");
+    setAssistantReasonings({});
   };
 
   const handleModalOpenChange = (open: boolean) => {
@@ -248,6 +286,12 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
                             className={`max-w-[80%] ${index % 2 === 0 ? "bg-primary text-primary-foreground" : "bg-default-100"}`}
                           >
                             <CardBody className="px-4 py-3">
+                              {index % 2 === 1 &&
+                                assistantReasonings[index] && (
+                                  <p className="text-xs text-default-400 whitespace-pre-wrap mb-2">
+                                    {assistantReasonings[index]}
+                                  </p>
+                                )}
                               <p className="text-sm whitespace-pre-wrap">
                                 {message}
                               </p>
@@ -266,6 +310,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
                       >
                         <Card className="max-w-[80%] bg-default-100">
                           <CardBody className="px-4 py-3">
+                            {streamingReasoning && (
+                              <p className="text-xs text-default-400 whitespace-pre-wrap mb-2">
+                                {streamingReasoning}
+                              </p>
+                            )}
                             <p className="text-sm whitespace-pre-wrap">
                               {streamingMessage}
                               <span className="inline-block w-2 h-4 bg-primary ml-1 animate-pulse" />
