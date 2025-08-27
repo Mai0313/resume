@@ -71,7 +71,7 @@ Rules:
 /**
  * Send chat completion request to OpenAI with streaming support
  */
-export const getChatCompletion = async (
+export const completionStream = async (
   messages: ChatMessage[],
   onToken?: (token: string) => void,
 ): Promise<string> => {

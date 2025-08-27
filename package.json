@@ -83,10 +83,16 @@
   },
   "prettier": {
     "printWidth": 80,
-    "quoteProps": "consistent",
-    "semi": true,
     "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": false,
+    "jsxSingleQuote": false,
     "trailingComma": "all",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "endOfLine": "auto",
+    "quoteProps": "consistent",
     "proseWrap": "preserve"
   }
 }

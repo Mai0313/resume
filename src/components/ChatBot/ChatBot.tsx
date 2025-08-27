@@ -13,7 +13,7 @@ import {
 import { Spinner } from "@heroui/spinner";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { getChatCompletion, type ChatMessage } from "@/utils/getOpenAIResponse";
+import { completionStream, type ChatMessage } from "@/utils/getOpenAIResponse";
 import { envHelpers } from "@/utils/env";
 
 interface ChatBotProps {
@@ -74,7 +74,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
       const allMessages = [...messages, userMessage];
       let fullResponse = "";
 
-      await getChatCompletion(allMessages, (token: string) => {
+      await completionStream(allMessages, (token: string) => {
         fullResponse += token;
         setStreamingMessage(fullResponse);
       });
