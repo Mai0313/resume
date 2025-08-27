@@ -14,6 +14,41 @@ export interface ChatMessage {
 }
 
 /**
+ * Get current page context for the AI
+ */
+export const getCurrentPageContext = (): string => {
+  const currentPath = window.location.pathname;
+  const currentUrl = window.location.href;
+
+  // Get page title
+  const pageTitle = document.title;
+
+  // Get main content text (excluding navigation and other UI elements)
+  const mainContent =
+    document.querySelector("main")?.textContent ||
+    document.body?.textContent ||
+    "";
+
+  let pageContext = `
+You are an AI assistant for a personal website. You should ONLY answer questions related to the current page content shown above. 
+
+Rules:
+1. Only respond to questions about the current page content, resume, portfolio, or website navigation
+2. If asked about unrelated topics, politely redirect the conversation back to the current page
+3. Be helpful and concise in your responses
+4. Use the page content to provide accurate information about the user's background, projects, or resume
+
+Here is the page information:
+- URL: ${currentUrl}
+- Path: ${currentPath}
+- Page Title: ${pageTitle}
+- Page Content Preview: ${mainContent}
+`;
+
+  return pageContext;
+};
+
+/**
  * Initialize OpenAI client
  */
 const createClient = () => {
@@ -30,42 +65,6 @@ const createClient = () => {
     apiKey: env.OPENAI_API_KEY,
     dangerouslyAllowBrowser: true,
   });
-};
-
-/**
- * Get current page context for the AI
- */
-export const getCurrentPageContext = (): string => {
-  const currentPath = window.location.pathname;
-  const currentUrl = window.location.href;
-
-  // Get page title
-  const pageTitle = document.title;
-
-  // Get main content text (excluding navigation and other UI elements)
-  const mainContent =
-    document.querySelector("main")?.textContent ||
-    document.body?.textContent ||
-    "";
-
-  // Extract meaningful content (first 2000 characters to avoid token limits)
-  const contentPreview = mainContent.slice(0, 2000);
-
-  let pageContext = `Current Page Information:
-- URL: ${currentUrl}
-- Path: ${currentPath}
-- Page Title: ${pageTitle}
-- Page Content Preview: ${contentPreview}
-
-You are an AI assistant for a personal website. You should ONLY answer questions related to the current page content shown above. 
-
-Rules:
-1. Only respond to questions about the current page content, resume, portfolio, or website navigation
-2. If asked about unrelated topics, politely redirect the conversation back to the current page
-3. Be helpful and concise in your responses
-4. Use the page content to provide accurate information about the user's background, projects, or resume`;
-
-  return pageContext;
 };
 
 /**
