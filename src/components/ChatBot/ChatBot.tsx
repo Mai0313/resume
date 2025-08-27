@@ -13,7 +13,7 @@ import {
 import { Spinner } from "@heroui/spinner";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { completionStream, type ChatMessage } from "@/utils/getOpenAIResponse";
+import { openAIClient } from "@/utils/openai-client";
 import { envHelpers } from "@/utils/env";
 
 interface ChatBotProps {
@@ -23,12 +23,14 @@ interface ChatBotProps {
 export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   // Always call hooks at the top level
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  // Store messages as plain strings: even index = user, odd index = assistant
+  const [messages, setMessages] = useState<string[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   // Auto scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -57,50 +59,52 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
 
   const handleSendMessage = async () => {
     if (!currentMessage.trim() || isLoading) return;
+    const userText = currentMessage.trim();
 
-    const userMessage: ChatMessage = {
-      role: "user",
-      content: currentMessage.trim(),
-    };
-
-    // Add user message and clear input
-    setMessages((prev) => [...prev, userMessage]);
+    // Add user message (as text) and clear input
+    setMessages((prev) => [...prev, userText]);
     setCurrentMessage("");
     setIsLoading(true);
     setStreamingMessage("");
 
     try {
-      // Get AI response with streaming
-      const allMessages = [...messages, userMessage];
+      // Stream AI response using new client
       let fullResponse = "";
+      const controller = new AbortController();
 
-      await completionStream(allMessages, (token: string) => {
-        fullResponse += token;
-        setStreamingMessage(fullResponse);
-      });
+      abortControllerRef.current = controller;
 
-      // Add complete AI response to messages
-      const aiMessage: ChatMessage = {
-        role: "assistant",
-        content: fullResponse,
-      };
+      await openAIClient.completionStream(
+        undefined,
+        userText,
+        (update) => {
+          if (update.channel !== "answer") return;
+          if (update.delta) {
+            fullResponse += update.delta;
+            setStreamingMessage(fullResponse);
+          }
+          if (update.text) {
+            fullResponse = update.text;
+            setStreamingMessage(fullResponse);
+          }
+        },
+        controller.signal,
+      );
 
-      setMessages((prev) => [...prev, aiMessage]);
+      // Add complete AI response to messages as text
+      setMessages((prev) => [...prev, fullResponse]);
       setStreamingMessage("");
     } catch (error) {
       console.error("Error getting AI response:", error);
-
-      // Add error message
-      const errorMessage: ChatMessage = {
-        role: "assistant",
-        content:
-          "Sorry, I encountered an error while processing your request. Please try again.",
-      };
+      // Add error message (assistant)
+      const errorMessage =
+        "Sorry, I encountered an error while processing your request. Please try again.";
 
       setMessages((prev) => [...prev, errorMessage]);
       setStreamingMessage("");
     } finally {
       setIsLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -112,8 +116,25 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   };
 
   const handleClearChat = () => {
+    if (isLoading && abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
     setMessages([]);
     setStreamingMessage("");
+  };
+
+  const handleModalOpenChange = (open: boolean) => {
+    if (!open) {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+      setIsLoading(false);
+      setStreamingMessage("");
+    }
+    // Toggle modal state using hook's handler (no args)
+    onOpenChange();
   };
 
   return (
@@ -159,7 +180,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
         }}
         isOpen={isOpen}
         size="2xl"
-        onOpenChange={onOpenChange}
+        onOpenChange={handleModalOpenChange}
       >
         <ModalContent>
           {() => (
@@ -218,25 +239,17 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
                         <motion.div
                           key={index}
                           animate={{ opacity: 1, y: 0 }}
-                          className={`flex ${
-                            message.role === "user"
-                              ? "justify-end"
-                              : "justify-start"
-                          }`}
+                          className={`flex ${index % 2 === 0 ? "justify-end" : "justify-start"}`}
                           exit={{ opacity: 0, y: -20 }}
                           initial={{ opacity: 0, y: 20 }}
                           transition={{ duration: 0.3 }}
                         >
                           <Card
-                            className={`max-w-[80%] ${
-                              message.role === "user"
-                                ? "bg-primary text-primary-foreground"
-                                : "bg-default-100"
-                            }`}
+                            className={`max-w-[80%] ${index % 2 === 0 ? "bg-primary text-primary-foreground" : "bg-default-100"}`}
                           >
                             <CardBody className="px-4 py-3">
                               <p className="text-sm whitespace-pre-wrap">
-                                {message.content}
+                                {message}
                               </p>
                             </CardBody>
                           </Card>
