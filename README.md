@@ -21,6 +21,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - **GitHub Portfolio**: Automatically fetches and displays personal projects and contributions via the GitHub API
 - **Responsive Design**: Supports dark/light theme switching and fully responsive layouts
 - **Modern UI**: Built with the HeroUI component library and Framer Motion animations
+- **AI Assistant with Reasoning Preview**: When using reasoning-capable models (e.g., GPT-5), the assistant streams a subtle, muted reasoning summary above the answer so you can see its thought process without distraction.
 
 ## Tech Stack
 
@@ -56,6 +57,12 @@ VITE_PIN_CODE=123456
 
 # Optional: GitHub API Token - when not set, Portfolio page will be hidden
 VITE_GITHUB_TOKEN=your_github_token_here
+
+# Optional: OpenAI Chatbot (enables in-site AI assistant)
+# These must be set together for the chat assistant to show up
+VITE_OPENAI_BASE_URL=https://api.openai.com/v1
+VITE_OPENAI_API_KEY=sk-xxxx
+VITE_OPENAI_MODEL=gpt-5
 ```
 
 **Important**:
@@ -115,6 +122,12 @@ npm run dev
 - Responsive design and animation effects
 
 ### Portfolio Page (`/portfolio`)
+
+### AI Assistant (Floating Chat)
+
+- Appears when `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` are configured.
+- Streams answers live. If the selected model supports reasoning, a small muted block shows the reasoning summary above the assistant's answer.
+- You can clear the conversation using the "Clear Chat" button.
 
 - **Conditional Display**: Only appears when `VITE_GITHUB_TOKEN` is configured
 - Automatically fetches GitHub repositories and contributions
