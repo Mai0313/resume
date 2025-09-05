@@ -15,6 +15,7 @@ import { Spinner } from "@heroui/spinner";
 import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
+import DownloadResumePdfButton from "@/components/DownloadResumePdfButton";
 
 import { env, envHelpers } from "@/utils/env";
 import DefaultLayout from "@/layouts/default";
@@ -254,6 +255,11 @@ export default function ResumePage() {
             </div>
           ) : resumeData && resumeData.basics && resumeData.basics.name ? (
             <div className="space-y-6">
+              {/* Actions */}
+              <div className="flex justify-end px-6">
+                <DownloadResumePdfButton className="mt-4" data={resumeData} />
+              </div>
+
               {/* Resume Content */}
               <ResumeContent data={resumeData} />
             </div>

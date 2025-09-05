@@ -21,6 +21,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - **GitHub Portfolio**: Automatically fetches and displays personal projects and contributions via the GitHub API
 - **Responsive Design**: Supports dark/light theme switching and fully responsive layouts
 - **Modern UI**: Built with the HeroUI component library and Framer Motion animations
+ - **Download Resume PDF**: One-click to export a clean PDF generated from your YAML resume
 
 ## Tech Stack
 
@@ -113,6 +114,13 @@ npm run dev
 - YAML-driven resume data management
 - Structured display of personal info, education, work experience, etc.
 - Responsive design and animation effects
+ - Download as PDF directly on the page
+
+#### Download Resume as PDF
+
+- After the resume loads, click the "Download PDF" button at the top-right of the page.
+- The PDF is generated from your YAML (`ResumeData`) using `@react-pdf/renderer`, so it doesn't rely on the on-screen layout.
+- If you host your YAML on GitHub Gist or a raw URL, the latest content is used for the PDF.
 
 ### Portfolio Page (`/portfolio`)
 
@@ -198,6 +206,7 @@ src/
 │   ├── FuzzyText.tsx   # 404 text effect
 │   ├── Orb.tsx         # Dynamic background orb
 │   ├── SplitText.tsx   # Split text animation
+│   ├── DownloadResumePdfButton.tsx  # PDF download button
 │   ├── PortfolioContent.tsx  # Portfolio content component
 │   └── ResumeContent.tsx     # Resume content component
 ├── pages/              # Page components
@@ -206,7 +215,8 @@ src/
 │   └── resume.tsx      # Resume page
 ├── utils/              # Utility functions
 │   ├── githubApi.ts    # GitHub API related functions
-│   └── resumeLoader.ts # Resume YAML loader
+│   ├── resumeLoader.ts # Resume YAML loader
+│   └── resumePdf.tsx   # Resume PDF generator (React PDF)
 └── types/              # TypeScript type definitions
     └── index.ts        # Common type definitions
 ```
