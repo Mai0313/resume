@@ -100,11 +100,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
           if (update.channel === "reasoning") {
             if (update.delta) {
               fullReasoning += update.delta;
-              setStreamingReasoning((prev) => prev + update.delta);
+              setStreamingReasoning(fullReasoning);
             }
             if (update.text) {
               fullReasoning = update.text;
-              setStreamingReasoning(update.text);
+              setStreamingReasoning(fullReasoning);
             }
 
             return;
