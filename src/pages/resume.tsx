@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import { InputOtp } from "@heroui/input-otp";
 import {
   Modal,
@@ -11,6 +12,7 @@ import { addToast } from "@heroui/toast";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "@heroui/use-theme";
 import { Spinner } from "@heroui/spinner";
+import { Button } from "@heroui/button";
 
 import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
@@ -18,6 +20,7 @@ import { loadResumeData, ResumeData } from "../utils/resumeLoader";
 
 import { env, envHelpers } from "@/utils/env";
 import DefaultLayout from "@/layouts/default";
+import { generateResumePDF } from "@/utils/pdfGenerator";
 
 // Read PIN code from .env via VITE_PIN_CODE
 const IS_PIN_ENABLED = envHelpers.isPinEnabled();
@@ -170,6 +173,12 @@ export default function ResumePage() {
     }
   }
 
+  function handleDownloadPDF() {
+    if (resumeData) {
+      generateResumePDF(resumeData);
+    }
+  }
+
   // Listen for pin length
   useEffect(() => {
     if (IS_PIN_ENABLED && pin.length === pinLength) {
@@ -254,6 +263,11 @@ export default function ResumePage() {
             </div>
           ) : resumeData && resumeData.basics && resumeData.basics.name ? (
             <div className="space-y-6">
+              <div className="flex justify-end">
+                <Button color="primary" onPress={handleDownloadPDF}>
+                  Download PDF
+                </Button>
+              </div>
               {/* Resume Content */}
               <ResumeContent data={resumeData} />
             </div>
