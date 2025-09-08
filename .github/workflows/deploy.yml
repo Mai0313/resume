@@ -22,18 +22,6 @@ jobs:
       # - name: Setup MTK Certification
       #   uses: https://gitea.mediatek.inc/actions/mtk-cert-action@v1.2.0
 
-      # - name: Setup SSH Key
-      #   uses: shimataro/ssh-key-action@v2.7.0
-      #   with:
-      #     key: ${{ secrets.SSH_KEY }}
-      #     name: id_rsa
-      #     known_hosts: unnecessary
-      #     config: |
-      #       Host *
-      #         StrictHostKeyChecking no
-      #         UserKnownHostsFile=/dev/null
-      #     if_key_exists: replace
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -46,6 +34,8 @@ jobs:
       - name: Deploy website
         env:
           VITE_WEBSITE_TITLE: Mai
+          VITE_RESUME_FILE: example.yaml
+          VITE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_ROOT_PATH: /${{ github.event.repository.name }}
         run: |
           git config --global user.name "github-actions[bot]"
