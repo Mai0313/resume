@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+
 import { InputOtp } from "@heroui/input-otp";
+import { Button } from "@heroui/button";
 import {
   Modal,
   ModalContent,
@@ -15,6 +17,7 @@ import { Spinner } from "@heroui/spinner";
 import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
+import { generateResumePdf } from "../utils/pdfGenerator";
 
 import { env, envHelpers } from "@/utils/env";
 import DefaultLayout from "@/layouts/default";
@@ -254,6 +257,12 @@ export default function ResumePage() {
             </div>
           ) : resumeData && resumeData.basics && resumeData.basics.name ? (
             <div className="space-y-6">
+              <Button
+                color="primary"
+                onPress={() => generateResumePdf(resumeData)}
+              >
+                Download PDF
+              </Button>
               {/* Resume Content */}
               <ResumeContent data={resumeData} />
             </div>
