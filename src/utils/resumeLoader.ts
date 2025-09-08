@@ -114,7 +114,7 @@ export interface JSONResumeProject {
 }
 
 // Main JSON Resume interface
-export interface JSONResumeData {
+export interface ResumeData {
   basics: JSONResumeBasics;
   work?: JSONResumeWork[];
   volunteer?: JSONResumeVolunteer[];
@@ -129,8 +129,6 @@ export interface JSONResumeData {
   projects?: JSONResumeProject[];
 }
 
-// Type alias for backward compatibility
-export type ResumeData = JSONResumeData;
 
 /**
  * Check if a string is a valid URL
