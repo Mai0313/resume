@@ -129,7 +129,6 @@ export interface ResumeData {
   projects?: JSONResumeProject[];
 }
 
-
 /**
  * Check if a string is a valid URL
  */

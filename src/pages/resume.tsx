@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+
 import { InputOtp } from "@heroui/input-otp";
+import { Button } from "@heroui/button";
 import {
   Modal,
   ModalContent,
@@ -16,6 +18,7 @@ import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
 
+import { downloadResumePdf } from "@/utils/resumePdf";
 import { env, envHelpers } from "@/utils/env";
 import DefaultLayout from "@/layouts/default";
 
@@ -254,6 +257,18 @@ export default function ResumePage() {
             </div>
           ) : resumeData && resumeData.basics && resumeData.basics.name ? (
             <div className="space-y-6">
+              <div className="flex justify-end">
+                <Button
+                  color="primary"
+                  onPress={() =>
+                    downloadResumePdf(
+                      resumeData as ResumeData & { sectionOrder: string[] },
+                    )
+                  }
+                >
+                  Download PDF
+                </Button>
+              </div>
               {/* Resume Content */}
               <ResumeContent data={resumeData} />
             </div>
