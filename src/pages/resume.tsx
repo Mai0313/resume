@@ -7,6 +7,7 @@ import {
   ModalBody,
   useDisclosure,
 } from "@heroui/modal";
+import { Button } from "@heroui/button";
 import { addToast } from "@heroui/toast";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "@heroui/use-theme";
@@ -15,6 +16,7 @@ import { Spinner } from "@heroui/spinner";
 import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
 import { loadResumeData, ResumeData } from "../utils/resumeLoader";
+import { downloadResumePDF } from "../utils/pdfGenerator";
 
 import { env, envHelpers } from "@/utils/env";
 import DefaultLayout from "@/layouts/default";
@@ -170,6 +172,32 @@ export default function ResumePage() {
     }
   }
 
+  function handleDownloadPDF() {
+    if (!resumeData) {
+      addToast({
+        title: "Error",
+        description: "Resume data is not available for PDF generation",
+        color: "danger",
+      });
+      return;
+    }
+
+    try {
+      downloadResumePDF(resumeData);
+      addToast({
+        title: "Success",
+        description: "PDF downloaded successfully!",
+        color: "success",
+      });
+    } catch (error) {
+      addToast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to generate PDF",
+        color: "danger",
+      });
+    }
+  }
+
   // Listen for pin length
   useEffect(() => {
     if (IS_PIN_ENABLED && pin.length === pinLength) {
@@ -254,6 +282,32 @@ export default function ResumePage() {
             </div>
           ) : resumeData && resumeData.basics && resumeData.basics.name ? (
             <div className="space-y-6">
+              {/* Download PDF Button */}
+              <div className="flex justify-center lg:justify-end mb-6">
+                <Button
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 font-semibold px-6 py-2"
+                  size="lg"
+                  startContent={
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                      />
+                    </svg>
+                  }
+                  onClick={handleDownloadPDF}
+                >
+                  Download PDF
+                </Button>
+              </div>
+
               {/* Resume Content */}
               <ResumeContent data={resumeData} />
             </div>

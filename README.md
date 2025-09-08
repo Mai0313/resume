@@ -18,6 +18,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - **Dynamic Home Page**: Uses @react-spring/web and custom components (Orb, SplitText, GradientText) to create vivid visual effects
 - **Smart Page Rendering**: Pages only appear when properly configured - Resume requires `VITE_RESUME_FILE`, Portfolio requires `VITE_GITHUB_TOKEN`
 - **PIN-Protected Resume**: Resume system based on YAML configuration, supports PIN code verification for privacy protection
+- **PDF Resume Download**: Generate and download professional PDF resume with one click, formatted with clean typography and structured layout
 - **GitHub Portfolio**: Automatically fetches and displays personal projects and contributions via the GitHub API
 - **Responsive Design**: Supports dark/light theme switching and fully responsive layouts
 - **Modern UI**: Built with the HeroUI component library and Framer Motion animations
@@ -32,6 +33,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - [Framer Motion](https://www.framer.com/motion) - React animation library
 - [React Spring](https://react-spring.dev/) - Spring animation library
 - [GitHub API](https://docs.github.com/en/rest) - Fetch project data
+- [jsPDF](https://github.com/parallax/jsPDF) - PDF generation library
 
 ## Environment Setup
 
@@ -113,6 +115,7 @@ npm run dev
 
 - **Conditional Display**: Only appears when `VITE_RESUME_FILE` is configured
 - PIN code verification protection (optional)
+- **PDF Download**: One-click generation of professional PDF resume with clean formatting and structured layout
 - **Flexible Resume Loading**: Supports multiple resume sources:
   - **Local YAML files**: `example.yaml`, `resume.yaml` (loaded from `public/` directory)
   - **GitHub Gist**: Direct Gist URLs automatically converted to raw format
@@ -219,7 +222,8 @@ src/
 │   └── resume.tsx      # Resume page
 ├── utils/              # Utility functions
 │   ├── githubApi.ts    # GitHub API related functions
-│   └── resumeLoader.ts # Resume YAML loader
+│   ├── resumeLoader.ts # Resume YAML loader
+│   └── pdfGenerator.ts # PDF resume generator
 └── types/              # TypeScript type definitions
     └── index.ts        # Common type definitions
 ```
