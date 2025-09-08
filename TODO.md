@@ -1,4 +1,1 @@
-請幫我在resume頁面裡面設計一個功能是下載履歷 pdf
-
-然後把履歷parse成一個pdf給使用者下載 我覺得如果妳用當前頁面的內容去生成可能有點困難
-你可以考慮透過 loadResumeData 取得的 ResumeData 來設計一個好看的履歷pdf會比較簡單
+已在 resume 頁面新增下載履歷 PDF 的功能，透過 `loadResumeData` 取得資料並產生檔案。
