@@ -36,7 +36,7 @@ education:
     studyType: Bachelor of Science
     startDate: 2017-09
     endDate: 2021-09
-    score: 3.85/4.0
+    # score: 3.85/4.0
     summary: >
       Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning.
       Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.
