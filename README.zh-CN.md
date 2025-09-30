@@ -268,4 +268,3 @@ GitHub API 存在速率限制，建议：
 ## 许可证
 
 遵循 [MIT 许可证](https://github.com/frontio-ai/Mai/blob/main/LICENSE) 授权。
-

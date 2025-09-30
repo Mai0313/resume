@@ -317,7 +317,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                         </span>
                       </Link>
                     ))}
-                    
+
                     {/* Download PDF Button */}
                     <button
                       className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg text-sm cursor-pointer border-0"
