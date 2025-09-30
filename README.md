@@ -119,6 +119,7 @@ npm run dev
   - **Raw URLs**: Any accessible YAML file URL
 - YAML-driven resume data management
 - Structured display of personal info, education, work experience, etc.
+- **PDF Download**: Download button to save resume as PDF (uses `public/example.pdf`)
 - Responsive design and animation effects
 
 ### Portfolio Page (`/portfolio`)
