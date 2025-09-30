@@ -2,12 +2,12 @@
 
 # Personal Resume
 
-[![React](https://img.shields.io/badge/-React_19.1-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/-TypeScript_5.8-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/-React_18-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/-TypeScript_5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH,VITE_OPENAI_BASE_URL,VITE_OPENAI_API_KEY,VITE_OPENAI_MODEL&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </center>
 
@@ -15,7 +15,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 
 ## Features
 
-- **Dynamic Home Page**: Uses @react-spring/web and custom components (Orb, SplitText, GradientText) to create vivid visual effects
+- **Dynamic Home Page**: Uses custom components (Particles, Orb, SplitText) to create vivid visual effects
 - **Smart Page Rendering**: Pages only appear when properly configured - Resume requires `VITE_RESUME_FILE`, Portfolio requires `VITE_GITHUB_TOKEN`
 - **PIN-Protected Resume**: Resume system based on YAML configuration, supports PIN code verification for privacy protection
 - **GitHub Portfolio**: Automatically fetches and displays personal projects and contributions via the GitHub API
@@ -32,6 +32,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - [Framer Motion](https://www.framer.com/motion) - React animation library
 - [React Spring](https://react-spring.dev/) - Spring animation library
 - [GitHub API](https://docs.github.com/en/rest) - Fetch project data
+- [React Router](https://reactrouter.com/) - Client-side routing
 
 ## Environment Setup
 
@@ -63,6 +64,10 @@ VITE_GITHUB_TOKEN=your_github_token_here
 VITE_OPENAI_BASE_URL=https://api.openai.com/v1
 VITE_OPENAI_API_KEY=sk-xxxx
 VITE_OPENAI_MODEL=gpt-5
+
+# Optional: Custom root path for subdirectory deployments (e.g., GitHub Pages)
+# When deploying under a subpath like https://<user>.github.io/<repo>, set:
+# VITE_ROOT_PATH=/resume
 ```
 
 **Important**:
@@ -73,6 +78,7 @@ VITE_OPENAI_MODEL=gpt-5
 - Replace `your_github_token_here` with your GitHub Personal Access Token
 - The GitHub Token requires `public_repo` permission to read public repositories
 - Do not commit your real token to version control
+- If deploying to a subpath (e.g., GitHub Pages), set `VITE_ROOT_PATH` to the subpath (e.g., `/resume`).
 
 ### Install Dependencies
 
@@ -104,9 +110,9 @@ npm run dev
 
 ### Home Page (`/`)
 
-- Dynamic Orb background effect
-- Split Text animation displays GitHub username
-- Gradient Text shows contact information
+- Interactive background effects (Particles + Orb)
+- SplitText animation displays your website title (`VITE_WEBSITE_TITLE`)
+- Quick link to your GitHub profile
 - Responsive design and theme switching
 
 ### Resume Page (`/resume`)
@@ -121,20 +127,21 @@ npm run dev
 - Structured display of personal info, education, work experience, etc.
 - **PDF Download**: Download button to save resume as PDF (uses `public/example.pdf`)
 - Responsive design and animation effects
+- Tip: If PIN is enabled, you can unlock via URL like `/resume?pin=123456`. The PIN is removed from the URL after verification.
 
 ### Portfolio Page (`/portfolio`)
 
+- Appears only when `VITE_GITHUB_TOKEN` is configured
+- Automatically fetches your repositories and contributions
+- Displays: language, stars, forks, topics, last updated time
+- Shows recent commit messages with links
+- Supports demo link and GitHub link per repo
+
 ### AI Assistant (Floating Chat)
 
-- Appears when `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` are configured.
-- Streams answers live. If the selected model supports reasoning, a small muted block shows the reasoning summary above the assistant's answer.
-- You can clear the conversation using the "Clear Chat" button.
-
-- **Conditional Display**: Only appears when `VITE_GITHUB_TOKEN` is configured
-- Automatically fetches GitHub repositories and contributions
-- Displays project details: language, stars, forks, topic tags
-- Shows recent commit records
-- Supports project demo links and GitHub links
+- Appears when `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` are configured
+- Streams answers; if the model supports reasoning (e.g., GPT-5), a muted reasoning summary appears above answers
+- Includes a Clear Chat button and loading/stream indicators
 
 ## Custom Configuration
 
@@ -200,6 +207,11 @@ yarn build
 yarn deploy
 ```
 
+Notes for GitHub Pages:
+
+- Set `VITE_ROOT_PATH` to your repository name (e.g., `/resume`).
+- `package.json` has `homepage` configured; the `vite` base is also driven by `VITE_ROOT_PATH`.
+
 ### Deploy to Vercel
 
 The project is pre-configured with `vercel.json` and can be deployed directly to Vercel.
@@ -208,19 +220,24 @@ The project is pre-configured with `vercel.json` and can be deployed directly to
 
 ```
 src/
-├── components/          # Reusable components
-│   ├── FuzzyText.tsx   # 404 text effect
-│   ├── Orb.tsx         # Dynamic background orb
-│   ├── SplitText.tsx   # Split text animation
-│   ├── PortfolioContent.tsx  # Portfolio content component
-│   └── ResumeContent.tsx     # Resume content component
+├── components/                  # Reusable components
+│   ├── Particles/Particles.tsx  # Particle background
+│   ├── Orb/Orb.tsx              # Dynamic background orb
+│   ├── FuzzyText/FuzzyText.tsx  # 404 text effect
+│   ├── SplitText/SplitText.tsx  # Split text animation
+│   ├── ChatBot/ChatBot.tsx      # Floating AI assistant
+│   ├── SpotlightCard/...        # Spotlight hover card
+│   ├── PortfolioContent.tsx     # Portfolio content component
+│   └── ResumeContent.tsx        # Resume content component
 ├── pages/              # Page components
 │   ├── index.tsx       # Home page
 │   ├── portfolio.tsx   # Portfolio page
 │   └── resume.tsx      # Resume page
 ├── utils/              # Utility functions
 │   ├── githubApi.ts    # GitHub API related functions
-│   └── resumeLoader.ts # Resume YAML loader
+│   ├── resumeLoader.ts # Resume YAML loader
+│   ├── pathUtils.ts    # Root path helpers (VITE_ROOT_PATH)
+│   └── openai-client.ts# OpenAI client (streaming)
 └── types/              # TypeScript type definitions
     └── index.ts        # Common type definitions
 ```
@@ -262,9 +279,9 @@ GitHub API has rate limits. Recommendations:
 ### Build Errors
 
 - Make sure all dependencies are installed: `yarn install`
-- Check TypeScript type errors: `yarn lint`
+- Check TypeScript type errors: `yarn type-check`
 - Clear node_modules and reinstall if needed
 
 ## License
 
-Licensed under the [MIT license](https://github.com/frontio-ai/Mai/blob/main/LICENSE).
+Licensed under the [MIT license](LICENSE).

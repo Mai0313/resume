@@ -2,12 +2,12 @@
 
 # 個人履歷
 
-[![React](https://img.shields.io/badge/-React_19.1-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/-TypeScript_5.8-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/-React_18-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/-TypeScript_5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH,VITE_OPENAI_BASE_URL,VITE_OPENAI_API_KEY,VITE_OPENAI_MODEL&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </center>
 
@@ -15,7 +15,7 @@
 
 ## 功能特色
 
-- 動態首頁：使用 @react-spring/web 與自訂元件（Orb、SplitText、GradientText）打造生動的視覺效果
+- 動態首頁：使用自訂元件（Particles、Orb、SplitText）打造生動的視覺效果
 - 智慧頁面顯示：只有在環境變數正確設定時才會顯示頁面——履歷需設定 `VITE_RESUME_FILE`，作品集需設定 `VITE_GITHUB_TOKEN`
 - 履歷 PIN 保護：以 YAML 組態為基礎的履歷系統，支援以 PIN 碼驗證保護隱私
 - GitHub 作品集：透過 GitHub API 自動抓取並展示個人專案與貢獻
@@ -32,6 +32,7 @@
 - [Framer Motion](https://www.framer.com/motion) - React 動畫庫
 - [React Spring](https://react-spring.dev/) - 彈簧動畫庫
 - [GitHub API](https://docs.github.com/en/rest) - 取得專案資料
+- [React Router](https://reactrouter.com/) - 前端路由
 
 ## 環境設定
 
@@ -65,6 +66,12 @@ VITE_OPENAI_API_KEY=sk-xxxx
 VITE_OPENAI_MODEL=gpt-5
 ```
 
+可選：自訂部署根路徑（適用於 GitHub Pages 子路徑）。若部署於 `https://<user>.github.io/<repo>`，請在 `.env` 設定：
+
+```bash
+VITE_ROOT_PATH=/resume
+```
+
 重要說明：
 
 - 智慧頁面顯示：僅在對應環境變數正確設定時，頁面才會出現在導覽選單與路由中
@@ -73,6 +80,7 @@ VITE_OPENAI_MODEL=gpt-5
 - 請將 `your_github_token_here` 換成你的 GitHub 個人存取權杖（PAT）
 - GitHub Token 需要 `public_repo` 權限以讀取公開倉庫
 - 請勿將真實 Token 提交至版本控制
+- 若部署到子路徑（如 GitHub Pages），請設定 `VITE_ROOT_PATH`（例如 `/resume`）。
 
 ### 安裝依賴套件
 
@@ -104,9 +112,9 @@ npm run dev
 
 ### 首頁（`/`）
 
-- 動態 Orb 背景效果
-- 以 Split Text 動畫顯示 GitHub 使用者名稱
-- 梯度文字顯示聯絡資訊
+- 互動式背景效果（Particles + Orb）
+- 以 SplitText 動畫顯示網站標題（`VITE_WEBSITE_TITLE`）
+- 快速連結到你的 GitHub 個人頁
 - 響應式設計與主題切換
 
 ### 履歷頁（`/resume`）
@@ -121,20 +129,21 @@ npm run dev
 - 結構化顯示個人資訊、學歷、工作經歷等內容
 - PDF 下載：提供按鈕下載履歷 PDF（使用 `public/example.pdf`）
 - 響應式設計與動畫效果
+- 小技巧：若啟用 PIN，可透過 `/resume?pin=你的PIN` 直接解鎖；驗證後網址會自動移除 PIN。
 
 ### 作品集頁（`/portfolio`）
+
+- 僅在設定 `VITE_GITHUB_TOKEN` 後顯示
+- 自動抓取你的倉庫與貢獻
+- 顯示：主要語言、Stars、Forks、主題標籤、最後更新時間
+- 顯示近期提交訊息與連結
+- 支援每個專案的 Demo 與 GitHub 連結
 
 ### AI 助手（浮動聊天）
 
 - 當 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 與 `VITE_OPENAI_MODEL` 已設定時顯示
 - 即時串流回覆；若選用的模型支援推理，將在答案上方以小型、低調區塊呈現推理摘要
 - 可使用「清除對話」按鈕重置會話
-
-- 條件式顯示：僅在設定 `VITE_GITHUB_TOKEN` 後才會出現
-- 自動抓取 GitHub 倉庫與貢獻紀錄
-- 顯示專案資訊：語言、星標、分叉、主題標籤
-- 顯示近期提交紀錄
-- 支援專案 Demo 與 GitHub 連結
 
 ## 自訂設定
 
@@ -200,6 +209,11 @@ yarn build
 yarn deploy
 ```
 
+GitHub Pages 注意事項：
+
+- 將 `VITE_ROOT_PATH` 設為你的倉庫名稱（例如 `/resume`）。
+- `package.json` 已設定 `homepage`，而 Vite 的 `base` 亦由 `VITE_ROOT_PATH` 控制。
+
 ### 部署到 Vercel
 
 此專案已包含 `vercel.json`，可直接在 Vercel 上部署。
@@ -208,21 +222,26 @@ yarn deploy
 
 ```
 src/
-├── components/          # 可重用元件
-│   ├── FuzzyText.tsx   # 404 文字效果
-│   ├── Orb.tsx         # 動態背景球
-│   ├── SplitText.tsx   # 文字分割動畫
-│   ├── PortfolioContent.tsx  # 作品集內容元件
-│   └── ResumeContent.tsx     # 履歷內容元件
-├── pages/              # 頁面元件
-│   ├── index.tsx       # 首頁
-│   ├── portfolio.tsx   # 作品集頁
-│   └── resume.tsx      # 履歷頁
-├── utils/              # 工具函式
-│   ├── githubApi.ts    # GitHub API 相關函式
-│   └── resumeLoader.ts # 履歷 YAML 載入器
-└── types/              # TypeScript 型別定義
-    └── index.ts        # 通用型別定義
+├── components/                  # 可重用元件
+│   ├── Particles/Particles.tsx  # 粒子背景
+│   ├── Orb/Orb.tsx              # 動態背景球
+│   ├── FuzzyText/FuzzyText.tsx  # 404 文字效果
+│   ├── SplitText/SplitText.tsx  # 文字分割動畫
+│   ├── ChatBot/ChatBot.tsx      # 浮動 AI 助手
+│   ├── SpotlightCard/...        # 光斑卡片
+│   ├── PortfolioContent.tsx     # 作品集內容元件
+│   └── ResumeContent.tsx        # 履歷內容元件
+├── pages/                       # 頁面元件
+│   ├── index.tsx                # 首頁
+│   ├── portfolio.tsx            # 作品集頁
+│   └── resume.tsx               # 履歷頁
+├── utils/                       # 工具函式
+│   ├── githubApi.ts             # GitHub API 相關函式
+│   ├── resumeLoader.ts          # 履歷 YAML 載入器
+│   ├── pathUtils.ts             # 根路徑工具（VITE_ROOT_PATH）
+│   └── openai-client.ts         # OpenAI 串流客戶端
+└── types/                       # TypeScript 型別定義
+    └── index.ts                 # 通用型別定義
 ```
 
 ## 開發指引
@@ -262,9 +281,9 @@ GitHub API 具有速率限制，建議：
 ### 建置錯誤
 
 - 確認依賴皆已安裝：`yarn install`
-- 檢查 TypeScript 型別錯誤：`yarn lint`
+- 檢查 TypeScript 型別錯誤：`yarn type-check`
 - 如有需要，刪除 node_modules 後重新安裝
 
 ## 授權條款
 
-依據 [MIT 授權](https://github.com/frontio-ai/Mai/blob/main/LICENSE) 授權。
+依據 [MIT 授權](LICENSE) 授權。
