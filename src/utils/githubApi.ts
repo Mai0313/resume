@@ -34,15 +34,9 @@ export async function getAuthenticatedUser(): Promise<{
   ensureAuthenticated();
 
   try {
-    const response = await fetch(`${GITHUB_API_BASE}/user`, {
+    const response = await enhancedFetch(`${GITHUB_API_BASE}/user`, {
       headers: getAuthHeaders(),
     });
-
-    if (!response.ok) {
-      throw new Error(
-        `GitHub API Error: ${response.status} ${response.statusText}`,
-      );
-    }
 
     const userData = await response.json();
 
@@ -68,6 +62,41 @@ function getAuthHeaders(): Record<string, string> {
     Accept: "application/vnd.github.v3+json",
     ...COMMON_HEADERS,
   };
+}
+
+/**
+ * Enhanced fetch with rate limit header extraction
+ */
+async function enhancedFetch(url: string, options?: RequestInit): Promise<Response> {
+  const response = await fetch(url, options);
+
+  // Update rate limit info from response headers
+  if (response.headers) {
+    githubRequestQueue.updateFromHeaders(response.headers);
+  }
+
+  // Create enhanced error for rate limit detection
+  if (!response.ok) {
+    const error: any = new Error(
+      `GitHub API error: ${response.status} ${response.statusText}`
+    );
+    error.status = response.status;
+    error.response = response;
+    error.headers = response.headers;
+
+    // Add rate limit info to error for better handling
+    if (response.status === 403 || response.status === 429) {
+      const resetTime = response.headers.get('x-ratelimit-reset');
+      if (resetTime) {
+        error.resetTime = parseInt(resetTime, 10);
+        error.message += ` Rate limit will reset at ${new Date(parseInt(resetTime, 10) * 1000).toLocaleTimeString()}`;
+      }
+    }
+
+    throw error;
+  }
+
+  return response;
 }
 
 /**
@@ -129,7 +158,7 @@ export async function getUserPinnedRepositories(
       }
     `;
 
-    const response = await fetch("https://api.github.com/graphql", {
+    const response = await enhancedFetch("https://api.github.com/graphql", {
       method: "POST",
       headers: getGraphQLHeaders(),
       body: JSON.stringify({
@@ -137,12 +166,6 @@ export async function getUserPinnedRepositories(
         variables: { username },
       }),
     });
-
-    if (!response.ok) {
-      throw new Error(
-        `GitHub GraphQL API error: ${response.status} ${response.statusText}`,
-      );
-    }
 
     const data = await response.json();
 
@@ -187,18 +210,12 @@ export async function getUserRepositories(
   ensureAuthenticated();
 
   try {
-    const response = await fetch(
+    const response = await enhancedFetch(
       `${GITHUB_API_BASE}/users/${username}/repos?type=public&sort=updated&per_page=100`,
       {
         headers: getAuthHeaders(),
       },
     );
-
-    if (!response.ok) {
-      throw new Error(
-        `GitHub API error: ${response.status} ${response.statusText}`,
-      );
-    }
 
     const repositories: GitHubRepository[] = await response.json();
 
@@ -219,16 +236,10 @@ export async function getRepositoryCommits(
 ): Promise<GitHubCommit[]> {
   try {
     const authorParam = author ? `&author=${author}` : "";
-    const response = await fetch(
+    const response = await enhancedFetch(
       `${GITHUB_API_BASE}/repos/${owner}/${repo}/commits?per_page=${limit}${authorParam}`,
       { headers: getAuthHeaders() },
     );
-
-    if (!response.ok) {
-      throw new Error(
-        `GitHub API error: ${response.status} ${response.statusText}`,
-      );
-    }
 
     const commits: GitHubCommit[] = await response.json();
 
@@ -268,7 +279,7 @@ export async function getUserContributions(
 
         return !isPinned;
       })
-      .slice(0, 15); // Limit quantity
+      .slice(0, 10); // Reduced from 15 to 10 to prevent rate limiting
 
     // Fetch commits for all repositories using request queue to prevent rate limiting
     const pinnedResults = await Promise.allSettled(
@@ -350,15 +361,9 @@ export async function getUserContributions(
  */
 export async function getUserProfile(username: string) {
   try {
-    const response = await fetch(`${GITHUB_API_BASE}/users/${username}`, {
+    const response = await enhancedFetch(`${GITHUB_API_BASE}/users/${username}`, {
       headers: getAuthHeaders(),
     });
-
-    if (!response.ok) {
-      throw new Error(
-        `GitHub API error: ${response.status} ${response.statusText}`,
-      );
-    }
 
     return await response.json();
   } catch (error) {
