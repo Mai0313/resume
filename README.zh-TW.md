@@ -54,17 +54,19 @@
 
 ## 技術堆疊
 
-- [Vite 6.3](https://vitejs.dev/guide/) - 快速的前端建置工具
+- [Vite 6.3.5](https://vitejs.dev/guide/) - 快速的前端建置工具
 - [React 18](https://react.dev/) - UI 函式庫
-- [TypeScript 5.6](https://www.typescriptlang.org) - 型別安全的 JavaScript
-- [React Router 7.6](https://reactrouter.com/) - 前端路由
+- [TypeScript 5.6.3](https://www.typescriptlang.org) - 型別安全的 JavaScript
+- [React Router 7.6.2](https://reactrouter.com/) - 前端路由
 - [HeroUI](https://heroui.com) - React UI 元件庫
-- [Tailwind CSS 3.4](https://tailwindcss.com) - CSS 框架
-- [Framer Motion](https://www.framer.com/motion) - React 動畫庫
-- [React Spring](https://react-spring.dev/) - 彈簧動畫庫
-- [GSAP](https://gsap.com/) - 專業級動畫庫
-- [OGL](https://oframe.github.io/ogl/) - WebGL 函式庫
-- [OpenAI API](https://platform.openai.com/docs/api-reference) - AI 聊天機器人整合
+- [Tailwind CSS 3.4.16](https://tailwindcss.com) - CSS 框架
+- [Framer Motion 12.15](https://www.framer.com/motion) - React 動畫庫
+- [React Spring 10.0](https://react-spring.dev/) - 彈簧動畫庫
+- [GSAP 3.13](https://gsap.com/) - 專業級動畫庫
+- [OGL 1.0](https://oframe.github.io/ogl/) - WebGL 函式庫
+- [OpenAI API 5.3](https://platform.openai.com/docs/api-reference) - AI 聊天機器人整合
+- [Azure OpenAI 2.0](https://learn.microsoft.com/azure/ai-services/openai/) - Azure OpenAI 服務整合
+- [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器
 - [GitHub API](https://docs.github.com/en/rest) - 取得專案資料
 
 ## 環境設定
@@ -96,7 +98,8 @@ VITE_GITHUB_TOKEN=your_github_token_here
 # 需同時設定以下變數，聊天助手才會顯示
 VITE_OPENAI_BASE_URL=https://api.openai.com/v1
 VITE_OPENAI_API_KEY=sk-xxxx
-VITE_OPENAI_MODEL=gpt-5
+VITE_OPENAI_MODEL=gpt-5-mini
+# 其他模型選項：gpt-3.5-turbo, gpt-4, gpt-4-turbo, gpt-5 等
 ```
 
 可選：自訂部署根路徑（適用於 GitHub Pages 子路徑）。若部署於 `https://<user>.github.io/<repo>`，請在 `.env` 設定：
@@ -247,7 +250,7 @@ VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 
 履歷採用 [JSON Resume Schema](https://jsonresume.org/schema/) 標準，支援以下區塊：
 
-- `basics`：基本資訊（姓名、職稱、聯絡方式、個人簡介等）
+- `basics`：基本資訊（姓名、職稱、聯絡方式、個人簡介、大頭照等）
 - `work`：工作經驗
 - `education`：教育背景
 - `skills`：技能
@@ -258,9 +261,14 @@ VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 - `volunteer`：志工經驗
 - `interests`：興趣
 - `references`：推薦人
-- `languages`：語言能力
+- `languages`：語言能力（顯示在 header 區塊）
 
-範例 YAML 檔案位於 `public/example.yaml`，可作為起始模板。
+**特別說明**：
+
+- 區塊顯示順序由 YAML 檔案中的 `sectionOrder` 欄位決定
+- `languages` 會顯示在頁面頂部的個人資訊區塊（header）中
+- 未包含資料的區塊不會顯示
+- 範例 YAML 檔案位於 `public/example.yaml`，可作為起始模板
 
 ### 修改 PIN 碼
 
@@ -270,15 +278,35 @@ VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 
 ### 部署到 GitHub Pages
 
+#### 方式一：自動部署（推薦）
+
+專案已配置 GitHub Actions 自動部署工作流程（`.github/workflows/deploy.yml`）：
+
+1. 推送程式碼到 `main` 或 `master` 分支
+2. GitHub Actions 會自動：
+   - 執行建置（`yarn build`）
+   - 部署到 GitHub Pages
+
+無需手動執行任何指令！
+
+**注意事項**：
+
+- 確保在 GitHub 倉庫設定中啟用 GitHub Pages
+- 設定 Pages 的部署來源為「GitHub Actions」
+- GitHub Actions 會自動使用 `VITE_ROOT_PATH=/<倉庫名稱>` 進行建置
+
+#### 方式二：手動部署
+
 ```bash
 yarn build
 yarn deploy
 ```
 
-GitHub Pages 注意事項：
+手動部署注意事項：
 
-- 將 `VITE_ROOT_PATH` 設為你的倉庫名稱（例如 `/resume`）。
-- `package.json` 已設定 `homepage`，而 Vite 的 `base` 亦由 `VITE_ROOT_PATH` 控制。
+- 將 `.env` 中的 `VITE_ROOT_PATH` 設為你的倉庫名稱（例如 `/resume`）
+- `package.json` 已設定 `homepage`，而 Vite 的 `base` 亦由 `VITE_ROOT_PATH` 控制
+- `yarn deploy` 會使用 `gh-pages` 套件將 `dist` 目錄推送到 `gh-pages` 分支
 
 ### 部署到 Vercel
 
@@ -294,6 +322,8 @@ GitHub Pages 注意事項：
 
 專案包含 Docker 支援，方便本機開發或伺服器部署：
 
+#### 使用 Docker Compose（推薦）
+
 ```bash
 # 使用 Docker Compose 建置並啟動
 docker compose up -d
@@ -305,19 +335,50 @@ docker compose logs -f
 docker compose down
 ```
 
-Docker 部署會在 `http://localhost:5173` 上執行預覽伺服器。
+Docker Compose 配置：
+
+- **建置階段**：使用多階段建置優化映像大小
+- **執行模式**：使用 `yarn preview` 執行預覽伺服器
+- **Port 映射**：容器內 Port 3000 映射到主機 Port 5173
+- **環境變數**：自動載入 `.env` 檔案
+- **存取位址**：`http://localhost:5173`
+
+#### 手動建置 Docker 映像
+
+```bash
+# 建置映像
+docker build -f docker/Dockerfile -t resume:latest .
+
+# 執行容器
+docker run -d -p 5173:3000 --env-file .env resume:latest
+```
+
+**Docker 注意事項**：
+
+- 確保在專案根目錄存在 `.env` 檔案
+- Docker 映像使用 Node.js 20 與 Python 3.10
+- 建置會自動執行 `yarn install` 和 `yarn build`
 
 ## 專案結構
 
 ```
 src/
 ├── components/                      # 可重用元件
-│   ├── Particles/Particles.tsx      # 粒子背景特效
-│   ├── Orb/Orb.tsx                  # 動態背景球體
-│   ├── FuzzyText/FuzzyText.tsx      # 404 文字模糊效果
-│   ├── SplitText/SplitText.tsx      # 文字分割動畫
-│   ├── ChatBot/ChatBot.tsx          # 浮動 AI 助手
-│   ├── SpotlightCard/               # 光斑卡片元件
+│   ├── Particles/                   # 粒子背景特效
+│   │   └── Particles.tsx
+│   ├── Orb/                         # 動態背景球體（WebGL）
+│   │   ├── Orb.tsx
+│   │   └── Orb.css
+│   ├── FuzzyText/                   # 404 頁面文字模糊效果
+│   │   └── FuzzyText.tsx
+│   ├── SplitText/                   # 首頁文字分割動畫
+│   │   └── SplitText.tsx
+│   ├── ChatBot/                     # 浮動 AI 助手
+│   │   ├── ChatBot.tsx
+│   │   └── index.ts
+│   ├── SpotlightCard/               # 光斑卡片懸停效果
+│   │   ├── SpotlightCard.tsx
+│   │   └── SpotlightCard.css
 │   ├── ResumeSections/              # 履歷區塊元件
 │   │   ├── AwardsSection.tsx        # 獎項區塊
 │   │   ├── CertificatesSection.tsx  # 證照區塊
@@ -328,7 +389,8 @@ src/
 │   │   ├── ReferencesSection.tsx    # 推薦人區塊
 │   │   ├── SkillsSection.tsx        # 技能區塊
 │   │   ├── VolunteerSection.tsx     # 志工經驗區塊
-│   │   └── WorkSection.tsx          # 工作經驗區塊
+│   │   ├── WorkSection.tsx          # 工作經驗區塊
+│   │   └── index.ts                 # 區塊元件匯出
 │   ├── PortfolioContent.tsx         # 作品集內容元件
 │   ├── ResumeContent.tsx            # 履歷內容元件
 │   ├── navbar.tsx                   # 導覽列元件
@@ -340,21 +402,24 @@ src/
 │   ├── portfolio.tsx                # 作品集頁
 │   └── resume.tsx                   # 履歷頁
 ├── layouts/                         # 版面配置
-│   └── default.tsx                  # 預設版面
+│   └── default.tsx                  # 預設版面（含導覽與主題）
 ├── utils/                           # 工具函式
 │   ├── githubApi.ts                 # GitHub API 整合
 │   ├── resumeLoader.ts              # YAML 履歷載入器
 │   ├── pathUtils.ts                 # 路徑工具函式
 │   ├── openai-client.ts             # OpenAI 串流客戶端
-│   └── env.ts                       # 環境變數管理
+│   └── env.ts                       # 環境變數管理與驗證
 ├── config/                          # 設定檔
-│   └── site.ts                      # 網站設定
+│   └── site.ts                      # 網站設定與導覽配置
 ├── types/                           # TypeScript 型別定義
-│   ├── index.ts                     # 通用型別
-│   └── ogl.d.ts                     # OGL 型別宣告
-├── App.tsx                          # 應用程式進入點
+│   ├── index.ts                     # 通用型別（Resume、GitHub API 等）
+│   └── ogl.d.ts                     # OGL WebGL 函式庫型別宣告
+├── styles/                          # 全域樣式
+│   └── globals.css                  # 全域 CSS 樣式
+├── App.tsx                          # 應用程式路由進入點
 ├── main.tsx                         # React 渲染進入點
-└── provider.tsx                     # Context Providers
+├── provider.tsx                     # Context Providers（主題等）
+└── vite-env.d.ts                    # Vite 環境型別定義
 ```
 
 ## 開發指引
@@ -366,8 +431,9 @@ src/
 - **ESLint**：程式碼風格檢查與錯誤偵測
 - **Prettier**：自動格式化程式碼
 - **TypeScript**：型別檢查
+- **Makefile**：提供簡化的開發指令
 
-可用的指令：
+#### Yarn/NPM 指令
 
 ```bash
 # 開發模式
@@ -379,8 +445,14 @@ yarn type-check
 # 程式碼格式化
 yarn format
 
+# 程式碼檢查（不自動修正）
+yarn format:nofix
+
 # 程式碼檢查與修正
 yarn lint
+
+# Lint 檢查（不自動修正）
+yarn lint:nofix
 
 # 完整檢查（型別 + 格式化 + Lint）
 yarn check
@@ -395,24 +467,56 @@ yarn preview
 yarn deploy
 ```
 
+#### Makefile 指令
+
+專案提供 Makefile 簡化常用操作：
+
+```bash
+# 顯示所有可用指令
+make help
+
+# 建置專案（預設目標）
+make
+# 或
+make build
+
+# 清理產生的檔案與 Git 快取
+make clean
+
+# 執行格式化與 Lint（等同於 yarn format + yarn lint）
+make fmt
+
+# 執行專案（需要先 build）
+make run
+```
+
 ### 持續整合 / 持續部署（CI/CD）
 
 專案配置了多個 GitHub Actions 工作流程：
 
-- **程式碼掃描**：使用 CodeQL 進行安全性分析
-- **程式碼品質檢查**：自動執行 Lint 與格式化檢查
-- **相依性審查**：檢查 Pull Request 中的相依性變更
-- **密鑰掃描**：防止敏感資訊洩露
-- **自動部署**：建置並部署到 GitHub Pages
-- **語意化 PR**：確保 Pull Request 標題符合規範
-- **自動標籤**：根據變更內容自動添加標籤
+- **自動部署**（`deploy.yml`）：推送到 main/master 分支時，自動建置並部署到 GitHub Pages
+- **程式碼掃描**（`code_scan.yml`）：使用 CodeQL 進行安全性分析
+- **程式碼品質檢查**（`code-quality-check.yml`）：自動執行 TypeScript、Prettier 與 ESLint 檢查
+- **密鑰掃描**（`secret_scan.yml`）：防止敏感資訊洩露
+- **相依性審查**（`dependency-review.yml`）：檢查 Pull Request 中的相依性變更
+- **語意化 PR**（`semantic-pull-request.yml`）：確保 Pull Request 標題符合 Conventional Commits 規範
+- **自動標籤**（`auto_labeler.yml`）：根據變更內容自動添加標籤
+- **Release 草稿**（`release_drafter.yml`）：自動生成 Release Notes 草稿
+- **Docker 映像建置**（`build_image.yml`）：建置並推送 Docker 映像
 
 ### 新增頁面
 
-1. 在 `src/pages/` 新增頁面元件
-2. 在 `src/App.tsx` 新增路由
-3. 在 `src/config/site.ts` 更新導覽項目配置
-4. 如需條件式顯示，在 `src/utils/env.ts` 添加相關環境變數檢查
+如需新增頁面到網站：
+
+1. **建立頁面元件**：在 `src/pages/` 目錄新增頁面元件（例如 `new-page.tsx`）
+2. **新增路由**：在 `src/App.tsx` 中添加新的路由配置
+3. **更新導覽選單**：在 `src/config/site.ts` 中更新 `siteConfig.navItems` 配置
+4. **條件式顯示（選用）**：
+   - 如需根據環境變數顯示/隱藏頁面，在 `src/utils/env.ts` 添加環境變數檢查函式
+   - 在 `src/config/site.ts` 中使用該檢查函式來決定是否顯示導覽項目
+   - 在 `src/App.tsx` 中使用相同的檢查來決定是否註冊路由
+
+**範例**：參考 Resume 頁面（`/resume`）或 Portfolio 頁面（`/portfolio`）的實作方式
 
 ### 修改主題
 
