@@ -15,24 +15,57 @@
 
 ## 功能特色
 
-- 動態首頁：使用自訂元件（Particles、Orb、SplitText）打造生動的視覺效果
-- 智慧頁面顯示：只有在環境變數正確設定時才會顯示頁面——履歷需設定 `VITE_RESUME_FILE`，作品集需設定 `VITE_GITHUB_TOKEN`
-- 履歷 PIN 保護：以 YAML 組態為基礎的履歷系統，支援以 PIN 碼驗證保護隱私
-- GitHub 作品集：透過 GitHub API 自動抓取並展示個人專案與貢獻
-- 響應式設計：支援深色/淺色主題切換與全響應式版面
-- 現代化 UI：採用 HeroUI 元件庫與 Framer Motion 動畫
-- 具備推理預覽的 AI 助手：當使用具備推理能力的模型（例如 GPT-5）時，助手會在答案上方以低調的方式即時顯示精簡推理摘要，讓你不被干擾地了解思路。
+### 🎨 視覺效果
+
+- **動態首頁**：整合 Particles 粒子背景、Orb 動態球體和 SplitText 文字動畫，打造引人入勝的視覺體驗
+- **現代化 UI**：採用 HeroUI 元件庫與 Framer Motion、React Spring、GSAP 等動畫庫
+- **響應式設計**：支援深色/淺色主題切換與全響應式版面，在各種裝置上都能完美顯示
+
+### 📄 履歷系統
+
+- **彈性資料來源**：支援本機 YAML 檔案、GitHub Gist 或任何可存取的 Raw URL
+- **PIN 碼保護**：可選的 PIN 碼驗證功能，保護隱私資訊
+- **模組化區塊**：10 種履歷區塊元件（工作經驗、教育背景、技能、專案、發表著作等）
+- **PDF 下載**：提供履歷 PDF 下載功能
+- **JSON Resume 標準**：遵循 JSON Resume Schema 規範，資料格式標準化
+
+### 💼 作品集整合
+
+- **GitHub API 整合**：自動抓取並展示個人倉庫與貢獻
+- **豐富資訊**：顯示專案語言、Stars、Forks、主題標籤、最後更新時間
+- **提交記錄**：展示近期提交訊息與連結
+- **專案連結**：支援 Demo 與 GitHub 倉庫連結
+
+### 🤖 AI 助手
+
+- **OpenAI 整合**：支援 OpenAI 與 Azure OpenAI API
+- **串流回覆**：即時串流顯示 AI 回應
+- **推理預覽**：使用具備推理能力的模型時，即時顯示推理過程摘要
+- **浮動介面**：不干擾瀏覽體驗的浮動聊天視窗
+
+### ⚙️ 智慧配置
+
+- **條件式顯示**：頁面根據環境變數自動顯示或隱藏
+  - 履歷頁需設定 `VITE_RESUME_FILE`
+  - 作品集頁需設定 `VITE_GITHUB_TOKEN`
+  - AI 助手需設定 `VITE_OPENAI_*` 相關變數
+- **自動導覽更新**：導覽列動態更新，只顯示已啟用的頁面
+- **子路徑支援**：支援部署到子路徑（如 GitHub Pages）
 
 ## 技術堆疊
 
-- [Vite](https://vitejs.dev/guide/) - 快速的前端建置工具
+- [Vite 6.3](https://vitejs.dev/guide/) - 快速的前端建置工具
+- [React 18](https://react.dev/) - UI 函式庫
+- [TypeScript 5.6](https://www.typescriptlang.org) - 型別安全的 JavaScript
+- [React Router 7.6](https://reactrouter.com/) - 前端路由
 - [HeroUI](https://heroui.com) - React UI 元件庫
-- [Tailwind CSS](https://tailwindcss.com) - CSS 框架
-- [TypeScript](https://www.typescriptlang.org) - 型別安全的 JavaScript
+- [Tailwind CSS 3.4](https://tailwindcss.com) - CSS 框架
 - [Framer Motion](https://www.framer.com/motion) - React 動畫庫
 - [React Spring](https://react-spring.dev/) - 彈簧動畫庫
+- [GSAP](https://gsap.com/) - 專業級動畫庫
+- [OGL](https://oframe.github.io/ogl/) - WebGL 函式庫
+- [OpenAI API](https://platform.openai.com/docs/api-reference) - AI 聊天機器人整合
 - [GitHub API](https://docs.github.com/en/rest) - 取得專案資料
-- [React Router](https://reactrouter.com/) - 前端路由
 
 ## 環境設定
 
@@ -72,15 +105,33 @@ VITE_OPENAI_MODEL=gpt-5
 VITE_ROOT_PATH=/resume
 ```
 
-重要說明：
+**重要說明：**
 
-- 智慧頁面顯示：僅在對應環境變數正確設定時，頁面才會出現在導覽選單與路由中
-  - 履歷頁（`/resume`）僅在設定 `VITE_RESUME_FILE` 後顯示
-  - 作品集頁（`/portfolio`）僅在設定 `VITE_GITHUB_TOKEN` 後顯示
-- 請將 `your_github_token_here` 換成你的 GitHub 個人存取權杖（PAT）
-- GitHub Token 需要 `public_repo` 權限以讀取公開倉庫
-- 請勿將真實 Token 提交至版本控制
-- 若部署到子路徑（如 GitHub Pages），請設定 `VITE_ROOT_PATH`（例如 `/resume`）。
+- **智慧頁面顯示**：頁面僅在對應環境變數正確設定時才會出現在導覽選單與路由中
+
+  - 履歷頁（`/resume`）需設定 `VITE_RESUME_FILE`
+  - 作品集頁（`/portfolio`）需設定 `VITE_GITHUB_TOKEN`
+  - AI 助手需同時設定 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 和 `VITE_OPENAI_MODEL`
+
+- **GitHub Token 設定**：
+
+  - 建立個人存取權杖（PAT）：[GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
+  - Token 需要 `public_repo` 權限以讀取公開倉庫
+  - 新版 Token（fine-grained）需授予「Repository access」和「Contents」讀取權限
+  - **安全性**：請勿將真實 Token 提交至版本控制，使用 `.env` 檔案並確保它在 `.gitignore` 中
+
+- **OpenAI API 設定**：
+
+  - 支援 OpenAI 官方 API 和 Azure OpenAI
+  - `VITE_OPENAI_BASE_URL` 範例：
+    - OpenAI：`https://api.openai.com/v1`
+    - Azure：`https://your-resource.openai.azure.com/openai/deployments/your-deployment`
+  - 推理模型（如 GPT-5）會自動顯示推理過程
+
+- **路徑設定**：
+
+  - 部署到根目錄（如 `https://yourdomain.com`）：無需設定 `VITE_ROOT_PATH`
+  - 部署到子路徑（如 `https://username.github.io/resume`）：設定 `VITE_ROOT_PATH=/resume`
 
 ### 安裝依賴套件
 
@@ -196,6 +247,25 @@ VITE_RESUME_FILE=https://gist.github.com/your-username/your-gist-id
 VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 ```
 
+### 履歷 YAML 格式
+
+履歷採用 [JSON Resume Schema](https://jsonresume.org/schema/) 標準，支援以下區塊：
+
+- `basics`：基本資訊（姓名、職稱、聯絡方式、個人簡介等）
+- `work`：工作經驗
+- `education`：教育背景
+- `skills`：技能
+- `projects`：專案經驗
+- `publications`：發表著作
+- `certificates`：證照
+- `awards`：獎項
+- `volunteer`：志工經驗
+- `interests`：興趣
+- `references`：推薦人
+- `languages`：語言能力
+
+範例 YAML 檔案位於 `public/example.yaml`，可作為起始模板。
+
 ### 修改 PIN 碼
 
 在 `.env` 檔中調整 `VITE_PIN_CODE` 的值。
@@ -216,74 +286,292 @@ GitHub Pages 注意事項：
 
 ### 部署到 Vercel
 
-此專案已包含 `vercel.json`，可直接在 Vercel 上部署。
+此專案已包含 `vercel.json`，可直接在 Vercel 上部署：
+
+1. 在 Vercel 上匯入你的 GitHub 倉庫
+2. 設定環境變數（參考 `.env` 範例）
+3. Vercel 會自動偵測 Vite 專案並完成部署
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume)
+
+### 使用 Docker 部署
+
+專案包含 Docker 支援，方便本機開發或伺服器部署：
+
+```bash
+# 使用 Docker Compose 建置並啟動
+docker compose up -d
+
+# 查看日誌
+docker compose logs -f
+
+# 停止服務
+docker compose down
+```
+
+Docker 部署會在 `http://localhost:5173` 上執行預覽伺服器。
 
 ## 專案結構
 
 ```
 src/
-├── components/                  # 可重用元件
-│   ├── Particles/Particles.tsx  # 粒子背景
-│   ├── Orb/Orb.tsx              # 動態背景球
-│   ├── FuzzyText/FuzzyText.tsx  # 404 文字效果
-│   ├── SplitText/SplitText.tsx  # 文字分割動畫
-│   ├── ChatBot/ChatBot.tsx      # 浮動 AI 助手
-│   ├── SpotlightCard/...        # 光斑卡片
-│   ├── PortfolioContent.tsx     # 作品集內容元件
-│   └── ResumeContent.tsx        # 履歷內容元件
-├── pages/                       # 頁面元件
-│   ├── index.tsx                # 首頁
-│   ├── portfolio.tsx            # 作品集頁
-│   └── resume.tsx               # 履歷頁
-├── utils/                       # 工具函式
-│   ├── githubApi.ts             # GitHub API 相關函式
-│   ├── resumeLoader.ts          # 履歷 YAML 載入器
-│   ├── pathUtils.ts             # 根路徑工具（VITE_ROOT_PATH）
-│   └── openai-client.ts         # OpenAI 串流客戶端
-└── types/                       # TypeScript 型別定義
-    └── index.ts                 # 通用型別定義
+├── components/                      # 可重用元件
+│   ├── Particles/Particles.tsx      # 粒子背景特效
+│   ├── Orb/Orb.tsx                  # 動態背景球體
+│   ├── FuzzyText/FuzzyText.tsx      # 404 文字模糊效果
+│   ├── SplitText/SplitText.tsx      # 文字分割動畫
+│   ├── ChatBot/ChatBot.tsx          # 浮動 AI 助手
+│   ├── SpotlightCard/               # 光斑卡片元件
+│   ├── ResumeSections/              # 履歷區塊元件
+│   │   ├── AwardsSection.tsx        # 獎項區塊
+│   │   ├── CertificatesSection.tsx  # 證照區塊
+│   │   ├── EducationSection.tsx     # 教育背景區塊
+│   │   ├── InterestsSection.tsx     # 興趣區塊
+│   │   ├── ProjectsSection.tsx      # 專案經驗區塊
+│   │   ├── PublicationsSection.tsx  # 發表著作區塊
+│   │   ├── ReferencesSection.tsx    # 推薦人區塊
+│   │   ├── SkillsSection.tsx        # 技能區塊
+│   │   ├── VolunteerSection.tsx     # 志工經驗區塊
+│   │   └── WorkSection.tsx          # 工作經驗區塊
+│   ├── PortfolioContent.tsx         # 作品集內容元件
+│   ├── ResumeContent.tsx            # 履歷內容元件
+│   ├── navbar.tsx                   # 導覽列元件
+│   ├── theme-switch.tsx             # 主題切換元件
+│   ├── icons.tsx                    # 圖示元件
+│   └── primitives.ts                # 基礎元件樣式
+├── pages/                           # 頁面元件
+│   ├── index.tsx                    # 首頁
+│   ├── portfolio.tsx                # 作品集頁
+│   └── resume.tsx                   # 履歷頁
+├── layouts/                         # 版面配置
+│   └── default.tsx                  # 預設版面
+├── utils/                           # 工具函式
+│   ├── githubApi.ts                 # GitHub API 整合
+│   ├── resumeLoader.ts              # YAML 履歷載入器
+│   ├── pathUtils.ts                 # 路徑工具函式
+│   ├── openai-client.ts             # OpenAI 串流客戶端
+│   └── env.ts                       # 環境變數管理
+├── config/                          # 設定檔
+│   └── site.ts                      # 網站設定
+├── types/                           # TypeScript 型別定義
+│   ├── index.ts                     # 通用型別
+│   └── ogl.d.ts                     # OGL 型別宣告
+├── App.tsx                          # 應用程式進入點
+├── main.tsx                         # React 渲染進入點
+└── provider.tsx                     # Context Providers
 ```
 
 ## 開發指引
+
+### 開發工具
+
+專案使用以下開發工具確保程式碼品質：
+
+- **ESLint**：程式碼風格檢查與錯誤偵測
+- **Prettier**：自動格式化程式碼
+- **TypeScript**：型別檢查
+
+可用的指令：
+
+```bash
+# 開發模式
+yarn dev
+
+# 型別檢查
+yarn type-check
+
+# 程式碼格式化
+yarn format
+
+# 程式碼檢查與修正
+yarn lint
+
+# 完整檢查（型別 + 格式化 + Lint）
+yarn check
+
+# 建置專案
+yarn build
+
+# 預覽建置結果
+yarn preview
+
+# 部署到 GitHub Pages
+yarn deploy
+```
+
+### 持續整合 / 持續部署（CI/CD）
+
+專案配置了多個 GitHub Actions 工作流程：
+
+- **程式碼掃描**：使用 CodeQL 進行安全性分析
+- **程式碼品質檢查**：自動執行 Lint 與格式化檢查
+- **相依性審查**：檢查 Pull Request 中的相依性變更
+- **密鑰掃描**：防止敏感資訊洩露
+- **自動部署**：建置並部署到 GitHub Pages
+- **語意化 PR**：確保 Pull Request 標題符合規範
+- **自動標籤**：根據變更內容自動添加標籤
+- **Pre-commit 更新**：自動更新 pre-commit hooks
 
 ### 新增頁面
 
 1. 在 `src/pages/` 新增頁面元件
 2. 在 `src/App.tsx` 新增路由
-3. 在 `src/components/navbar.tsx` 新增導覽連結
+3. 在 `src/config/site.ts` 更新導覽項目配置
+4. 如需條件式顯示，在 `src/utils/env.ts` 添加相關環境變數檢查
 
 ### 修改主題
 
-HeroUI 的主題設定位於 `tailwind.config.js`，可依需求自訂色彩與樣式。
+HeroUI 的主題設定位於 `tailwind.config.js`，可依需求自訂色彩與樣式。主題切換功能已整合在導覽列中，支援深色/淺色模式。
+
+### 自訂履歷區塊
+
+履歷系統採用模組化設計，每個區塊都是獨立元件：
+
+1. 在 `src/components/ResumeSections/` 新增或修改區塊元件
+2. 在 `src/components/ResumeContent.tsx` 中引入並使用新元件
+3. 確保 YAML 資料結構與元件預期的格式相符
 
 ### API 限制
 
 GitHub API 具有速率限制，建議：
 
-- 使用個人存取權杖（PAT）以提高限制
-- 設計適當的快取策略
+- 使用個人存取權杖（PAT）以提高限制（每小時 5,000 次請求）
+- 未認證請求限制為每小時 60 次
+- 設計適當的快取策略以減少 API 呼叫
 - 面對大量資料時採用分頁載入
 
 ## 疑難排解
 
-### GitHub API 403 錯誤
+### GitHub API 相關問題
 
-- 檢查是否正確設定 Token
+**403 Forbidden 錯誤**
+
+- 檢查 Token 是否正確設定在 `.env` 檔中
 - 確認 Token 具有 `public_repo` 權限
-- 檢查是否已超出 API 速率限制
+- 檢查是否已超出 API 速率限制（未認證：60 次/小時，已認證：5,000 次/小時）
+- 確認 Token 尚未過期
 
-### 頁面未顯示
+**無法載入作品集資料**
 
-- 履歷頁未出現：確認 `.env` 中是否已設定 `VITE_RESUME_FILE`
-- 作品集頁未出現：確認 `.env` 中是否已設定 `VITE_GITHUB_TOKEN`
-- 導覽列為空：請至少設定其中一個頁面的環境變數
+- 確認網路連線正常
+- 檢查瀏覽器控制台是否有錯誤訊息
+- 驗證 GitHub Token 是否有效
 
-### 建置錯誤
+### 頁面顯示問題
 
-- 確認依賴皆已安裝：`yarn install`
-- 檢查 TypeScript 型別錯誤：`yarn type-check`
-- 如有需要，刪除 node_modules 後重新安裝
+**履歷頁未出現在導覽列**
+
+- 確認 `.env` 中是否已設定 `VITE_RESUME_FILE`
+- 檢查環境變數值是否正確（本機檔案名稱或完整 URL）
+- 重新啟動開發伺服器
+
+**作品集頁未出現在導覽列**
+
+- 確認 `.env` 中是否已設定 `VITE_GITHUB_TOKEN`
+- 檢查 Token 格式是否正確（應為 `ghp_` 開頭）
+- 重新啟動開發伺服器
+
+**AI 助手未顯示**
+
+- 確認已設定以下三個環境變數：
+  - `VITE_OPENAI_BASE_URL`
+  - `VITE_OPENAI_API_KEY`
+  - `VITE_OPENAI_MODEL`
+- 檢查 API Key 是否有效
+- 確認 Base URL 格式正確（應包含完整的 API endpoint）
+
+**導覽列完全為空**
+
+- 至少需要設定一個頁面的環境變數（`VITE_RESUME_FILE` 或 `VITE_GITHUB_TOKEN`）
+- 首頁（`/`）永遠可用，不需要特別設定
+
+### 履歷載入問題
+
+**無法載入履歷 YAML**
+
+- 檢查檔案路徑是否正確
+- 如使用 URL，確認 URL 可直接存取（在瀏覽器中開啟測試）
+- GitHub Gist URL 會自動轉換為 Raw 格式，無需手動處理
+- 檢查 YAML 格式是否正確（可使用線上 YAML 驗證工具）
+
+**PIN 碼驗證無法通過**
+
+- 確認 `.env` 中的 `VITE_PIN_CODE` 值與輸入相符
+- 注意 PIN 碼有大小寫區分
+- 可透過 URL 參數傳遞 PIN：`/resume?pin=你的PIN`
+
+### 建置與開發問題
+
+**建置失敗**
+
+- 確認所有依賴已正確安裝：`yarn install`
+- 檢查 Node.js 版本（建議使用 18.x 或更高版本）
+- 執行型別檢查：`yarn type-check`
+- 清除快取並重新安裝：
+  ```bash
+  rm -rf node_modules yarn.lock
+  yarn install
+  ```
+
+**開發伺服器無法啟動**
+
+- 檢查 Port 5173 是否被佔用
+- 確認 `.env` 檔案格式正確
+- 檢查是否有必要的環境變數（至少需要 `VITE_WEBSITE_TITLE`）
+
+**TypeScript 錯誤**
+
+- 執行 `yarn type-check` 查看詳細錯誤
+- 確認所有 `@types/*` 套件已安裝
+- 檢查 `tsconfig.json` 設定是否正確
+
+### Docker 相關問題
+
+**容器無法啟動**
+
+- 確認 `.env` 檔案存在且格式正確
+- 檢查 Docker 和 Docker Compose 版本
+- 查看容器日誌：`docker compose logs -f`
+
+**無法存取服務**
+
+- 確認 Port 5173 未被其他服務佔用
+- 檢查防火牆設定
+- 在瀏覽器中嘗試存取 `http://localhost:5173`
+
+## 貢獻指南
+
+歡迎貢獻！無論是回報問題、提出功能建議或提交 Pull Request，都十分感謝。
+
+### 如何貢獻
+
+1. Fork 此專案
+2. 建立你的功能分支：`git checkout -b feature/AmazingFeature`
+3. 提交你的變更：`git commit -m 'Add some AmazingFeature'`
+4. 推送到分支：`git push origin feature/AmazingFeature`
+5. 開啟 Pull Request
+
+### 開發規範
+
+- 遵循現有的程式碼風格（使用 ESLint 和 Prettier）
+- 提交前執行 `yarn check` 確保程式碼品質
+- 撰寫清晰的提交訊息
+- 更新相關文件
+
+### 回報問題
+
+如果發現 Bug 或有功能建議，請[建立 Issue](https://github.com/Mai0313/resume/issues)。
+
+## 特別感謝
+
+- [HeroUI](https://heroui.com) - 提供優秀的 React UI 元件庫
+- [JSON Resume](https://jsonresume.org) - 履歷資料標準
+- 所有開源專案的貢獻者
 
 ## 授權條款
 
 依據 [MIT 授權](LICENSE) 授權。
+
+---
+
+**如果這個專案對你有幫助，請給個 ⭐️！**
