@@ -6,7 +6,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 
 // GitHub API related type definitions
 export interface GitHubRepository {
-  id: number;
+  id: string | number; // GraphQL returns string, REST API returns number
   name: string;
   full_name: string;
   html_url: string;

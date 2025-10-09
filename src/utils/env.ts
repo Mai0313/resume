@@ -5,6 +5,13 @@
  * with proper validation and default values.
  */
 
+/**
+ * Check if a string is non-empty (not null, not empty, not whitespace)
+ */
+function isNonEmptyString(value: string | null | undefined): boolean {
+  return value !== null && value !== undefined && value.trim() !== "";
+}
+
 // Environment variables that require values (will throw error if not provided)
 const REQUIRED_ENV_VARS = ["VITE_WEBSITE_TITLE"] as const;
 
@@ -111,7 +118,7 @@ export const envHelpers = {
    * Check if PIN code protection is enabled
    */
   isPinEnabled(): boolean {
-    return env.PIN_CODE !== null && env.PIN_CODE.trim() !== "";
+    return isNonEmptyString(env.PIN_CODE);
   },
 
   /**
@@ -125,22 +132,14 @@ export const envHelpers = {
    * Check if GitHub token is available
    */
   isGitHubTokenAvailable(): boolean {
-    return (
-      env.GITHUB_TOKEN !== null &&
-      env.GITHUB_TOKEN !== "" &&
-      env.GITHUB_TOKEN.trim() !== ""
-    );
+    return isNonEmptyString(env.GITHUB_TOKEN);
   },
 
   /**
    * Check if resume file is configured
    */
   isResumeFileAvailable(): boolean {
-    return (
-      env.RESUME_FILE !== null &&
-      env.RESUME_FILE !== "" &&
-      env.RESUME_FILE.trim() !== ""
-    );
+    return isNonEmptyString(env.RESUME_FILE);
   },
 
   /**
@@ -178,15 +177,9 @@ export const envHelpers = {
    */
   isOpenAIChatBotAvailable(): boolean {
     return (
-      env.OPENAI_BASE_URL !== null &&
-      env.OPENAI_BASE_URL !== "" &&
-      env.OPENAI_BASE_URL.trim() !== "" &&
-      env.OPENAI_API_KEY !== null &&
-      env.OPENAI_API_KEY !== "" &&
-      env.OPENAI_API_KEY.trim() !== "" &&
-      env.OPENAI_MODEL !== null &&
-      env.OPENAI_MODEL !== "" &&
-      env.OPENAI_MODEL.trim() !== ""
+      isNonEmptyString(env.OPENAI_BASE_URL) &&
+      isNonEmptyString(env.OPENAI_API_KEY) &&
+      isNonEmptyString(env.OPENAI_MODEL)
     );
   },
 } as const;

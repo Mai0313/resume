@@ -24,9 +24,6 @@ const IS_PIN_ENABLED = envHelpers.isPinEnabled();
 
 export default function ResumePage() {
   const [isMounted, setIsMounted] = useState(false);
-  const [renderKey, setRenderKey] = useState(0);
-  const [forceRender, setForceRender] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<string>("light");
   const [resumeData, setResumeData] = useState<
     (ResumeData & { sectionOrder: string[] }) | null
   >(null);
@@ -67,48 +64,6 @@ export default function ResumePage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const controls = useAnimation();
   const { theme } = useTheme();
-
-  // Dual theme change listening
-  useEffect(() => {
-    setCurrentTheme(theme);
-    setRenderKey((prev) => prev + 1);
-    setForceRender(false);
-    const timer = setTimeout(() => {
-      setForceRender(true);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [theme]);
-
-  // Additional listening for DOM class changes (as backup)
-  useEffect(() => {
-    const detectThemeChange = () => {
-      const isDark =
-        document.documentElement.classList.contains("dark") ||
-        document.documentElement.getAttribute("data-theme") === "dark";
-      const detectedTheme = isDark ? "dark" : "light";
-
-      if (detectedTheme !== currentTheme) {
-        setCurrentTheme(detectedTheme);
-        setRenderKey((prev) => prev + 1);
-        setForceRender(false);
-        setTimeout(() => setForceRender(true), 100);
-      }
-    };
-
-    // Listen for DOM changes
-    const observer = new MutationObserver(detectThemeChange);
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class", "data-theme"],
-    });
-
-    // Initial detection
-    detectThemeChange();
-
-    return () => observer.disconnect();
-  }, [currentTheme]);
 
   useEffect(() => {
     if (IS_PIN_ENABLED) {
@@ -186,13 +141,13 @@ export default function ResumePage() {
 
   // Show 404 after 3 errors, wrapped in DefaultLayout (only when PIN code is enabled)
   if (IS_PIN_ENABLED && failCount >= 3) {
-    const textColor = currentTheme === "dark" ? "#ffffff" : "#000000";
+    const textColor = theme === "dark" ? "#ffffff" : "#000000";
 
     return (
       <DefaultLayout>
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2">
-          {isMounted && forceRender && (
-            <div key={`fuzzy-container-${renderKey}`}>
+          {isMounted && (
+            <div key={theme}>
               <FuzzyText
                 baseIntensity={0.15}
                 color={textColor}

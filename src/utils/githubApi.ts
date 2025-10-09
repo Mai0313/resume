@@ -5,15 +5,9 @@ import type {
 } from "@/types";
 
 import { env, envHelpers } from "@/utils/env";
+import { githubRequestQueue } from "@/utils/requestQueue";
 
 const GITHUB_API_BASE = "https://api.github.com";
-
-/**
- * Check if GitHub Token is configured
- */
-export function isGitHubTokenAvailable(): boolean {
-  return envHelpers.isGitHubTokenAvailable();
-}
 
 /**
  * Get current authenticated user information (via GitHub Token)
@@ -154,9 +148,7 @@ export async function getUserPinnedRepositories(
 
     // Convert to standard GitHubRepository format
     const pinnedRepos: GitHubRepository[] = pinnedNodes.map((node: any) => ({
-      id:
-        parseInt(node.id.replace("MDEwOlJlcG9zaXRvcnk=", ""), 10) ||
-        Math.random(),
+      id: node.id,
       name: node.name,
       full_name: node.nameWithOwner,
       html_url: node.url,
@@ -276,39 +268,43 @@ export async function getUserContributions(
       })
       .slice(0, 15); // Limit quantity
 
-    // Fetch commits for all repositories in parallel (pinned + remaining)
+    // Fetch commits for all repositories using request queue to prevent rate limiting
     const pinnedResults = await Promise.allSettled(
-      pinnedRepos.map(async (repo) => {
-        const commits = await getRepositoryCommits(
-          repo.owner.login,
-          repo.name,
-          username,
-          5,
-        );
+      pinnedRepos.map((repo) =>
+        githubRequestQueue.enqueue(async () => {
+          const commits = await getRepositoryCommits(
+            repo.owner.login,
+            repo.name,
+            username,
+            5,
+          );
 
-        return {
-          repository: { ...repo, isPinned: true } as any,
-          commits,
-          total_commits: commits.length,
-        };
-      }),
+          return {
+            repository: { ...repo, isPinned: true } as any,
+            commits,
+            total_commits: commits.length,
+          };
+        }),
+      ),
     );
 
     const remainingResults = await Promise.allSettled(
-      remainingRepos.map(async (repo) => {
-        const commits = await getRepositoryCommits(
-          repo.owner.login,
-          repo.name,
-          username,
-          5,
-        );
+      remainingRepos.map((repo) =>
+        githubRequestQueue.enqueue(async () => {
+          const commits = await getRepositoryCommits(
+            repo.owner.login,
+            repo.name,
+            username,
+            5,
+          );
 
-        return {
-          repository: { ...repo, isPinned: false } as any,
-          commits,
-          total_commits: commits.length,
-        };
-      }),
+          return {
+            repository: { ...repo, isPinned: false } as any,
+            commits,
+            total_commits: commits.length,
+          };
+        }),
+      ),
     );
 
     // Collect successful results from pinned repos

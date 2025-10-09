@@ -38,10 +38,17 @@ export class OpenAIClient {
     const pageTitle = document.title;
 
     // Get main content text (excluding navigation and other UI elements)
-    const mainContent =
-      document.querySelector("main")?.textContent ||
-      document.body?.textContent ||
-      "";
+    // Limit to first 3000 characters to prevent performance issues
+    const mainElement = document.querySelector("main");
+    let mainContent = "";
+
+    if (mainElement) {
+      // Use textContent for better performance than innerHTML
+      const fullText = mainElement.textContent || "";
+
+      // Trim and limit to 3000 characters
+      mainContent = fullText.replace(/\s+/g, " ").trim().slice(0, 3000);
+    }
 
     const pageContext = `
 You are an AI assistant for a personal website. You should ONLY answer questions related to the current page content shown above.

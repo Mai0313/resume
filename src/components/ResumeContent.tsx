@@ -1,6 +1,6 @@
 import type { ResumeData } from "../utils/resumeLoader";
 
-import React from "react";
+import React, { memo } from "react";
 import { Card, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Link } from "@heroui/link";
@@ -25,7 +25,7 @@ interface ResumeContentProps {
   data: ResumeData & { sectionOrder: string[] };
 }
 
-export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
+export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
   // Defensive check: ensure data structure is complete
   if (!data || !data.basics || !data.basics.name) {
     return (
@@ -361,4 +361,6 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
       )}
     </motion.div>
   );
-};
+});
+
+ResumeContent.displayName = "ResumeContent";
