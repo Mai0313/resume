@@ -19,11 +19,22 @@ import { ResponseCreateParamsStreaming } from "openai/resources/responses/respon
 import { env } from "@/utils/env";
 
 export class OpenAIClient {
+  private client: OpenAI | null = null;
+  private cachedPageContext: string | null = null;
+  private cachedPath: string | null = null;
+
+  /**
+   * Get or cache page context - only re-extract if path changes
+   */
   private async getCurrentPageContext(): Promise<string> {
     const currentPath = window.location.pathname;
-    const currentUrl = window.location.href;
 
-    // Get page title
+    // Return cached context if path hasn't changed
+    if (this.cachedPageContext && this.cachedPath === currentPath) {
+      return this.cachedPageContext;
+    }
+
+    const currentUrl = window.location.href;
     const pageTitle = document.title;
 
     // Get main content text (excluding navigation and other UI elements)
@@ -32,7 +43,7 @@ export class OpenAIClient {
       document.body?.textContent ||
       "";
 
-    let pageContext = `
+    const pageContext = `
 You are an AI assistant for a personal website. You should ONLY answer questions related to the current page content shown above.
 
 Rules:
@@ -48,10 +59,29 @@ Here is the page information:
 - Page Content Preview: ${mainContent}
 `;
 
+    // Cache the context
+    this.cachedPageContext = pageContext;
+    this.cachedPath = currentPath;
+
     return pageContext;
   }
 
-  private async initialize(): Promise<OpenAI> {
+  /**
+   * Clear cached page context (useful when page content changes)
+   */
+  clearCache(): void {
+    this.cachedPageContext = null;
+    this.cachedPath = null;
+  }
+
+  /**
+   * Get or initialize OpenAI client (singleton pattern)
+   */
+  private async getClient(): Promise<OpenAI> {
+    if (this.client) {
+      return this.client;
+    }
+
     if (!env.OPENAI_BASE_URL) {
       throw new Error("OPENAI_BASE_URL is not configured");
     }
@@ -59,13 +89,14 @@ Here is the page information:
     if (!env.OPENAI_API_KEY) {
       throw new Error("OPENAI_API_KEY is not configured");
     }
-    const client = new OpenAI({
+
+    this.client = new OpenAI({
       apiKey: env.OPENAI_API_KEY,
       baseURL: env.OPENAI_BASE_URL,
       dangerouslyAllowBrowser: true,
     });
 
-    return client;
+    return this.client;
   }
 
   async completionStream(
@@ -79,7 +110,7 @@ Here is the page information:
     }) => void,
     signal: AbortSignal,
   ): Promise<string> {
-    const client = await this.initialize();
+    const client = await this.getClient();
     const pageContent = await this.getCurrentPageContext();
     const base64 = imageBuffer?.toString("base64");
     const messages: ChatCompletionMessageParam[] = [];
@@ -156,7 +187,7 @@ Here is the page information:
     }) => void,
     signal: AbortSignal,
   ): Promise<string> {
-    const client = await this.initialize();
+    const client = await this.getClient();
     const pageContent = await this.getCurrentPageContext();
     const base64 = imageBuffer?.toString("base64");
     const input: ResponseInput = [];

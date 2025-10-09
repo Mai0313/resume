@@ -8,6 +8,7 @@ import { Spinner } from "@heroui/spinner";
 import { motion } from "framer-motion";
 
 import SpotlightCard from "@/components/SpotlightCard/SpotlightCard";
+import { fadeInStagger } from "@/utils/animations";
 
 interface PortfolioContentProps {
   contributions: GitHubContribution[];
@@ -119,26 +120,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
     );
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+  const { container: containerVariants, item: itemVariants } = fadeInStagger;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {

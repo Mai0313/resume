@@ -7,6 +7,9 @@ import PortfolioContent from "@/components/PortfolioContent";
 import { getUserContributions } from "@/utils/githubApi";
 import { envHelpers } from "@/utils/env";
 
+const CACHE_KEY = "github_contributions_cache";
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
 export default function PortfolioPage() {
   const [contributions, setContributions] = useState<GitHubContribution[]>([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +23,46 @@ export default function PortfolioPage() {
 
         // Dynamically get GitHub username
         const username = await envHelpers.getGitHubUsername();
+
+        // Check cache first
+        const cached = localStorage.getItem(CACHE_KEY);
+
+        if (cached) {
+          try {
+            const { data, timestamp, cachedUsername } = JSON.parse(cached);
+
+            // Verify cache is valid: correct user and not expired
+            if (
+              cachedUsername === username &&
+              Date.now() - timestamp < CACHE_TTL
+            ) {
+              setContributions(data);
+              setLoading(false);
+
+              return;
+            }
+          } catch {
+            // Invalid cache data, clear it
+            localStorage.removeItem(CACHE_KEY);
+          }
+        }
+
+        // Fetch fresh data
         const userContributions = await getUserContributions(username);
+
+        // Save to cache
+        try {
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({
+              data: userContributions,
+              timestamp: Date.now(),
+              cachedUsername: username,
+            }),
+          );
+        } catch {
+          // Ignore cache save errors (e.g., quota exceeded)
+        }
 
         setContributions(userContributions);
       } catch (err) {

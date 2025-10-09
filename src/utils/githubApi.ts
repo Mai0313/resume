@@ -253,19 +253,32 @@ export async function getUserContributions(
   }
 
   try {
-    // First get Pinned repositories
-    const pinnedRepos = await getUserPinnedRepositories(username);
+    // Fetch pinned and all repositories in parallel
+    const [pinnedRepos, allRepositories] = await Promise.all([
+      getUserPinnedRepositories(username),
+      getUserRepositories(username),
+    ]);
 
-    // Then get all repositories
-    const allRepositories = await getUserRepositories(username);
-
-    // Get contribution records for each repository
-    const contributions: GitHubContribution[] = [];
+    // Prepare list of repositories to process
     const processedRepoIds = new Set<string>();
+    const contributions: GitHubContribution[] = [];
 
-    // First process Pinned repositories
-    for (const repo of pinnedRepos) {
-      try {
+    // Filter remaining repos (excluding pinned)
+    const remainingRepos = allRepositories
+      .filter((repo) => {
+        const isPinned = pinnedRepos.some(
+          (p) => p.full_name === repo.full_name,
+        );
+
+        if (isPinned) processedRepoIds.add(repo.full_name);
+
+        return !isPinned;
+      })
+      .slice(0, 15); // Limit quantity
+
+    // Fetch commits for all repositories in parallel (pinned + remaining)
+    const pinnedResults = await Promise.allSettled(
+      pinnedRepos.map(async (repo) => {
         const commits = await getRepositoryCommits(
           repo.owner.login,
           repo.name,
@@ -273,26 +286,16 @@ export async function getUserContributions(
           5,
         );
 
-        contributions.push({
+        return {
           repository: { ...repo, isPinned: true } as any,
           commits,
           total_commits: commits.length,
-        });
+        };
+      }),
+    );
 
-        processedRepoIds.add(repo.full_name);
-      } catch {
-        // If a repository fails to fetch, continue processing other repositories
-        continue;
-      }
-    }
-
-    // Then process other repositories (excluding already processed Pinned repositories)
-    const remainingRepos = allRepositories
-      .filter((repo) => !processedRepoIds.has(repo.full_name))
-      .slice(0, 15); // Limit quantity
-
-    for (const repo of remainingRepos) {
-      try {
+    const remainingResults = await Promise.allSettled(
+      remainingRepos.map(async (repo) => {
         const commits = await getRepositoryCommits(
           repo.owner.login,
           repo.name,
@@ -300,18 +303,27 @@ export async function getUserContributions(
           5,
         );
 
-        if (commits.length > 0) {
-          contributions.push({
-            repository: { ...repo, isPinned: false } as any,
-            commits,
-            total_commits: commits.length,
-          });
-        }
-      } catch {
-        // If a repository fails to fetch, continue processing other repositories
-        continue;
+        return {
+          repository: { ...repo, isPinned: false } as any,
+          commits,
+          total_commits: commits.length,
+        };
+      }),
+    );
+
+    // Collect successful results from pinned repos
+    pinnedResults.forEach((result) => {
+      if (result.status === "fulfilled") {
+        contributions.push(result.value);
       }
-    }
+    });
+
+    // Collect successful results from remaining repos (with commits only)
+    remainingResults.forEach((result) => {
+      if (result.status === "fulfilled" && result.value.commits.length > 0) {
+        contributions.push(result.value);
+      }
+    });
 
     // Sort by Pinned status and last update time
     contributions.sort((a, b) => {

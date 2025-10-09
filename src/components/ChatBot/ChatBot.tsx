@@ -57,6 +57,16 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
     }
   }, [isOpen]);
 
+  // Cleanup: abort any pending requests when component unmounts
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+    };
+  }, []);
+
   // Only render if OpenAI is available
   if (!envHelpers.isOpenAIChatBotAvailable()) {
     return null;

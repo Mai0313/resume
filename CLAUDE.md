@@ -9,6 +9,7 @@ This is a personal resume/portfolio website built with React, TypeScript, and Vi
 ## Development Commands
 
 ### Build and Run
+
 ```bash
 # Install dependencies
 yarn install
@@ -27,6 +28,7 @@ yarn deploy
 ```
 
 ### Code Quality
+
 ```bash
 # Run all checks (type-check + format + lint)
 yarn check
@@ -48,6 +50,7 @@ yarn lint:nofix
 ```
 
 ### Makefile Commands
+
 ```bash
 make          # Build the project
 make clean    # Clean generated files and Git cache
@@ -59,12 +62,15 @@ make help     # Show all available commands
 ## Architecture and Key Concepts
 
 ### Environment-Driven Page Display
+
 The application dynamically shows/hides pages based on environment variables:
+
 - Resume page requires `VITE_RESUME_FILE` to be set
 - Portfolio page requires `VITE_GITHUB_TOKEN` to be set
 - AI assistant requires all three: `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL`
 
 This logic is centralized in:
+
 - `src/utils/env.ts`: Environment variable management with validation
 - `src/config/site.ts`: Dynamic navigation generation
 - `src/App.tsx`: Conditional route rendering
@@ -72,11 +78,13 @@ This logic is centralized in:
 ### Component Architecture
 
 #### Pages (`src/pages/`)
+
 - `index.tsx`: Home page with particle effects and animations
 - `resume.tsx`: Resume page with PIN protection and PDF download
 - `portfolio.tsx`: GitHub portfolio integration
 
 #### Key Components (`src/components/`)
+
 - `ResumeSections/`: Modular resume section components
 - `ChatBot/`: Floating AI assistant with streaming responses
 - `Particles/`, `Orb/`, `SplitText/`: Visual effect components
@@ -84,6 +92,7 @@ This logic is centralized in:
 - `ResumeContent.tsx`: Resume rendering with section ordering
 
 #### Utilities (`src/utils/`)
+
 - `env.ts`: Centralized environment variable access
 - `githubApi.ts`: GitHub API integration with rate limiting
 - `resumeLoader.ts`: YAML resume loader supporting local files and URLs
@@ -91,17 +100,20 @@ This logic is centralized in:
 - `pathUtils.ts`: Path utilities for subpath deployment
 
 ### Resume System
+
 - Supports YAML format following JSON Resume Schema
 - Three data sources: local files, GitHub Gist, or raw URLs
 - Section display order controlled by `sectionOrder` field in YAML
 - Optional PIN code protection with URL parameter support
 
 ### GitHub Integration
+
 - Automatically fetches authenticated user's repositories
 - Displays language stats, stars, forks, and recent commits
 - Token-based authentication for API rate limit management
 
 ### Deployment
+
 - Supports GitHub Pages with automatic subpath configuration
 - Docker containerization with multi-stage builds
 - Vercel deployment configuration included
@@ -110,9 +122,11 @@ This logic is centralized in:
 ## Testing Approach
 
 ### Running Tests
+
 Currently, the project doesn't have a formal test suite. When implementing tests:
 
 1. For component testing:
+
 ```bash
 # Install testing dependencies first
 yarn add -D @testing-library/react @testing-library/jest-dom vitest
@@ -121,12 +135,14 @@ yarn test
 ```
 
 2. For manual testing:
+
 - Test conditional page rendering by toggling environment variables
 - Verify GitHub API integration with valid token
 - Test resume loading from different sources (local, Gist, URL)
 - Check responsive design across different viewport sizes
 
 ### Key Testing Areas
+
 - Environment variable validation in `src/utils/env.ts`
 - Conditional navigation and routing based on env vars
 - Resume YAML parsing and rendering
@@ -137,21 +153,25 @@ yarn test
 ## Important Implementation Details
 
 ### State Management
+
 - Uses React Context for theme management (`src/provider.tsx`)
 - Local state for component-specific data
 - No global state management library; components are largely self-contained
 
 ### Styling
+
 - Tailwind CSS for utility-first styling
 - HeroUI component library for UI elements
 - CSS modules for component-specific styles (e.g., `Orb.css`, `SpotlightCard.css`)
 
 ### Performance Considerations
+
 - Lazy loading for heavy animation libraries
 - GitHub API response caching to reduce API calls
 - Conditional imports based on environment variables
 
 ### Security
+
 - Environment variables for sensitive data (tokens, API keys)
 - PIN code protection for resume access
 - Client-side only; no backend server required

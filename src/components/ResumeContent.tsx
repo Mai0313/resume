@@ -19,6 +19,8 @@ import {
   ProjectsSection,
 } from "./ResumeSections";
 
+import { fadeInStagger } from "@/utils/animations";
+
 interface ResumeContentProps {
   data: ResumeData & { sectionOrder: string[] };
 }
@@ -74,26 +76,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
     );
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+  const { container: containerVariants, item: itemVariants } = fadeInStagger;
 
   // Dynamic section rendering function
   const renderSection = (sectionName: string) => {
