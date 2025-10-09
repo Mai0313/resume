@@ -15,37 +15,72 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 
 ## Features
 
-- **Dynamic Home Page**: Uses custom components (Particles, Orb, SplitText) to create vivid visual effects
-- **Smart Page Rendering**: Pages only appear when properly configured - Resume requires `VITE_RESUME_FILE`, Portfolio requires `VITE_GITHUB_TOKEN`
-- **PIN-Protected Resume**: Resume system based on YAML configuration, supports PIN code verification for privacy protection
-- **GitHub Portfolio**: Automatically fetches and displays personal projects and contributions via the GitHub API
-- **Responsive Design**: Supports dark/light theme switching and fully responsive layouts
-- **Modern UI**: Built with the HeroUI component library and Framer Motion animations
-- **AI Assistant with Reasoning Preview**: When using reasoning-capable models (e.g., GPT-5), the assistant streams a subtle, muted reasoning summary above the answer so you can see its thought process without distraction.
+### 🎨 Visual Effects
+
+- **Dynamic Home Page**: Integrates Particles particle background, Orb dynamic sphere, and SplitText text animation to create an engaging visual experience
+- **Modern UI**: Utilizes HeroUI component library with animation libraries including Framer Motion, React Spring, and GSAP
+- **Responsive Design**: Supports dark/light theme switching and fully responsive layouts, displaying perfectly on all devices
+
+### 📄 Resume System
+
+- **Flexible Data Sources**: Supports local YAML files, GitHub Gist, or any accessible Raw URL
+- **PIN Code Protection**: Optional PIN code verification feature to protect private information
+- **Modular Sections**: 10 types of resume section components (work experience, education, skills, projects, publications, etc.)
+- **PDF Download**: Provides resume PDF download functionality
+- **JSON Resume Standard**: Follows JSON Resume Schema specification for standardized data format
+
+### 💼 Portfolio Integration
+
+- **GitHub API Integration**: Automatically fetches and displays personal repositories and contributions
+- **Rich Information**: Shows project languages, Stars, Forks, topic tags, and last update time
+- **Commit History**: Displays recent commit messages with links
+- **Project Links**: Supports Demo and GitHub repository links
+
+### 🤖 AI Assistant
+
+- **OpenAI Integration**: Supports OpenAI and Azure OpenAI API
+- **Streaming Responses**: Real-time streaming display of AI responses
+- **Reasoning Preview**: When using reasoning-capable models, displays real-time reasoning process summary
+- **Floating Interface**: Non-intrusive floating chat window for seamless browsing experience
+
+### ⚙️ Smart Configuration
+
+- **Conditional Display**: Pages automatically show or hide based on environment variables
+  - Resume page requires `VITE_RESUME_FILE`
+  - Portfolio page requires `VITE_GITHUB_TOKEN`
+  - AI assistant requires `VITE_OPENAI_*` related variables
+- **Automatic Navigation Updates**: Navigation bar dynamically updates to show only enabled pages
+- **Subpath Support**: Supports deployment to subpaths (e.g., GitHub Pages)
 
 ## Tech Stack
 
-- [Vite](https://vitejs.dev/guide/) - Fast frontend build tool
+- [Vite 6.3.5](https://vitejs.dev/guide/) - Fast frontend build tool
+- [React 18](https://react.dev/) - UI library
+- [TypeScript 5.6.3](https://www.typescriptlang.org) - Type-safe JavaScript
+- [React Router 7.6.2](https://reactrouter.com/) - Frontend routing
 - [HeroUI](https://heroui.com) - React UI component library
-- [Tailwind CSS](https://tailwindcss.com) - CSS framework
-- [TypeScript](https://www.typescriptlang.org) - Type-safe JavaScript
-- [Framer Motion](https://www.framer.com/motion) - React animation library
-- [React Spring](https://react-spring.dev/) - Spring animation library
+- [Tailwind CSS 3.4.16](https://tailwindcss.com) - CSS framework
+- [Framer Motion 12.15](https://www.framer.com/motion) - React animation library
+- [React Spring 10.0](https://react-spring.dev/) - Spring animation library
+- [GSAP 3.13](https://gsap.com/) - Professional-grade animation library
+- [OGL 1.0](https://oframe.github.io/ogl/) - WebGL library
+- [OpenAI API 5.3](https://platform.openai.com/docs/api-reference) - AI chatbot integration
+- [Azure OpenAI 2.0](https://learn.microsoft.com/azure/ai-services/openai/) - Azure OpenAI service integration
+- [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML parser
 - [GitHub API](https://docs.github.com/en/rest) - Fetch project data
-- [React Router](https://reactrouter.com/) - Client-side routing
 
 ## Environment Setup
 
 ### Environment Variables
 
-Create a `.env` file and set the following variables:
+Create a `.env` file and configure the following variables:
 
 ```bash
 # Required: Website title
 VITE_WEBSITE_TITLE=Mai
 
-# Optional: Resume file - when not set, Resume page will be hidden
-# Supports both local files and URLs
+# Optional: Resume file - if not set, resume page will be hidden
+# Supports local files and URLs
 # Local file example:
 VITE_RESUME_FILE=example.yaml
 # GitHub Gist example:
@@ -56,33 +91,50 @@ VITE_RESUME_FILE=example.yaml
 # Optional: Resume PIN code protection
 VITE_PIN_CODE=123456
 
-# Optional: GitHub API Token - when not set, Portfolio page will be hidden
+# Optional: GitHub API Token - if not set, portfolio page will be hidden
 VITE_GITHUB_TOKEN=your_github_token_here
 
-# Optional: OpenAI Chatbot (enables in-site AI assistant)
-# These must be set together for the chat assistant to show up
+# Optional: OpenAI chatbot (enables in-site AI assistant)
+# All variables below must be set together for the chat assistant to appear
 VITE_OPENAI_BASE_URL=https://api.openai.com/v1
 VITE_OPENAI_API_KEY=sk-xxxx
-VITE_OPENAI_MODEL=gpt-5
-
-# Optional: Custom root path for subdirectory deployments (e.g., GitHub Pages)
-# When deploying under a subpath like https://<user>.github.io/<repo>, set:
-# VITE_ROOT_PATH=/resume
+VITE_OPENAI_MODEL=gpt-5-mini
+# Other model options: gpt-3.5-turbo, gpt-4, gpt-4-turbo, gpt-5, etc.
 ```
 
-**Important**:
+Optional: Custom deployment root path (for GitHub Pages subpaths). If deploying to `https://<user>.github.io/<repo>`, set in `.env`:
 
-- **Smart Page Display**: Pages only appear in navigation and routing when their environment variables are properly configured
-  - Resume page (`/resume`) only appears when `VITE_RESUME_FILE` is set
-  - Portfolio page (`/portfolio`) only appears when `VITE_GITHUB_TOKEN` is set
-- Replace `your_github_token_here` with your GitHub Personal Access Token
-- The GitHub Token requires `public_repo` permission to read public repositories
-- Do not commit your real token to version control
-- If deploying to a subpath (e.g., GitHub Pages), set `VITE_ROOT_PATH` to the subpath (e.g., `/resume`).
+```bash
+VITE_ROOT_PATH=/resume
+```
+
+**Important Notes:**
+
+- **Smart Page Display**: Pages only appear in navigation menu and routing when corresponding environment variables are properly configured
+  - Resume page (`/resume`) requires `VITE_RESUME_FILE`
+  - Portfolio page (`/portfolio`) requires `VITE_GITHUB_TOKEN`
+  - AI assistant requires `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` to be set together
+
+- **GitHub Token Setup**:
+  - Create Personal Access Token (PAT): [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
+  - Token requires `public_repo` permission to read public repositories
+  - Fine-grained tokens require "Repository access" and "Contents" read permission
+  - **Security**: Never commit real tokens to version control; use `.env` file and ensure it's in `.gitignore`
+
+- **OpenAI API Setup**:
+  - Supports both OpenAI official API and Azure OpenAI
+  - `VITE_OPENAI_BASE_URL` examples:
+    - OpenAI: `https://api.openai.com/v1`
+    - Azure: `https://your-resource.openai.azure.com/openai/deployments/your-deployment`
+  - Reasoning models (e.g., GPT-5) automatically display reasoning process
+
+- **Path Configuration**:
+  - Deploying to root directory (e.g., `https://yourdomain.com`): No need to set `VITE_ROOT_PATH`
+  - Deploying to subdirectory (e.g., `https://username.github.io/resume`): Set `VITE_ROOT_PATH=/resume`
 
 ### Install Dependencies
 
-It is recommended to use `yarn`:
+Using `yarn` is recommended:
 
 ```bash
 yarn install
@@ -94,13 +146,13 @@ Or use `npm`:
 npm install
 ```
 
-### Run Development Server
+### Start Development Server
 
 ```bash
 yarn dev
 ```
 
-Or
+Or:
 
 ```bash
 npm run dev
@@ -111,47 +163,47 @@ npm run dev
 ### Home Page (`/`)
 
 - Interactive background effects (Particles + Orb)
-- SplitText animation displays your website title (`VITE_WEBSITE_TITLE`)
+- Website title displayed with SplitText animation (`VITE_WEBSITE_TITLE`)
 - Quick link to your GitHub profile
-- Responsive design and theme switching
+- Responsive design with theme switching
 
 ### Resume Page (`/resume`)
 
-- **Conditional Display**: Only appears when `VITE_RESUME_FILE` is configured
-- PIN code verification protection (optional)
-- **Flexible Resume Loading**: Supports multiple resume sources:
-  - **Local YAML files**: `example.yaml`, `resume.yaml` (loaded from `public/` directory)
-  - **GitHub Gist**: Direct Gist URLs automatically converted to raw format
-  - **Raw URLs**: Any accessible YAML file URL
+- Conditional display: Only appears when `VITE_RESUME_FILE` is set
+- Supports PIN code verification protection (optional)
+- Flexible resume loading methods:
+  - Local YAML files: `example.yaml`, `resume.yaml` (loaded from `public/` directory)
+  - GitHub Gist: Gist URLs automatically converted to raw format
+  - Raw URL: Any accessible YAML file URL
 - YAML-driven resume data management
-- Structured display of personal info, education, work experience, etc.
-- **PDF Download**: Download button to save resume as PDF (uses `public/example.pdf`)
-- Responsive design and animation effects
-- Tip: If PIN is enabled, you can unlock via URL like `/resume?pin=123456`. The PIN is removed from the URL after verification.
+- Structured display of personal information, education, work experience, etc.
+- PDF Download: Provides button to download resume PDF (uses `public/example.pdf`)
+- Responsive design with animation effects
+- Tip: If PIN is enabled, you can unlock directly via `/resume?pin=your_PIN`; the PIN will be automatically removed from the URL after verification.
 
 ### Portfolio Page (`/portfolio`)
 
-- Appears only when `VITE_GITHUB_TOKEN` is configured
+- Only appears when `VITE_GITHUB_TOKEN` is set
 - Automatically fetches your repositories and contributions
-- Displays: language, stars, forks, topics, last updated time
+- Displays: primary language, Stars, Forks, topic tags, last update time
 - Shows recent commit messages with links
-- Supports demo link and GitHub link per repo
+- Supports Demo and GitHub links for each project
 
 ### AI Assistant (Floating Chat)
 
 - Appears when `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` are configured
-- Streams answers; if the model supports reasoning (e.g., GPT-5), a muted reasoning summary appears above answers
-- Includes a Clear Chat button and loading/stream indicators
+- Real-time streaming responses; if the model supports reasoning, displays reasoning summary in a small, subtle block above the answer
+- Includes "Clear Conversation" button to reset session
 
 ## Custom Configuration
 
-### Configure Pages Display
+### Configure Page Display
 
-The website automatically shows/hides pages based on environment variable configuration:
+The website automatically shows/hides pages based on environment variables:
 
-- **Resume Page**: Only appears when `VITE_RESUME_FILE` is set
-- **Portfolio Page**: Only appears when `VITE_GITHUB_TOKEN` is set
-- **Navigation Menu**: Dynamically updates to show only available pages
+- Resume page: Only appears when `VITE_RESUME_FILE` is set
+- Portfolio page: Only appears when `VITE_GITHUB_TOKEN` is set
+- Navigation bar: Dynamically updates to show only available pages
 
 ### Change GitHub Username
 
@@ -163,7 +215,7 @@ You have multiple options to set up your resume:
 
 #### Option 1: Local YAML File
 
-Edit the `public/example.yaml` file or create your own YAML file in the `public/` directory:
+Edit `public/example.yaml` or create your own YAML file in the `public/` directory:
 
 ```bash
 # In .env file
@@ -172,7 +224,7 @@ VITE_RESUME_FILE=my-resume.yaml
 
 #### Option 2: GitHub Gist (Recommended)
 
-Create a GitHub Gist with your resume YAML file and use the Gist URL:
+Create a GitHub Gist containing your resume YAML and use the Gist URL:
 
 ```bash
 # In .env file
@@ -181,9 +233,9 @@ VITE_RESUME_FILE=https://gist.github.com/your-username/your-gist-id
 
 Benefits of using GitHub Gist:
 
-- Easy to update without redeploying your website
-- Version control for your resume
-- Privacy control (private/public gists)
+- Update resume without redeploying
+- Resume version control
+- Option to make public or private
 
 #### Option 3: Raw URL
 
@@ -194,94 +246,431 @@ Use any accessible YAML file URL:
 VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 ```
 
+### Resume YAML Format
+
+The resume follows the [JSON Resume Schema](https://jsonresume.org/schema/) standard and supports the following sections:
+
+- `basics`: Basic information (name, job title, contact info, summary, profile photo, etc.)
+- `work`: Work experience
+- `education`: Educational background
+- `skills`: Skills
+- `projects`: Project experience
+- `publications`: Publications
+- `certificates`: Certifications
+- `awards`: Awards
+- `volunteer`: Volunteer experience
+- `interests`: Interests
+- `references`: References
+- `languages`: Language proficiency (displayed in header section)
+
+**Special Notes**:
+
+- Section display order is determined by the `sectionOrder` field in the YAML file
+- `languages` is displayed in the personal information block at the top of the page (header)
+- Sections without data will not be displayed
+- Example YAML file located at `public/example.yaml` can be used as a starting template
+
 ### Change PIN Code
 
-Edit the value of `VITE_PIN_CODE` in the `.env` file.
+Adjust the value of `VITE_PIN_CODE` in the `.env` file.
 
 ## Deployment
 
 ### Deploy to GitHub Pages
+
+#### Method 1: Automatic Deployment (Recommended)
+
+The project is configured with GitHub Actions automatic deployment workflow (`.github/workflows/deploy.yml`):
+
+1. Push code to `main` or `master` branch
+2. GitHub Actions will automatically:
+   - Execute build (`yarn build`)
+   - Deploy to GitHub Pages
+
+No manual commands needed!
+
+**Notes**:
+
+- Ensure GitHub Pages is enabled in repository settings
+- Set Pages deployment source to "GitHub Actions"
+- GitHub Actions automatically uses `VITE_ROOT_PATH=/<repository_name>` for building
+
+#### Method 2: Manual Deployment
 
 ```bash
 yarn build
 yarn deploy
 ```
 
-Notes for GitHub Pages:
+Manual deployment notes:
 
-- Set `VITE_ROOT_PATH` to your repository name (e.g., `/resume`).
-- `package.json` has `homepage` configured; the `vite` base is also driven by `VITE_ROOT_PATH`.
+- Set `VITE_ROOT_PATH` in `.env` to your repository name (e.g., `/resume`)
+- `package.json` has `homepage` configured, and Vite's `base` is controlled by `VITE_ROOT_PATH`
+- `yarn deploy` uses the `gh-pages` package to push the `dist` directory to the `gh-pages` branch
 
 ### Deploy to Vercel
 
-The project is pre-configured with `vercel.json` and can be deployed directly to Vercel.
+This project includes `vercel.json` and can be deployed directly on Vercel:
+
+1. Import your GitHub repository on Vercel
+2. Configure environment variables (refer to `.env` example)
+3. Vercel will automatically detect the Vite project and complete deployment
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume)
+
+### Deploy Using Docker
+
+The project includes Docker support for convenient local development or server deployment:
+
+#### Using Docker Compose (Recommended)
+
+```bash
+# Build and start using Docker Compose
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop service
+docker compose down
+```
+
+Docker Compose configuration:
+
+- **Build Stage**: Uses multi-stage build to optimize image size
+- **Runtime Mode**: Runs preview server using `yarn preview`
+- **Port Mapping**: Container port 3000 mapped to host port 5173
+- **Environment Variables**: Automatically loads `.env` file
+- **Access URL**: `http://localhost:5173`
+
+#### Manual Docker Image Build
+
+```bash
+# Build image
+docker build -f docker/Dockerfile -t resume:latest .
+
+# Run container
+docker run -d -p 5173:3000 --env-file .env resume:latest
+```
+
+**Docker Notes**:
+
+- Ensure `.env` file exists in project root directory
+- Docker image uses Node.js 20 and Python 3.10
+- Build automatically executes `yarn install` and `yarn build`
 
 ## Project Structure
 
 ```
 src/
-├── components/                  # Reusable components
-│   ├── Particles/Particles.tsx  # Particle background
-│   ├── Orb/Orb.tsx              # Dynamic background orb
-│   ├── FuzzyText/FuzzyText.tsx  # 404 text effect
-│   ├── SplitText/SplitText.tsx  # Split text animation
-│   ├── ChatBot/ChatBot.tsx      # Floating AI assistant
-│   ├── SpotlightCard/...        # Spotlight hover card
-│   ├── PortfolioContent.tsx     # Portfolio content component
-│   └── ResumeContent.tsx        # Resume content component
-├── pages/              # Page components
-│   ├── index.tsx       # Home page
-│   ├── portfolio.tsx   # Portfolio page
-│   └── resume.tsx      # Resume page
-├── utils/              # Utility functions
-│   ├── githubApi.ts    # GitHub API related functions
-│   ├── resumeLoader.ts # Resume YAML loader
-│   ├── pathUtils.ts    # Root path helpers (VITE_ROOT_PATH)
-│   └── openai-client.ts# OpenAI client (streaming)
-└── types/              # TypeScript type definitions
-    └── index.ts        # Common type definitions
+├── components/                      # Reusable components
+│   ├── Particles/                   # Particle background effects
+│   │   └── Particles.tsx
+│   ├── Orb/                         # Dynamic background orb (WebGL)
+│   │   ├── Orb.tsx
+│   │   └── Orb.css
+│   ├── FuzzyText/                   # 404 page text blur effect
+│   │   └── FuzzyText.tsx
+│   ├── SplitText/                   # Home page text split animation
+│   │   └── SplitText.tsx
+│   ├── ChatBot/                     # Floating AI assistant
+│   │   ├── ChatBot.tsx
+│   │   └── index.ts
+│   ├── SpotlightCard/               # Spotlight card hover effect
+│   │   ├── SpotlightCard.tsx
+│   │   └── SpotlightCard.css
+│   ├── ResumeSections/              # Resume section components
+│   │   ├── AwardsSection.tsx        # Awards section
+│   │   ├── CertificatesSection.tsx  # Certifications section
+│   │   ├── EducationSection.tsx     # Education section
+│   │   ├── InterestsSection.tsx     # Interests section
+│   │   ├── ProjectsSection.tsx      # Projects section
+│   │   ├── PublicationsSection.tsx  # Publications section
+│   │   ├── ReferencesSection.tsx    # References section
+│   │   ├── SkillsSection.tsx        # Skills section
+│   │   ├── VolunteerSection.tsx     # Volunteer experience section
+│   │   ├── WorkSection.tsx          # Work experience section
+│   │   └── index.ts                 # Section components export
+│   ├── PortfolioContent.tsx         # Portfolio content component
+│   ├── ResumeContent.tsx            # Resume content component
+│   ├── navbar.tsx                   # Navigation bar component
+│   ├── theme-switch.tsx             # Theme switch component
+│   ├── icons.tsx                    # Icon components
+│   └── primitives.ts                # Base component styles
+├── pages/                           # Page components
+│   ├── index.tsx                    # Home page
+│   ├── portfolio.tsx                # Portfolio page
+│   └── resume.tsx                   # Resume page
+├── layouts/                         # Layout templates
+│   └── default.tsx                  # Default layout (with navigation and theme)
+├── utils/                           # Utility functions
+│   ├── githubApi.ts                 # GitHub API integration
+│   ├── resumeLoader.ts              # YAML resume loader
+│   ├── pathUtils.ts                 # Path utility functions
+│   ├── openai-client.ts             # OpenAI streaming client
+│   └── env.ts                       # Environment variable management and validation
+├── config/                          # Configuration files
+│   └── site.ts                      # Site configuration and navigation setup
+├── types/                           # TypeScript type definitions
+│   ├── index.ts                     # Common types (Resume, GitHub API, etc.)
+│   └── ogl.d.ts                     # OGL WebGL library type declarations
+├── styles/                          # Global styles
+│   └── globals.css                  # Global CSS styles
+├── App.tsx                          # Application routing entry point
+├── main.tsx                         # React render entry point
+├── provider.tsx                     # Context Providers (theme, etc.)
+└── vite-env.d.ts                    # Vite environment type definitions
 ```
 
 ## Development Guide
 
-### Add a New Page
+### Development Tools
 
-1. Create a new component in `src/pages/`
-2. Add a route in `src/App.tsx`
-3. Add a navigation link in `src/components/navbar.tsx`
+The project uses the following development tools to ensure code quality:
+
+- **ESLint**: Code style checking and error detection
+- **Prettier**: Automatic code formatting
+- **TypeScript**: Type checking
+- **Makefile**: Provides simplified development commands
+
+#### Yarn/NPM Commands
+
+```bash
+# Development mode
+yarn dev
+
+# Type checking
+yarn type-check
+
+# Code formatting
+yarn format
+
+# Code checking (no auto-fix)
+yarn format:nofix
+
+# Code checking and fixing
+yarn lint
+
+# Lint checking (no auto-fix)
+yarn lint:nofix
+
+# Complete check (type + format + lint)
+yarn check
+
+# Build project
+yarn build
+
+# Preview build results
+yarn preview
+
+# Deploy to GitHub Pages
+yarn deploy
+```
+
+#### Makefile Commands
+
+The project provides a Makefile to simplify common operations:
+
+```bash
+# Show all available commands
+make help
+
+# Build project (default target)
+make
+# Or
+make build
+
+# Clean generated files and Git cache
+make clean
+
+# Run format and lint (equivalent to yarn format + yarn lint)
+make fmt
+
+# Run project (requires build first)
+make run
+```
+
+### Continuous Integration / Continuous Deployment (CI/CD)
+
+The project is configured with multiple GitHub Actions workflows:
+
+- **Automatic Deployment** (`deploy.yml`): Automatically builds and deploys to GitHub Pages when pushing to main/master branch
+- **Code Scanning** (`code_scan.yml`): Security analysis using CodeQL
+- **Code Quality Check** (`code-quality-check.yml`): Automatically runs TypeScript, Prettier, and ESLint checks
+- **Secret Scanning** (`secret_scan.yml`): Prevents sensitive information leaks
+- **Dependency Review** (`dependency-review.yml`): Checks dependency changes in Pull Requests
+- **Semantic PR** (`semantic-pull-request.yml`): Ensures Pull Request titles follow Conventional Commits specification
+- **Auto Labeler** (`auto_labeler.yml`): Automatically adds labels based on changes
+- **Release Drafter** (`release_drafter.yml`): Automatically generates Release Notes drafts
+- **Docker Image Build** (`build_image.yml`): Builds and pushes Docker images
+
+### Adding a New Page
+
+To add a page to the website:
+
+1. **Create Page Component**: Add page component in `src/pages/` directory (e.g., `new-page.tsx`)
+2. **Add Route**: Add new route configuration in `src/App.tsx`
+3. **Update Navigation Menu**: Update `siteConfig.navItems` configuration in `src/config/site.ts`
+4. **Conditional Display (Optional)**:
+   - To show/hide page based on environment variables, add environment variable check function in `src/utils/env.ts`
+   - Use that check function in `src/config/site.ts` to determine whether to show navigation item
+   - Use the same check in `src/App.tsx` to determine whether to register route
+
+**Example**: Refer to the implementation of Resume page (`/resume`) or Portfolio page (`/portfolio`)
 
 ### Modify Theme
 
-HeroUI theme configuration is in `tailwind.config.js`, where you can customize colors and styles as needed.
+HeroUI theme configuration is located in `tailwind.config.js`, which can be customized for colors and styles as needed. Theme switching functionality is integrated in the navigation bar, supporting dark/light mode.
+
+### Customize Resume Sections
+
+The resume system uses a modular design where each section is an independent component:
+
+1. Add or modify section components in `src/components/ResumeSections/`
+2. Import and use new components in `src/components/ResumeContent.tsx`
+3. Ensure YAML data structure matches the format expected by components
 
 ### API Limitations
 
-GitHub API has rate limits. Recommendations:
+GitHub API has rate limits, recommendations:
 
-- Use a Personal Access Token for higher limits
-- Implement proper caching
-- Consider paginated loading for large data sets
+- Use Personal Access Token (PAT) to increase limits (5,000 requests per hour)
+- Unauthenticated requests are limited to 60 per hour
+- Design appropriate caching strategies to reduce API calls
+- Use paginated loading for large amounts of data
 
 ## Troubleshooting
 
-### GitHub API 403 Error
+### GitHub API Related Issues
 
-- Check if the token is set correctly
-- Ensure the token has `public_repo` permission
-- Check if you have exceeded the API rate limit
+**403 Forbidden Error**
 
-### Pages Not Showing
+- Check if token is correctly set in `.env` file
+- Verify token has `public_repo` permission
+- Check if API rate limit has been exceeded (unauthenticated: 60/hour, authenticated: 5,000/hour)
+- Verify token has not expired
 
-- **Resume page missing**: Check if `VITE_RESUME_FILE` is set in your `.env` file
-- **Portfolio page missing**: Check if `VITE_GITHUB_TOKEN` is set in your `.env` file
-- **Navigation empty**: Make sure at least one page environment variable is configured
+**Unable to Load Portfolio Data**
 
-### Build Errors
+- Verify network connection is working
+- Check browser console for error messages
+- Validate GitHub Token is valid
 
-- Make sure all dependencies are installed: `yarn install`
-- Check TypeScript type errors: `yarn type-check`
-- Clear node_modules and reinstall if needed
+### Page Display Issues
+
+**Resume Page Not Appearing in Navigation**
+
+- Verify `VITE_RESUME_FILE` is set in `.env`
+- Check environment variable value is correct (local filename or full URL)
+- Restart development server
+
+**Portfolio Page Not Appearing in Navigation**
+
+- Verify `VITE_GITHUB_TOKEN` is set in `.env`
+- Check token format is correct (should start with `ghp_`)
+- Restart development server
+
+**AI Assistant Not Displayed**
+
+- Verify the following three environment variables are set:
+  - `VITE_OPENAI_BASE_URL`
+  - `VITE_OPENAI_API_KEY`
+  - `VITE_OPENAI_MODEL`
+- Check if API Key is valid
+- Verify Base URL format is correct (should include full API endpoint)
+
+**Navigation Bar Completely Empty**
+
+- At least one page's environment variable must be set (`VITE_RESUME_FILE` or `VITE_GITHUB_TOKEN`)
+- Home page (`/`) is always available, no configuration needed
+
+### Resume Loading Issues
+
+**Unable to Load Resume YAML**
+
+- Check if file path is correct
+- If using URL, verify URL is directly accessible (test by opening in browser)
+- GitHub Gist URLs are automatically converted to Raw format, no manual processing needed
+- Check YAML format is correct (use online YAML validation tools)
+
+**PIN Code Verification Fails**
+
+- Verify `VITE_PIN_CODE` value in `.env` matches input
+- Note that PIN code is case-sensitive
+- Can pass PIN via URL parameter: `/resume?pin=your_PIN`
+
+### Build and Development Issues
+
+**Build Fails**
+
+- Verify all dependencies are correctly installed: `yarn install`
+- Check Node.js version (recommended 18.x or higher)
+- Run type checking: `yarn type-check`
+- Clear cache and reinstall:
+  ```bash
+  rm -rf node_modules yarn.lock
+  yarn install
+  ```
+
+**Development Server Fails to Start**
+
+- Check if port 5173 is already in use
+- Verify `.env` file format is correct
+- Check for required environment variables (at least `VITE_WEBSITE_TITLE` is needed)
+
+**TypeScript Errors**
+
+- Run `yarn type-check` to see detailed errors
+- Verify all `@types/*` packages are installed
+- Check `tsconfig.json` configuration is correct
+
+### Docker Related Issues
+
+**Container Fails to Start**
+
+- Verify `.env` file exists and format is correct
+- Check Docker and Docker Compose versions
+- View container logs: `docker compose logs -f`
+
+**Unable to Access Service**
+
+- Verify port 5173 is not occupied by other services
+- Check firewall settings
+- Try accessing `http://localhost:5173` in browser
+
+## Contributing
+
+Contributions are welcome! Whether reporting issues, suggesting features, or submitting Pull Requests, all are greatly appreciated.
+
+### How to Contribute
+
+1. Fork this project
+2. Create your feature branch: `git checkout -b feature/AmazingFeature`
+3. Commit your changes: `git commit -m 'Add some AmazingFeature'`
+4. Push to the branch: `git push origin feature/AmazingFeature`
+5. Open a Pull Request
+
+### Development Standards
+
+- Follow existing code style (using ESLint and Prettier)
+- Run `yarn check` before committing to ensure code quality
+- Write clear commit messages
+- Update relevant documentation
+
+### Report Issues
+
+If you find bugs or have feature suggestions, please [create an Issue](https://github.com/Mai0313/resume/issues).
+
+## Acknowledgments
+
+- [HeroUI](https://heroui.com) - Provides excellent React UI component library
+- [JSON Resume](https://jsonresume.org) - Resume data standard
+- All open source project contributors
 
 ## License
 
 Licensed under the [MIT license](LICENSE).
+
+---
+
+**If this project helps you, please give it a ⭐️!**
