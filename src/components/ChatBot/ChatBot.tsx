@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import * as openAI from "@/utils/openai-client";
 import { envHelpers } from "@/utils/env";
 import { CHAT, ANIMATION } from "@/constants";
+import { debounce } from "@/utils/debounce";
 
 interface ChatBotProps {
   className?: string;
@@ -74,13 +75,27 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { getNewController, abort } = useAbortController();
 
-  // Auto scroll to bottom when new messages arrive
-  const scrollToBottom = () => {
+  // Auto scroll to bottom with debounce to prevent excessive reflows
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, []);
+
+  // Create debounced scroll function with proper cleanup
+  const debouncedScrollRef = useRef<any>(null);
 
   useEffect(() => {
-    scrollToBottom();
+    debouncedScrollRef.current = debounce(scrollToBottom, 100);
+
+    return () => {
+      debouncedScrollRef.current?.cancel();
+    };
+  }, [scrollToBottom]);
+
+  // Trigger scroll only when necessary
+  useEffect(() => {
+    if (debouncedScrollRef.current) {
+      debouncedScrollRef.current();
+    }
   }, [messages, streamingMessage, streamingReasoning]);
 
   // Focus input when modal opens
@@ -157,24 +172,26 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
         return limitedMessages;
       });
 
-      // Update reasoning map with cleanup
+      // Update reasoning map with optimized cleanup
       if (fullReasoning) {
         setAssistantReasonings((prevMap) => {
           const newMap = new Map(prevMap);
           const assistantIndex = messages.length; // Next index will be assistant message
 
-          // Clean up old reasoning entries that are no longer in message list
-          const minValidIndex = Math.max(
-            0,
-            messages.length - CHAT.MAX_MESSAGES,
-          );
-
-          Array.from(newMap.keys())
-            .filter((key) => key < minValidIndex)
-            .forEach((key) => newMap.delete(key));
-
           // Add new reasoning
           newMap.set(assistantIndex, fullReasoning);
+
+          // Only clean up when map size exceeds threshold (more efficient)
+          if (newMap.size > CHAT.MAX_MESSAGES) {
+            const minValidIndex = Math.max(
+              0,
+              messages.length - CHAT.MAX_MESSAGES,
+            );
+
+            Array.from(newMap.keys())
+              .filter((key) => key < minValidIndex)
+              .forEach((key) => newMap.delete(key));
+          }
 
           return newMap;
         });

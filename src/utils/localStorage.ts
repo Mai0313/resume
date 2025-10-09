@@ -26,6 +26,10 @@ export class LocalStorageManager {
     "theme",
   ]);
 
+  // Cache available space to avoid repeated expensive checks
+  private cachedAvailableSpace: number | null = null;
+  private readonly ESTIMATED_QUOTA = 5 * 1024 * 1024; // 5MB typical minimum for localStorage
+
   /**
    * Get prefixed key for this application
    */
@@ -49,27 +53,19 @@ export class LocalStorageManager {
 
   /**
    * Estimate available localStorage space (in bytes)
+   * Uses cached value to avoid expensive repeated checks
    */
   private getAvailableSpace(): number {
-    const testKey = `${this.APP_PREFIX}__storage_test__`;
-    let estimate = 0;
-
-    try {
-      // Try progressively larger strings to estimate capacity
-      for (let i = 0; i < 10; i++) {
-        const size = 1024 * Math.pow(2, i); // 1KB, 2KB, 4KB, etc.
-        const testData = "x".repeat(size);
-
-        localStorage.setItem(testKey, testData);
-        estimate = size;
-      }
-    } catch {
-      // Hit quota limit
-    } finally {
-      localStorage.removeItem(testKey);
+    // Return cached value if available
+    if (this.cachedAvailableSpace !== null) {
+      return this.cachedAvailableSpace;
     }
 
-    return estimate;
+    // Use a reasonable default based on browser specs (5MB minimum)
+    // This avoids expensive testing on every write
+    this.cachedAvailableSpace = this.ESTIMATED_QUOTA;
+
+    return this.cachedAvailableSpace;
   }
 
   /**

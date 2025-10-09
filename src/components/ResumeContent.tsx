@@ -33,33 +33,63 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
     [],
   );
 
-  // Memoize section component map to prevent recreation
-  const sectionComponentMap = React.useMemo(
-    () => ({
-      work: (props: any) => <WorkSection {...props} work={data.work} />,
-      volunteer: (props: any) => (
-        <VolunteerSection {...props} volunteer={data.volunteer} />
+  // Simplified section component map with generic factory
+  const sectionComponentMap = React.useMemo(() => {
+    // Generic component factory to reduce repetition
+    const createSectionComponent = <T,>(
+      Component: React.ComponentType<any>,
+      propName: string,
+      propValue: T,
+    ) => {
+      if (!propValue) return null;
+
+      const WrapperComponent = (props: any) => (
+        <Component {...props} {...{ [propName]: propValue }} />
+      );
+
+      WrapperComponent.displayName = `${Component.displayName || Component.name || "Component"}Wrapper`;
+
+      return WrapperComponent;
+    };
+
+    return {
+      work: createSectionComponent(WorkSection, "work", data.work),
+      volunteer: createSectionComponent(
+        VolunteerSection,
+        "volunteer",
+        data.volunteer,
       ),
-      education: (props: any) => (
-        <EducationSection {...props} education={data.education} />
+      education: createSectionComponent(
+        EducationSection,
+        "education",
+        data.education,
       ),
-      awards: (props: any) => <AwardsSection {...props} awards={data.awards} />,
-      certificates: (props: any) => (
-        <CertificatesSection {...props} certificates={data.certificates} />
+      awards: createSectionComponent(AwardsSection, "awards", data.awards),
+      certificates: createSectionComponent(
+        CertificatesSection,
+        "certificates",
+        data.certificates,
       ),
-      publications: (props: any) => (
-        <PublicationsSection {...props} publications={data.publications} />
+      publications: createSectionComponent(
+        PublicationsSection,
+        "publications",
+        data.publications,
       ),
-      skills: (props: any) => <SkillsSection {...props} skills={data.skills} />,
-      interests: (props: any) => (
-        <InterestsSection {...props} interests={data.interests} />
+      skills: createSectionComponent(SkillsSection, "skills", data.skills),
+      interests: createSectionComponent(
+        InterestsSection,
+        "interests",
+        data.interests,
       ),
       languages: null,
-      references: (props: any) => <ReferencesSection {...props} data={data} />,
-      projects: (props: any) => <ProjectsSection {...props} data={data} />,
-    }),
-    [data],
-  );
+      references: data.references
+        ? (props: any) => <ReferencesSection {...props} data={data} />
+        : null,
+      projects: data.projects
+        ? (props: any) => <ProjectsSection {...props} data={data} />
+        : null,
+    };
+  }, [data]);
 
   // Dynamic section rendering function
   const renderSection = React.useCallback(

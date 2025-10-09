@@ -22,43 +22,60 @@ import DefaultLayout from "@/layouts/default";
 // Read PIN code from .env via VITE_PIN_CODE
 const IS_PIN_ENABLED = envHelpers.isPinEnabled();
 
-export default function ResumePage() {
-  const [isMounted, setIsMounted] = useState(false);
+/**
+ * Custom hook to handle resume data loading with error handling
+ */
+function useResumeData() {
   const [resumeData, setResumeData] = useState<
     (ResumeData & { sectionOrder: string[] }) | null
   >(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
 
+  const loadResume = useCallback(async () => {
+    setIsLoadingResume(true);
+    try {
+      const data = await loadResumeData();
+
+      // Verify data structure integrity
+      if (!data || !data.basics || !data.basics.name) {
+        throw new Error("Resume data is incomplete or missing required fields");
+      }
+
+      setResumeData(data);
+    } catch (error) {
+      addToast({
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "Failed to load resume data",
+        color: "danger",
+      });
+      setResumeData(null);
+    } finally {
+      setIsLoadingResume(false);
+    }
+  }, []);
+
+  return { resumeData, isLoadingResume, loadResume };
+}
+
+export default function ResumePage() {
+  const [isMounted, setIsMounted] = useState(false);
+  const [pin, setPin] = useState("");
+  const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED);
+  const [failCount, setFailCount] = useState(0);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const controls = useAnimation();
+  const { theme } = useTheme();
+
+  // Use custom hook for resume data loading
+  const { resumeData, isLoadingResume, loadResume } = useResumeData();
+
+  // Dynamically get PIN length
+  const pinLength = env.PIN_CODE?.length || 4;
+
+  // Consolidated initialization effect
   useEffect(() => {
     setIsMounted(true);
-
-    const loadResumeContent = async () => {
-      setIsLoadingResume(true);
-      try {
-        const data = await loadResumeData();
-
-        // Verify data structure integrity
-        if (!data || !data.basics || !data.basics.name) {
-          throw new Error(
-            "Resume data is incomplete or missing required fields",
-          );
-        }
-
-        setResumeData(data);
-      } catch (error) {
-        addToast({
-          title: "Error",
-          description:
-            error instanceof Error
-              ? error.message
-              : "Failed to load resume data",
-          color: "danger",
-        });
-        setResumeData(null);
-      } finally {
-        setIsLoadingResume(false);
-      }
-    };
 
     // Check if URL parameters contain PIN code
     const urlParams = new URLSearchParams(window.location.search);
@@ -67,15 +84,18 @@ export default function ResumePage() {
     // If PIN code is not set, directly load resume content
     if (!IS_PIN_ENABLED) {
       setAuthenticated(true);
-      loadResumeContent();
+      loadResume();
 
       return;
     }
 
+    // Open PIN modal
+    onOpen();
+
     // If URL contains PIN code, check if it's correct
     if (urlPin && urlPin === env.PIN_CODE) {
       setAuthenticated(true);
-      loadResumeContent();
+      loadResume();
       // Remove PIN parameter from URL to protect privacy
       urlParams.delete("pin");
       const newUrl =
@@ -84,60 +104,21 @@ export default function ResumePage() {
 
       window.history.replaceState({}, "", newUrl);
     }
-  }, []);
-
-  const [pin, setPin] = useState("");
-  const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED); // If no PIN code, default to authenticated
-  const [failCount, setFailCount] = useState(0);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const controls = useAnimation();
-  const { theme } = useTheme();
-
-  useEffect(() => {
-    if (IS_PIN_ENABLED) {
-      onOpen();
-    }
-  }, [onOpen]);
-
-  // Dynamically get PIN length
-  const pinLength = env.PIN_CODE?.length || 4;
+  }, [loadResume, onOpen]);
 
   const handleSubmit = useCallback(
     (onClose: () => void) => {
-      if (!IS_PIN_ENABLED) return; // If PIN code is not enabled, return directly
+      if (!IS_PIN_ENABLED) return;
 
       if (!pin) {
         setFailCount((c) => c + 1);
 
         return;
       }
+
       if (pin === env.PIN_CODE) {
         setAuthenticated(true);
-        // Load resume content after authentication
-        setIsLoadingResume(true);
-        loadResumeData()
-          .then((data) => {
-            if (!data || !data.basics || !data.basics.name) {
-              throw new Error(
-                "Resume data is incomplete or missing required fields",
-              );
-            }
-            setResumeData(data);
-          })
-          .catch((error) => {
-            addToast({
-              title: "Error",
-              description:
-                error instanceof Error
-                  ? error.message
-                  : "Failed to load resume data",
-              color: "danger",
-            });
-            setResumeData(null);
-          })
-          .finally(() => {
-            setIsLoadingResume(false);
-          });
+        loadResume();
         onClose();
       } else {
         setFailCount((c) => c + 1);
@@ -153,17 +134,17 @@ export default function ResumePage() {
         setPin("");
       }
     },
-    [pin, controls],
+    [pin, controls, loadResume],
   );
 
-  // Listen for pin length
+  // Auto-submit when PIN length is reached
   useEffect(() => {
     if (IS_PIN_ENABLED && pin.length === pinLength) {
       handleSubmit(onOpenChange);
     }
   }, [pin, pinLength, onOpenChange, handleSubmit]);
 
-  // Listen for Modal close event, if not authenticated show 404 directly (only when PIN code is enabled)
+  // Handle modal close without authentication
   useEffect(() => {
     if (IS_PIN_ENABLED && !isOpen && !authenticated && isMounted) {
       setFailCount(3);

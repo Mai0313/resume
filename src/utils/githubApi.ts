@@ -26,32 +26,44 @@ function ensureAuthenticated(): void {
 }
 
 /**
+ * Higher-order function to wrap API calls with authentication check
+ * Reduces repetitive ensureAuthenticated() calls
+ */
+function withAuth<T extends (...args: any[]) => any>(fn: T): T {
+  return ((...args: Parameters<T>) => {
+    ensureAuthenticated();
+
+    return fn(...args);
+  }) as T;
+}
+
+/**
  * Get current authenticated user information (via GitHub Token)
  */
-export async function getAuthenticatedUser(): Promise<{
-  login: string;
-  name: string;
-  avatar_url: string;
-}> {
-  ensureAuthenticated();
+export const getAuthenticatedUser = withAuth(
+  async (): Promise<{
+    login: string;
+    name: string;
+    avatar_url: string;
+  }> => {
+    try {
+      const response = await enhancedFetch(`${GITHUB_API_BASE}/user`, {
+        headers: getAuthHeaders(),
+      });
 
-  try {
-    const response = await enhancedFetch(`${GITHUB_API_BASE}/user`, {
-      headers: getAuthHeaders(),
-    });
+      const userData = await response.json();
 
-    const userData = await response.json();
-
-    return {
-      login: userData.login,
-      name: userData.name || userData.login,
-      avatar_url: userData.avatar_url,
-    };
-  } catch (error) {
-    console.error("Error fetching authenticated user:", error);
-    throw error;
-  }
-}
+      return {
+        login: userData.login,
+        name: userData.name || userData.login,
+        avatar_url: userData.avatar_url,
+      };
+    } catch (error) {
+      console.error("Error fetching authenticated user:", error);
+      throw error;
+    }
+  },
+);
 
 /**
  * Get authorization headers for GitHub REST API
@@ -123,13 +135,10 @@ function getGraphQLHeaders(): Record<string, string> {
 /**
  * Get user's pinned repositories (using GraphQL API)
  */
-export async function getUserPinnedRepositories(
-  username: string,
-): Promise<GitHubRepository[]> {
-  ensureAuthenticated();
-
-  try {
-    const query = `
+export const getUserPinnedRepositories = withAuth(
+  async (username: string): Promise<GitHubRepository[]> => {
+    try {
+      const query = `
       query($username: String!) {
         user(login: $username) {
           pinnedItems(first: 6, types: REPOSITORY) {
@@ -166,72 +175,72 @@ export async function getUserPinnedRepositories(
       }
     `;
 
-    const response = await enhancedFetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: getGraphQLHeaders(),
-      body: JSON.stringify({
-        query,
-        variables: { username },
-      }),
-    });
+      const response = await enhancedFetch("https://api.github.com/graphql", {
+        method: "POST",
+        headers: getGraphQLHeaders(),
+        body: JSON.stringify({
+          query,
+          variables: { username },
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.errors) {
-      throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+      if (data.errors) {
+        throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+      }
+
+      const pinnedNodes = data.data?.user?.pinnedItems?.nodes || [];
+
+      // Convert to standard GitHubRepository format
+      const pinnedRepos: GitHubRepository[] = pinnedNodes.map((node: any) => ({
+        id: node.id,
+        name: node.name,
+        full_name: node.nameWithOwner,
+        html_url: node.url,
+        description: node.description,
+        language: node.primaryLanguage?.name || null,
+        stargazers_count: node.stargazerCount,
+        forks_count: node.forkCount,
+        updated_at: node.updatedAt,
+        topics:
+          node.repositoryTopics?.nodes?.map((t: any) => t.topic.name) || [],
+        homepage: node.homepageUrl,
+        owner: {
+          login: node.owner.login,
+          avatar_url: node.owner.avatarUrl,
+          html_url: node.owner.url,
+        },
+      }));
+
+      return pinnedRepos;
+    } catch (error) {
+      throw new Error(`Failed to fetch pinned repositories: ${error}`);
     }
-
-    const pinnedNodes = data.data?.user?.pinnedItems?.nodes || [];
-
-    // Convert to standard GitHubRepository format
-    const pinnedRepos: GitHubRepository[] = pinnedNodes.map((node: any) => ({
-      id: node.id,
-      name: node.name,
-      full_name: node.nameWithOwner,
-      html_url: node.url,
-      description: node.description,
-      language: node.primaryLanguage?.name || null,
-      stargazers_count: node.stargazerCount,
-      forks_count: node.forkCount,
-      updated_at: node.updatedAt,
-      topics: node.repositoryTopics?.nodes?.map((t: any) => t.topic.name) || [],
-      homepage: node.homepageUrl,
-      owner: {
-        login: node.owner.login,
-        avatar_url: node.owner.avatarUrl,
-        html_url: node.owner.url,
-      },
-    }));
-
-    return pinnedRepos;
-  } catch (error) {
-    throw new Error(`Failed to fetch pinned repositories: ${error}`);
-  }
-}
+  },
+);
 
 /**
  * Get user's public repositories
  */
-export async function getUserRepositories(
-  username: string,
-): Promise<GitHubRepository[]> {
-  ensureAuthenticated();
+export const getUserRepositories = withAuth(
+  async (username: string): Promise<GitHubRepository[]> => {
+    try {
+      const response = await enhancedFetch(
+        `${GITHUB_API_BASE}/users/${username}/repos?type=public&sort=updated&per_page=100`,
+        {
+          headers: getAuthHeaders(),
+        },
+      );
 
-  try {
-    const response = await enhancedFetch(
-      `${GITHUB_API_BASE}/users/${username}/repos?type=public&sort=updated&per_page=100`,
-      {
-        headers: getAuthHeaders(),
-      },
-    );
+      const repositories: GitHubRepository[] = await response.json();
 
-    const repositories: GitHubRepository[] = await response.json();
-
-    return repositories;
-  } catch (error) {
-    throw new Error(`Failed to fetch repositories: ${error}`);
-  }
-}
+      return repositories;
+    } catch (error) {
+      throw new Error(`Failed to fetch repositories: ${error}`);
+    }
+  },
+);
 
 /**
  * Get repository commit records
@@ -260,109 +269,107 @@ export async function getRepositoryCommits(
 /**
  * Get user's contribution statistics, prioritizing Pinned projects
  */
-export async function getUserContributions(
-  username: string,
-): Promise<GitHubContribution[]> {
-  ensureAuthenticated();
+export const getUserContributions = withAuth(
+  async (username: string): Promise<GitHubContribution[]> => {
+    try {
+      // Fetch pinned and all repositories in parallel
+      const [pinnedRepos, allRepositories] = await Promise.all([
+        getUserPinnedRepositories(username),
+        getUserRepositories(username),
+      ]);
 
-  try {
-    // Fetch pinned and all repositories in parallel
-    const [pinnedRepos, allRepositories] = await Promise.all([
-      getUserPinnedRepositories(username),
-      getUserRepositories(username),
-    ]);
+      // Prepare list of repositories to process
+      const processedRepoIds = new Set<string>();
+      const contributions: GitHubContribution[] = [];
 
-    // Prepare list of repositories to process
-    const processedRepoIds = new Set<string>();
-    const contributions: GitHubContribution[] = [];
-
-    // Filter remaining repos (excluding pinned)
-    const remainingRepos = allRepositories
-      .filter((repo) => {
-        const isPinned = pinnedRepos.some(
-          (p) => p.full_name === repo.full_name,
-        );
-
-        if (isPinned) processedRepoIds.add(repo.full_name);
-
-        return !isPinned;
-      })
-      .slice(0, PORTFOLIO.MAX_REPOS_TO_FETCH);
-
-    // Fetch commits for all repositories using request queue to prevent rate limiting
-    const pinnedResults = await Promise.allSettled(
-      pinnedRepos.map((repo) =>
-        githubRequestQueue.enqueue(async () => {
-          const commits = await getRepositoryCommits(
-            repo.owner.login,
-            repo.name,
-            username,
-            PORTFOLIO.COMMITS_PER_REPO,
+      // Filter remaining repos (excluding pinned)
+      const remainingRepos = allRepositories
+        .filter((repo) => {
+          const isPinned = pinnedRepos.some(
+            (p) => p.full_name === repo.full_name,
           );
 
-          return {
-            repository: { ...repo, isPinned: true } as any,
-            commits,
-            total_commits: commits.length,
-          };
-        }),
-      ),
-    );
+          if (isPinned) processedRepoIds.add(repo.full_name);
 
-    const remainingResults = await Promise.allSettled(
-      remainingRepos.map((repo) =>
-        githubRequestQueue.enqueue(async () => {
-          const commits = await getRepositoryCommits(
-            repo.owner.login,
-            repo.name,
-            username,
-            PORTFOLIO.COMMITS_PER_REPO,
-          );
+          return !isPinned;
+        })
+        .slice(0, PORTFOLIO.MAX_REPOS_TO_FETCH);
 
-          return {
-            repository: { ...repo, isPinned: false } as any,
-            commits,
-            total_commits: commits.length,
-          };
-        }),
-      ),
-    );
+      // Fetch commits for all repositories using request queue to prevent rate limiting
+      const pinnedResults = await Promise.allSettled(
+        pinnedRepos.map((repo) =>
+          githubRequestQueue.enqueue(async () => {
+            const commits = await getRepositoryCommits(
+              repo.owner.login,
+              repo.name,
+              username,
+              PORTFOLIO.COMMITS_PER_REPO,
+            );
 
-    // Collect successful results from pinned repos
-    pinnedResults.forEach((result) => {
-      if (result.status === "fulfilled") {
-        contributions.push(result.value);
-      }
-    });
-
-    // Collect successful results from remaining repos (with commits only)
-    remainingResults.forEach((result) => {
-      if (result.status === "fulfilled" && result.value.commits.length > 0) {
-        contributions.push(result.value);
-      }
-    });
-
-    // Sort by Pinned status and last update time
-    contributions.sort((a, b) => {
-      // Pinned repositories have priority
-      const aPinned = (a.repository as any).isPinned;
-      const bPinned = (b.repository as any).isPinned;
-
-      if (aPinned && !bPinned) return -1;
-      if (!aPinned && bPinned) return 1;
-
-      // Sort by update time when same pinned status
-      return (
-        new Date(b.repository.updated_at).getTime() -
-        new Date(a.repository.updated_at).getTime()
+            return {
+              repository: { ...repo, isPinned: true } as any,
+              commits,
+              total_commits: commits.length,
+            };
+          }),
+        ),
       );
-    });
 
-    return contributions;
-  } catch (error) {
-    throw new Error(`Failed to fetch user contributions: ${error}`);
-  }
-}
+      const remainingResults = await Promise.allSettled(
+        remainingRepos.map((repo) =>
+          githubRequestQueue.enqueue(async () => {
+            const commits = await getRepositoryCommits(
+              repo.owner.login,
+              repo.name,
+              username,
+              PORTFOLIO.COMMITS_PER_REPO,
+            );
+
+            return {
+              repository: { ...repo, isPinned: false } as any,
+              commits,
+              total_commits: commits.length,
+            };
+          }),
+        ),
+      );
+
+      // Collect successful results from pinned repos
+      pinnedResults.forEach((result) => {
+        if (result.status === "fulfilled") {
+          contributions.push(result.value);
+        }
+      });
+
+      // Collect successful results from remaining repos (with commits only)
+      remainingResults.forEach((result) => {
+        if (result.status === "fulfilled" && result.value.commits.length > 0) {
+          contributions.push(result.value);
+        }
+      });
+
+      // Sort by Pinned status and last update time
+      contributions.sort((a, b) => {
+        // Pinned repositories have priority
+        const aPinned = (a.repository as any).isPinned;
+        const bPinned = (b.repository as any).isPinned;
+
+        if (aPinned && !bPinned) return -1;
+        if (!aPinned && bPinned) return 1;
+
+        // Sort by update time when same pinned status
+        return (
+          new Date(b.repository.updated_at).getTime() -
+          new Date(a.repository.updated_at).getTime()
+        );
+      });
+
+      return contributions;
+    } catch (error) {
+      throw new Error(`Failed to fetch user contributions: ${error}`);
+    }
+  },
+);
 
 /**
  * Get user basic information

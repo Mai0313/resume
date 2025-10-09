@@ -1,6 +1,6 @@
 import type { GitHubContribution } from "@/types";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import DefaultLayout from "@/layouts/default";
 import PortfolioContent from "@/components/PortfolioContent";
@@ -22,6 +22,9 @@ export default function PortfolioPage() {
   const [contributions, setContributions] = useState<GitHubContribution[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Track timeout for proper cleanup
+  const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     let isMounted = true; // Track mounted state to prevent updates after unmount
@@ -61,11 +64,17 @@ export default function PortfolioPage() {
 
             // If cache is stale, refresh in background
             if (isCacheStale && isMounted) {
-              // Background refresh
-              setTimeout(() => {
+              // Clear any existing timeout
+              if (refreshTimeoutRef.current) {
+                clearTimeout(refreshTimeoutRef.current);
+              }
+
+              // Background refresh with tracked timeout
+              refreshTimeoutRef.current = setTimeout(() => {
                 if (isMounted) {
                   fetchContributions(true);
                 }
+                refreshTimeoutRef.current = null;
               }, 100);
             }
 
@@ -106,9 +115,15 @@ export default function PortfolioPage() {
 
     fetchContributions();
 
-    // Cleanup function to prevent state updates after unmount
+    // Cleanup function to prevent state updates after unmount and clear pending timeouts
     return () => {
       isMounted = false;
+
+      // Clear any pending background refresh
+      if (refreshTimeoutRef.current) {
+        clearTimeout(refreshTimeoutRef.current);
+        refreshTimeoutRef.current = null;
+      }
     };
   }, []);
 

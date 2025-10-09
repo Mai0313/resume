@@ -76,43 +76,59 @@ export class RequestQueue {
   }
 
   /**
+   * Check if rate limit pause is active and handle accordingly
+   */
+  private checkRateLimitPause(): boolean {
+    if (!this.isPaused || !this.pauseUntil) return false;
+
+    const now = Date.now();
+
+    if (now < this.pauseUntil) {
+      // Still paused, schedule next check
+      setTimeout(() => this.processQueue(), this.pauseUntil - now);
+
+      return true;
+    }
+
+    // Pause period ended
+    this.isPaused = false;
+    this.pauseUntil = null;
+
+    return false;
+  }
+
+  /**
+   * Apply adaptive rate limiting based on remaining API calls
+   */
+  private applyAdaptiveRateLimiting(): void {
+    if (
+      this.rateLimitInfo.remaining !== null &&
+      this.rateLimitInfo.remaining <
+        REQUEST_QUEUE.RATE_LIMIT_WARNING_THRESHOLD &&
+      this.maxConcurrent > 1
+    ) {
+      this.maxConcurrent = 1;
+      console.warn(
+        `Rate limit low (${this.rateLimitInfo.remaining} remaining), reducing concurrent requests to 1`,
+      );
+    }
+  }
+
+  /**
    * Process the queue with rate limit awareness
+   * Simplified logic with extracted helper methods
    */
   private async processQueue() {
     // Check if we're paused due to rate limiting
-    if (this.isPaused && this.pauseUntil) {
-      const now = Date.now();
-
-      if (now < this.pauseUntil) {
-        // Still paused, schedule next check
-        setTimeout(() => this.processQueue(), this.pauseUntil - now);
-
-        return;
-      } else {
-        // Pause period ended
-        this.isPaused = false;
-        this.pauseUntil = null;
-      }
-    }
+    if (this.checkRateLimitPause()) return;
 
     // Check concurrent limit and queue
     if (this.running >= this.maxConcurrent || this.queue.length === 0) {
       return;
     }
 
-    // Adaptive rate limiting based on remaining API calls
-    if (
-      this.rateLimitInfo.remaining !== null &&
-      this.rateLimitInfo.remaining < REQUEST_QUEUE.RATE_LIMIT_WARNING_THRESHOLD
-    ) {
-      // If we have less than threshold requests remaining, slow down
-      if (this.maxConcurrent > 1) {
-        this.maxConcurrent = 1;
-        console.warn(
-          `Rate limit low (${this.rateLimitInfo.remaining} remaining), reducing concurrent requests to 1`,
-        );
-      }
-    }
+    // Apply adaptive rate limiting
+    this.applyAdaptiveRateLimiting();
 
     const item = this.queue.shift();
 

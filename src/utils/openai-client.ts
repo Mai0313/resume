@@ -36,35 +36,83 @@ let cachedClient: OpenAI | null = null;
 let cachedPageContext: string | null = null;
 let cachedPath: string | null = null;
 
+// Debounced DOM content observer to invalidate cache when content changes
+let contentObserverInitialized = false;
+let contentChangeTimer: ReturnType<typeof setTimeout> | null = null;
+
 /**
- * Get or cache page context - only re-extract if path changes
+ * Initialize mutation observer to invalidate cache when DOM content changes
+ * Uses debouncing to avoid excessive cache invalidation
+ */
+function initializeContentObserver(): void {
+  if (contentObserverInitialized || typeof window === "undefined") return;
+
+  const mainElement = document.querySelector("main");
+
+  if (!mainElement) return;
+
+  const observer = new MutationObserver(() => {
+    // Debounce cache invalidation to avoid excessive updates
+    if (contentChangeTimer) {
+      clearTimeout(contentChangeTimer);
+    }
+
+    contentChangeTimer = setTimeout(() => {
+      // Only invalidate if content actually changed significantly
+      const newPath = window.location.pathname;
+
+      if (cachedPath === newPath) {
+        cachedPageContext = null; // Invalidate cached content
+      }
+    }, 1000); // Wait 1 second after last change
+  });
+
+  observer.observe(mainElement, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+  });
+
+  contentObserverInitialized = true;
+}
+
+/**
+ * Extract page content efficiently with minimal DOM operations
+ */
+function extractPageContent(): string {
+  const mainElement = document.querySelector("main");
+
+  if (!mainElement) return "";
+
+  // Use textContent for better performance than innerHTML
+  const fullText = mainElement.textContent || "";
+
+  // Trim and limit to prevent performance issues
+  return fullText
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, CHAT.PAGE_CONTEXT_MAX_LENGTH);
+}
+
+/**
+ * Get or cache page context - only re-extract if path/content changes
  */
 async function getCurrentPageContext(): Promise<string> {
   const currentPath = window.location.pathname;
 
-  // Return cached context if path hasn't changed
+  // Initialize observer on first call
+  if (!contentObserverInitialized) {
+    initializeContentObserver();
+  }
+
+  // Return cached context if path hasn't changed and content is cached
   if (cachedPageContext && cachedPath === currentPath) {
     return cachedPageContext;
   }
 
   const currentUrl = window.location.href;
   const pageTitle = document.title;
-
-  // Get main content text (excluding navigation and other UI elements)
-  // Limit to first 3000 characters to prevent performance issues
-  const mainElement = document.querySelector("main");
-  let mainContent = "";
-
-  if (mainElement) {
-    // Use textContent for better performance than innerHTML
-    const fullText = mainElement.textContent || "";
-
-    // Trim and limit to prevent performance issues
-    mainContent = fullText
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, CHAT.PAGE_CONTEXT_MAX_LENGTH);
-  }
+  const mainContent = extractPageContent();
 
   const pageContext = `
 You are an AI assistant for a personal website. You should ONLY answer questions related to the current page content shown above.
@@ -125,7 +173,26 @@ async function getClient(): Promise<OpenAI> {
 }
 
 /**
- * Build messages array for API request (shared logic)
+ * Prepare common request data (system context and user message)
+ * Reduces duplication between completion and response APIs
+ */
+async function prepareRequestData(
+  imageBuffer: Buffer | undefined,
+  textPrompt: string,
+) {
+  const pageContent = await getCurrentPageContext();
+  const base64 = imageBuffer?.toString("base64");
+  const effectiveText = `${textPrompt.trim()}\nResponse to the question based on the info or image you have.`;
+
+  return {
+    pageContent: pageContent.trim(),
+    effectiveText,
+    base64,
+  };
+}
+
+/**
+ * Build messages array for Chat Completion API
  */
 async function buildMessagesArray(
   imageBuffer: Buffer | undefined,
@@ -134,16 +201,17 @@ async function buildMessagesArray(
   systemMessage: ChatCompletionMessageParam;
   userMessage: ChatCompletionMessageParam;
 }> {
-  const pageContent = await getCurrentPageContext();
-  const base64 = imageBuffer?.toString("base64");
+  const { pageContent, effectiveText, base64 } = await prepareRequestData(
+    imageBuffer,
+    textPrompt,
+  );
 
   const systemMessage: ChatCompletionMessageParam = {
     name: "message",
     role: "system",
-    content: [{ type: "text", text: pageContent.trim() }],
+    content: [{ type: "text", text: pageContent }],
   };
 
-  const effectiveText = `${textPrompt.trim()}\nResponse to the question based on the info or image you have.`;
   const userContent: ChatCompletionUserMessageParam["content"] = [
     { type: "text", text: effectiveText },
   ];
@@ -232,10 +300,11 @@ export async function responseStream(
   signal: AbortSignal,
 ): Promise<string> {
   const client = await getClient();
-  const pageContent = await getCurrentPageContext();
-  const base64 = imageBuffer?.toString("base64");
+  const { pageContent, effectiveText, base64 } = await prepareRequestData(
+    imageBuffer,
+    textPrompt,
+  );
 
-  const effectiveText = `${textPrompt.trim()}\nResponse to the question based on the info or image you have.`;
   const userContent: ResponseInputMessageContentList = [
     { type: "input_text", text: effectiveText },
   ];
@@ -252,7 +321,7 @@ export async function responseStream(
     {
       type: "message",
       role: "system",
-      content: [{ type: "input_text", text: pageContent.trim() }],
+      content: [{ type: "input_text", text: pageContent }],
     },
     {
       type: "message",
