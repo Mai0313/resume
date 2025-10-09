@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { InputOtp } from "@heroui/input-otp";
 import {
   Modal,
@@ -29,6 +29,30 @@ export default function ResumePage() {
   >(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
 
+  const loadResumeContent = useCallback(async () => {
+    setIsLoadingResume(true);
+    try {
+      const data = await loadResumeData();
+
+      // Verify data structure integrity
+      if (!data || !data.basics || !data.basics.name) {
+        throw new Error("Resume data is incomplete or missing required fields");
+      }
+
+      setResumeData(data);
+    } catch (error) {
+      addToast({
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "Failed to load resume data",
+        color: "danger",
+      });
+      setResumeData(null);
+    } finally {
+      setIsLoadingResume(false);
+    }
+  }, []);
+
   useEffect(() => {
     setIsMounted(true);
 
@@ -56,7 +80,7 @@ export default function ResumePage() {
 
       window.history.replaceState({}, "", newUrl);
     }
-  }, []);
+  }, [loadResumeContent]);
 
   const [pin, setPin] = useState("");
   const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED); // If no PIN code, default to authenticated
@@ -74,7 +98,7 @@ export default function ResumePage() {
   // Dynamically get PIN length
   const pinLength = env.PIN_CODE?.length || 4;
 
-  function handleSubmit(onClose: () => void) {
+  const handleSubmit = useCallback((onClose: () => void) => {
     if (!IS_PIN_ENABLED) return; // If PIN code is not enabled, return directly
 
     if (!pin) {
@@ -99,38 +123,14 @@ export default function ResumePage() {
       });
       setPin("");
     }
-  }
-
-  async function loadResumeContent() {
-    setIsLoadingResume(true);
-    try {
-      const data = await loadResumeData();
-
-      // Verify data structure integrity
-      if (!data || !data.basics || !data.basics.name) {
-        throw new Error("Resume data is incomplete or missing required fields");
-      }
-
-      setResumeData(data);
-    } catch (error) {
-      addToast({
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to load resume data",
-        color: "danger",
-      });
-      setResumeData(null);
-    } finally {
-      setIsLoadingResume(false);
-    }
-  }
+  }, [pin, loadResumeContent, controls]);
 
   // Listen for pin length
   useEffect(() => {
     if (IS_PIN_ENABLED && pin.length === pinLength) {
       handleSubmit(onOpenChange);
     }
-  }, [pin, pinLength, onOpenChange]);
+  }, [pin, pinLength, onOpenChange, handleSubmit]);
 
   // Listen for Modal close event, if not authenticated show 404 directly (only when PIN code is enabled)
   useEffect(() => {
