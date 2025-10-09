@@ -9,6 +9,20 @@ import { githubRequestQueue } from "@/utils/requestQueue";
 
 const GITHUB_API_BASE = "https://api.github.com";
 
+// Common headers shared across all requests
+const COMMON_HEADERS = {
+  "User-Agent": "Portfolio-App",
+};
+
+/**
+ * Ensure GitHub token is available, throws error if not
+ */
+function ensureAuthenticated(): void {
+  if (!envHelpers.isGitHubTokenAvailable()) {
+    throw new Error("GITHUB_TOKEN_MISSING");
+  }
+}
+
 /**
  * Get current authenticated user information (via GitHub Token)
  */
@@ -17,9 +31,7 @@ export async function getAuthenticatedUser(): Promise<{
   name: string;
   avatar_url: string;
 }> {
-  if (!envHelpers.isGitHubTokenAvailable()) {
-    throw new Error("GITHUB_TOKEN_MISSING");
-  }
+  ensureAuthenticated();
 
   try {
     const response = await fetch(`${GITHUB_API_BASE}/user`, {
@@ -46,32 +58,28 @@ export async function getAuthenticatedUser(): Promise<{
 }
 
 /**
- * Get authorization headers for GitHub API
+ * Get authorization headers for GitHub REST API
  */
-function getAuthHeaders() {
-  if (!envHelpers.isGitHubTokenAvailable()) {
-    throw new Error("GITHUB_TOKEN_MISSING");
-  }
+function getAuthHeaders(): Record<string, string> {
+  ensureAuthenticated();
 
   return {
-    "Authorization": `token ${env.GITHUB_TOKEN}`,
-    "Accept": "application/vnd.github.v3+json",
-    "User-Agent": "Portfolio-App",
+    Authorization: `token ${env.GITHUB_TOKEN}`,
+    Accept: "application/vnd.github.v3+json",
+    ...COMMON_HEADERS,
   };
 }
 
 /**
  * Get authorization headers for GitHub GraphQL API
  */
-function getGraphQLHeaders() {
-  if (!envHelpers.isGitHubTokenAvailable()) {
-    throw new Error("GITHUB_TOKEN_MISSING");
-  }
+function getGraphQLHeaders(): Record<string, string> {
+  ensureAuthenticated();
 
   return {
     "Authorization": `Bearer ${env.GITHUB_TOKEN}`,
     "Content-Type": "application/json",
-    "User-Agent": "Portfolio-App",
+    ...COMMON_HEADERS,
   };
 }
 
@@ -81,9 +89,7 @@ function getGraphQLHeaders() {
 export async function getUserPinnedRepositories(
   username: string,
 ): Promise<GitHubRepository[]> {
-  if (!envHelpers.isGitHubTokenAvailable()) {
-    throw new Error("GITHUB_TOKEN_MISSING");
-  }
+  ensureAuthenticated();
 
   try {
     const query = `
@@ -178,9 +184,7 @@ export async function getUserPinnedRepositories(
 export async function getUserRepositories(
   username: string,
 ): Promise<GitHubRepository[]> {
-  if (!envHelpers.isGitHubTokenAvailable()) {
-    throw new Error("GITHUB_TOKEN_MISSING");
-  }
+  ensureAuthenticated();
 
   try {
     const response = await fetch(
@@ -240,9 +244,7 @@ export async function getRepositoryCommits(
 export async function getUserContributions(
   username: string,
 ): Promise<GitHubContribution[]> {
-  if (!envHelpers.isGitHubTokenAvailable()) {
-    throw new Error("GITHUB_TOKEN_MISSING");
-  }
+  ensureAuthenticated();
 
   try {
     // Fetch pinned and all repositories in parallel

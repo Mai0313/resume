@@ -10,10 +10,6 @@ import { GithubIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
 import { env } from "@/utils/env";
 
-const handleAnimationComplete = () => {
-  console.log("All letters have animated!");
-};
-
 export default function IndexPage() {
   return (
     <DefaultLayout>
@@ -51,7 +47,6 @@ export default function IndexPage() {
               textAlign="center"
               threshold={0.2}
               to={{ opacity: 1, transform: "translate3d(0,0,0)" }}
-              onLetterAnimationComplete={handleAnimationComplete}
             />
           </div>
         </div>

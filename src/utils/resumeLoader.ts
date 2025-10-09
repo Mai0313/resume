@@ -29,6 +29,8 @@ export interface JSONResumeWork {
   name: string;
   position: string;
   url?: string;
+  location?: string;
+  description?: string;
   startDate?: string;
   endDate?: string;
   summary?: string;
@@ -53,6 +55,8 @@ export interface JSONResumeEducation {
   startDate?: string;
   endDate?: string;
   gpa?: string;
+  score?: string;
+  summary?: string;
   courses?: string[];
 }
 

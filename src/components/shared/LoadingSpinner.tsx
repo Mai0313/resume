@@ -13,10 +13,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   minHeight = "400px",
 }) => {
   return (
-    <div
-      className="flex justify-center items-center"
-      style={{ minHeight }}
-    >
+    <div className="flex justify-center items-center" style={{ minHeight }}>
       <div className="flex flex-col items-center gap-4">
         <Spinner size={size} />
         {message && (

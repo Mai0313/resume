@@ -1,11 +1,13 @@
+import type { JSONResumeWork } from "@/utils/resumeLoader";
+
 import React from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Link } from "@heroui/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 interface WorkSectionProps {
-  work: any[] | undefined;
-  itemVariants: any;
+  work: JSONResumeWork[] | undefined;
+  itemVariants: Variants;
 }
 
 export const WorkSection: React.FC<WorkSectionProps> = ({
@@ -40,7 +42,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
           </div>
         </CardHeader>
         <CardBody className="space-y-8">
-          {work.map((workItem: any, index: number) => (
+          {work.map((workItem, index) => (
             <div
               key={`work-${workItem.name || "unknown"}-${index}`}
               className="pb-8 last:pb-0"

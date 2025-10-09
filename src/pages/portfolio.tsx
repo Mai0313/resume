@@ -6,9 +6,16 @@ import DefaultLayout from "@/layouts/default";
 import PortfolioContent from "@/components/PortfolioContent";
 import { getUserContributions } from "@/utils/githubApi";
 import { envHelpers } from "@/utils/env";
+import { localStorageManager } from "@/utils/localStorage";
 
 const CACHE_KEY = "github_contributions_cache";
 const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+interface CacheData {
+  data: GitHubContribution[];
+  timestamp: number;
+  cachedUsername: string;
+}
 
 export default function PortfolioPage() {
   const [contributions, setContributions] = useState<GitHubContribution[]>([]);
@@ -25,44 +32,37 @@ export default function PortfolioPage() {
         const username = await envHelpers.getGitHubUsername();
 
         // Check cache first
-        const cached = localStorage.getItem(CACHE_KEY);
+        const cached = localStorageManager.getItem<CacheData>(CACHE_KEY);
 
-        if (cached) {
-          try {
-            const { data, timestamp, cachedUsername } = JSON.parse(cached);
+        if (
+          cached &&
+          cached.data &&
+          cached.timestamp &&
+          cached.cachedUsername
+        ) {
+          // Verify cache is valid: correct user and not expired
+          if (
+            cached.cachedUsername === username &&
+            Date.now() - cached.timestamp < CACHE_TTL
+          ) {
+            setContributions(cached.data);
+            setLoading(false);
 
-            // Verify cache is valid: correct user and not expired
-            if (
-              cachedUsername === username &&
-              Date.now() - timestamp < CACHE_TTL
-            ) {
-              setContributions(data);
-              setLoading(false);
-
-              return;
-            }
-          } catch {
-            // Invalid cache data, clear it
-            localStorage.removeItem(CACHE_KEY);
+            return;
           }
         }
 
         // Fetch fresh data
         const userContributions = await getUserContributions(username);
 
-        // Save to cache
-        try {
-          localStorage.setItem(
-            CACHE_KEY,
-            JSON.stringify({
-              data: userContributions,
-              timestamp: Date.now(),
-              cachedUsername: username,
-            }),
-          );
-        } catch {
-          // Ignore cache save errors (e.g., quota exceeded)
-        }
+        // Save to cache with quota checking
+        const cacheData: CacheData = {
+          data: userContributions,
+          timestamp: Date.now(),
+          cachedUsername: username,
+        };
+
+        localStorageManager.setItem(CACHE_KEY, cacheData);
 
         setContributions(userContributions);
       } catch (err) {

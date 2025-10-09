@@ -20,6 +20,9 @@ interface ChatBotProps {
   className?: string;
 }
 
+// Maximum number of messages to keep in memory to prevent memory leaks
+const MAX_MESSAGES = 50;
+
 export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   // Always call hooks at the top level
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -126,16 +129,29 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
       // Add complete AI response to messages as text
       setMessages((prev) => {
         const nextMessages = [...prev, fullResponse];
-        const assistantIndex = nextMessages.length - 1; // assistant is last, odd index
+        // Limit message history to prevent memory leaks
+        const limitedMessages = nextMessages.slice(-MAX_MESSAGES);
+        const assistantIndex = limitedMessages.length - 1; // assistant is last, odd index
 
         if (fullReasoning) {
-          setAssistantReasonings((prevMap) => ({
-            ...prevMap,
-            [assistantIndex]: fullReasoning,
-          }));
+          setAssistantReasonings((prevMap) => {
+            // Clean up old reasoning entries that are no longer in message list
+            const newMap: Record<number, string> = {};
+
+            Object.entries(prevMap).forEach(([key, value]) => {
+              const index = parseInt(key);
+
+              if (index >= nextMessages.length - MAX_MESSAGES) {
+                newMap[index - (nextMessages.length - MAX_MESSAGES)] = value;
+              }
+            });
+            newMap[assistantIndex] = fullReasoning;
+
+            return newMap;
+          });
         }
 
-        return nextMessages;
+        return limitedMessages;
       });
       setStreamingMessage("");
       setStreamingReasoning("");
@@ -145,7 +161,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
       const errorMessage =
         "Sorry, I encountered an error while processing your request. Please try again.";
 
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => {
+        const nextMessages = [...prev, errorMessage];
+
+        return nextMessages.slice(-MAX_MESSAGES);
+      });
       setStreamingMessage("");
       setStreamingReasoning("");
     } finally {

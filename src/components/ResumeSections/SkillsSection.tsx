@@ -1,11 +1,13 @@
+import type { JSONResumeSkill } from "@/utils/resumeLoader";
+
 import React from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 interface SkillsSectionProps {
-  skills: any[] | undefined;
-  itemVariants: any;
+  skills: JSONResumeSkill[] | undefined;
+  itemVariants: Variants;
 }
 
 export const SkillsSection: React.FC<SkillsSectionProps> = ({
@@ -41,7 +43,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
         </CardHeader>
         <CardBody>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {skills.map((skill: any, index: number) => (
+            {skills.map((skill, index) => (
               <div
                 key={`skill-${skill.name || "unknown"}-${index}`}
                 className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"

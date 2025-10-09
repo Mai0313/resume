@@ -109,9 +109,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
           <div
             className={`${bgColors[icon]} border ${borderColors[icon]} rounded-lg p-4`}
           >
-            <h4
-              className={`font-semibold ${textColors[icon].title} mb-2`}
-            >
+            <h4 className={`font-semibold ${textColors[icon].title} mb-2`}>
               Details:
             </h4>
             <p

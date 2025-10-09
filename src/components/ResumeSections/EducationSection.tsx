@@ -1,11 +1,13 @@
+import type { JSONResumeEducation } from "@/utils/resumeLoader";
+
 import React from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Link } from "@heroui/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 interface EducationSectionProps {
-  education: any[] | undefined;
-  itemVariants: any;
+  education: JSONResumeEducation[] | undefined;
+  itemVariants: Variants;
 }
 
 export const EducationSection: React.FC<EducationSectionProps> = ({
@@ -52,7 +54,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
           </div>
         </CardHeader>
         <CardBody className="space-y-6">
-          {education.map((edu: any, index: number) => (
+          {education.map((edu, index) => (
             <div
               key={`education-${edu.institution || "unknown"}-${index}`}
               className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"

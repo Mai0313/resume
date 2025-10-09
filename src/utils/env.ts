@@ -21,6 +21,7 @@ const DEFAULT_VALUES = {
   VITE_ROOT_PATH: "/",
   VITE_GITHUB_TOKEN: null,
   VITE_RESUME_FILE: null,
+  VITE_RESUME_PDF_PATH: "/example.pdf",
   VITE_OPENAI_BASE_URL: null,
   VITE_OPENAI_API_KEY: null,
   VITE_OPENAI_MODEL: null,
@@ -109,6 +110,10 @@ export const env = {
   OPENAI_MODEL: getEnvVarWithDefault(
     "VITE_OPENAI_MODEL",
     DEFAULT_VALUES.VITE_OPENAI_MODEL,
+  ),
+  RESUME_PDF_PATH: getEnvVarWithDefault(
+    "VITE_RESUME_PDF_PATH",
+    DEFAULT_VALUES.VITE_RESUME_PDF_PATH,
   ),
 } as const;
 

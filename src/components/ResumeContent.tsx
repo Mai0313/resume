@@ -20,6 +20,7 @@ import {
 } from "./ResumeSections";
 
 import { fadeInStagger } from "@/utils/animations";
+import { env } from "@/utils/env";
 
 interface ResumeContentProps {
   data: ResumeData & { sectionOrder: string[] };
@@ -78,95 +79,42 @@ export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
 
   const { container: containerVariants, item: itemVariants } = fadeInStagger;
 
+  // Component mapping for dynamic rendering
+  const sectionComponentMap: Record<
+    string,
+    React.FC<{ itemVariants: any; [key: string]: any }> | null
+  > = {
+    work: (props) => <WorkSection {...props} work={data.work} />,
+    volunteer: (props) => (
+      <VolunteerSection {...props} volunteer={data.volunteer} />
+    ),
+    education: (props) => (
+      <EducationSection {...props} education={data.education} />
+    ),
+    awards: (props) => <AwardsSection {...props} awards={data.awards} />,
+    certificates: (props) => (
+      <CertificatesSection {...props} certificates={data.certificates} />
+    ),
+    publications: (props) => (
+      <PublicationsSection {...props} publications={data.publications} />
+    ),
+    skills: (props) => <SkillsSection {...props} skills={data.skills} />,
+    interests: (props) => (
+      <InterestsSection {...props} interests={data.interests} />
+    ),
+    // Languages already displayed in header section, skip here
+    languages: null,
+    references: (props) => <ReferencesSection {...props} data={data} />,
+    projects: (props) => <ProjectsSection {...props} data={data} />,
+  };
+
   // Dynamic section rendering function
   const renderSection = (sectionName: string) => {
-    switch (sectionName) {
-      case "work":
-        return (
-          <WorkSection
-            key="work"
-            itemVariants={itemVariants}
-            work={data.work}
-          />
-        );
-      case "volunteer":
-        return (
-          <VolunteerSection
-            key="volunteer"
-            itemVariants={itemVariants}
-            volunteer={data.volunteer}
-          />
-        );
-      case "education":
-        return (
-          <EducationSection
-            key="education"
-            education={data.education}
-            itemVariants={itemVariants}
-          />
-        );
-      case "awards":
-        return (
-          <AwardsSection
-            key="awards"
-            awards={data.awards}
-            itemVariants={itemVariants}
-          />
-        );
-      case "certificates":
-        return (
-          <CertificatesSection
-            key="certificates"
-            certificates={data.certificates}
-            itemVariants={itemVariants}
-          />
-        );
-      case "publications":
-        return (
-          <PublicationsSection
-            key="publications"
-            itemVariants={itemVariants}
-            publications={data.publications}
-          />
-        );
-      case "skills":
-        return (
-          <SkillsSection
-            key="skills"
-            itemVariants={itemVariants}
-            skills={data.skills}
-          />
-        );
-      case "interests":
-        return (
-          <InterestsSection
-            key="interests"
-            interests={data.interests}
-            itemVariants={itemVariants}
-          />
-        );
-      case "languages":
-        // languages already displayed in header section, skip here
-        return null;
-      case "references":
-        return (
-          <ReferencesSection
-            key="references"
-            data={data}
-            itemVariants={itemVariants}
-          />
-        );
-      case "projects":
-        return (
-          <ProjectsSection
-            key="projects"
-            data={data}
-            itemVariants={itemVariants}
-          />
-        );
-      default:
-        return null;
-    }
+    const Component = sectionComponentMap[sectionName];
+
+    if (!Component) return null;
+
+    return <Component key={sectionName} itemVariants={itemVariants} />;
   };
 
   return (
@@ -262,7 +210,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
                 {/* Social Profiles and Download PDF */}
                 {data.basics.profiles && (
                   <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-4 items-center">
-                    {data.basics.profiles.map((profile: any, index: number) => (
+                    {data.basics.profiles.map((profile, index) => (
                       <Link
                         key={index}
                         isExternal
@@ -308,7 +256,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
                         // Download PDF file
                         const link = document.createElement("a");
 
-                        link.href = "/example.pdf";
+                        link.href = env.RESUME_PDF_PATH || "/example.pdf";
                         link.download = "resume.pdf";
                         document.body.appendChild(link);
                         link.click();
@@ -336,7 +284,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
                 {/* Languages */}
                 {data.languages && (
                   <div className="flex flex-wrap justify-center lg:justify-start gap-2">
-                    {data.languages.map((lang: any, index: number) => (
+                    {data.languages.map((lang, index) => (
                       <Chip
                         key={index}
                         className="bg-gray-100 dark:bg-gray-700/50 text-gray-800 dark:text-gray-200"
@@ -356,9 +304,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
       </motion.div>
 
       {/* Dynamically render other sections according to YAML file order */}
-      {data.sectionOrder.map((sectionName: string) =>
-        renderSection(sectionName),
-      )}
+      {data.sectionOrder.map((sectionName) => renderSection(sectionName))}
     </motion.div>
   );
 });

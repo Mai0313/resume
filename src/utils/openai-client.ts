@@ -106,6 +106,46 @@ Here is the page information:
     return this.client;
   }
 
+  /**
+   * Build messages array for API request (shared logic)
+   */
+  private async buildMessagesArray(
+    imageBuffer: Buffer | undefined,
+    textPrompt: string,
+  ): Promise<{
+    systemMessage: ChatCompletionMessageParam;
+    userMessage: ChatCompletionMessageParam;
+  }> {
+    const pageContent = await this.getCurrentPageContext();
+    const base64 = imageBuffer?.toString("base64");
+
+    const systemMessage: ChatCompletionMessageParam = {
+      name: "message",
+      role: "system",
+      content: [{ type: "text", text: pageContent.trim() }],
+    };
+
+    const effectiveText = `${textPrompt.trim()}\nResponse to the question based on the info or image you have.`;
+    const userContent: ChatCompletionUserMessageParam["content"] = [
+      { type: "text", text: effectiveText },
+    ];
+
+    if (imageBuffer && base64) {
+      userContent.push({
+        type: "image_url",
+        image_url: { url: `data:image/png;base64,${base64}`, detail: "auto" },
+      });
+    }
+
+    const userMessage: ChatCompletionMessageParam = {
+      name: "message",
+      role: "user",
+      content: userContent,
+    };
+
+    return { systemMessage, userMessage };
+  }
+
   async completionStream(
     imageBuffer: Buffer | undefined,
     textPrompt: string,
@@ -118,32 +158,11 @@ Here is the page information:
     signal: AbortSignal,
   ): Promise<string> {
     const client = await this.getClient();
-    const pageContent = await this.getCurrentPageContext();
-    const base64 = imageBuffer?.toString("base64");
-    const messages: ChatCompletionMessageParam[] = [];
-
-    messages.push({
-      name: "message",
-      role: "system",
-      content: [{ type: "text", text: pageContent.trim() }],
-    });
-    const effectiveText = `${textPrompt.trim()}\nResponse to the question based on the info or image you have.`;
-
-    const userContent: ChatCompletionUserMessageParam["content"] = [
-      { type: "text", text: effectiveText },
-    ];
-
-    if (imageBuffer && base64) {
-      userContent.push({
-        type: "image_url",
-        image_url: { url: `data:image/png;base64,${base64}`, detail: "auto" },
-      });
-    }
-    messages.push({
-      name: "message",
-      role: "user",
-      content: userContent,
-    });
+    const { systemMessage, userMessage } = await this.buildMessagesArray(
+      imageBuffer,
+      textPrompt,
+    );
+    const messages: ChatCompletionMessageParam[] = [systemMessage, userMessage];
 
     const request: ChatCompletionCreateParams & { stream: true } = {
       model: env.OPENAI_MODEL,
@@ -197,15 +216,8 @@ Here is the page information:
     const client = await this.getClient();
     const pageContent = await this.getCurrentPageContext();
     const base64 = imageBuffer?.toString("base64");
-    const input: ResponseInput = [];
 
-    input.push({
-      type: "message",
-      role: "system",
-      content: [{ type: "input_text", text: pageContent.trim() }],
-    });
     const effectiveText = `${textPrompt.trim()}\nResponse to the question based on the info or image you have.`;
-
     const userContent: ResponseInputMessageContentList = [
       { type: "input_text", text: effectiveText },
     ];
@@ -217,11 +229,19 @@ Here is the page information:
         detail: "auto",
       });
     }
-    input.push({
-      type: "message",
-      role: "user",
-      content: userContent,
-    });
+
+    const input: ResponseInput = [
+      {
+        type: "message",
+        role: "system",
+        content: [{ type: "input_text", text: pageContent.trim() }],
+      },
+      {
+        type: "message",
+        role: "user",
+        content: userContent,
+      },
+    ];
 
     const request: ResponseCreateParams & { stream: true } = {
       model: env.OPENAI_MODEL,
