@@ -34,6 +34,7 @@ function useAbortController() {
     }
     // Create new controller
     controllerRef.current = new AbortController();
+
     return controllerRef.current;
   }, []);
 
@@ -167,6 +168,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
             0,
             messages.length - CHAT.MAX_MESSAGES,
           );
+
           Array.from(newMap.keys())
             .filter((key) => key < minValidIndex)
             .forEach((key) => newMap.delete(key));

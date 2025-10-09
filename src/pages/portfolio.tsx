@@ -26,10 +26,12 @@ export default function PortfolioPage() {
   useEffect(() => {
     let isMounted = true; // Track mounted state to prevent updates after unmount
 
-    const fetchContributions = async () => {
+    const fetchContributions = async (isBackgroundRefresh = false) => {
       try {
         if (!isMounted) return;
-        setLoading(true);
+        if (!isBackgroundRefresh) {
+          setLoading(true);
+        }
         setError(null);
 
         // Dynamically get GitHub username
@@ -46,21 +48,35 @@ export default function PortfolioPage() {
           cached.timestamp &&
           cached.cachedUsername
         ) {
-          // Verify cache is valid: correct user and not expired
-          if (
-            cached.cachedUsername === username &&
-            Date.now() - cached.timestamp < CACHE_TTL
-          ) {
+          // Verify cache has correct user
+          if (cached.cachedUsername === username) {
+            const cacheAge = Date.now() - cached.timestamp;
+            const isCacheStale = cacheAge > CACHE_TTL;
+
+            // SWR: Show cached data immediately
             if (isMounted) {
               setContributions(cached.data);
               setLoading(false);
             }
 
-            return;
+            // If cache is stale, refresh in background
+            if (isCacheStale && isMounted) {
+              // Background refresh
+              setTimeout(() => {
+                if (isMounted) {
+                  fetchContributions(true);
+                }
+              }, 100);
+            }
+
+            // Don't fetch again if cache is fresh
+            if (!isCacheStale) {
+              return;
+            }
           }
         }
 
-        // Fetch fresh data
+        // Fetch fresh data (either no cache or background refresh)
         const userContributions = await getUserContributions(username);
 
         if (!isMounted) return;
@@ -82,7 +98,7 @@ export default function PortfolioPage() {
           );
         }
       } finally {
-        if (isMounted) {
+        if (isMounted && !isBackgroundRefresh) {
           setLoading(false);
         }
       }

@@ -11,13 +11,25 @@ import type {
   ResponseInputMessageContentList,
 } from "openai/resources/responses/responses";
 import type { Stream } from "openai/streaming";
-
-import OpenAI from "openai";
-import { ChatCompletionCreateParamsStreaming } from "openai/resources.js";
-import { ResponseCreateParamsStreaming } from "openai/resources/responses/responses.js";
+import type OpenAI from "openai";
+import type { ChatCompletionCreateParamsStreaming } from "openai/resources.js";
+import type { ResponseCreateParamsStreaming } from "openai/resources/responses/responses.js";
 
 import { env } from "@/utils/env";
 import { CHAT } from "@/constants";
+
+// Dynamically import OpenAI SDK to reduce initial bundle size
+let OpenAIClass: typeof OpenAI | null = null;
+
+async function getOpenAIClass() {
+  if (!OpenAIClass) {
+    const module = await import("openai");
+
+    OpenAIClass = module.default;
+  }
+
+  return OpenAIClass;
+}
 
 // Singleton state
 let cachedClient: OpenAI | null = null;
@@ -88,7 +100,7 @@ export function clearCache(): void {
 /**
  * Get or initialize OpenAI client (singleton pattern)
  */
-function getClient(): OpenAI {
+async function getClient(): Promise<OpenAI> {
   if (cachedClient) {
     return cachedClient;
   }
@@ -101,7 +113,9 @@ function getClient(): OpenAI {
     throw new Error("OPENAI_API_KEY is not configured");
   }
 
-  cachedClient = new OpenAI({
+  const OpenAIConstructor = await getOpenAIClass();
+
+  cachedClient = new OpenAIConstructor({
     apiKey: env.OPENAI_API_KEY,
     baseURL: env.OPENAI_BASE_URL,
     dangerouslyAllowBrowser: true,
@@ -161,7 +175,7 @@ export async function completionStream(
   }) => void,
   signal: AbortSignal,
 ): Promise<string> {
-  const client = getClient();
+  const client = await getClient();
   const { systemMessage, userMessage } = await buildMessagesArray(
     imageBuffer,
     textPrompt,
@@ -217,7 +231,7 @@ export async function responseStream(
   }) => void,
   signal: AbortSignal,
 ): Promise<string> {
-  const client = getClient();
+  const client = await getClient();
   const pageContent = await getCurrentPageContext();
   const base64 = imageBuffer?.toString("base64");
 

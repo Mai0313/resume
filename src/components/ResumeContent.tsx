@@ -1,6 +1,6 @@
 import type { ResumeData } from "../utils/resumeLoader";
 
-import React, { memo } from "react";
+import React from "react";
 import { Card, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Link } from "@heroui/link";
@@ -26,7 +26,54 @@ interface ResumeContentProps {
   data: ResumeData & { sectionOrder: string[] };
 }
 
-export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
+export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
+  // Memoize variants to prevent recreation on every render
+  const { container: containerVariants, item: itemVariants } = React.useMemo(
+    () => fadeInStagger,
+    [],
+  );
+
+  // Memoize section component map to prevent recreation
+  const sectionComponentMap = React.useMemo(
+    () => ({
+      work: (props: any) => <WorkSection {...props} work={data.work} />,
+      volunteer: (props: any) => (
+        <VolunteerSection {...props} volunteer={data.volunteer} />
+      ),
+      education: (props: any) => (
+        <EducationSection {...props} education={data.education} />
+      ),
+      awards: (props: any) => <AwardsSection {...props} awards={data.awards} />,
+      certificates: (props: any) => (
+        <CertificatesSection {...props} certificates={data.certificates} />
+      ),
+      publications: (props: any) => (
+        <PublicationsSection {...props} publications={data.publications} />
+      ),
+      skills: (props: any) => <SkillsSection {...props} skills={data.skills} />,
+      interests: (props: any) => (
+        <InterestsSection {...props} interests={data.interests} />
+      ),
+      languages: null,
+      references: (props: any) => <ReferencesSection {...props} data={data} />,
+      projects: (props: any) => <ProjectsSection {...props} data={data} />,
+    }),
+    [data],
+  );
+
+  // Dynamic section rendering function
+  const renderSection = React.useCallback(
+    (sectionName: string) => {
+      const Component =
+        sectionComponentMap[sectionName as keyof typeof sectionComponentMap];
+
+      if (!Component) return null;
+
+      return <Component key={sectionName} itemVariants={itemVariants} />;
+    },
+    [sectionComponentMap, itemVariants],
+  );
+
   // Defensive check: ensure data structure is complete
   if (!data || !data.basics || !data.basics.name) {
     return (
@@ -76,46 +123,6 @@ export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
       </div>
     );
   }
-
-  const { container: containerVariants, item: itemVariants } = fadeInStagger;
-
-  // Component mapping for dynamic rendering
-  const sectionComponentMap: Record<
-    string,
-    React.FC<{ itemVariants: any; [key: string]: any }> | null
-  > = {
-    work: (props) => <WorkSection {...props} work={data.work} />,
-    volunteer: (props) => (
-      <VolunteerSection {...props} volunteer={data.volunteer} />
-    ),
-    education: (props) => (
-      <EducationSection {...props} education={data.education} />
-    ),
-    awards: (props) => <AwardsSection {...props} awards={data.awards} />,
-    certificates: (props) => (
-      <CertificatesSection {...props} certificates={data.certificates} />
-    ),
-    publications: (props) => (
-      <PublicationsSection {...props} publications={data.publications} />
-    ),
-    skills: (props) => <SkillsSection {...props} skills={data.skills} />,
-    interests: (props) => (
-      <InterestsSection {...props} interests={data.interests} />
-    ),
-    // Languages already displayed in header section, skip here
-    languages: null,
-    references: (props) => <ReferencesSection {...props} data={data} />,
-    projects: (props) => <ProjectsSection {...props} data={data} />,
-  };
-
-  // Dynamic section rendering function
-  const renderSection = (sectionName: string) => {
-    const Component = sectionComponentMap[sectionName];
-
-    if (!Component) return null;
-
-    return <Component key={sectionName} itemVariants={itemVariants} />;
-  };
 
   return (
     <motion.div
@@ -307,6 +314,6 @@ export const ResumeContent: React.FC<ResumeContentProps> = memo(({ data }) => {
       {data.sectionOrder.map((sectionName) => renderSection(sectionName))}
     </motion.div>
   );
-});
+};
 
 ResumeContent.displayName = "ResumeContent";

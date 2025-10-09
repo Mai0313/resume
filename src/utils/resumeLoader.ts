@@ -1,6 +1,15 @@
-import yaml from "js-yaml";
-
 import { envHelpers } from "@/utils/env";
+
+// Dynamically import js-yaml to reduce initial bundle size
+let yamlModule: typeof import("js-yaml") | null = null;
+
+async function getYaml() {
+  if (!yamlModule) {
+    yamlModule = await import("js-yaml");
+  }
+
+  return yamlModule;
+}
 
 // JSON Resume Schema interfaces
 export interface JSONResumeBasics {
@@ -211,6 +220,7 @@ export async function loadResumeData(): Promise<
       throw new Error("Resume file is empty");
     }
 
+    const yaml = await getYaml();
     const data = yaml.load(yamlText) as ResumeData;
 
     // Validate parsed data structure

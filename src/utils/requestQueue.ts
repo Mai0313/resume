@@ -271,6 +271,7 @@ export class RequestQueue {
       if (headers instanceof Headers) {
         return headers.get(key) || "";
       }
+
       return headers[key] || "";
     };
 
