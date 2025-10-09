@@ -9,6 +9,7 @@ import { siteConfig } from "@/config/site";
 import { GithubIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
 import { env } from "@/utils/env";
+import { BREAKPOINTS, PARTICLE_COUNTS } from "@/constants";
 
 // Lazy load heavy WebGL components
 const Orb = lazy(() => import("../components/Orb/Orb"));
@@ -26,17 +27,19 @@ const AnimationLoadingFallback = () => (
 );
 
 export default function IndexPage() {
-  const [particleCount, setParticleCount] = useState(200);
+  const [particleCount, setParticleCount] = useState<number>(
+    PARTICLE_COUNTS.DESKTOP,
+  );
 
   useEffect(() => {
     const updateParticleCount = () => {
       // Reduce particle count on mobile and tablet devices for better performance
-      if (window.innerWidth < 768) {
-        setParticleCount(50); // Mobile
-      } else if (window.innerWidth < 1024) {
-        setParticleCount(100); // Tablet
+      if (window.innerWidth < BREAKPOINTS.MOBILE) {
+        setParticleCount(PARTICLE_COUNTS.MOBILE);
+      } else if (window.innerWidth < BREAKPOINTS.TABLET) {
+        setParticleCount(PARTICLE_COUNTS.TABLET);
       } else {
-        setParticleCount(200); // Desktop
+        setParticleCount(PARTICLE_COUNTS.DESKTOP);
       }
     };
 

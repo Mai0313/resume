@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 import { Input } from "@heroui/input";
@@ -13,15 +13,48 @@ import {
 import { Spinner } from "@heroui/spinner";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { openAIClient } from "@/utils/openai-client";
+import * as openAI from "@/utils/openai-client";
 import { envHelpers } from "@/utils/env";
+import { CHAT, ANIMATION } from "@/constants";
 
 interface ChatBotProps {
   className?: string;
 }
 
-// Maximum number of messages to keep in memory to prevent memory leaks
-const MAX_MESSAGES = 50;
+/**
+ * Custom hook to manage AbortController lifecycle
+ */
+function useAbortController() {
+  const controllerRef = useRef<AbortController | null>(null);
+
+  const getNewController = useCallback(() => {
+    // Abort previous controller if exists
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    // Create new controller
+    controllerRef.current = new AbortController();
+    return controllerRef.current;
+  }, []);
+
+  const abort = useCallback(() => {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+      controllerRef.current = null;
+    }
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+    };
+  }, []);
+
+  return { getNewController, abort };
+}
 
 export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   // Always call hooks at the top level
@@ -34,11 +67,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   const [streamingReasoning, setStreamingReasoning] = useState("");
   // Store assistant reasoning per assistant message index (odd indices)
   const [assistantReasonings, setAssistantReasonings] = useState<
-    Record<number, string>
-  >({});
+    Map<number, string>
+  >(new Map());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const { getNewController, abort } = useAbortController();
 
   // Auto scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -54,21 +87,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
     if (isOpen && inputRef.current) {
       const timer = setTimeout(() => {
         inputRef.current?.focus();
-      }, 100);
+      }, ANIMATION.FOCUS_DELAY_MS);
 
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
-
-  // Cleanup: abort any pending requests when component unmounts
-  useEffect(() => {
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-        abortControllerRef.current = null;
-      }
-    };
-  }, []);
 
   // Only render if OpenAI is available
   if (!envHelpers.isOpenAIChatBotAvailable()) {
@@ -90,11 +113,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
       // Stream AI response using new client
       let fullResponse = "";
       let fullReasoning = "";
-      const controller = new AbortController();
+      const controller = getNewController();
 
-      abortControllerRef.current = controller;
-
-      await openAIClient.responseStream(
+      await openAI.responseStream(
         undefined,
         userText,
         (update) => {
@@ -130,29 +151,33 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
       setMessages((prev) => {
         const nextMessages = [...prev, fullResponse];
         // Limit message history to prevent memory leaks
-        const limitedMessages = nextMessages.slice(-MAX_MESSAGES);
-        const assistantIndex = limitedMessages.length - 1; // assistant is last, odd index
-
-        if (fullReasoning) {
-          setAssistantReasonings((prevMap) => {
-            // Clean up old reasoning entries that are no longer in message list
-            const newMap: Record<number, string> = {};
-
-            Object.entries(prevMap).forEach(([key, value]) => {
-              const index = parseInt(key);
-
-              if (index >= nextMessages.length - MAX_MESSAGES) {
-                newMap[index - (nextMessages.length - MAX_MESSAGES)] = value;
-              }
-            });
-            newMap[assistantIndex] = fullReasoning;
-
-            return newMap;
-          });
-        }
+        const limitedMessages = nextMessages.slice(-CHAT.MAX_MESSAGES);
 
         return limitedMessages;
       });
+
+      // Update reasoning map with cleanup
+      if (fullReasoning) {
+        setAssistantReasonings((prevMap) => {
+          const newMap = new Map(prevMap);
+          const assistantIndex = messages.length; // Next index will be assistant message
+
+          // Clean up old reasoning entries that are no longer in message list
+          const minValidIndex = Math.max(
+            0,
+            messages.length - CHAT.MAX_MESSAGES,
+          );
+          Array.from(newMap.keys())
+            .filter((key) => key < minValidIndex)
+            .forEach((key) => newMap.delete(key));
+
+          // Add new reasoning
+          newMap.set(assistantIndex, fullReasoning);
+
+          return newMap;
+        });
+      }
+
       setStreamingMessage("");
       setStreamingReasoning("");
     } catch (error) {
@@ -164,13 +189,12 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
       setMessages((prev) => {
         const nextMessages = [...prev, errorMessage];
 
-        return nextMessages.slice(-MAX_MESSAGES);
+        return nextMessages.slice(-CHAT.MAX_MESSAGES);
       });
       setStreamingMessage("");
       setStreamingReasoning("");
     } finally {
       setIsLoading(false);
-      abortControllerRef.current = null;
     }
   };
 
@@ -182,22 +206,18 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   };
 
   const handleClearChat = () => {
-    if (isLoading && abortControllerRef.current) {
-      abortControllerRef.current.abort();
-      abortControllerRef.current = null;
+    if (isLoading) {
+      abort();
     }
     setMessages([]);
     setStreamingMessage("");
     setStreamingReasoning("");
-    setAssistantReasonings({});
+    setAssistantReasonings(new Map());
   };
 
   const handleModalOpenChange = (open: boolean) => {
     if (!open) {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-        abortControllerRef.current = null;
-      }
+      abort();
       setIsLoading(false);
       setStreamingMessage("");
     }
@@ -317,9 +337,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
                           >
                             <CardBody className="px-4 py-3">
                               {index % 2 === 1 &&
-                                assistantReasonings[index] && (
+                                assistantReasonings.get(index) && (
                                   <p className="text-xs text-default-400 whitespace-pre-wrap mb-2">
-                                    {assistantReasonings[index]}
+                                    {assistantReasonings.get(index)}
                                   </p>
                                 )}
                               <p className="text-sm whitespace-pre-wrap">

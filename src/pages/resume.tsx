@@ -29,32 +29,36 @@ export default function ResumePage() {
   >(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
 
-  const loadResumeContent = useCallback(async () => {
-    setIsLoadingResume(true);
-    try {
-      const data = await loadResumeData();
-
-      // Verify data structure integrity
-      if (!data || !data.basics || !data.basics.name) {
-        throw new Error("Resume data is incomplete or missing required fields");
-      }
-
-      setResumeData(data);
-    } catch (error) {
-      addToast({
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to load resume data",
-        color: "danger",
-      });
-      setResumeData(null);
-    } finally {
-      setIsLoadingResume(false);
-    }
-  }, []);
-
   useEffect(() => {
     setIsMounted(true);
+
+    const loadResumeContent = async () => {
+      setIsLoadingResume(true);
+      try {
+        const data = await loadResumeData();
+
+        // Verify data structure integrity
+        if (!data || !data.basics || !data.basics.name) {
+          throw new Error(
+            "Resume data is incomplete or missing required fields",
+          );
+        }
+
+        setResumeData(data);
+      } catch (error) {
+        addToast({
+          title: "Error",
+          description:
+            error instanceof Error
+              ? error.message
+              : "Failed to load resume data",
+          color: "danger",
+        });
+        setResumeData(null);
+      } finally {
+        setIsLoadingResume(false);
+      }
+    };
 
     // Check if URL parameters contain PIN code
     const urlParams = new URLSearchParams(window.location.search);
@@ -80,7 +84,7 @@ export default function ResumePage() {
 
       window.history.replaceState({}, "", newUrl);
     }
-  }, [loadResumeContent]);
+  }, []);
 
   const [pin, setPin] = useState("");
   const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED); // If no PIN code, default to authenticated
@@ -109,7 +113,31 @@ export default function ResumePage() {
       }
       if (pin === env.PIN_CODE) {
         setAuthenticated(true);
-        loadResumeContent();
+        // Load resume content after authentication
+        setIsLoadingResume(true);
+        loadResumeData()
+          .then((data) => {
+            if (!data || !data.basics || !data.basics.name) {
+              throw new Error(
+                "Resume data is incomplete or missing required fields",
+              );
+            }
+            setResumeData(data);
+          })
+          .catch((error) => {
+            addToast({
+              title: "Error",
+              description:
+                error instanceof Error
+                  ? error.message
+                  : "Failed to load resume data",
+              color: "danger",
+            });
+            setResumeData(null);
+          })
+          .finally(() => {
+            setIsLoadingResume(false);
+          });
         onClose();
       } else {
         setFailCount((c) => c + 1);
@@ -125,7 +153,7 @@ export default function ResumePage() {
         setPin("");
       }
     },
-    [pin, loadResumeContent, controls],
+    [pin, controls],
   );
 
   // Listen for pin length

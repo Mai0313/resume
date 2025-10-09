@@ -6,6 +6,8 @@ import type {
 
 import { env, envHelpers } from "@/utils/env";
 import { githubRequestQueue } from "@/utils/requestQueue";
+import { GitHubAPIError } from "@/types/errors";
+import { PORTFOLIO } from "@/constants";
 
 const GITHUB_API_BASE = "https://api.github.com";
 
@@ -80,25 +82,26 @@ async function enhancedFetch(
 
   // Create enhanced error for rate limit detection
   if (!response.ok) {
-    const error: any = new Error(
-      `GitHub API error: ${response.status} ${response.statusText}`,
-    );
+    const resetTimeHeader = response.headers.get("x-ratelimit-reset");
+    const resetTime = resetTimeHeader
+      ? parseInt(resetTimeHeader, 10)
+      : undefined;
 
-    error.status = response.status;
-    error.response = response;
-    error.headers = response.headers;
+    let message = `GitHub API error: ${response.status} ${response.statusText}`;
 
-    // Add rate limit info to error for better handling
-    if (response.status === 403 || response.status === 429) {
-      const resetTime = response.headers.get("x-ratelimit-reset");
+    if (resetTime && (response.status === 403 || response.status === 429)) {
+      const resetDate = new Date(resetTime * 1000);
 
-      if (resetTime) {
-        error.resetTime = parseInt(resetTime, 10);
-        error.message += ` Rate limit will reset at ${new Date(parseInt(resetTime, 10) * 1000).toLocaleTimeString()}`;
-      }
+      message += ` Rate limit will reset at ${resetDate.toLocaleTimeString()}`;
     }
 
-    throw error;
+    throw new GitHubAPIError(
+      message,
+      response.status,
+      response,
+      response.headers,
+      resetTime,
+    );
   }
 
   return response;
@@ -284,7 +287,7 @@ export async function getUserContributions(
 
         return !isPinned;
       })
-      .slice(0, 10); // Reduced from 15 to 10 to prevent rate limiting
+      .slice(0, PORTFOLIO.MAX_REPOS_TO_FETCH);
 
     // Fetch commits for all repositories using request queue to prevent rate limiting
     const pinnedResults = await Promise.allSettled(
@@ -294,7 +297,7 @@ export async function getUserContributions(
             repo.owner.login,
             repo.name,
             username,
-            5,
+            PORTFOLIO.COMMITS_PER_REPO,
           );
 
           return {
@@ -313,7 +316,7 @@ export async function getUserContributions(
             repo.owner.login,
             repo.name,
             username,
-            5,
+            PORTFOLIO.COMMITS_PER_REPO,
           );
 
           return {

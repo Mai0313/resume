@@ -7,9 +7,10 @@ import PortfolioContent from "@/components/PortfolioContent";
 import { getUserContributions } from "@/utils/githubApi";
 import { envHelpers } from "@/utils/env";
 import { localStorageManager } from "@/utils/localStorage";
+import { PORTFOLIO } from "@/constants";
 
-const CACHE_KEY = "github_contributions_cache";
-const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+const CACHE_KEY = PORTFOLIO.CACHE_KEY;
+const CACHE_TTL = PORTFOLIO.CACHE_TTL_MS;
 
 interface CacheData {
   data: GitHubContribution[];

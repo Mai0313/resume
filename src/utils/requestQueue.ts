@@ -6,6 +6,8 @@
  * - Adaptive rate limiting based on response headers
  */
 
+import { REQUEST_QUEUE } from "@/constants";
+
 type QueueItem<T> = {
   fn: () => Promise<T>;
   resolve: (value: T) => void;
@@ -45,11 +47,14 @@ export class RequestQueue {
   private pauseUntil: number | null = null;
 
   constructor(options: RequestQueueOptions = {}) {
-    this.maxConcurrent = options.maxConcurrent ?? 2; // Reduced from 5 to 2
-    this.maxRetries = options.maxRetries ?? 3;
-    this.initialRetryDelay = options.initialRetryDelay ?? 1000; // 1 second
-    this.maxRetryDelay = options.maxRetryDelay ?? 32000; // 32 seconds
-    this.backoffMultiplier = options.backoffMultiplier ?? 2;
+    this.maxConcurrent = options.maxConcurrent ?? REQUEST_QUEUE.MAX_CONCURRENT;
+    this.maxRetries = options.maxRetries ?? REQUEST_QUEUE.MAX_RETRIES;
+    this.initialRetryDelay =
+      options.initialRetryDelay ?? REQUEST_QUEUE.INITIAL_RETRY_DELAY_MS;
+    this.maxRetryDelay =
+      options.maxRetryDelay ?? REQUEST_QUEUE.MAX_RETRY_DELAY_MS;
+    this.backoffMultiplier =
+      options.backoffMultiplier ?? REQUEST_QUEUE.BACKOFF_MULTIPLIER;
   }
 
   /**
@@ -98,9 +103,9 @@ export class RequestQueue {
     // Adaptive rate limiting based on remaining API calls
     if (
       this.rateLimitInfo.remaining !== null &&
-      this.rateLimitInfo.remaining < 10
+      this.rateLimitInfo.remaining < REQUEST_QUEUE.RATE_LIMIT_WARNING_THRESHOLD
     ) {
-      // If we have less than 10 requests remaining, slow down
+      // If we have less than threshold requests remaining, slow down
       if (this.maxConcurrent > 1) {
         this.maxConcurrent = 1;
         console.warn(
@@ -124,7 +129,10 @@ export class RequestQueue {
     } finally {
       this.running--;
       // Process next item after a small delay to avoid hitting rate limits
-      setTimeout(() => this.processQueue(), 100);
+      setTimeout(
+        () => this.processQueue(),
+        REQUEST_QUEUE.PROCESS_QUEUE_DELAY_MS || 100,
+      );
     }
   }
 
@@ -254,29 +262,42 @@ export class RequestQueue {
   }
 
   /**
+   * Parse rate limit headers from Headers or plain object
+   */
+  private parseRateLimitHeaders(
+    headers: Headers | Record<string, string>,
+  ): RateLimitInfo {
+    const getHeader = (key: string): string => {
+      if (headers instanceof Headers) {
+        return headers.get(key) || "";
+      }
+      return headers[key] || "";
+    };
+
+    const remaining = parseInt(getHeader("x-ratelimit-remaining"), 10);
+    const reset = parseInt(getHeader("x-ratelimit-reset"), 10);
+    const limit = parseInt(getHeader("x-ratelimit-limit"), 10);
+
+    return {
+      remaining: !isNaN(remaining) ? remaining : null,
+      reset: !isNaN(reset) ? reset : null,
+      limit: !isNaN(limit) ? limit : null,
+    };
+  }
+
+  /**
    * Update rate limit info from error response
    */
   private updateRateLimitInfo(error: any): void {
     const headers = error.response?.headers || error.headers;
 
     if (headers) {
-      const remaining = parseInt(
-        headers["x-ratelimit-remaining"] ||
-          headers.get?.("x-ratelimit-remaining"),
-        10,
-      );
-      const reset = parseInt(
-        headers["x-ratelimit-reset"] || headers.get?.("x-ratelimit-reset"),
-        10,
-      );
-      const limit = parseInt(
-        headers["x-ratelimit-limit"] || headers.get?.("x-ratelimit-limit"),
-        10,
-      );
+      const info = this.parseRateLimitHeaders(headers);
 
-      if (!isNaN(remaining)) this.rateLimitInfo.remaining = remaining;
-      if (!isNaN(reset)) this.rateLimitInfo.reset = reset;
-      if (!isNaN(limit)) this.rateLimitInfo.limit = limit;
+      if (info.remaining !== null)
+        this.rateLimitInfo.remaining = info.remaining;
+      if (info.reset !== null) this.rateLimitInfo.reset = info.reset;
+      if (info.limit !== null) this.rateLimitInfo.limit = info.limit;
     }
   }
 
@@ -313,34 +334,19 @@ export class RequestQueue {
    * Should be called after successful requests
    */
   updateFromHeaders(headers: Headers | Record<string, string>): void {
-    if (headers instanceof Headers) {
-      const remaining = parseInt(
-        headers.get("x-ratelimit-remaining") || "",
-        10,
-      );
-      const reset = parseInt(headers.get("x-ratelimit-reset") || "", 10);
-      const limit = parseInt(headers.get("x-ratelimit-limit") || "", 10);
+    const info = this.parseRateLimitHeaders(headers);
 
-      if (!isNaN(remaining)) this.rateLimitInfo.remaining = remaining;
-      if (!isNaN(reset)) this.rateLimitInfo.reset = reset;
-      if (!isNaN(limit)) this.rateLimitInfo.limit = limit;
-    } else {
-      const remaining = parseInt(headers["x-ratelimit-remaining"] || "", 10);
-      const reset = parseInt(headers["x-ratelimit-reset"] || "", 10);
-      const limit = parseInt(headers["x-ratelimit-limit"] || "", 10);
-
-      if (!isNaN(remaining)) this.rateLimitInfo.remaining = remaining;
-      if (!isNaN(reset)) this.rateLimitInfo.reset = reset;
-      if (!isNaN(limit)) this.rateLimitInfo.limit = limit;
-    }
+    if (info.remaining !== null) this.rateLimitInfo.remaining = info.remaining;
+    if (info.reset !== null) this.rateLimitInfo.reset = info.reset;
+    if (info.limit !== null) this.rateLimitInfo.limit = info.limit;
   }
 }
 
 // Shared instance for GitHub API requests with conservative settings
 export const githubRequestQueue = new RequestQueue({
-  maxConcurrent: 2, // Reduced from 5 to 2 for GitHub API
-  maxRetries: 3,
-  initialRetryDelay: 1000,
-  maxRetryDelay: 32000,
-  backoffMultiplier: 2,
+  maxConcurrent: REQUEST_QUEUE.MAX_CONCURRENT,
+  maxRetries: REQUEST_QUEUE.MAX_RETRIES,
+  initialRetryDelay: REQUEST_QUEUE.INITIAL_RETRY_DELAY_MS,
+  maxRetryDelay: REQUEST_QUEUE.MAX_RETRY_DELAY_MS,
+  backoffMultiplier: REQUEST_QUEUE.BACKOFF_MULTIPLIER,
 });

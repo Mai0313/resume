@@ -50,31 +50,19 @@ function validateRequiredEnvVars(): void {
 }
 
 /**
- * Gets an environment variable value with proper validation
+ * Unified environment variable getter with validation and defaults
  */
 function getEnvVar<T extends keyof ImportMetaEnv>(
   varName: T,
-  required: boolean = false,
-): string {
-  const value = import.meta.env[varName];
-
-  if (required && (!value || value.trim() === "")) {
-    throw new Error(`Required environment variable ${varName} is not set`);
-  }
-
-  return value || "";
-}
-
-/**
- * Gets an environment variable with a default value
- */
-function getEnvVarWithDefault(
-  varName: keyof typeof DEFAULT_VALUES,
-  defaultValue: string | null,
+  options: { required?: boolean; defaultValue?: string | null } = {},
 ): string | null {
   const value = import.meta.env[varName];
 
-  return value || defaultValue;
+  if (options.required && !isNonEmptyString(value)) {
+    throw new Error(`Required environment variable ${varName} is not set`);
+  }
+
+  return isNonEmptyString(value) ? value : (options.defaultValue ?? null);
 }
 
 // Validate required environment variables on module load
@@ -83,38 +71,33 @@ validateRequiredEnvVars();
 // Exported environment variables with proper validation and defaults
 export const env = {
   // Required environment variables (will throw error if not set)
-  WEBSITE_TITLE: getEnvVar("VITE_WEBSITE_TITLE", true),
+  WEBSITE_TITLE: getEnvVar("VITE_WEBSITE_TITLE", { required: true })!,
 
   // Optional environment variables with defaults
-  RESUME_FILE: getEnvVarWithDefault(
-    "VITE_RESUME_FILE",
-    DEFAULT_VALUES.VITE_RESUME_FILE,
-  ),
-  GITHUB_TOKEN: getEnvVarWithDefault(
-    "VITE_GITHUB_TOKEN",
-    DEFAULT_VALUES.VITE_GITHUB_TOKEN,
-  ),
-  PIN_CODE: getEnvVarWithDefault("VITE_PIN_CODE", DEFAULT_VALUES.VITE_PIN_CODE),
-  ROOT_PATH: getEnvVarWithDefault(
-    "VITE_ROOT_PATH",
-    DEFAULT_VALUES.VITE_ROOT_PATH,
-  ),
-  OPENAI_BASE_URL: getEnvVarWithDefault(
-    "VITE_OPENAI_BASE_URL",
-    DEFAULT_VALUES.VITE_OPENAI_BASE_URL,
-  ),
-  OPENAI_API_KEY: getEnvVarWithDefault(
-    "VITE_OPENAI_API_KEY",
-    DEFAULT_VALUES.VITE_OPENAI_API_KEY,
-  ),
-  OPENAI_MODEL: getEnvVarWithDefault(
-    "VITE_OPENAI_MODEL",
-    DEFAULT_VALUES.VITE_OPENAI_MODEL,
-  ),
-  RESUME_PDF_PATH: getEnvVarWithDefault(
-    "VITE_RESUME_PDF_PATH",
-    DEFAULT_VALUES.VITE_RESUME_PDF_PATH,
-  ),
+  RESUME_FILE: getEnvVar("VITE_RESUME_FILE", {
+    defaultValue: DEFAULT_VALUES.VITE_RESUME_FILE,
+  }),
+  GITHUB_TOKEN: getEnvVar("VITE_GITHUB_TOKEN", {
+    defaultValue: DEFAULT_VALUES.VITE_GITHUB_TOKEN,
+  }),
+  PIN_CODE: getEnvVar("VITE_PIN_CODE", {
+    defaultValue: DEFAULT_VALUES.VITE_PIN_CODE,
+  }),
+  ROOT_PATH: getEnvVar("VITE_ROOT_PATH", {
+    defaultValue: DEFAULT_VALUES.VITE_ROOT_PATH,
+  }),
+  OPENAI_BASE_URL: getEnvVar("VITE_OPENAI_BASE_URL", {
+    defaultValue: DEFAULT_VALUES.VITE_OPENAI_BASE_URL,
+  }),
+  OPENAI_API_KEY: getEnvVar("VITE_OPENAI_API_KEY", {
+    defaultValue: DEFAULT_VALUES.VITE_OPENAI_API_KEY,
+  }),
+  OPENAI_MODEL: getEnvVar("VITE_OPENAI_MODEL", {
+    defaultValue: DEFAULT_VALUES.VITE_OPENAI_MODEL,
+  }),
+  RESUME_PDF_PATH: getEnvVar("VITE_RESUME_PDF_PATH", {
+    defaultValue: DEFAULT_VALUES.VITE_RESUME_PDF_PATH,
+  }),
 } as const;
 
 // Helper functions for specific use cases

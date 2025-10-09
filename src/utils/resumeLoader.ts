@@ -230,8 +230,9 @@ export async function loadResumeData(): Promise<
       );
     }
 
-    // Extract key order from original YAML
-    const sectionOrder = extractSectionOrder(yamlText);
+    // Extract key order directly from parsed object
+    // YAML parsers preserve key order, so Object.keys will return them in order
+    const sectionOrder = Object.keys(data).filter((key) => key !== "basics");
 
     return { ...data, sectionOrder };
   } catch (error) {
@@ -241,29 +242,4 @@ export async function loadResumeData(): Promise<
     }
     throw new Error("Unknown error occurred while loading resume data");
   }
-}
-
-/**
- * Extract top-level key order from YAML text
- * This way the original section order can be maintained
- */
-function extractSectionOrder(yamlText: string): string[] {
-  const lines = yamlText.split("\n");
-  const sectionOrder: string[] = [];
-
-  for (const line of lines) {
-    // Match top-level key-value pairs (lines not starting with space or # and containing colon)
-    const match = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\s*:/);
-
-    if (match) {
-      const sectionName = match[1];
-
-      // Only add valid sections other than basics, because basics is always at the front
-      if (sectionName !== "basics" && !sectionOrder.includes(sectionName)) {
-        sectionOrder.push(sectionName);
-      }
-    }
-  }
-
-  return sectionOrder;
 }
