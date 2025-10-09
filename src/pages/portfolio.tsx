@@ -23,13 +23,18 @@ export default function PortfolioPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true; // Track mounted state to prevent updates after unmount
+
     const fetchContributions = async () => {
       try {
+        if (!isMounted) return;
         setLoading(true);
         setError(null);
 
         // Dynamically get GitHub username
         const username = await envHelpers.getGitHubUsername();
+
+        if (!isMounted) return;
 
         // Check cache first
         const cached = localStorageManager.getItem<CacheData>(CACHE_KEY);
@@ -45,8 +50,10 @@ export default function PortfolioPage() {
             cached.cachedUsername === username &&
             Date.now() - cached.timestamp < CACHE_TTL
           ) {
-            setContributions(cached.data);
-            setLoading(false);
+            if (isMounted) {
+              setContributions(cached.data);
+              setLoading(false);
+            }
 
             return;
           }
@@ -54,6 +61,8 @@ export default function PortfolioPage() {
 
         // Fetch fresh data
         const userContributions = await getUserContributions(username);
+
+        if (!isMounted) return;
 
         // Save to cache with quota checking
         const cacheData: CacheData = {
@@ -66,15 +75,24 @@ export default function PortfolioPage() {
 
         setContributions(userContributions);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
+        if (isMounted) {
+          setError(
+            err instanceof Error ? err.message : "An unknown error occurred",
+          );
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchContributions();
+
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (

@@ -95,6 +95,9 @@ export interface JSONResumeInterest {
 export interface JSONResumeReference {
   name: string;
   reference: string;
+  title?: string;
+  company?: string;
+  email?: string;
 }
 
 export interface JSONResumeCertificate {

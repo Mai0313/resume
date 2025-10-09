@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import { Link } from "@heroui/link";
 import { button as buttonStyles } from "@heroui/theme";
 import { Spinner } from "@heroui/spinner";
@@ -18,14 +18,34 @@ const Particles = lazy(() => import("../components/Particles/Particles"));
 const AnimationLoadingFallback = () => (
   <div className="flex items-center justify-center h-full">
     <Spinner
-      size="lg"
-      label="Loading animations..."
       className="text-gray-500"
+      label="Loading animations..."
+      size="lg"
     />
   </div>
 );
 
 export default function IndexPage() {
+  const [particleCount, setParticleCount] = useState(200);
+
+  useEffect(() => {
+    const updateParticleCount = () => {
+      // Reduce particle count on mobile and tablet devices for better performance
+      if (window.innerWidth < 768) {
+        setParticleCount(50); // Mobile
+      } else if (window.innerWidth < 1024) {
+        setParticleCount(100); // Tablet
+      } else {
+        setParticleCount(200); // Desktop
+      }
+    };
+
+    updateParticleCount();
+    window.addEventListener("resize", updateParticleCount);
+
+    return () => window.removeEventListener("resize", updateParticleCount);
+  }, []);
+
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center min-h-[70vh] gap-6 relative">
@@ -37,7 +57,7 @@ export default function IndexPage() {
               disableRotation={false}
               moveParticlesOnHover={true}
               particleBaseSize={100}
-              particleCount={200}
+              particleCount={particleCount}
               particleSpread={10}
               speed={0.1}
             />

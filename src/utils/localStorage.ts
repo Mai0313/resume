@@ -23,7 +23,7 @@ export class LocalStorageManager {
     "resume_data",
     "github_token",
     "user_preferences",
-    "theme"
+    "theme",
   ]);
 
   /**
@@ -92,8 +92,10 @@ export class LocalStorageManager {
    */
   private getMetadata(key: string): StorageMetadata | null {
     const metaKey = `${this.getPrefixedKey(key)}${this.METADATA_SUFFIX}`;
+
     try {
       const meta = localStorage.getItem(metaKey);
+
       return meta ? JSON.parse(meta) : null;
     } catch {
       return null;
@@ -105,6 +107,7 @@ export class LocalStorageManager {
    */
   private setMetadata(key: string, metadata: StorageMetadata): void {
     const metaKey = `${this.getPrefixedKey(key)}${this.METADATA_SUFFIX}`;
+
     try {
       localStorage.setItem(metaKey, JSON.stringify(metadata));
     } catch {
@@ -140,8 +143,9 @@ export class LocalStorageManager {
         timestamp: Date.now(),
         accessCount: 1,
         lastAccess: Date.now(),
-        size: dataSize
+        size: dataSize,
       };
+
       this.setMetadata(key, metadata);
 
       return true;
@@ -153,6 +157,7 @@ export class LocalStorageManager {
         // Retry once after clearing
         try {
           const prefixedKey = this.getPrefixedKey(key);
+
           localStorage.setItem(prefixedKey, JSON.stringify(value));
 
           // Update metadata after successful retry
@@ -160,8 +165,9 @@ export class LocalStorageManager {
             timestamp: Date.now(),
             accessCount: 1,
             lastAccess: Date.now(),
-            size: JSON.stringify(value).length + prefixedKey.length
+            size: JSON.stringify(value).length + prefixedKey.length,
           };
+
           this.setMetadata(key, metadata);
 
           return true;
@@ -189,6 +195,7 @@ export class LocalStorageManager {
 
       // Update access metadata for LRU tracking
       const metadata = this.getMetadata(key);
+
       if (metadata) {
         metadata.lastAccess = Date.now();
         metadata.accessCount++;
@@ -234,6 +241,7 @@ export class LocalStorageManager {
 
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
+
         if (!key || !this.isAppKey(key) || key.includes(this.METADATA_SUFFIX)) {
           continue;
         }
@@ -246,7 +254,7 @@ export class LocalStorageManager {
           key,
           originalKey,
           metadata,
-          isPriority
+          isPriority,
         });
       }
 
@@ -260,6 +268,7 @@ export class LocalStorageManager {
         // Sort by last access time (oldest first)
         const aTime = a.metadata?.lastAccess || 0;
         const bTime = b.metadata?.lastAccess || 0;
+
         return aTime - bTime;
       });
 
@@ -274,8 +283,10 @@ export class LocalStorageManager {
       }
 
       // If we couldn't remove enough non-priority items, log a warning
-      if (toRemove.filter(e => !e.isPriority).length < count) {
-        console.warn("Unable to free enough space without removing priority items");
+      if (toRemove.filter((e) => !e.isPriority).length < count) {
+        console.warn(
+          "Unable to free enough space without removing priority items",
+        );
       }
     } catch (e) {
       console.error("Error clearing old entries:", e);
@@ -291,12 +302,13 @@ export class LocalStorageManager {
 
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
+
         if (key && this.isAppKey(key)) {
           keysToRemove.push(key);
         }
       }
 
-      keysToRemove.forEach(key => localStorage.removeItem(key));
+      keysToRemove.forEach((key) => localStorage.removeItem(key));
     } catch (e) {
       console.error("Error clearing localStorage:", e);
     }
@@ -310,6 +322,7 @@ export class LocalStorageManager {
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
+
       if (key && this.isAppKey(key) && !key.includes(this.METADATA_SUFFIX)) {
         keys.push(this.getOriginalKey(key));
       }

@@ -77,9 +77,11 @@ export class RequestQueue {
     // Check if we're paused due to rate limiting
     if (this.isPaused && this.pauseUntil) {
       const now = Date.now();
+
       if (now < this.pauseUntil) {
         // Still paused, schedule next check
         setTimeout(() => this.processQueue(), this.pauseUntil - now);
+
         return;
       } else {
         // Pause period ended
@@ -94,21 +96,28 @@ export class RequestQueue {
     }
 
     // Adaptive rate limiting based on remaining API calls
-    if (this.rateLimitInfo.remaining !== null && this.rateLimitInfo.remaining < 10) {
+    if (
+      this.rateLimitInfo.remaining !== null &&
+      this.rateLimitInfo.remaining < 10
+    ) {
       // If we have less than 10 requests remaining, slow down
       if (this.maxConcurrent > 1) {
         this.maxConcurrent = 1;
-        console.warn(`Rate limit low (${this.rateLimitInfo.remaining} remaining), reducing concurrent requests to 1`);
+        console.warn(
+          `Rate limit low (${this.rateLimitInfo.remaining} remaining), reducing concurrent requests to 1`,
+        );
       }
     }
 
     const item = this.queue.shift();
+
     if (!item) return;
 
     this.running++;
 
     try {
       const result = await this.executeWithRetry(item);
+
       item.resolve(result);
     } catch (error) {
       item.reject(error);
@@ -145,7 +154,9 @@ export class RequestQueue {
           const now = Date.now();
           const waitTime = Math.max(0, resetTime - now + 1000); // Add 1 second buffer
 
-          console.warn(`Rate limited. Waiting ${Math.ceil(waitTime / 1000)} seconds until reset...`);
+          console.warn(
+            `Rate limited. Waiting ${Math.ceil(waitTime / 1000)} seconds until reset...`,
+          );
 
           this.isPaused = true;
           this.pauseUntil = now + waitTime;
@@ -160,20 +171,25 @@ export class RequestQueue {
             this.processQueue();
           }, waitTime);
 
-          throw new Error(`Rate limited. Will retry after ${new Date(resetTime).toLocaleTimeString()}`);
+          throw new Error(
+            `Rate limited. Will retry after ${new Date(resetTime).toLocaleTimeString()}`,
+          );
         }
       }
 
       // Check if we should retry
-      if (item.retries! < this.maxRetries && (isRateLimitError || this.isRetryableError(error))) {
+      if (
+        item.retries! < this.maxRetries &&
+        (isRateLimitError || this.isRetryableError(error))
+      ) {
         item.retries!++;
 
         const delay = Math.min(item.retryDelay!, this.maxRetryDelay);
 
         console.warn(
           `Request failed (attempt ${item.retries}/${this.maxRetries}). ` +
-          `Retrying in ${delay / 1000} seconds...`,
-          error.message
+            `Retrying in ${delay / 1000} seconds...`,
+          error.message,
         );
 
         // Wait with exponential backoff
@@ -182,7 +198,7 @@ export class RequestQueue {
         // Increase delay for next retry
         item.retryDelay = Math.min(
           item.retryDelay! * this.backoffMultiplier,
-          this.maxRetryDelay
+          this.maxRetryDelay,
         );
 
         // Retry the request
@@ -200,15 +216,15 @@ export class RequestQueue {
   private isRateLimitError(error: any): boolean {
     if (!error) return false;
 
-    const message = error.message?.toLowerCase() || '';
+    const message = error.message?.toLowerCase() || "";
     const status = error.status || error.response?.status;
 
     return (
       status === 403 ||
       status === 429 ||
-      message.includes('rate limit') ||
-      message.includes('api rate limit') ||
-      message.includes('forbidden')
+      message.includes("rate limit") ||
+      message.includes("api rate limit") ||
+      message.includes("forbidden")
     );
   }
 
@@ -219,7 +235,7 @@ export class RequestQueue {
     if (!error) return false;
 
     const status = error.status || error.response?.status;
-    const message = error.message?.toLowerCase() || '';
+    const message = error.message?.toLowerCase() || "";
 
     // Retry on network errors or 5xx server errors
     return (
@@ -230,10 +246,10 @@ export class RequestQueue {
       status === 424 || // Failed Dependency
       status === 425 || // Too Early
       status === 0 || // Network error
-      message.includes('network') ||
-      message.includes('timeout') ||
-      message.includes('econnreset') ||
-      message.includes('enotfound')
+      message.includes("network") ||
+      message.includes("timeout") ||
+      message.includes("econnreset") ||
+      message.includes("enotfound")
     );
   }
 
@@ -244,9 +260,19 @@ export class RequestQueue {
     const headers = error.response?.headers || error.headers;
 
     if (headers) {
-      const remaining = parseInt(headers['x-ratelimit-remaining'] || headers.get?.('x-ratelimit-remaining'), 10);
-      const reset = parseInt(headers['x-ratelimit-reset'] || headers.get?.('x-ratelimit-reset'), 10);
-      const limit = parseInt(headers['x-ratelimit-limit'] || headers.get?.('x-ratelimit-limit'), 10);
+      const remaining = parseInt(
+        headers["x-ratelimit-remaining"] ||
+          headers.get?.("x-ratelimit-remaining"),
+        10,
+      );
+      const reset = parseInt(
+        headers["x-ratelimit-reset"] || headers.get?.("x-ratelimit-reset"),
+        10,
+      );
+      const limit = parseInt(
+        headers["x-ratelimit-limit"] || headers.get?.("x-ratelimit-limit"),
+        10,
+      );
 
       if (!isNaN(remaining)) this.rateLimitInfo.remaining = remaining;
       if (!isNaN(reset)) this.rateLimitInfo.reset = reset;
@@ -258,7 +284,7 @@ export class RequestQueue {
    * Delay helper for exponential backoff
    */
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -288,17 +314,20 @@ export class RequestQueue {
    */
   updateFromHeaders(headers: Headers | Record<string, string>): void {
     if (headers instanceof Headers) {
-      const remaining = parseInt(headers.get('x-ratelimit-remaining') || '', 10);
-      const reset = parseInt(headers.get('x-ratelimit-reset') || '', 10);
-      const limit = parseInt(headers.get('x-ratelimit-limit') || '', 10);
+      const remaining = parseInt(
+        headers.get("x-ratelimit-remaining") || "",
+        10,
+      );
+      const reset = parseInt(headers.get("x-ratelimit-reset") || "", 10);
+      const limit = parseInt(headers.get("x-ratelimit-limit") || "", 10);
 
       if (!isNaN(remaining)) this.rateLimitInfo.remaining = remaining;
       if (!isNaN(reset)) this.rateLimitInfo.reset = reset;
       if (!isNaN(limit)) this.rateLimitInfo.limit = limit;
     } else {
-      const remaining = parseInt(headers['x-ratelimit-remaining'] || '', 10);
-      const reset = parseInt(headers['x-ratelimit-reset'] || '', 10);
-      const limit = parseInt(headers['x-ratelimit-limit'] || '', 10);
+      const remaining = parseInt(headers["x-ratelimit-remaining"] || "", 10);
+      const reset = parseInt(headers["x-ratelimit-reset"] || "", 10);
+      const limit = parseInt(headers["x-ratelimit-limit"] || "", 10);
 
       if (!isNaN(remaining)) this.rateLimitInfo.remaining = remaining;
       if (!isNaN(reset)) this.rateLimitInfo.reset = reset;

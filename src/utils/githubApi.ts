@@ -67,7 +67,10 @@ function getAuthHeaders(): Record<string, string> {
 /**
  * Enhanced fetch with rate limit header extraction
  */
-async function enhancedFetch(url: string, options?: RequestInit): Promise<Response> {
+async function enhancedFetch(
+  url: string,
+  options?: RequestInit,
+): Promise<Response> {
   const response = await fetch(url, options);
 
   // Update rate limit info from response headers
@@ -78,15 +81,17 @@ async function enhancedFetch(url: string, options?: RequestInit): Promise<Respon
   // Create enhanced error for rate limit detection
   if (!response.ok) {
     const error: any = new Error(
-      `GitHub API error: ${response.status} ${response.statusText}`
+      `GitHub API error: ${response.status} ${response.statusText}`,
     );
+
     error.status = response.status;
     error.response = response;
     error.headers = response.headers;
 
     // Add rate limit info to error for better handling
     if (response.status === 403 || response.status === 429) {
-      const resetTime = response.headers.get('x-ratelimit-reset');
+      const resetTime = response.headers.get("x-ratelimit-reset");
+
       if (resetTime) {
         error.resetTime = parseInt(resetTime, 10);
         error.message += ` Rate limit will reset at ${new Date(parseInt(resetTime, 10) * 1000).toLocaleTimeString()}`;
@@ -361,9 +366,12 @@ export async function getUserContributions(
  */
 export async function getUserProfile(username: string) {
   try {
-    const response = await enhancedFetch(`${GITHUB_API_BASE}/users/${username}`, {
-      headers: getAuthHeaders(),
-    });
+    const response = await enhancedFetch(
+      `${GITHUB_API_BASE}/users/${username}`,
+      {
+        headers: getAuthHeaders(),
+      },
+    );
 
     return await response.json();
   } catch (error) {

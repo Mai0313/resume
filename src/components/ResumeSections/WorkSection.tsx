@@ -1,10 +1,17 @@
 import type { JSONResumeWork } from "@/utils/resumeLoader";
 
 import React from "react";
-import { Link } from "@heroui/link";
 import { Variants } from "framer-motion";
 
 import { SectionCard, SectionIcons } from "./SectionCard";
+
+import {
+  ItemCard,
+  ExternalLink,
+  DateRange,
+  BulletList,
+  LocationIcon,
+} from "@/components/shared";
 
 interface WorkSectionProps {
   work: JSONResumeWork[] | undefined;
@@ -17,12 +24,12 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
 }) => {
   return (
     <SectionCard
-      title="Work Experience"
-      icon={SectionIcons.work}
       colorScheme="blue"
+      data={work}
+      icon={SectionIcons.work}
       itemVariants={itemVariants}
       sectionKey="work"
-      data={work}
+      title="Work Experience"
     >
       <div className="space-y-8">
         {work?.map((workItem, index) => (
@@ -30,7 +37,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
             key={`work-${workItem.name || "unknown"}-${index}`}
             className="pb-8 last:pb-0"
           >
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+            <ItemCard>
               <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-4">
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
@@ -41,35 +48,17 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                   </p>
                   {workItem.location && (
                     <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                      <svg
-                        className="w-4 h-4"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          clipRule="evenodd"
-                          d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                          fillRule="evenodd"
-                        />
-                      </svg>
+                      <LocationIcon />
                       {workItem.location}
                     </p>
                   )}
                 </div>
                 <div className="mt-2 lg:mt-0 lg:text-right">
                   <span className="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full">
-                    <svg
-                      className="w-4 h-4 mr-1"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        clipRule="evenodd"
-                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                        fillRule="evenodd"
-                      />
-                    </svg>
-                    {workItem.startDate} - {workItem.endDate || "Present"}
+                    <DateRange
+                      endDate={workItem.endDate || "Present"}
+                      startDate={workItem.startDate}
+                    />
                   </span>
                 </div>
               </div>
@@ -87,53 +76,24 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               )}
 
               {workItem.highlights && workItem.highlights.length > 0 && (
-                <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                    Key Achievements:
-                  </h4>
-                  <ul className="space-y-2">
-                    {workItem.highlights.map(
-                      (highlight: string, i: number) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-3 text-gray-700 dark:text-gray-300"
-                        >
-                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                          <span className="text-sm leading-relaxed">
-                            {highlight}
-                          </span>
-                        </li>
-                      ),
-                    )}
-                  </ul>
-                </div>
+                <BulletList
+                  bulletColor="blue-500"
+                  items={workItem.highlights}
+                  title="Key Achievements:"
+                />
               )}
 
               {workItem.url && (
                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <Link
-                    isExternal
-                    className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
-                    href={workItem.url}
+                  <ExternalLink
+                    className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
+                    url={workItem.url}
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                      />
-                    </svg>
                     Company Website
-                  </Link>
+                  </ExternalLink>
                 </div>
               )}
-            </div>
+            </ItemCard>
           </div>
         ))}
       </div>

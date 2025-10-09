@@ -98,32 +98,35 @@ export default function ResumePage() {
   // Dynamically get PIN length
   const pinLength = env.PIN_CODE?.length || 4;
 
-  const handleSubmit = useCallback((onClose: () => void) => {
-    if (!IS_PIN_ENABLED) return; // If PIN code is not enabled, return directly
+  const handleSubmit = useCallback(
+    (onClose: () => void) => {
+      if (!IS_PIN_ENABLED) return; // If PIN code is not enabled, return directly
 
-    if (!pin) {
-      setFailCount((c) => c + 1);
+      if (!pin) {
+        setFailCount((c) => c + 1);
 
-      return;
-    }
-    if (pin === env.PIN_CODE) {
-      setAuthenticated(true);
-      loadResumeContent();
-      onClose();
-    } else {
-      setFailCount((c) => c + 1);
-      controls.start({
-        x: [0, -10, 10, -10, 10, 0],
-        transition: { duration: 0.5 },
-      });
-      addToast({
-        title: "Invalid PIN",
-        description: "Please try again",
-        color: "danger",
-      });
-      setPin("");
-    }
-  }, [pin, loadResumeContent, controls]);
+        return;
+      }
+      if (pin === env.PIN_CODE) {
+        setAuthenticated(true);
+        loadResumeContent();
+        onClose();
+      } else {
+        setFailCount((c) => c + 1);
+        controls.start({
+          x: [0, -10, 10, -10, 10, 0],
+          transition: { duration: 0.5 },
+        });
+        addToast({
+          title: "Invalid PIN",
+          description: "Please try again",
+          color: "danger",
+        });
+        setPin("");
+      }
+    },
+    [pin, loadResumeContent, controls],
+  );
 
   // Listen for pin length
   useEffect(() => {
