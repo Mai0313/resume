@@ -24,6 +24,7 @@ const createSpa404Plugin = () => {
       } catch (error) {
         const message =
           error instanceof Error ? error.message : String(error ?? "");
+
         // Swallow errors (e.g., index.html missing) but keep a readable hint for debugging
         console.warn(
           "[vite-plugin-generate-404] Failed to copy index.html to 404.html:",
