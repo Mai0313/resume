@@ -46,10 +46,7 @@
         "typescript.enablePromptUseWorkspaceTsdk": true,
         // Tailwind CSS settings
         "tailwindCSS.experimental.classRegex": [
-          [
-            "tv\\(([^)]*)\\)",
-            "[\"'`]([^\"'`]*).*?[\"'`]"
-          ]
+          ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
         ],
         // File associations
         "files.associations": {
@@ -71,9 +68,7 @@
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached,ro",
     "source=${localEnv:HOME}/.p10k.zsh,target=/root/.p10k.zsh,type=bind,consistency=cached,ro"
   ],
-  "forwardPorts": [
-    5173
-  ],
+  "forwardPorts": [5173],
   "portsAttributes": {
     "5173": {
       "label": "Vite Dev Server",

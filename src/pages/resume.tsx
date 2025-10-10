@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { InputOtp } from "@heroui/input-otp";
 import {
   Modal,
@@ -22,131 +22,16 @@ import DefaultLayout from "@/layouts/default";
 // Read PIN code from .env via VITE_PIN_CODE
 const IS_PIN_ENABLED = envHelpers.isPinEnabled();
 
-export default function ResumePage() {
-  const [isMounted, setIsMounted] = useState(false);
-  const [renderKey, setRenderKey] = useState(0);
-  const [forceRender, setForceRender] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<string>("light");
+/**
+ * Custom hook to handle resume data loading with error handling
+ */
+function useResumeData() {
   const [resumeData, setResumeData] = useState<
     (ResumeData & { sectionOrder: string[] }) | null
   >(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-
-    // Check if URL parameters contain PIN code
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlPin = urlParams.get("pin");
-
-    // If PIN code is not set, directly load resume content
-    if (!IS_PIN_ENABLED) {
-      setAuthenticated(true);
-      loadResumeContent();
-
-      return;
-    }
-
-    // If URL contains PIN code, check if it's correct
-    if (urlPin && urlPin === env.PIN_CODE) {
-      setAuthenticated(true);
-      loadResumeContent();
-      // Remove PIN parameter from URL to protect privacy
-      urlParams.delete("pin");
-      const newUrl =
-        window.location.pathname +
-        (urlParams.toString() ? "?" + urlParams.toString() : "");
-
-      window.history.replaceState({}, "", newUrl);
-    }
-  }, []);
-
-  const [pin, setPin] = useState("");
-  const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED); // If no PIN code, default to authenticated
-  const [failCount, setFailCount] = useState(0);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const controls = useAnimation();
-  const { theme } = useTheme();
-
-  // Dual theme change listening
-  useEffect(() => {
-    setCurrentTheme(theme);
-    setRenderKey((prev) => prev + 1);
-    setForceRender(false);
-    const timer = setTimeout(() => {
-      setForceRender(true);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [theme]);
-
-  // Additional listening for DOM class changes (as backup)
-  useEffect(() => {
-    const detectThemeChange = () => {
-      const isDark =
-        document.documentElement.classList.contains("dark") ||
-        document.documentElement.getAttribute("data-theme") === "dark";
-      const detectedTheme = isDark ? "dark" : "light";
-
-      if (detectedTheme !== currentTheme) {
-        setCurrentTheme(detectedTheme);
-        setRenderKey((prev) => prev + 1);
-        setForceRender(false);
-        setTimeout(() => setForceRender(true), 100);
-      }
-    };
-
-    // Listen for DOM changes
-    const observer = new MutationObserver(detectThemeChange);
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class", "data-theme"],
-    });
-
-    // Initial detection
-    detectThemeChange();
-
-    return () => observer.disconnect();
-  }, [currentTheme]);
-
-  useEffect(() => {
-    if (IS_PIN_ENABLED) {
-      onOpen();
-    }
-  }, [onOpen]);
-
-  // Dynamically get PIN length
-  const pinLength = env.PIN_CODE?.length || 4;
-
-  function handleSubmit(onClose: () => void) {
-    if (!IS_PIN_ENABLED) return; // If PIN code is not enabled, return directly
-
-    if (!pin) {
-      setFailCount((c) => c + 1);
-
-      return;
-    }
-    if (pin === env.PIN_CODE) {
-      setAuthenticated(true);
-      loadResumeContent();
-      onClose();
-    } else {
-      setFailCount((c) => c + 1);
-      controls.start({
-        x: [0, -10, 10, -10, 10, 0],
-        transition: { duration: 0.5 },
-      });
-      addToast({
-        title: "Invalid PIN",
-        description: "Please try again",
-        color: "danger",
-      });
-      setPin("");
-    }
-  }
-
-  async function loadResumeContent() {
+  const loadResume = useCallback(async () => {
     setIsLoadingResume(true);
     try {
       const data = await loadResumeData();
@@ -168,16 +53,98 @@ export default function ResumePage() {
     } finally {
       setIsLoadingResume(false);
     }
-  }
+  }, []);
 
-  // Listen for pin length
+  return { resumeData, isLoadingResume, loadResume };
+}
+
+export default function ResumePage() {
+  const [isMounted, setIsMounted] = useState(false);
+  const [pin, setPin] = useState("");
+  const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED);
+  const [failCount, setFailCount] = useState(0);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const controls = useAnimation();
+  const { theme } = useTheme();
+
+  // Use custom hook for resume data loading
+  const { resumeData, isLoadingResume, loadResume } = useResumeData();
+
+  // Dynamically get PIN length
+  const pinLength = env.PIN_CODE?.length || 4;
+
+  // Consolidated initialization effect
+  useEffect(() => {
+    setIsMounted(true);
+
+    // Check if URL parameters contain PIN code
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlPin = urlParams.get("pin");
+
+    // If PIN code is not set, directly load resume content
+    if (!IS_PIN_ENABLED) {
+      setAuthenticated(true);
+      loadResume();
+
+      return;
+    }
+
+    // Open PIN modal
+    onOpen();
+
+    // If URL contains PIN code, check if it's correct
+    if (urlPin && urlPin === env.PIN_CODE) {
+      setAuthenticated(true);
+      loadResume();
+      // Remove PIN parameter from URL to protect privacy
+      urlParams.delete("pin");
+      const newUrl =
+        window.location.pathname +
+        (urlParams.toString() ? "?" + urlParams.toString() : "");
+
+      window.history.replaceState({}, "", newUrl);
+    }
+  }, [loadResume, onOpen]);
+
+  const handleSubmit = useCallback(
+    (onClose: () => void) => {
+      if (!IS_PIN_ENABLED) return;
+
+      if (!pin) {
+        setFailCount((c) => c + 1);
+
+        return;
+      }
+
+      if (pin === env.PIN_CODE) {
+        setAuthenticated(true);
+        loadResume();
+        onClose();
+      } else {
+        setFailCount((c) => c + 1);
+        controls.start({
+          x: [0, -10, 10, -10, 10, 0],
+          transition: { duration: 0.5 },
+        });
+        addToast({
+          title: "Invalid PIN",
+          description: "Please try again",
+          color: "danger",
+        });
+        setPin("");
+      }
+    },
+    [pin, controls, loadResume],
+  );
+
+  // Auto-submit when PIN length is reached
   useEffect(() => {
     if (IS_PIN_ENABLED && pin.length === pinLength) {
       handleSubmit(onOpenChange);
     }
-  }, [pin, pinLength, onOpenChange]);
+  }, [pin, pinLength, onOpenChange, handleSubmit]);
 
-  // Listen for Modal close event, if not authenticated show 404 directly (only when PIN code is enabled)
+  // Handle modal close without authentication
   useEffect(() => {
     if (IS_PIN_ENABLED && !isOpen && !authenticated && isMounted) {
       setFailCount(3);
@@ -186,13 +153,13 @@ export default function ResumePage() {
 
   // Show 404 after 3 errors, wrapped in DefaultLayout (only when PIN code is enabled)
   if (IS_PIN_ENABLED && failCount >= 3) {
-    const textColor = currentTheme === "dark" ? "#ffffff" : "#000000";
+    const textColor = theme === "dark" ? "#ffffff" : "#000000";
 
     return (
       <DefaultLayout>
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2">
-          {isMounted && forceRender && (
-            <div key={`fuzzy-container-${renderKey}`}>
+          {isMounted && (
+            <div key={theme}>
               <FuzzyText
                 baseIntensity={0.15}
                 color={textColor}

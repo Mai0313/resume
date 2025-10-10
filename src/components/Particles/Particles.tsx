@@ -203,8 +203,24 @@ const Particles: React.FC<ParticlesProps> = ({
     let animationFrameId: number;
     let lastTime = performance.now();
     let elapsed = 0;
+    let isAnimating = true;
+
+    // Pause animation when tab is not visible
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        isAnimating = false;
+      } else {
+        isAnimating = true;
+        lastTime = performance.now(); // Reset time to avoid large delta
+        animationFrameId = requestAnimationFrame(update);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     const update = (t: number) => {
+      if (!isAnimating) return;
+
       animationFrameId = requestAnimationFrame(update);
       const delta = t - lastTime;
 
@@ -233,7 +249,9 @@ const Particles: React.FC<ParticlesProps> = ({
     animationFrameId = requestAnimationFrame(update);
 
     return () => {
+      isAnimating = false;
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (moveParticlesOnHover) {
         container.removeEventListener("mousemove", handleMouseMove);
       }
@@ -246,6 +264,7 @@ const Particles: React.FC<ParticlesProps> = ({
     particleCount,
     particleSpread,
     speed,
+    particleColors,
     moveParticlesOnHover,
     particleHoverFactor,
     alphaParticles,

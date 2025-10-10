@@ -4,10 +4,12 @@ import React from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Link } from "@heroui/link";
-import { Spinner } from "@heroui/spinner";
 import { motion } from "framer-motion";
 
 import SpotlightCard from "@/components/SpotlightCard/SpotlightCard";
+import { ErrorDisplay, LoadingSpinner, EmptyState } from "@/components/shared";
+import { fadeInStagger } from "@/utils/animations";
+import { formatDate, getLanguageColor } from "@/utils/formatters";
 
 interface PortfolioContentProps {
   contributions: GitHubContribution[];
@@ -20,153 +22,36 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
   loading,
   error,
 }) => {
+  // fadeInStagger is a static constant, no need to memoize
+  const { container: containerVariants, item: itemVariants } = fadeInStagger;
+
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <LoadingSpinner message="Loading portfolio..." />;
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center max-w-lg mx-auto p-8"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="mb-6">
-            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center">
-              <svg
-                className="w-10 h-10 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
-              GitHub API Error
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-              Failed to fetch portfolio data from GitHub. This could be due to
-              network issues, API rate limits, or token problems.
-            </p>
-          </div>
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-            <h4 className="font-semibold text-red-800 dark:text-red-200 mb-2">
-              Error Details:
-            </h4>
-            <p className="text-sm text-red-700 dark:text-red-300 font-mono bg-red-100 dark:bg-red-800/30 p-2 rounded">
-              {error}
-            </p>
-          </div>
-          <div className="mt-4">
-            <button
-              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
-              onClick={() => window.location.reload()}
-            >
-              Try Again
-            </button>
-          </div>
-        </motion.div>
-      </div>
+      <ErrorDisplay
+        actionButton={{
+          label: "Try Again",
+          onClick: () => window.location.reload(),
+        }}
+        details={error}
+        icon="error"
+        message="Failed to fetch portfolio data from GitHub. This could be due to network issues, API rate limits, or token problems."
+        title="GitHub API Error"
+      />
     );
   }
 
   if (contributions.length === 0) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center max-w-md mx-auto p-8"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="mb-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-              No Repositories Found
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              No public repositories available to display at the moment.
-            </p>
-          </div>
-        </motion.div>
-      </div>
+      <EmptyState
+        message="No public repositories available to display at the moment."
+        title="No Repositories Found"
+      />
     );
   }
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  const getLanguageColor = (language: string | null) => {
-    const colors: Record<string, string> = {
-      "JavaScript": "#f1e05a",
-      "TypeScript": "#2b7489",
-      "Python": "#3572A5",
-      "Java": "#b07219",
-      "Go": "#00ADD8",
-      "Rust": "#dea584",
-      "C++": "#f34b7d",
-      "C": "#555555",
-      "HTML": "#e34c26",
-      "CSS": "#1572B6",
-      "Vue": "#4FC08D",
-      "React": "#61DAFB",
-      "PHP": "#4F5D95",
-    };
-
-    return colors[language || ""] || "#666666";
-  };
 
   return (
     <motion.div
@@ -319,5 +204,7 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
     </motion.div>
   );
 };
+
+PortfolioContent.displayName = "PortfolioContent";
 
 export default PortfolioContent;

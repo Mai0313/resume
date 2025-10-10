@@ -19,11 +19,88 @@ import {
   ProjectsSection,
 } from "./ResumeSections";
 
+import { fadeInStagger } from "@/utils/animations";
+import { env } from "@/utils/env";
+
 interface ResumeContentProps {
   data: ResumeData & { sectionOrder: string[] };
 }
 
 export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
+  // fadeInStagger is a static constant, no need to memoize
+  const { container: containerVariants, item: itemVariants } = fadeInStagger;
+
+  // Simplified section component map with generic factory
+  const sectionComponentMap = React.useMemo(() => {
+    // Generic component factory to reduce repetition
+    const createSectionComponent = <T,>(
+      Component: React.ComponentType<any>,
+      propName: string,
+      propValue: T,
+    ) => {
+      if (!propValue) return null;
+
+      const WrapperComponent = (props: any) => (
+        <Component {...props} {...{ [propName]: propValue }} />
+      );
+
+      WrapperComponent.displayName = `${Component.displayName || Component.name || "Component"}Wrapper`;
+
+      return WrapperComponent;
+    };
+
+    return {
+      work: createSectionComponent(WorkSection, "work", data.work),
+      volunteer: createSectionComponent(
+        VolunteerSection,
+        "volunteer",
+        data.volunteer,
+      ),
+      education: createSectionComponent(
+        EducationSection,
+        "education",
+        data.education,
+      ),
+      awards: createSectionComponent(AwardsSection, "awards", data.awards),
+      certificates: createSectionComponent(
+        CertificatesSection,
+        "certificates",
+        data.certificates,
+      ),
+      publications: createSectionComponent(
+        PublicationsSection,
+        "publications",
+        data.publications,
+      ),
+      skills: createSectionComponent(SkillsSection, "skills", data.skills),
+      interests: createSectionComponent(
+        InterestsSection,
+        "interests",
+        data.interests,
+      ),
+      languages: null,
+      references: data.references
+        ? (props: any) => <ReferencesSection {...props} data={data} />
+        : null,
+      projects: data.projects
+        ? (props: any) => <ProjectsSection {...props} data={data} />
+        : null,
+    };
+  }, [data]);
+
+  // Dynamic section rendering function
+  const renderSection = React.useCallback(
+    (sectionName: string) => {
+      const Component =
+        sectionComponentMap[sectionName as keyof typeof sectionComponentMap];
+
+      if (!Component) return null;
+
+      return <Component key={sectionName} itemVariants={itemVariants} />;
+    },
+    [sectionComponentMap, itemVariants],
+  );
+
   // Defensive check: ensure data structure is complete
   if (!data || !data.basics || !data.basics.name) {
     return (
@@ -73,118 +150,6 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
       </div>
     );
   }
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
-  // Dynamic section rendering function
-  const renderSection = (sectionName: string) => {
-    switch (sectionName) {
-      case "work":
-        return (
-          <WorkSection
-            key="work"
-            itemVariants={itemVariants}
-            work={data.work}
-          />
-        );
-      case "volunteer":
-        return (
-          <VolunteerSection
-            key="volunteer"
-            itemVariants={itemVariants}
-            volunteer={data.volunteer}
-          />
-        );
-      case "education":
-        return (
-          <EducationSection
-            key="education"
-            education={data.education}
-            itemVariants={itemVariants}
-          />
-        );
-      case "awards":
-        return (
-          <AwardsSection
-            key="awards"
-            awards={data.awards}
-            itemVariants={itemVariants}
-          />
-        );
-      case "certificates":
-        return (
-          <CertificatesSection
-            key="certificates"
-            certificates={data.certificates}
-            itemVariants={itemVariants}
-          />
-        );
-      case "publications":
-        return (
-          <PublicationsSection
-            key="publications"
-            itemVariants={itemVariants}
-            publications={data.publications}
-          />
-        );
-      case "skills":
-        return (
-          <SkillsSection
-            key="skills"
-            itemVariants={itemVariants}
-            skills={data.skills}
-          />
-        );
-      case "interests":
-        return (
-          <InterestsSection
-            key="interests"
-            interests={data.interests}
-            itemVariants={itemVariants}
-          />
-        );
-      case "languages":
-        // languages already displayed in header section, skip here
-        return null;
-      case "references":
-        return (
-          <ReferencesSection
-            key="references"
-            data={data}
-            itemVariants={itemVariants}
-          />
-        );
-      case "projects":
-        return (
-          <ProjectsSection
-            key="projects"
-            data={data}
-            itemVariants={itemVariants}
-          />
-        );
-      default:
-        return null;
-    }
-  };
 
   return (
     <motion.div
@@ -279,7 +244,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 {/* Social Profiles and Download PDF */}
                 {data.basics.profiles && (
                   <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-4 items-center">
-                    {data.basics.profiles.map((profile: any, index: number) => (
+                    {data.basics.profiles.map((profile, index) => (
                       <Link
                         key={index}
                         isExternal
@@ -325,7 +290,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                         // Download PDF file
                         const link = document.createElement("a");
 
-                        link.href = "/example.pdf";
+                        link.href = env.RESUME_PDF_PATH || "/example.pdf";
                         link.download = "resume.pdf";
                         document.body.appendChild(link);
                         link.click();
@@ -353,7 +318,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 {/* Languages */}
                 {data.languages && (
                   <div className="flex flex-wrap justify-center lg:justify-start gap-2">
-                    {data.languages.map((lang: any, index: number) => (
+                    {data.languages.map((lang, index) => (
                       <Chip
                         key={index}
                         className="bg-gray-100 dark:bg-gray-700/50 text-gray-800 dark:text-gray-200"
@@ -373,9 +338,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
       </motion.div>
 
       {/* Dynamically render other sections according to YAML file order */}
-      {data.sectionOrder.map((sectionName: string) =>
-        renderSection(sectionName),
-      )}
+      {data.sectionOrder.map((sectionName) => renderSection(sectionName))}
     </motion.div>
   );
 };
+
+ResumeContent.displayName = "ResumeContent";
