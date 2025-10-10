@@ -33,88 +33,65 @@ async function getOpenAIClass() {
 
 // Singleton state
 let cachedClient: OpenAI | null = null;
-let cachedPageContext: string | null = null;
-let cachedPath: string | null = null;
-
-// Debounced DOM content observer to invalidate cache when content changes
-let contentObserverInitialized = false;
-let contentChangeTimer: ReturnType<typeof setTimeout> | null = null;
 
 /**
- * Initialize mutation observer to invalidate cache when DOM content changes
- * Uses debouncing to avoid excessive cache invalidation
- */
-function initializeContentObserver(): void {
-  if (contentObserverInitialized || typeof window === "undefined") return;
-
-  const mainElement = document.querySelector("main");
-
-  if (!mainElement) return;
-
-  const observer = new MutationObserver(() => {
-    // Debounce cache invalidation to avoid excessive updates
-    if (contentChangeTimer) {
-      clearTimeout(contentChangeTimer);
-    }
-
-    contentChangeTimer = setTimeout(() => {
-      // Only invalidate if content actually changed significantly
-      const newPath = window.location.pathname;
-
-      if (cachedPath === newPath) {
-        cachedPageContext = null; // Invalidate cached content
-      }
-    }, 1000); // Wait 1 second after last change
-  });
-
-  observer.observe(mainElement, {
-    childList: true,
-    subtree: true,
-    characterData: true,
-  });
-
-  contentObserverInitialized = true;
-}
-
-/**
- * Extract page content efficiently with minimal DOM operations
+ * Extract page content efficiently with early stopping
+ * Uses TreeWalker to avoid extracting entire DOM text at once
  */
 function extractPageContent(): string {
+  if (typeof window === "undefined") return "";
+
   const mainElement = document.querySelector("main");
 
   if (!mainElement) return "";
 
-  // Use textContent for better performance than innerHTML
-  const fullText = mainElement.textContent || "";
+  const maxLength = CHAT.PAGE_CONTEXT_MAX_LENGTH * 1.1; // Add 10% buffer for trimming
+  const walker = document.createTreeWalker(mainElement, NodeFilter.SHOW_TEXT, {
+    acceptNode: (node) => {
+      // Skip empty text nodes
+      if (!node.textContent?.trim()) return NodeFilter.FILTER_REJECT;
 
-  // Trim and limit to prevent performance issues
-  return fullText
+      // Skip hidden elements for better performance
+      const parent = node.parentElement;
+
+      if (!parent) return NodeFilter.FILTER_REJECT;
+
+      const style = window.getComputedStyle(parent);
+
+      if (style.display === "none" || style.visibility === "hidden") {
+        return NodeFilter.FILTER_REJECT;
+      }
+
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+
+  let text = "";
+  let node;
+
+  // Early stopping when we have enough content
+  while ((node = walker.nextNode()) && text.length < maxLength) {
+    text += (node.textContent || "") + " ";
+  }
+
+  // Normalize whitespace and trim to exact length
+  return text
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, CHAT.PAGE_CONTEXT_MAX_LENGTH);
 }
 
 /**
- * Get or cache page context - only re-extract if path/content changes
+ * Get current page context - always fresh, no caching
+ * This avoids memory overhead and stale data issues
  */
 async function getCurrentPageContext(): Promise<string> {
-  const currentPath = window.location.pathname;
-
-  // Initialize observer on first call
-  if (!contentObserverInitialized) {
-    initializeContentObserver();
-  }
-
-  // Return cached context if path hasn't changed and content is cached
-  if (cachedPageContext && cachedPath === currentPath) {
-    return cachedPageContext;
-  }
-
   const currentUrl = window.location.href;
+  const currentPath = window.location.pathname;
   const pageTitle = document.title;
   const mainContent = extractPageContent();
 
-  const pageContext = `
+  return `
 You are an AI assistant for a personal website. You should ONLY answer questions related to the current page content shown above.
 
 Rules:
@@ -129,20 +106,6 @@ Here is the page information:
 - Page Title: ${pageTitle}
 - Page Content Preview: ${mainContent}
 `;
-
-  // Cache the context
-  cachedPageContext = pageContext;
-  cachedPath = currentPath;
-
-  return pageContext;
-}
-
-/**
- * Clear cached page context (useful when page content changes)
- */
-export function clearCache(): void {
-  cachedPageContext = null;
-  cachedPath = null;
 }
 
 /**

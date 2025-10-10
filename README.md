@@ -111,17 +111,20 @@ VITE_ROOT_PATH=/resume
 **Important Notes:**
 
 - **Smart Page Display**: Pages only appear in navigation menu and routing when corresponding environment variables are properly configured
+
   - Resume page (`/resume`) requires `VITE_RESUME_FILE`
   - Portfolio page (`/portfolio`) requires `VITE_GITHUB_TOKEN`
   - AI assistant requires `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` to be set together
 
 - **GitHub Token Setup**:
+
   - Create Personal Access Token (PAT): [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
   - Token requires `public_repo` permission to read public repositories
   - Fine-grained tokens require "Repository access" and "Contents" read permission
   - **Security**: Never commit real tokens to version control; use `.env` file and ensure it's in `.gitignore`
 
 - **OpenAI API Setup**:
+
   - Supports both OpenAI official API and Azure OpenAI
   - `VITE_OPENAI_BASE_URL` examples:
     - OpenAI: `https://api.openai.com/v1`

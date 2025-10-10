@@ -75,27 +75,24 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { getNewController, abort } = useAbortController();
 
-  // Auto scroll to bottom with debounce to prevent excessive reflows
-  const scrollToBottom = useCallback(() => {
+  // Auto scroll to bottom - memoized debounced function created only once
+  const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  };
 
-  // Create debounced scroll function with proper cleanup
-  const debouncedScrollRef = useRef<any>(null);
+  // Create debounced scroll function only once on mount
+  const debouncedScrollRef = useRef(debounce(scrollToBottom, 100));
 
+  // Cleanup debounce on unmount
   useEffect(() => {
-    debouncedScrollRef.current = debounce(scrollToBottom, 100);
-
     return () => {
       debouncedScrollRef.current?.cancel();
     };
-  }, [scrollToBottom]);
+  }, []);
 
   // Trigger scroll only when necessary
   useEffect(() => {
-    if (debouncedScrollRef.current) {
-      debouncedScrollRef.current();
-    }
+    debouncedScrollRef.current();
   }, [messages, streamingMessage, streamingReasoning]);
 
   // Focus input when modal opens

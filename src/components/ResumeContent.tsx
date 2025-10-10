@@ -27,11 +27,8 @@ interface ResumeContentProps {
 }
 
 export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
-  // Memoize variants to prevent recreation on every render
-  const { container: containerVariants, item: itemVariants } = React.useMemo(
-    () => fadeInStagger,
-    [],
-  );
+  // fadeInStagger is a static constant, no need to memoize
+  const { container: containerVariants, item: itemVariants } = fadeInStagger;
 
   // Simplified section component map with generic factory
   const sectionComponentMap = React.useMemo(() => {

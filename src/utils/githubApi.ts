@@ -48,7 +48,7 @@ export const getAuthenticatedUser = withAuth(
   }> => {
     try {
       const response = await enhancedFetch(`${GITHUB_API_BASE}/user`, {
-        headers: getAuthHeaders(),
+        headers: getHeaders("rest"),
       });
 
       const userData = await response.json();
@@ -66,16 +66,29 @@ export const getAuthenticatedUser = withAuth(
 );
 
 /**
- * Get authorization headers for GitHub REST API
+ * Get authorization headers for GitHub API
+ * @param type - 'rest' for REST API, 'graphql' for GraphQL API
  */
-function getAuthHeaders(): Record<string, string> {
-  ensureAuthenticated();
+function getHeaders(type: "rest" | "graphql" = "rest"): Record<string, string> {
+  // Note: ensureAuthenticated is called by withAuth wrapper, no need to check here
+  const authPrefix = type === "rest" ? "token" : "Bearer";
 
-  return {
-    Authorization: `token ${env.GITHUB_TOKEN}`,
-    Accept: "application/vnd.github.v3+json",
+  const headers: Record<string, string> = {
+    Authorization: `${authPrefix} ${env.GITHUB_TOKEN}`,
     ...COMMON_HEADERS,
   };
+
+  // Add REST API specific headers
+  if (type === "rest") {
+    headers.Accept = "application/vnd.github.v3+json";
+  }
+
+  // Add GraphQL specific headers
+  if (type === "graphql") {
+    headers["Content-Type"] = "application/json";
+  }
+
+  return headers;
 }
 
 /**
@@ -117,19 +130,6 @@ async function enhancedFetch(
   }
 
   return response;
-}
-
-/**
- * Get authorization headers for GitHub GraphQL API
- */
-function getGraphQLHeaders(): Record<string, string> {
-  ensureAuthenticated();
-
-  return {
-    "Authorization": `Bearer ${env.GITHUB_TOKEN}`,
-    "Content-Type": "application/json",
-    ...COMMON_HEADERS,
-  };
 }
 
 /**
@@ -177,7 +177,7 @@ export const getUserPinnedRepositories = withAuth(
 
       const response = await enhancedFetch("https://api.github.com/graphql", {
         method: "POST",
-        headers: getGraphQLHeaders(),
+        headers: getHeaders("graphql"),
         body: JSON.stringify({
           query,
           variables: { username },
@@ -229,7 +229,7 @@ export const getUserRepositories = withAuth(
       const response = await enhancedFetch(
         `${GITHUB_API_BASE}/users/${username}/repos?type=public&sort=updated&per_page=100`,
         {
-          headers: getAuthHeaders(),
+          headers: getHeaders("rest"),
         },
       );
 
@@ -255,7 +255,7 @@ export async function getRepositoryCommits(
     const authorParam = author ? `&author=${author}` : "";
     const response = await enhancedFetch(
       `${GITHUB_API_BASE}/repos/${owner}/${repo}/commits?per_page=${limit}${authorParam}`,
-      { headers: getAuthHeaders() },
+      { headers: getHeaders("rest") },
     );
 
     const commits: GitHubCommit[] = await response.json();
@@ -379,7 +379,7 @@ export async function getUserProfile(username: string) {
     const response = await enhancedFetch(
       `${GITHUB_API_BASE}/users/${username}`,
       {
-        headers: getAuthHeaders(),
+        headers: getHeaders("rest"),
       },
     );
 

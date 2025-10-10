@@ -28,6 +28,7 @@ interface RequestQueueOptions {
   initialRetryDelay?: number;
   maxRetryDelay?: number;
   backoffMultiplier?: number;
+  maxQueueSize?: number;
 }
 
 export class RequestQueue {
@@ -38,6 +39,7 @@ export class RequestQueue {
   private initialRetryDelay: number;
   private maxRetryDelay: number;
   private backoffMultiplier: number;
+  private maxQueueSize: number;
   private rateLimitInfo: RateLimitInfo = {
     remaining: null,
     reset: null,
@@ -55,14 +57,25 @@ export class RequestQueue {
       options.maxRetryDelay ?? REQUEST_QUEUE.MAX_RETRY_DELAY_MS;
     this.backoffMultiplier =
       options.backoffMultiplier ?? REQUEST_QUEUE.BACKOFF_MULTIPLIER;
+    this.maxQueueSize = options.maxQueueSize ?? 100; // Default max 100 items
   }
 
   /**
    * Add a request to the queue with retry logic
    * @param fn Function that returns a Promise
    * @returns Promise that resolves with the function result
+   * @throws Error if queue is full
    */
   async enqueue<T>(fn: () => Promise<T>): Promise<T> {
+    // Prevent memory leaks by limiting queue size
+    if (this.queue.length >= this.maxQueueSize) {
+      return Promise.reject(
+        new Error(
+          `Request queue is full (${this.maxQueueSize} items). Please try again later.`,
+        ),
+      );
+    }
+
     return new Promise<T>((resolve, reject) => {
       this.queue.push({
         fn,

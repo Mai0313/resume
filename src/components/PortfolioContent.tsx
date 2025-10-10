@@ -1,6 +1,6 @@
 import type { GitHubContribution } from "@/types";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Link } from "@heroui/link";
@@ -22,11 +22,8 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
   loading,
   error,
 }) => {
-  // Memoize variants to prevent recreation
-  const { container: containerVariants, item: itemVariants } = useMemo(
-    () => fadeInStagger,
-    [],
-  );
+  // fadeInStagger is a static constant, no need to memoize
+  const { container: containerVariants, item: itemVariants } = fadeInStagger;
 
   if (loading) {
     return <LoadingSpinner message="Loading portfolio..." />;
