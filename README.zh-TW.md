@@ -111,20 +111,17 @@ VITE_ROOT_PATH=/resume
 **重要說明：**
 
 - **智慧頁面顯示**：頁面僅在對應環境變數正確設定時才會出現在導覽選單與路由中
-
   - 履歷頁（`/resume`）需設定 `VITE_RESUME_FILE`
   - 作品集頁（`/portfolio`）需設定 `VITE_GITHUB_TOKEN`
   - AI 助手需同時設定 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 和 `VITE_OPENAI_MODEL`
 
 - **GitHub Token 設定**：
-
   - 建立個人存取權杖（PAT）：[GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
   - Token 需要 `public_repo` 權限以讀取公開倉庫
   - 新版 Token（fine-grained）需授予「Repository access」和「Contents」讀取權限
   - **安全性**：請勿將真實 Token 提交至版本控制，使用 `.env` 檔案並確保它在 `.gitignore` 中
 
 - **OpenAI API 設定**：
-
   - 支援 OpenAI 官方 API 和 Azure OpenAI
   - `VITE_OPENAI_BASE_URL` 範例：
     - OpenAI：`https://api.openai.com/v1`
