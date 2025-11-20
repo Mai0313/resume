@@ -1,10 +1,10 @@
 import type { ResumeData } from "../utils/resumeLoader";
 
 import React from "react";
-import { Card, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Link } from "@heroui/link";
 import { motion } from "framer-motion";
+import { Button } from "@heroui/button";
 
 import {
   WorkSection,
@@ -154,149 +154,65 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
   return (
     <motion.div
       animate="visible"
-      className="max-w-6xl mx-auto p-6 space-y-8"
+      className="max-w-5xl mx-auto p-4 md:p-8 space-y-12"
       initial="hidden"
       variants={containerVariants}
     >
       {/* Header Section with Photo - Always at the front */}
       <motion.div variants={itemVariants}>
-        <Card className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 hover:shadow-lg transition-all duration-300">
-          <CardBody className="p-8">
-            <div className="flex flex-col lg:flex-row items-center gap-8">
-              {/* Profile Image */}
-              {data.basics.image && (
-                <div className="flex-shrink-0">
-                  <div className="relative">
-                    <img
-                      alt={`${data.basics.name} profile`}
-                      className="w-48 h-48 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-xl"
-                      src={data.basics.image}
-                      onError={(e) => {
-                        // Fallback to a default avatar if image fails to load
-                        const target = e.target as HTMLImageElement;
+        <div className="relative mb-12">
+          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+            {/* Profile Image */}
+            {data.basics.image && (
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200" />
+                <img
+                  alt={`${data.basics.name} profile`}
+                  className="relative w-40 h-40 rounded-full object-cover ring-4 ring-background shadow-xl"
+                  src={data.basics.image}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
 
-                        target.style.display = "none";
-                        target.nextElementSibling?.classList.remove("hidden");
-                      }}
-                    />
-                    {/* Fallback avatar */}
-                    <div className="hidden w-48 h-48 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center border-4 border-white dark:border-gray-700 shadow-xl">
-                      <span className="text-white text-4xl font-bold">
-                        {data.basics.name?.charAt(0) || "U"}
-                      </span>
-                    </div>
-                  </div>
+                    target.style.display = "none";
+                    target.nextElementSibling?.classList.remove("hidden");
+                  }}
+                />
+                <div className="hidden relative w-40 h-40 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center ring-4 ring-background shadow-xl">
+                  <span className="text-4xl font-bold text-gray-400">
+                    {data.basics.name?.charAt(0) || "U"}
+                  </span>
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* Personal Information */}
-              <div className="flex-grow text-center lg:text-left">
-                <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            {/* Info */}
+            <div className="flex-1 text-center md:text-left space-y-4">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/60">
                   {data.basics.name}
                 </h1>
                 {data.basics.label && (
-                  <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-6 font-medium">
+                  <p className="text-xl text-default-500 font-medium mt-2">
                     {data.basics.label}
                   </p>
                 )}
-                {data.basics.summary && (
-                  <p className="text-base text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                    {data.basics.summary}
-                  </p>
-                )}
+              </div>
 
-                {/* Contact Information */}
-                <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  {data.basics.email && (
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="w-4 h-4"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                      </svg>
-                      <span>{data.basics.email}</span>
-                    </div>
-                  )}
-                  {data.basics.location && (
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="w-4 h-4"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          clipRule="evenodd"
-                          d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                          fillRule="evenodd"
-                        />
-                      </svg>
-                      <span>
-                        {data.basics.location.city},{" "}
-                        {data.basics.location.region}
-                      </span>
-                    </div>
-                  )}
-                </div>
+              {data.basics.summary && (
+                <p className="text-default-600 max-w-2xl leading-relaxed">
+                  {data.basics.summary}
+                </p>
+              )}
 
-                {/* Social Profiles and Download PDF */}
-                {data.basics.profiles && (
-                  <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-4 items-center">
-                    {data.basics.profiles.map((profile, index) => (
-                      <Link
-                        key={index}
-                        isExternal
-                        className="inline-flex items-center gap-2 px-3 py-2 bg-white/70 dark:bg-gray-700/70 rounded-lg text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300 transition-colors border border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
-                        href={profile.url}
-                      >
-                        {profile.network === "GitHub" && (
-                          <svg
-                            className="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              clipRule="evenodd"
-                              d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
-                              fillRule="evenodd"
-                            />
-                          </svg>
-                        )}
-                        {profile.network === "LinkedIn" && (
-                          <svg
-                            className="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              clipRule="evenodd"
-                              d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"
-                              fillRule="evenodd"
-                            />
-                          </svg>
-                        )}
-                        <span className="text-sm font-medium">
-                          {profile.username}
-                        </span>
-                      </Link>
-                    ))}
-
-                    {/* Download PDF Button */}
-                    <button
-                      className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg text-sm cursor-pointer border-0"
-                      onClick={() => {
-                        // Download PDF file
-                        const link = document.createElement("a");
-
-                        link.href = env.RESUME_PDF_PATH || "/example.pdf";
-                        link.download = "resume.pdf";
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                      }}
-                    >
+              {/* Contact & Social */}
+              <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
+                {data.basics.email && (
+                  <Button
+                    as={Link}
+                    className="bg-default-100 hover:bg-default-200 text-default-700"
+                    href={`mailto:${data.basics.email}`}
+                    size="sm"
+                    startContent={
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -304,37 +220,107 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                         viewBox="0 0 24 24"
                       >
                         <path
-                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
                         />
                       </svg>
-                      <span>Download PDF</span>
-                    </button>
-                  </div>
+                    }
+                    variant="flat"
+                  >
+                    Email
+                  </Button>
                 )}
-
-                {/* Languages */}
-                {data.languages && (
-                  <div className="flex flex-wrap justify-center lg:justify-start gap-2">
-                    {data.languages.map((lang, index) => (
-                      <Chip
-                        key={index}
-                        className="bg-gray-100 dark:bg-gray-700/50 text-gray-800 dark:text-gray-200"
-                        color="primary"
-                        size="sm"
-                        variant="flat"
+                {data.basics.profiles?.map((profile, index) => (
+                  <Button
+                    key={index}
+                    isExternal
+                    isIconOnly
+                    as={Link}
+                    className="bg-default-100 hover:bg-default-200 text-default-700"
+                    href={profile.url}
+                    size="sm"
+                    variant="flat"
+                  >
+                    {profile.network === "GitHub" && (
+                      <svg
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
                       >
-                        {lang.language}: {lang.fluency}
-                      </Chip>
-                    ))}
-                  </div>
-                )}
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                      </svg>
+                    )}
+                    {profile.network === "LinkedIn" && (
+                      <svg
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                      </svg>
+                    )}
+                    {!["GitHub", "LinkedIn"].includes(profile.network) && (
+                      <span className="text-xs font-bold">
+                        {profile.network[0]}
+                      </span>
+                    )}
+                  </Button>
+                ))}
+
+                <Button
+                  className="bg-foreground text-background font-medium"
+                  size="sm"
+                  startContent={
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                      />
+                    </svg>
+                  }
+                  onClick={() => {
+                    const link = document.createElement("a");
+
+                    link.href = env.RESUME_PDF_PATH || "/example.pdf";
+                    link.download = "resume.pdf";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                >
+                  Download PDF
+                </Button>
               </div>
+
+              {/* Languages */}
+              {data.languages && (
+                <div className="flex flex-wrap justify-center md:justify-start gap-2 pt-2">
+                  {data.languages.map((lang, index) => (
+                    <Chip
+                      key={index}
+                      className="border-default-200"
+                      size="sm"
+                      variant="bordered"
+                    >
+                      <span className="font-medium">{lang.language}</span>
+                      <span className="text-default-400 mx-1">•</span>
+                      <span className="text-default-500">{lang.fluency}</span>
+                    </Chip>
+                  ))}
+                </div>
+              )}
             </div>
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </motion.div>
 
       {/* Dynamically render other sections according to YAML file order */}

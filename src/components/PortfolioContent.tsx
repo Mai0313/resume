@@ -1,7 +1,6 @@
 import type { GitHubContribution } from "@/types";
 
 import React from "react";
-import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Link } from "@heroui/link";
 import { motion } from "framer-motion";
@@ -56,13 +55,15 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
   return (
     <motion.div
       animate="visible"
-      className="space-y-6"
+      className="space-y-12"
       initial="hidden"
       variants={containerVariants}
     >
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4">Portfolio</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400">
+      <div className="text-center max-w-2xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/60 mb-4">
+          Portfolio
+        </h1>
+        <p className="text-xl text-default-500">
           Recent contributions and projects from GitHub
         </p>
       </div>
@@ -71,132 +72,140 @@ const PortfolioContent: React.FC<PortfolioContentProps> = ({
         {contributions.map((contribution) => (
           <motion.div key={contribution.repository.id} variants={itemVariants}>
             <SpotlightCard
-              className="h-full transition-shadow duration-300 flex flex-col"
-              spotlightColor="rgba(0, 229, 255, 0.2)"
+              className="h-full rounded-2xl bg-content1/50 border border-default-200 dark:border-default-100 backdrop-blur-sm hover:border-primary/50 transition-colors"
+              spotlightColor="rgba(0, 112, 243, 0.2)"
             >
-              <Card className="h-full bg-transparent border-none shadow-none flex flex-col">
-                <CardHeader className="pb-3">
-                  <div className="flex flex-col space-y-2">
-                    <div className="flex items-start justify-between">
-                      <Link
-                        className="text-lg font-semibold hover:text-primary truncate flex-1 min-w-0 mr-2"
-                        href={contribution.repository.html_url}
-                        rel="noopener noreferrer"
-                        target="_blank"
+              <div className="p-6 h-full flex flex-col">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1 min-w-0 mr-4">
+                    <Link
+                      isExternal
+                      className="text-xl font-bold text-foreground hover:text-primary transition-colors truncate block"
+                      href={contribution.repository.html_url}
+                    >
+                      {contribution.repository.name}
+                    </Link>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {contribution.repository.isPinned && (
+                      <Chip
+                        className="bg-primary/10 text-primary border-primary/20"
+                        size="sm"
+                        variant="flat"
                       >
-                        {contribution.repository.name}
-                      </Link>
-                      <div className="flex items-center space-x-2 shrink-0">
-                        {contribution.repository.isPinned && (
-                          <Chip
-                            className="text-xs"
-                            color="primary"
-                            size="sm"
-                            variant="flat"
-                          >
-                            📌 Pinned
-                          </Chip>
-                        )}
-                        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-500">
-                          <span>
-                            ⭐ {contribution.repository.stargazers_count}
-                          </span>
-                          <span>🍴 {contribution.repository.forks_count}</span>
-                        </div>
-                      </div>
+                        Pinned
+                      </Chip>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-default-500 text-sm mb-6 line-clamp-3 flex-grow">
+                  {contribution.repository.description ||
+                    "No description available"}
+                </p>
+
+                <div className="space-y-4 mt-auto">
+                  {/* Stats & Language */}
+                  <div className="flex items-center justify-between text-sm text-default-400">
+                    <div className="flex items-center gap-4">
+                      <span className="flex items-center gap-1">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                          />
+                        </svg>
+                        {contribution.repository.stargazers_count}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                          />
+                        </svg>
+                        {contribution.repository.forks_count}
+                      </span>
                     </div>
 
                     {contribution.repository.language && (
-                      <div className="flex items-center space-x-2">
-                        <div
-                          className="w-3 h-3 rounded-full"
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="w-2 h-2 rounded-full"
                           style={{
                             backgroundColor: getLanguageColor(
                               contribution.repository.language,
                             ),
                           }}
                         />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          {contribution.repository.language}
-                        </span>
+                        <span>{contribution.repository.language}</span>
                       </div>
                     )}
                   </div>
-                </CardHeader>
 
-                <CardBody className="pt-0 flex-grow flex flex-col">
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
-                    {contribution.repository.description ||
-                      "No description available"}
-                  </p>
-
+                  {/* Topics */}
                   {contribution.repository.topics.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-4">
+                    <div className="flex flex-wrap gap-1.5">
                       {contribution.repository.topics
                         .slice(0, 3)
                         .map((topic) => (
-                          <Chip
+                          <span
                             key={topic}
-                            className="text-xs"
-                            size="sm"
-                            variant="flat"
+                            className="px-2 py-0.5 rounded-full bg-default-100 text-default-500 text-[10px] font-medium"
                           >
                             {topic}
-                          </Chip>
+                          </span>
                         ))}
                       {contribution.repository.topics.length > 3 && (
-                        <Chip className="text-xs" size="sm" variant="flat">
+                        <span className="px-2 py-0.5 rounded-full bg-default-100 text-default-500 text-[10px] font-medium">
                           +{contribution.repository.topics.length - 3}
-                        </Chip>
+                        </span>
                       )}
                     </div>
                   )}
 
-                  <div className="space-y-2 flex-grow">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                      Recent Commits:
-                    </h4>
-                    {contribution.commits.slice(0, 2).map((commit) => (
-                      <div
-                        key={commit.sha}
-                        className="text-xs text-gray-600 dark:text-gray-400"
-                      >
-                        <Link
-                          className="hover:text-primary truncate block"
-                          href={commit.html_url}
-                          rel="noopener noreferrer"
-                          target="_blank"
+                  {/* Recent Activity */}
+                  <div className="pt-4 border-t border-default-100">
+                    <div className="text-xs text-default-400 mb-2">
+                      Recent Activity
+                    </div>
+                    <div className="space-y-2">
+                      {contribution.commits.slice(0, 2).map((commit) => (
+                        <div
+                          key={commit.sha}
+                          className="flex justify-between items-start gap-2 text-xs"
                         >
-                          {commit.commit.message.split("\n")[0]}
-                        </Link>
-                        <span className="text-gray-500 dark:text-gray-400">
-                          {formatDate(commit.commit.author.date)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Fixed bottom area - always stays at card bottom */}
-                  <div className="mt-auto pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex justify-between items-center text-xs text-gray-600 dark:text-gray-500">
-                      <span>
-                        Updated:{" "}
-                        {formatDate(contribution.repository.updated_at)}
-                      </span>
-                      {contribution.repository.homepage && (
-                        <Link
-                          className="hover:text-primary"
-                          href={contribution.repository.homepage}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          🔗 Link
-                        </Link>
-                      )}
+                          <Link
+                            isExternal
+                            className="text-default-600 hover:text-primary truncate flex-1 block"
+                            href={commit.html_url}
+                            title={commit.commit.message}
+                          >
+                            {commit.commit.message.split("\n")[0]}
+                          </Link>
+                          <span className="text-default-400 whitespace-nowrap">
+                            {formatDate(commit.commit.author.date)}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </CardBody>
-              </Card>
+                </div>
+              </div>
             </SpotlightCard>
           </motion.div>
         ))}

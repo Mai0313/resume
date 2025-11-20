@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { Card, CardBody, CardHeader } from "@heroui/card";
 import { motion, Variants } from "framer-motion";
 
 export type ColorScheme =
@@ -85,19 +84,20 @@ export const SectionCard: React.FC<SectionCardProps> = ({
 
   return (
     <motion.div key={sectionKey} variants={itemVariants}>
-      <Card className="overflow-hidden">
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-3">
-            <div
-              className={`w-8 h-8 bg-gradient-to-br ${gradient} rounded-lg flex items-center justify-center`}
-            >
-              {icon}
-            </div>
-            <h2 className={`text-2xl font-bold ${text}`}>{title}</h2>
+      <div className="group">
+        <div className="flex items-center gap-4 mb-6">
+          <div
+            className={`w-10 h-10 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center shadow-lg shadow-${colorScheme}-500/20 group-hover:scale-110 transition-transform duration-300`}
+          >
+            {icon}
           </div>
-        </CardHeader>
-        <CardBody>{children}</CardBody>
-      </Card>
+          <h2 className={`text-2xl font-bold ${text}`}>{title}</h2>
+          <div className="h-px flex-1 bg-gradient-to-r from-default-200 to-transparent" />
+        </div>
+        <div className="pl-2 md:pl-4 border-l-2 border-default-100 ml-5 space-y-6">
+          {children}
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -108,13 +108,13 @@ export const SectionCard: React.FC<SectionCardProps> = ({
 export const SectionIcons = {
   work: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m-8 0V6a2 2 0 00-2 2v6"
+        d="M20 7h-3a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -123,19 +123,19 @@ export const SectionIcons = {
   ),
   education: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M12 14l9-5-9-5-9 5 9 5z"
+        d="M22 10v6M2 10l10-5 10 5-10 5z"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
       />
       <path
-        d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+        d="M6 12v5c3 3 9 3 12 0v-5"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -144,13 +144,25 @@ export const SectionIcons = {
   ),
   skills: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+        d="m18 16 4-4-4-4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="m6 8-4 4 4 4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="m14.5 4-5 16"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -159,13 +171,31 @@ export const SectionIcons = {
   ),
   projects: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+        d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M9 9 5 5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M15 15l4 4"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -174,13 +204,43 @@ export const SectionIcons = {
   ),
   awards: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M12 15l3.4 3.4a1 1 0 001.6-.8V6a2 2 0 00-2-2H9a2 2 0 00-2 2v11.6a1 1 0 001.6.8L12 15zm0 0l3-3m-3 3l-3-3"
+        d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M4 22h16"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M18 2H6v7a6 6 0 0 0 12 0V2Z"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -189,13 +249,31 @@ export const SectionIcons = {
   ),
   volunteer: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+        d="M19 14c1.49-1.28 3.6-1.28 5.14 0 .34.29.34.75 0 1.05-1.54 1.28-3.65 1.28-5.14 0a.74.74 0 0 0-1.05 0c-1.54 1.28-3.65 1.28-5.14 0-.34-.29-.34-.75 0-1.05 1.54-1.28 3.65-1.28 5.14 0a.74.74 0 0 0 1.05 0z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M12 11.5 12 4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="m7 15-1.8-1.8a2.5 2.5 0 0 0-3.5 0l-.4.4a2.5 2.5 0 0 0 0 3.5l7.1 7.1a2.5 2.5 0 0 0 3.5 0l.4-.4a2.5 2.5 0 0 0 0-3.5L10.5 18.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="m17 15 1.8-1.8a2.5 2.5 0 0 1 3.5 0l.4.4a2.5 2.5 0 0 1 0 3.5l-7.1 7.1a2.5 2.5 0 0 1-3.5 0l-.4-.4a2.5 2.5 0 0 1 0-3.5L13.5 18.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -204,13 +282,13 @@ export const SectionIcons = {
   ),
   publications: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+        d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -219,13 +297,19 @@ export const SectionIcons = {
   ),
   certificates: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.78 4.78 4 4 0 0 1-6.74 0 4 4 0 0 1-4.78-4.78 4 4 0 0 1 0-6.74Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="m9 12 2 2 4-4"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -234,13 +318,13 @@ export const SectionIcons = {
   ),
   interests: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+        d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
@@ -249,13 +333,31 @@ export const SectionIcons = {
   ),
   references: (
     <svg
-      className="w-5 h-5 text-white"
+      className="w-6 h-6 text-white"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
       <path
-        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+        d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M22 21v-2a4 4 0 0 0-3-3.87"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M16 3.13a4 4 0 0 1 0 7.75"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
