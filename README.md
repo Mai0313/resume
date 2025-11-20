@@ -29,13 +29,6 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - **PDF Download**: Provides resume PDF download functionality
 - **JSON Resume Standard**: Follows JSON Resume Schema specification for standardized data format
 
-### 💼 Portfolio Integration
-
-- **GitHub API Integration**: Automatically fetches and displays personal repositories and contributions
-- **Rich Information**: Shows project languages, Stars, Forks, topic tags, and last update time
-- **Commit History**: Displays recent commit messages with links
-- **Project Links**: Supports Demo and GitHub repository links
-
 ### 🤖 AI Assistant
 
 - **OpenAI Integration**: Supports OpenAI and Azure OpenAI API
@@ -47,7 +40,6 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 
 - **Conditional Display**: Pages automatically show or hide based on environment variables
   - Resume page requires `VITE_RESUME_FILE`
-  - Portfolio page requires `VITE_GITHUB_TOKEN`
   - AI assistant requires `VITE_OPENAI_*` related variables
 - **Automatic Navigation Updates**: Navigation bar dynamically updates to show only enabled pages
 - **Subpath Support**: Supports deployment to subpaths (e.g., GitHub Pages)
@@ -91,9 +83,6 @@ VITE_RESUME_FILE=example.yaml
 # Optional: Resume PIN code protection
 VITE_PIN_CODE=123456
 
-# Optional: GitHub API Token - if not set, portfolio page will be hidden
-VITE_GITHUB_TOKEN=your_github_token_here
-
 # Optional: OpenAI chatbot (enables in-site AI assistant)
 # All variables below must be set together for the chat assistant to appear
 VITE_OPENAI_BASE_URL=https://api.openai.com/v1
@@ -112,14 +101,7 @@ VITE_ROOT_PATH=/resume
 
 - **Smart Page Display**: Pages only appear in navigation menu and routing when corresponding environment variables are properly configured
   - Resume page (`/resume`) requires `VITE_RESUME_FILE`
-  - Portfolio page (`/portfolio`) requires `VITE_GITHUB_TOKEN`
   - AI assistant requires `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` to be set together
-
-- **GitHub Token Setup**:
-  - Create Personal Access Token (PAT): [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
-  - Token requires `public_repo` permission to read public repositories
-  - Fine-grained tokens require "Repository access" and "Contents" read permission
-  - **Security**: Never commit real tokens to version control; use `.env` file and ensure it's in `.gitignore`
 
 - **OpenAI API Setup**:
   - Supports both OpenAI official API and Azure OpenAI
@@ -181,14 +163,6 @@ npm run dev
 - Responsive design with animation effects
 - Tip: If PIN is enabled, you can unlock directly via `/resume?pin=your_PIN`; the PIN will be automatically removed from the URL after verification.
 
-### Portfolio Page (`/portfolio`)
-
-- Only appears when `VITE_GITHUB_TOKEN` is set
-- Automatically fetches your repositories and contributions
-- Displays: primary language, Stars, Forks, topic tags, last update time
-- Shows recent commit messages with links
-- Supports Demo and GitHub links for each project
-
 ### AI Assistant (Floating Chat)
 
 - Appears when `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` are configured
@@ -202,12 +176,7 @@ npm run dev
 The website automatically shows/hides pages based on environment variables:
 
 - Resume page: Only appears when `VITE_RESUME_FILE` is set
-- Portfolio page: Only appears when `VITE_GITHUB_TOKEN` is set
 - Navigation bar: Dynamically updates to show only available pages
-
-### Change GitHub Username
-
-No manual configuration needed! The GitHub username is automatically fetched using your `VITE_GITHUB_TOKEN`.
 
 ### Edit Resume Content
 
@@ -391,7 +360,6 @@ src/
 │   │   ├── VolunteerSection.tsx     # Volunteer experience section
 │   │   ├── WorkSection.tsx          # Work experience section
 │   │   └── index.ts                 # Section components export
-│   ├── PortfolioContent.tsx         # Portfolio content component
 │   ├── ResumeContent.tsx            # Resume content component
 │   ├── navbar.tsx                   # Navigation bar component
 │   ├── theme-switch.tsx             # Theme switch component
@@ -399,12 +367,10 @@ src/
 │   └── primitives.ts                # Base component styles
 ├── pages/                           # Page components
 │   ├── index.tsx                    # Home page
-│   ├── portfolio.tsx                # Portfolio page
 │   └── resume.tsx                   # Resume page
 ├── layouts/                         # Layout templates
 │   └── default.tsx                  # Default layout (with navigation and theme)
 ├── utils/                           # Utility functions
-│   ├── githubApi.ts                 # GitHub API integration
 │   ├── resumeLoader.ts              # YAML resume loader
 │   ├── pathUtils.ts                 # Path utility functions
 │   ├── openai-client.ts             # OpenAI streaming client
@@ -516,7 +482,7 @@ To add a page to the website:
    - Use that check function in `src/config/site.ts` to determine whether to show navigation item
    - Use the same check in `src/App.tsx` to determine whether to register route
 
-**Example**: Refer to the implementation of Resume page (`/resume`) or Portfolio page (`/portfolio`)
+**Example**: Refer to the implementation of Resume page (`/resume`)
 
 ### Modify Theme
 
@@ -539,22 +505,7 @@ GitHub API has rate limits, recommendations:
 - Design appropriate caching strategies to reduce API calls
 - Use paginated loading for large amounts of data
 
-## Troubleshooting
-
-### GitHub API Related Issues
-
-**403 Forbidden Error**
-
-- Check if token is correctly set in `.env` file
-- Verify token has `public_repo` permission
-- Check if API rate limit has been exceeded (unauthenticated: 60/hour, authenticated: 5,000/hour)
-- Verify token has not expired
-
-**Unable to Load Portfolio Data**
-
-- Verify network connection is working
-- Check browser console for error messages
-- Validate GitHub Token is valid
+### API Limitations
 
 ### Page Display Issues
 
@@ -562,12 +513,6 @@ GitHub API has rate limits, recommendations:
 
 - Verify `VITE_RESUME_FILE` is set in `.env`
 - Check environment variable value is correct (local filename or full URL)
-- Restart development server
-
-**Portfolio Page Not Appearing in Navigation**
-
-- Verify `VITE_GITHUB_TOKEN` is set in `.env`
-- Check token format is correct (should start with `ghp_`)
 - Restart development server
 
 **AI Assistant Not Displayed**
@@ -581,7 +526,7 @@ GitHub API has rate limits, recommendations:
 
 **Navigation Bar Completely Empty**
 
-- At least one page's environment variable must be set (`VITE_RESUME_FILE` or `VITE_GITHUB_TOKEN`)
+- At least one page's environment variable must be set (`VITE_RESUME_FILE`)
 - Home page (`/`) is always available, no configuration needed
 
 ### Resume Loading Issues

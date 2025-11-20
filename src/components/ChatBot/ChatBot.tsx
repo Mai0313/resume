@@ -332,8 +332,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ className = "" }) => {
                           this page.
                         </p>
                         <p className="text-sm mt-2">
-                          Ask me about the resume, portfolio, or any content you
-                          see here.
+                          Ask me about the resume or any content you see here.
                         </p>
                       </div>
                     )}

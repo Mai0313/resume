@@ -29,25 +29,17 @@
 - **PDF 下载**：提供简历 PDF 下载功能
 - **JSON Resume 标准**：遵循 JSON Resume Schema 规范，数据格式标准化
 
-### 💼 作品集整合
-
-- **GitHub API 整合**：自动抓取并展示个人仓库与贡献
-- **丰富信息**：显示项目语言、Stars、Forks、主题标签、最后更新时间
-- **提交记录**：展示近期提交消息与链接
-- **项目链接**：支持 Demo 与 GitHub 仓库链接
-
 ### 🤖 AI 助手
 
-- **OpenAI 整合**：支持 OpenAI 与 Azure OpenAI API
+- **OpenAI 集成**：支持 OpenAI 和 Azure OpenAI API
 - **流式回复**：实时流式显示 AI 响应
 - **推理预览**：使用具备推理能力的模型时，实时显示推理过程摘要
 - **浮动界面**：不干扰浏览体验的浮动聊天窗口
 
 ### ⚙️ 智能配置
 
-- **条件式显示**：页面根据环境变量自动显示或隐藏
+- **条件显示**：根据环境变量自动显示或隐藏页面
   - 简历页需设置 `VITE_RESUME_FILE`
-  - 作品集页需设置 `VITE_GITHUB_TOKEN`
   - AI 助手需设置 `VITE_OPENAI_*` 相关变量
 - **自动导航更新**：导航栏动态更新，只显示已启用的页面
 - **子路径支持**：支持部署到子路径（如 GitHub Pages）
@@ -91,9 +83,6 @@ VITE_RESUME_FILE=example.yaml
 # 可选：简历 PIN 码保护
 VITE_PIN_CODE=123456
 
-# 可选：GitHub API Token - 若未设置，作品集页面会被隐藏
-VITE_GITHUB_TOKEN=your_github_token_here
-
 # 可选：OpenAI 聊天机器人（启用站内 AI 助手）
 # 需同时设置以下变量，聊天助手才会显示
 VITE_OPENAI_BASE_URL=https://api.openai.com/v1
@@ -112,14 +101,7 @@ VITE_ROOT_PATH=/resume
 
 - **智能页面显示**：页面仅在对应环境变量正确设置时才会出现在导航菜单与路由中
   - 简历页（`/resume`）需设置 `VITE_RESUME_FILE`
-  - 作品集页（`/portfolio`）需设置 `VITE_GITHUB_TOKEN`
   - AI 助手需同时设置 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 和 `VITE_OPENAI_MODEL`
-
-- **GitHub Token 设置**：
-  - 创建个人访问令牌（PAT）：[GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
-  - Token 需要 `public_repo` 权限以读取公开仓库
-  - 新版 Token（fine-grained）需授予「Repository access」和「Contents」读取权限
-  - **安全性**：请勿将真实 Token 提交至版本控制，使用 `.env` 文件并确保它在 `.gitignore` 中
 
 - **OpenAI API 设置**：
   - 支持 OpenAI 官方 API 和 Azure OpenAI
@@ -181,14 +163,6 @@ npm run dev
 - 响应式设计与动画效果
 - 小技巧：若启用 PIN，可通过 `/resume?pin=你的PIN` 直接解锁；验证后网址会自动移除 PIN。
 
-### 作品集页（`/portfolio`）
-
-- 仅在设置 `VITE_GITHUB_TOKEN` 后显示
-- 自动抓取你的仓库与贡献
-- 显示：主要语言、Stars、Forks、主题标签、最后更新时间
-- 显示近期提交消息与链接
-- 支持每个项目的 Demo 与 GitHub 链接
-
 ### AI 助手（浮动聊天）
 
 - 当 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 与 `VITE_OPENAI_MODEL` 已设置时显示
@@ -202,12 +176,7 @@ npm run dev
 网站会依据环境变量自动显示/隐藏页面：
 
 - 简历页：仅在设置 `VITE_RESUME_FILE` 后显示
-- 作品集页：仅在设置 `VITE_GITHUB_TOKEN` 后显示
 - 导航栏：动态更新，只显示可用的页面
-
-### 更改 GitHub 用户名
-
-无需手动设置！GitHub 用户名会由你的 `VITE_GITHUB_TOKEN` 自动获取。
 
 ### 编辑简历内容
 
@@ -391,7 +360,6 @@ src/
 │   │   ├── VolunteerSection.tsx     # 志愿者经验区块
 │   │   ├── WorkSection.tsx          # 工作经验区块
 │   │   └── index.ts                 # 区块组件导出
-│   ├── PortfolioContent.tsx         # 作品集内容组件
 │   ├── ResumeContent.tsx            # 简历内容组件
 │   ├── navbar.tsx                   # 导航栏组件
 │   ├── theme-switch.tsx             # 主题切换组件
@@ -399,12 +367,10 @@ src/
 │   └── primitives.ts                # 基础组件样式
 ├── pages/                           # 页面组件
 │   ├── index.tsx                    # 首页
-│   ├── portfolio.tsx                # 作品集页
 │   └── resume.tsx                   # 简历页
 ├── layouts/                         # 布局
 │   └── default.tsx                  # 默认布局（含导航与主题）
 ├── utils/                           # 工具函数
-│   ├── githubApi.ts                 # GitHub API 整合
 │   ├── resumeLoader.ts              # YAML 简历加载器
 │   ├── pathUtils.ts                 # 路径工具函数
 │   ├── openai-client.ts             # OpenAI 流式客户端
@@ -516,7 +482,7 @@ make run
    - 在 `src/config/site.ts` 中使用该检查函数来决定是否显示导航项目
    - 在 `src/App.tsx` 中使用相同的检查来决定是否注册路由
 
-**示例**：参考 Resume 页面（`/resume`）或 Portfolio 页面（`/portfolio`）的实现方式
+**示例**：参考 Resume 页面（`/resume`）的实现方式
 
 ### 修改主题
 
@@ -539,22 +505,7 @@ GitHub API 具有速率限制，建议：
 - 设计适当的缓存策略以减少 API 调用
 - 面对大量数据时采用分页加载
 
-## 疑难排解
-
-### GitHub API 相关问题
-
-**403 Forbidden 错误**
-
-- 检查 Token 是否正确设置在 `.env` 文件中
-- 确认 Token 具有 `public_repo` 权限
-- 检查是否已超出 API 速率限制（未认证：60 次/小时，已认证：5,000 次/小时）
-- 确认 Token 尚未过期
-
-**无法加载作品集数据**
-
-- 确认网络连接正常
-- 检查浏览器控制台是否有错误消息
-- 验证 GitHub Token 是否有效
+### API 限制
 
 ### 页面显示问题
 
@@ -562,12 +513,6 @@ GitHub API 具有速率限制，建议：
 
 - 确认 `.env` 中是否已设置 `VITE_RESUME_FILE`
 - 检查环境变量值是否正确（本地文件名称或完整 URL）
-- 重新启动开发服务器
-
-**作品集页未出现在导航栏**
-
-- 确认 `.env` 中是否已设置 `VITE_GITHUB_TOKEN`
-- 检查 Token 格式是否正确（应为 `ghp_` 开头）
 - 重新启动开发服务器
 
 **AI 助手未显示**
@@ -581,7 +526,7 @@ GitHub API 具有速率限制，建议：
 
 **导航栏完全为空**
 
-- 至少需要设置一个页面的环境变量（`VITE_RESUME_FILE` 或 `VITE_GITHUB_TOKEN`）
+- 至少需要设置一个页面的环境变量（`VITE_RESUME_FILE`）
 - 首页（`/`）永远可用，不需要特别设置
 
 ### 简历加载问题

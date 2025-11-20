@@ -29,26 +29,18 @@
 - **PDF 下載**：提供履歷 PDF 下載功能
 - **JSON Resume 標準**：遵循 JSON Resume Schema 規範，資料格式標準化
 
-### 💼 作品集整合
+### 🤖 AI 助理
 
-- **GitHub API 整合**：自動抓取並展示個人倉庫與貢獻
-- **豐富資訊**：顯示專案語言、Stars、Forks、主題標籤、最後更新時間
-- **提交記錄**：展示近期提交訊息與連結
-- **專案連結**：支援 Demo 與 GitHub 倉庫連結
-
-### 🤖 AI 助手
-
-- **OpenAI 整合**：支援 OpenAI 與 Azure OpenAI API
+- **OpenAI 整合**：支援 OpenAI 和 Azure OpenAI API
 - **串流回覆**：即時串流顯示 AI 回應
 - **推理預覽**：使用具備推理能力的模型時，即時顯示推理過程摘要
 - **浮動介面**：不干擾瀏覽體驗的浮動聊天視窗
 
 ### ⚙️ 智慧配置
 
-- **條件式顯示**：頁面根據環境變數自動顯示或隱藏
+- **條件顯示**：根據環境變數自動顯示或隱藏頁面
   - 履歷頁需設定 `VITE_RESUME_FILE`
-  - 作品集頁需設定 `VITE_GITHUB_TOKEN`
-  - AI 助手需設定 `VITE_OPENAI_*` 相關變數
+  - AI 助理需設定 `VITE_OPENAI_*` 相關變數
 - **自動導覽更新**：導覽列動態更新，只顯示已啟用的頁面
 - **子路徑支援**：支援部署到子路徑（如 GitHub Pages）
 
@@ -91,10 +83,7 @@ VITE_RESUME_FILE=example.yaml
 # 選填：履歷 PIN 碼保護
 VITE_PIN_CODE=123456
 
-# 選填：GitHub API Token - 若未設定，作品集頁面會被隱藏
-VITE_GITHUB_TOKEN=your_github_token_here
-
-# 選填：OpenAI 聊天機器人（啟用站內 AI 助手）
+# 選填：OpenAI 聊天機器人（啟用站內 AI 助理）
 # 需同時設定以下變數，聊天助手才會顯示
 VITE_OPENAI_BASE_URL=https://api.openai.com/v1
 VITE_OPENAI_API_KEY=sk-xxxx
@@ -112,14 +101,7 @@ VITE_ROOT_PATH=/resume
 
 - **智慧頁面顯示**：頁面僅在對應環境變數正確設定時才會出現在導覽選單與路由中
   - 履歷頁（`/resume`）需設定 `VITE_RESUME_FILE`
-  - 作品集頁（`/portfolio`）需設定 `VITE_GITHUB_TOKEN`
   - AI 助手需同時設定 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 和 `VITE_OPENAI_MODEL`
-
-- **GitHub Token 設定**：
-  - 建立個人存取權杖（PAT）：[GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
-  - Token 需要 `public_repo` 權限以讀取公開倉庫
-  - 新版 Token（fine-grained）需授予「Repository access」和「Contents」讀取權限
-  - **安全性**：請勿將真實 Token 提交至版本控制，使用 `.env` 檔案並確保它在 `.gitignore` 中
 
 - **OpenAI API 設定**：
   - 支援 OpenAI 官方 API 和 Azure OpenAI
@@ -181,14 +163,6 @@ npm run dev
 - 響應式設計與動畫效果
 - 小技巧：若啟用 PIN，可透過 `/resume?pin=你的PIN` 直接解鎖；驗證後網址會自動移除 PIN。
 
-### 作品集頁（`/portfolio`）
-
-- 僅在設定 `VITE_GITHUB_TOKEN` 後顯示
-- 自動抓取你的倉庫與貢獻
-- 顯示：主要語言、Stars、Forks、主題標籤、最後更新時間
-- 顯示近期提交訊息與連結
-- 支援每個專案的 Demo 與 GitHub 連結
-
 ### AI 助手（浮動聊天）
 
 - 當 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 與 `VITE_OPENAI_MODEL` 已設定時顯示
@@ -202,12 +176,7 @@ npm run dev
 網站會依據環境變數自動顯示/隱藏頁面：
 
 - 履歷頁：僅在設定 `VITE_RESUME_FILE` 後顯示
-- 作品集頁：僅在設定 `VITE_GITHUB_TOKEN` 後顯示
 - 導覽列：動態更新，只顯示可用的頁面
-
-### 變更 GitHub 使用者名稱
-
-無需手動設定！GitHub 使用者名稱會由你的 `VITE_GITHUB_TOKEN` 自動取得。
 
 ### 編輯履歷內容
 
@@ -391,7 +360,6 @@ src/
 │   │   ├── VolunteerSection.tsx     # 志工經驗區塊
 │   │   ├── WorkSection.tsx          # 工作經驗區塊
 │   │   └── index.ts                 # 區塊元件匯出
-│   ├── PortfolioContent.tsx         # 作品集內容元件
 │   ├── ResumeContent.tsx            # 履歷內容元件
 │   ├── navbar.tsx                   # 導覽列元件
 │   ├── theme-switch.tsx             # 主題切換元件
@@ -399,12 +367,10 @@ src/
 │   └── primitives.ts                # 基礎元件樣式
 ├── pages/                           # 頁面元件
 │   ├── index.tsx                    # 首頁
-│   ├── portfolio.tsx                # 作品集頁
 │   └── resume.tsx                   # 履歷頁
 ├── layouts/                         # 版面配置
 │   └── default.tsx                  # 預設版面（含導覽與主題）
 ├── utils/                           # 工具函式
-│   ├── githubApi.ts                 # GitHub API 整合
 │   ├── resumeLoader.ts              # YAML 履歷載入器
 │   ├── pathUtils.ts                 # 路徑工具函式
 │   ├── openai-client.ts             # OpenAI 串流客戶端
@@ -516,7 +482,7 @@ make run
    - 在 `src/config/site.ts` 中使用該檢查函式來決定是否顯示導覽項目
    - 在 `src/App.tsx` 中使用相同的檢查來決定是否註冊路由
 
-**範例**：參考 Resume 頁面（`/resume`）或 Portfolio 頁面（`/portfolio`）的實作方式
+**範例**：參考 Resume 頁面（`/resume`）的實作方式
 
 ### 修改主題
 
@@ -539,22 +505,7 @@ GitHub API 具有速率限制，建議：
 - 設計適當的快取策略以減少 API 呼叫
 - 面對大量資料時採用分頁載入
 
-## 疑難排解
-
-### GitHub API 相關問題
-
-**403 Forbidden 錯誤**
-
-- 檢查 Token 是否正確設定在 `.env` 檔中
-- 確認 Token 具有 `public_repo` 權限
-- 檢查是否已超出 API 速率限制（未認證：60 次/小時，已認證：5,000 次/小時）
-- 確認 Token 尚未過期
-
-**無法載入作品集資料**
-
-- 確認網路連線正常
-- 檢查瀏覽器控制台是否有錯誤訊息
-- 驗證 GitHub Token 是否有效
+### API 限制
 
 ### 頁面顯示問題
 
@@ -562,12 +513,6 @@ GitHub API 具有速率限制，建議：
 
 - 確認 `.env` 中是否已設定 `VITE_RESUME_FILE`
 - 檢查環境變數值是否正確（本機檔案名稱或完整 URL）
-- 重新啟動開發伺服器
-
-**作品集頁未出現在導覽列**
-
-- 確認 `.env` 中是否已設定 `VITE_GITHUB_TOKEN`
-- 檢查 Token 格式是否正確（應為 `ghp_` 開頭）
 - 重新啟動開發伺服器
 
 **AI 助手未顯示**
@@ -581,7 +526,7 @@ GitHub API 具有速率限制，建議：
 
 **導覽列完全為空**
 
-- 至少需要設定一個頁面的環境變數（`VITE_RESUME_FILE` 或 `VITE_GITHUB_TOKEN`）
+- 至少需要設定一個頁面的環境變數（`VITE_RESUME_FILE`）
 - 首頁（`/`）永遠可用，不需要特別設定
 
 ### 履歷載入問題

@@ -16,8 +16,8 @@ export const getRootPath = (): string => {
 
 /**
  * Construct complete path including root path prefix
- * @param path - Relative path (e.g., '/resume', '/portfolio')
- * @returns Complete path (e.g., '/my-app/resume', '/my-app/portfolio')
+ * @param path - Relative path (e.g., '/resume')
+ * @returns Complete path (e.g., '/my-app/resume')
  */
 export const buildPath = (path: string): string => {
   const root = getRootPath();

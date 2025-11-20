@@ -23,14 +23,6 @@ export const CHAT = {
   PAGE_CONTEXT_MAX_LENGTH: 3000,
 } as const;
 
-// Portfolio / GitHub
-export const PORTFOLIO = {
-  CACHE_TTL_MS: 10 * 60 * 1000, // 10 minutes
-  CACHE_KEY: "github_contributions_cache",
-  MAX_REPOS_TO_FETCH: 10,
-  COMMITS_PER_REPO: 5,
-} as const;
-
 // RequestQueue
 export const REQUEST_QUEUE = {
   MAX_CONCURRENT: 2,

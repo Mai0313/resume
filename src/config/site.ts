@@ -13,11 +13,6 @@ const navItems = (() => {
     items.push({ label: "Resume", href: buildPath("/resume") });
   }
 
-  // Only add Portfolio page if GitHub token is available
-  if (envHelpers.isGitHubTokenAvailable()) {
-    items.push({ label: "Portfolio", href: buildPath("/portfolio") });
-  }
-
   return items;
 })();
 
