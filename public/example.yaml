@@ -2,13 +2,13 @@
 
 basics:
   name: Wei Cheng Lee
-  label: Junior Machine Learning Engineer
+  label: Senior Software Engineer
   image: https://cdn.discordapp.com/attachments/1341429772475043892/1441039366720978984/1751046928725.png?ex=692057fe&is=691f067e&hm=42f6a673fb8bde4f084130e0d5b3dac927df03707f491c3d2d50f43ea35cabe1
   email: weichenglee0313@gmail.com
   # phone: +886-912-345-678
   # url: https://mai0313.github.io/resume
   summary: >
-    Junior Machine Learning Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
+    Senior Software Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
     Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.
   location:
     postalCode: "300"
@@ -41,12 +41,24 @@ education:
       Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.
 
 work:
+  - company: Google
+    position: Senior Software Engineer
+    location: Banqiao, New Taipei, Taiwan
+    description: TBD...
+    url: https://www.google.com
+    startDate: 2025-10
+    summary: >
+      TBD...
+    highlights:
+      - TBD...
+
   - name: MediaTek
-    position: Junior Machine Learning Engineer
+    position: Machine Learning Engineer
     location: Hsinchu, Taiwan
     description: Fabless semiconductor company that designs and manufactures a range of semiconductor products, providing chips for wireless communications, high-definition television, handheld mobile devices like smartphones and tablet computers, navigation systems, consumer multimedia products and digital subscriber line services as well as optical disc drives.
     url: https://www.mediatek.com
     startDate: 2022-08
+    endDate: 2025-10
     summary: >
       Spearheaded ML research and industrialization for semiconductor design—thermal simulation, leakage analysis, and multi-agent AI systems.
     highlights:
@@ -57,19 +69,6 @@ work:
       - Published 3 peer-reviewed papers in top conferences (NeurIPS, IEEE VLSI TSA, IEEE ICLAD) as first/co-author.
       - Established industry-academia partnerships and secured research sponsorships, supporting talent development and knowledge exchange.
       - Mentored junior engineers and interns, fostering open collaboration and a culture of continuous learning.
-
-  # - company: Google Inc.
-  #   position: Student Researcher
-  #   location: Mountain View, California, United States
-  #   startDate: 2020-10
-  #   endDate: 2021-09
-  #   summary: >
-  #     Conducted quantitative UX research, developed statistical models and empirical methods to extract actionable insights from large-scale user data, and worked with cross-functional teams to improve user experience.
-  #   highlights:
-  #     - Defined and quantified UX goals across multiple product areas with engineers and data scientists.
-  #     - Developed statistical models for behavioral pattern analysis on large datasets.
-  #     - Applied empirical methods (ANOVA, Chi-Squared, T-tests) for hypothesis testing and data validation.
-  #     - Communicated findings to diverse stakeholders, driving product improvements.
 
 publications:
   - name: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design"
