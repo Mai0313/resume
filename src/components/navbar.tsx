@@ -5,6 +5,8 @@ import {
   NavbarContent,
   NavbarItem,
   NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
 } from "@heroui/navbar";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
@@ -19,6 +21,10 @@ import { env } from "@/utils/env";
 export const Navbar = () => {
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
+      <NavbarContent className="basis-1 pl-4 sm:hidden" justify="start">
+        <NavbarMenuToggle />
+      </NavbarContent>
+
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
           <Link
@@ -30,7 +36,7 @@ export const Navbar = () => {
             <p className="font-bold text-inherit">{env.WEBSITE_TITLE}</p>
           </Link>
         </NavbarBrand>
-        <div className="hidden lg:flex gap-4 justify-start ml-2">
+        <div className="hidden sm:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <Link
@@ -68,8 +74,21 @@ export const Navbar = () => {
           <GithubIcon className="text-default-500" />
         </Link>
         <ThemeSwitch />
-        <NavbarMenuToggle />
       </NavbarContent>
+      <NavbarMenu>
+        {siteConfig.navMenuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item.href}-${index}`}>
+            <Link
+              className="w-full"
+              color="foreground"
+              href={item.href}
+              size="lg"
+            >
+              {item.label}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </HeroUINavbar>
   );
 };
