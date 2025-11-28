@@ -20,7 +20,7 @@ import {
 } from "./ResumeSections";
 
 import { fadeInStagger } from "@/utils/animations";
-import { env } from "@/utils/env";
+import { envHelpers } from "@/utils/env";
 
 interface ResumeContentProps {
   data: ResumeData & { sectionOrder: string[] };
@@ -279,7 +279,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                   onClick={() => {
                     const link = document.createElement("a");
 
-                    link.href = env.RESUME_PDF_PATH || "/example.pdf";
+                    link.href = envHelpers.getResumePdfPath();
                     link.download = "resume.pdf";
                     document.body.appendChild(link);
                     link.click();

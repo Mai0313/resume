@@ -43,7 +43,7 @@ function validateRequiredEnvVars(): void {
   if (missingVars.length > 0) {
     throw new Error(
       `Missing required environment variables: ${missingVars.join(", ")}\n` +
-        "Please check your .env file and ensure all required variables are set.",
+      "Please check your .env file and ensure all required variables are set.",
     );
   }
 }
@@ -142,6 +142,23 @@ export const envHelpers = {
       isNonEmptyString(env.OPENAI_API_KEY) &&
       isNonEmptyString(env.OPENAI_MODEL)
     );
+  },
+
+  /**
+   * Get resume PDF path with validation and formatting
+   * Ensures local paths start with /
+   */
+  getResumePdfPath(): string {
+    const path = env.RESUME_PDF_PATH || "/example.pdf";
+
+    // If it's a full URL, return as is
+    if (path.match(/^https?:\/\//)) return path;
+
+    // If it starts with /, return as is
+    if (path.startsWith("/")) return path;
+
+    // Otherwise prepend /
+    return `/${path}`;
   },
 } as const;
 
