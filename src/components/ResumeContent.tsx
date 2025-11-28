@@ -212,10 +212,10 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
               <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
                 {data.basics.email && (
                   <Button
+                    isIconOnly
                     as={Link}
                     className="bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-gray-700 dark:text-white border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-md"
                     href={`mailto:${data.basics.email}`}
-                    isIconOnly
                     size="md"
                     variant="flat"
                   >
@@ -272,8 +272,8 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 ))}
 
                 <Button
-                  className="bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-gray-700 dark:text-white border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-md"
                   isIconOnly
+                  className="bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-gray-700 dark:text-white border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-md"
                   size="md"
                   variant="flat"
                   onClick={() => {

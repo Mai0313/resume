@@ -14,10 +14,10 @@ import {
 
 interface ReferencesSectionProps {
   data:
-  | {
-    references?: JSONResumeReference[];
-  }
-  | undefined;
+    | {
+        references?: JSONResumeReference[];
+      }
+    | undefined;
   itemVariants: Variants;
 }
 

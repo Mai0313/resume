@@ -82,7 +82,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
   const { text } = colorSchemes[colorScheme];
 
   return (
-    <motion.div key={sectionKey} variants={itemVariants} >
+    <motion.div key={sectionKey} variants={itemVariants}>
       <div className="group">
         <div className="flex items-center gap-4 mb-6">
           <h2 className={`text-2xl font-bold ${text}`}>{title}</h2>
@@ -92,7 +92,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
           {children}
         </div>
       </div>
-    </motion.div >
+    </motion.div>
   );
 };
 

@@ -5,11 +5,7 @@ import { Variants } from "framer-motion";
 
 import { SectionCard, SectionIcons } from "./SectionCard";
 
-import {
-  ItemCard,
-  ExternalLink,
-  DateRange,
-} from "@/components/shared";
+import { ItemCard, ExternalLink, DateRange } from "@/components/shared";
 
 interface EducationSectionProps {
   education: JSONResumeEducation[] | undefined;
