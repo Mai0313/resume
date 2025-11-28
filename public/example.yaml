@@ -7,9 +7,9 @@ basics:
   email: weichenglee0313@gmail.com
   # phone: +886-912-345-678
   # url: https://mai0313.github.io/resume
-  summary: >
-    Senior Software Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
-    Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.
+  # summary: >
+  #   Senior Software Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
+  #   Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.
   location:
     postalCode: "300"
     city: Hsinchu
