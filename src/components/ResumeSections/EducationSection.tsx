@@ -7,10 +7,8 @@ import { SectionCard, SectionIcons } from "./SectionCard";
 
 import {
   ItemCard,
-  IconBadge,
   ExternalLink,
   DateRange,
-  AcademicCapIcon,
 } from "@/components/shared";
 
 interface EducationSectionProps {
@@ -37,27 +35,19 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
             <ItemCard>
               <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
                 <div className="flex-grow">
-                  <div className="flex items-center gap-3 mb-3">
-                    <IconBadge
-                      gradientFrom="indigo-500"
-                      gradientTo="indigo-600"
-                      icon={<AcademicCapIcon />}
-                      size="md"
-                    />
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                        <ExternalLink
-                          className="hover:text-indigo-600 dark:hover:text-indigo-400"
-                          showIcon={false}
-                          url={edu.url}
-                        >
-                          {edu.institution}
-                        </ExternalLink>
-                      </h3>
-                      <p className="text-indigo-600 dark:text-indigo-400 font-semibold">
-                        {edu.studyType} in {edu.area}
-                      </p>
-                    </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                      <ExternalLink
+                        className="hover:text-indigo-600 dark:hover:text-indigo-400"
+                        showIcon={false}
+                        url={edu.url}
+                      >
+                        {edu.institution}
+                      </ExternalLink>
+                    </h3>
+                    <p className="text-indigo-600 dark:text-indigo-400 font-semibold">
+                      {edu.studyType} in {edu.area}
+                    </p>
                   </div>
 
                   <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
