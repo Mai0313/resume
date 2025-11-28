@@ -112,7 +112,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
           transition={{ duration: 0.6 }}
         >
           <div className="mb-6">
-            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg shadow-orange-500/30">
               <svg
                 className="w-10 h-10 text-white"
                 fill="none"
@@ -120,10 +120,10 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 viewBox="0 0 24 24"
               >
                 <path
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={1.5}
                 />
               </svg>
             </div>
@@ -154,21 +154,25 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
   return (
     <motion.div
       animate="visible"
-      className="max-w-5xl mx-auto p-4 md:p-8 space-y-12"
+      className="max-w-6xl mx-auto p-4 md:p-8 space-y-12"
       initial="hidden"
       variants={containerVariants}
     >
-      {/* Header Section with Photo - Always at the front */}
+      {/* Header Section with Glassmorphism Card */}
       <motion.div variants={itemVariants}>
-        <div className="relative mb-12">
-          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-            {/* Profile Image */}
+        <div className="relative overflow-hidden rounded-3xl bg-white/50 dark:bg-black/20 backdrop-blur-xl border border-white/20 shadow-2xl p-8 md:p-12">
+          {/* Decorative Background Elements */}
+          <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-gradient-to-tr from-pink-500/20 to-orange-500/20 rounded-full blur-3xl" />
+
+          <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start">
+            {/* Profile Image with Glow */}
             {data.basics.image && (
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200" />
+              <div className="relative group shrink-0">
+                <div className="absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200" />
                 <img
                   alt={`${data.basics.name} profile`}
-                  className="relative w-40 h-40 rounded-full object-cover ring-4 ring-background shadow-xl"
+                  className="relative w-48 h-48 rounded-full object-cover ring-4 ring-white/50 dark:ring-white/10 shadow-2xl"
                   src={data.basics.image}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -177,8 +181,8 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                     target.nextElementSibling?.classList.remove("hidden");
                   }}
                 />
-                <div className="hidden relative w-40 h-40 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center ring-4 ring-background shadow-xl">
-                  <span className="text-4xl font-bold text-gray-400">
+                <div className="hidden relative w-48 h-48 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center ring-4 ring-white/50 dark:ring-white/10 shadow-2xl">
+                  <span className="text-5xl font-bold text-gray-400">
                     {data.basics.name?.charAt(0) || "U"}
                   </span>
                 </div>
@@ -186,35 +190,35 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
             )}
 
             {/* Info */}
-            <div className="flex-1 text-center md:text-left space-y-4">
+            <div className="flex-1 text-center md:text-left space-y-6">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/60">
+                <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 pb-2">
                   {data.basics.name}
                 </h1>
                 {data.basics.label && (
-                  <p className="text-xl text-default-500 font-medium mt-2">
+                  <p className="text-2xl text-blue-600 dark:text-blue-400 font-medium mt-2">
                     {data.basics.label}
                   </p>
                 )}
               </div>
 
               {data.basics.summary && (
-                <p className="text-default-600 max-w-2xl leading-relaxed">
+                <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl leading-relaxed">
                   {data.basics.summary}
                 </p>
               )}
 
               {/* Contact & Social */}
-              <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
+              <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
                 {data.basics.email && (
                   <Button
                     as={Link}
-                    className="bg-default-100 hover:bg-default-200 text-default-700"
+                    className="bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-gray-700 dark:text-white border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-md"
                     href={`mailto:${data.basics.email}`}
-                    size="sm"
+                    size="md"
                     startContent={
                       <svg
-                        className="w-4 h-4"
+                        className="w-5 h-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -223,7 +227,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                           d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeWidth={1.5}
                         />
                       </svg>
                     }
@@ -238,14 +242,14 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                     isExternal
                     isIconOnly
                     as={Link}
-                    className="bg-default-100 hover:bg-default-200 text-default-700"
+                    className="bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-gray-700 dark:text-white border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-md"
                     href={profile.url}
-                    size="sm"
+                    size="md"
                     variant="flat"
                   >
                     {profile.network === "GitHub" && (
                       <svg
-                        className="w-4 h-4"
+                        className="w-5 h-5"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -254,7 +258,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                     )}
                     {profile.network === "LinkedIn" && (
                       <svg
-                        className="w-4 h-4"
+                        className="w-5 h-5"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -262,7 +266,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                       </svg>
                     )}
                     {!["GitHub", "LinkedIn"].includes(profile.network) && (
-                      <span className="text-xs font-bold">
+                      <span className="text-sm font-bold">
                         {profile.network[0]}
                       </span>
                     )}
@@ -270,11 +274,11 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 ))}
 
                 <Button
-                  className="bg-foreground text-background font-medium"
-                  size="sm"
+                  className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-medium shadow-lg hover:shadow-xl transition-shadow"
+                  size="md"
                   startContent={
                     <svg
-                      className="w-4 h-4"
+                      className="w-5 h-5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -283,7 +287,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={1.5}
                       />
                     </svg>
                   }
@@ -307,13 +311,17 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                   {data.languages.map((lang, index) => (
                     <Chip
                       key={index}
-                      className="border-default-200"
+                      className="border-gray-200 dark:border-white/20 bg-white/50 dark:bg-white/5 backdrop-blur-sm"
                       size="sm"
                       variant="bordered"
                     >
-                      <span className="font-medium">{lang.language}</span>
-                      <span className="text-default-400 mx-1">•</span>
-                      <span className="text-default-500">{lang.fluency}</span>
+                      <span className="font-medium text-gray-700 dark:text-gray-200">
+                        {lang.language}
+                      </span>
+                      <span className="text-gray-400 mx-1">•</span>
+                      <span className="text-gray-500 dark:text-gray-400">
+                        {lang.fluency}
+                      </span>
                     </Chip>
                   ))}
                 </div>
@@ -324,7 +332,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
       </motion.div>
 
       {/* Dynamically render other sections according to YAML file order */}
-      {data.sectionOrder.map((sectionName) => renderSection(sectionName))}
+      <div className="grid grid-cols-1 gap-12">
+        {data.sectionOrder.map((sectionName) => renderSection(sectionName))}
+      </div>
     </motion.div>
   );
 };

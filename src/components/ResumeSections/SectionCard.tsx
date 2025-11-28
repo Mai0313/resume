@@ -114,10 +114,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="M20 7h-3a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"
+        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -129,16 +129,22 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="M22 10v6M2 10l10-5 10 5-10 5z"
+        d="M12 14l9-5-9-5-9 5 9 5z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
       <path
-        d="M6 12v5c3 3 9 3 12 0v-5"
+        d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
+      />
+      <path
+        d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -150,22 +156,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="m18 16 4-4-4-4"
+        d="M13 10V3L4 14h7v7l9-11h-7z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="m6 8-4 4 4 4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="m14.5 4-5 16"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -177,28 +171,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"
+        d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M9 9 5 5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M15 15l4 4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -210,40 +186,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"
+        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M4 22h16"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M18 2H6v7a6 6 0 0 0 12 0V2Z"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -255,28 +201,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="M19 14c1.49-1.28 3.6-1.28 5.14 0 .34.29.34.75 0 1.05-1.54 1.28-3.65 1.28-5.14 0a.74.74 0 0 0-1.05 0c-1.54 1.28-3.65 1.28-5.14 0-.34-.29-.34-.75 0-1.05 1.54-1.28 3.65-1.28 5.14 0a.74.74 0 0 0 1.05 0z"
+        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M12 11.5 12 4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="m7 15-1.8-1.8a2.5 2.5 0 0 0-3.5 0l-.4.4a2.5 2.5 0 0 0 0 3.5l7.1 7.1a2.5 2.5 0 0 0 3.5 0l.4-.4a2.5 2.5 0 0 0 0-3.5L10.5 18.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="m17 15 1.8-1.8a2.5 2.5 0 0 1 3.5 0l.4.4a2.5 2.5 0 0 1 0 3.5l-7.1 7.1a2.5 2.5 0 0 1-3.5 0l-.4-.4a2.5 2.5 0 0 1 0-3.5L13.5 18.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -288,10 +216,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"
+        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -303,16 +231,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.78 4.78 4 4 0 0 1-6.74 0 4 4 0 0 1-4.78-4.78 4 4 0 0 1 0-6.74Z"
+        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="m9 12 2 2 4-4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -324,10 +246,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
@@ -339,28 +261,10 @@ export const SectionIcons = {
       viewBox="0 0 24 24"
     >
       <path
-        d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M22 21v-2a4 4 0 0 0-3-3.87"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-      <path
-        d="M16 3.13a4 4 0 0 1 0 7.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth={1.5}
       />
     </svg>
   ),
