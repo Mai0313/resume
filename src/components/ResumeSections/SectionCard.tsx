@@ -68,7 +68,6 @@ interface SectionCardProps {
 
 export const SectionCard: React.FC<SectionCardProps> = ({
   title,
-  icon,
   colorScheme,
   itemVariants,
   sectionKey,
@@ -80,17 +79,12 @@ export const SectionCard: React.FC<SectionCardProps> = ({
     return null;
   }
 
-  const { gradient, text } = colorSchemes[colorScheme];
+  const { text } = colorSchemes[colorScheme];
 
   return (
-    <motion.div key={sectionKey} variants={itemVariants}>
+    <motion.div key={sectionKey} variants={itemVariants} >
       <div className="group">
         <div className="flex items-center gap-4 mb-6">
-          <div
-            className={`w-10 h-10 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center shadow-lg shadow-${colorScheme}-500/20 group-hover:scale-110 transition-transform duration-300`}
-          >
-            {icon}
-          </div>
           <h2 className={`text-2xl font-bold ${text}`}>{title}</h2>
           <div className="h-px flex-1 bg-gradient-to-r from-default-200 to-transparent" />
         </div>
@@ -98,7 +92,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
           {children}
         </div>
       </div>
-    </motion.div>
+    </motion.div >
   );
 };
 

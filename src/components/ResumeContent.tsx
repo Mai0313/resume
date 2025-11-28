@@ -272,9 +272,10 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 ))}
 
                 <Button
-                  className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-medium shadow-lg hover:shadow-xl transition-shadow"
+                  className="bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-gray-700 dark:text-white border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-md"
                   isIconOnly
                   size="md"
+                  variant="flat"
                   onClick={() => {
                     const link = document.createElement("a");
 
