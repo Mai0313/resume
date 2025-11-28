@@ -41,7 +41,7 @@ education:
       Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.
 
 work:
-  - company: Google
+  - name: Google
     position: Senior Software Engineer
     location: Banqiao, New Taipei, Taiwan
     description: TBD...
