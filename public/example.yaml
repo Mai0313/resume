@@ -2,13 +2,13 @@
 
 basics:
   name: Wei Cheng Lee
-  label: Senior Software Engineer
+  label: Software Engineer
   image: https://lh3.googleusercontent.com/pw/AP1GczMszOuf7KjSMw1UtWoja-uC9XDUHYZ7LCG9S9esseVDRcadreWNqrIfzt3-PjCrIVJMVrDPh0g8ySeY5F_zfb7Rz73BF8BDy2oqKQ3Pj4NtNEANvMkna8VkYeWZa7mHl4YxL4QIAq963YLyuvFZWFrh=w1349-h1012-s-no-gm?authuser=0
   email: weichenglee0313@gmail.com
   # phone: +886-912-345-678
   # url: https://mai0313.github.io/resume
   # summary: >
-  #   Senior Software Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
+  #   Software Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
   #   Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.
   location:
     postalCode: "300"
@@ -42,7 +42,7 @@ education:
 
 work:
   - name: Google
-    position: Senior Software Engineer
+    position: Software Engineer
     location: Banqiao, New Taipei, Taiwan
     description: TBD...
     url: https://www.google.com
