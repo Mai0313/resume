@@ -12,5 +12,3 @@ export class ResumeLoadError extends Error {
     Object.setPrototypeOf(this, ResumeLoadError.prototype);
   }
 }
-
-
