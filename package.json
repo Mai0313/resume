@@ -17,7 +17,6 @@
     "lint:nofix": "eslint"
   },
   "dependencies": {
-    "@azure/openai": "^2.0.0",
     "@heroui/button": "2.2.19",
     "@heroui/card": "^2.2.18",
     "@heroui/chip": "^2.2.15",
@@ -45,7 +44,6 @@
     "gsap": "^3.13.0",
     "js-yaml": "^4.1.0",
     "ogl": "^1.0.11",
-    "openai": "^5.3.0",
     "react": "18",
     "react-dom": "18",
     "react-router-dom": "7.6.2",

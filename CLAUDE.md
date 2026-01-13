@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a personal resume/portfolio website built with React, TypeScript, and Vite. It features a modular architecture with conditional page rendering based on environment variables and optional AI assistant functionality.
+This is a personal resume/portfolio website built with React, TypeScript, and Vite. It features a modular architecture with conditional page rendering based on environment variables.
 
 ## Development Commands
 
@@ -66,7 +66,6 @@ make help     # Show all available commands
 The application dynamically shows/hides pages based on environment variables:
 
 - Resume page requires `VITE_RESUME_FILE` to be set
-- AI assistant requires all three: `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL`
 
 This logic is centralized in:
 
@@ -84,7 +83,6 @@ This logic is centralized in:
 #### Key Components (`src/components/`)
 
 - `ResumeSections/`: Modular resume section components
-- `ChatBot/`: Floating AI assistant with streaming responses
 - `Particles/`, `Orb/`, `SplitText/`: Visual effect components
 - `ResumeContent.tsx`: Resume rendering with section ordering
 
@@ -92,7 +90,6 @@ This logic is centralized in:
 
 - `env.ts`: Centralized environment variable access
 - `resumeLoader.ts`: YAML resume loader supporting local files and URLs
-- `openai-client.ts`: OpenAI streaming client
 - `pathUtils.ts`: Path utilities for subpath deployment
 
 ### Resume System
@@ -168,6 +165,6 @@ yarn test
 
 ### Security
 
-- Environment variables for sensitive data (tokens, API keys)
+- Environment variables for sensitive data (tokens)
 - PIN code protection for resume access
 - Client-side only; no backend server required

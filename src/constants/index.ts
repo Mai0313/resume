@@ -17,12 +17,6 @@ export const PARTICLE_COUNTS = {
   DESKTOP: 200,
 } as const;
 
-// OpenAI / ChatBot
-export const CHAT = {
-  MAX_MESSAGES: 50,
-  PAGE_CONTEXT_MAX_LENGTH: 3000,
-} as const;
-
 // RequestQueue
 export const REQUEST_QUEUE = {
   MAX_CONCURRENT: 2,

@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH,VITE_OPENAI_BASE_URL,VITE_OPENAI_API_KEY,VITE_OPENAI_MODEL&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </center>
 
@@ -29,18 +29,10 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - **PDF Download**: Provides resume PDF download functionality
 - **JSON Resume Standard**: Follows JSON Resume Schema specification for standardized data format
 
-### 🤖 AI Assistant
-
-- **OpenAI Integration**: Supports OpenAI and Azure OpenAI API
-- **Streaming Responses**: Real-time streaming display of AI responses
-- **Reasoning Preview**: When using reasoning-capable models, displays real-time reasoning process summary
-- **Floating Interface**: Non-intrusive floating chat window for seamless browsing experience
-
 ### ⚙️ Smart Configuration
 
 - **Conditional Display**: Pages automatically show or hide based on environment variables
   - Resume page requires `VITE_RESUME_FILE`
-  - AI assistant requires `VITE_OPENAI_*` related variables
 - **Automatic Navigation Updates**: Navigation bar dynamically updates to show only enabled pages
 - **Subpath Support**: Supports deployment to subpaths (e.g., GitHub Pages)
 
@@ -56,8 +48,6 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - [React Spring 10.0](https://react-spring.dev/) - Spring animation library
 - [GSAP 3.13](https://gsap.com/) - Professional-grade animation library
 - [OGL 1.0](https://oframe.github.io/ogl/) - WebGL library
-- [OpenAI API 5.3](https://platform.openai.com/docs/api-reference) - AI chatbot integration
-- [Azure OpenAI 2.0](https://learn.microsoft.com/azure/ai-services/openai/) - Azure OpenAI service integration
 - [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML parser
 - [GitHub API](https://docs.github.com/en/rest) - Fetch project data
 
@@ -82,13 +72,6 @@ VITE_RESUME_FILE=example.yaml
 
 # Optional: Resume PIN code protection
 VITE_PIN_CODE=123456
-
-# Optional: OpenAI chatbot (enables in-site AI assistant)
-# All variables below must be set together for the chat assistant to appear
-VITE_OPENAI_BASE_URL=https://api.openai.com/v1
-VITE_OPENAI_API_KEY=sk-xxxx
-VITE_OPENAI_MODEL=gpt-5-mini
-# Other model options: gpt-3.5-turbo, gpt-4, gpt-4-turbo, gpt-5, etc.
 ```
 
 Optional: Custom deployment root path (for GitHub Pages subpaths). If deploying to `https://<user>.github.io/<repo>`, set in `.env`:
@@ -101,14 +84,6 @@ VITE_ROOT_PATH=/resume
 
 - **Smart Page Display**: Pages only appear in navigation menu and routing when corresponding environment variables are properly configured
   - Resume page (`/resume`) requires `VITE_RESUME_FILE`
-  - AI assistant requires `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` to be set together
-
-- **OpenAI API Setup**:
-  - Supports both OpenAI official API and Azure OpenAI
-  - `VITE_OPENAI_BASE_URL` examples:
-    - OpenAI: `https://api.openai.com/v1`
-    - Azure: `https://your-resource.openai.azure.com/openai/deployments/your-deployment`
-  - Reasoning models (e.g., GPT-5) automatically display reasoning process
 
 - **Path Configuration**:
   - Deploying to root directory (e.g., `https://yourdomain.com`): No need to set `VITE_ROOT_PATH`
@@ -162,12 +137,6 @@ npm run dev
 - PDF Download: Provides button to download resume PDF (uses `public/example.pdf`)
 - Responsive design with animation effects
 - Tip: If PIN is enabled, you can unlock directly via `/resume?pin=your_PIN`; the PIN will be automatically removed from the URL after verification.
-
-### AI Assistant (Floating Chat)
-
-- Appears when `VITE_OPENAI_BASE_URL`, `VITE_OPENAI_API_KEY`, and `VITE_OPENAI_MODEL` are configured
-- Real-time streaming responses; if the model supports reasoning, displays reasoning summary in a small, subtle block above the answer
-- Includes "Clear Conversation" button to reset session
 
 ## Custom Configuration
 
@@ -342,9 +311,6 @@ src/
 │   │   └── FuzzyText.tsx
 │   ├── SplitText/                   # Home page text split animation
 │   │   └── SplitText.tsx
-│   ├── ChatBot/                     # Floating AI assistant
-│   │   ├── ChatBot.tsx
-│   │   └── index.ts
 │   ├── SpotlightCard/               # Spotlight card hover effect
 │   │   ├── SpotlightCard.tsx
 │   │   └── SpotlightCard.css
@@ -373,7 +339,6 @@ src/
 ├── utils/                           # Utility functions
 │   ├── resumeLoader.ts              # YAML resume loader
 │   ├── pathUtils.ts                 # Path utility functions
-│   ├── openai-client.ts             # OpenAI streaming client
 │   └── env.ts                       # Environment variable management and validation
 ├── config/                          # Configuration files
 │   └── site.ts                      # Site configuration and navigation setup
@@ -505,8 +470,6 @@ GitHub API has rate limits, recommendations:
 - Design appropriate caching strategies to reduce API calls
 - Use paginated loading for large amounts of data
 
-### API Limitations
-
 ### Page Display Issues
 
 **Resume Page Not Appearing in Navigation**
@@ -514,15 +477,6 @@ GitHub API has rate limits, recommendations:
 - Verify `VITE_RESUME_FILE` is set in `.env`
 - Check environment variable value is correct (local filename or full URL)
 - Restart development server
-
-**AI Assistant Not Displayed**
-
-- Verify the following three environment variables are set:
-  - `VITE_OPENAI_BASE_URL`
-  - `VITE_OPENAI_API_KEY`
-  - `VITE_OPENAI_MODEL`
-- Check if API Key is valid
-- Verify Base URL format is correct (should include full API endpoint)
 
 **Navigation Bar Completely Empty**
 

@@ -1,9 +1,4 @@
-import { lazy, Suspense } from "react";
-
 import { Navbar } from "@/components/navbar";
-
-// Lazy load ChatBot to reduce initial bundle size
-const ChatBot = lazy(() => import("@/components/ChatBot"));
 
 export default function DefaultLayout({
   children,
@@ -16,9 +11,6 @@ export default function DefaultLayout({
       <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
         {children}
       </main>
-      <Suspense fallback={null}>
-        <ChatBot />
-      </Suspense>
     </div>
   );
 }

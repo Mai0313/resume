@@ -21,9 +21,6 @@ const DEFAULT_VALUES = {
   VITE_ROOT_PATH: "/",
   VITE_RESUME_FILE: null,
   VITE_RESUME_PDF_PATH: "/example.pdf",
-  VITE_OPENAI_BASE_URL: null,
-  VITE_OPENAI_API_KEY: null,
-  VITE_OPENAI_MODEL: null,
 } as const;
 
 /**
@@ -82,15 +79,6 @@ export const env = {
   ROOT_PATH: getEnvVar("VITE_ROOT_PATH", {
     defaultValue: DEFAULT_VALUES.VITE_ROOT_PATH,
   }),
-  OPENAI_BASE_URL: getEnvVar("VITE_OPENAI_BASE_URL", {
-    defaultValue: DEFAULT_VALUES.VITE_OPENAI_BASE_URL,
-  }),
-  OPENAI_API_KEY: getEnvVar("VITE_OPENAI_API_KEY", {
-    defaultValue: DEFAULT_VALUES.VITE_OPENAI_API_KEY,
-  }),
-  OPENAI_MODEL: getEnvVar("VITE_OPENAI_MODEL", {
-    defaultValue: DEFAULT_VALUES.VITE_OPENAI_MODEL,
-  }),
   RESUME_PDF_PATH: getEnvVar("VITE_RESUME_PDF_PATH", {
     defaultValue: DEFAULT_VALUES.VITE_RESUME_PDF_PATH,
   }),
@@ -131,17 +119,6 @@ export const envHelpers = {
     }
 
     return env.RESUME_FILE!;
-  },
-
-  /**
-   * Check if OpenAI chatbot is available
-   */
-  isOpenAIChatBotAvailable(): boolean {
-    return (
-      isNonEmptyString(env.OPENAI_BASE_URL) &&
-      isNonEmptyString(env.OPENAI_API_KEY) &&
-      isNonEmptyString(env.OPENAI_MODEL)
-    );
   },
 
   /**

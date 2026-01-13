@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH,VITE_OPENAI_BASE_URL,VITE_OPENAI_API_KEY,VITE_OPENAI_MODEL&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </center>
 
@@ -29,18 +29,10 @@
 - **PDF 下载**：提供简历 PDF 下载功能
 - **JSON Resume 标准**：遵循 JSON Resume Schema 规范，数据格式标准化
 
-### 🤖 AI 助手
-
-- **OpenAI 集成**：支持 OpenAI 和 Azure OpenAI API
-- **流式回复**：实时流式显示 AI 响应
-- **推理预览**：使用具备推理能力的模型时，实时显示推理过程摘要
-- **浮动界面**：不干扰浏览体验的浮动聊天窗口
-
 ### ⚙️ 智能配置
 
 - **条件显示**：根据环境变量自动显示或隐藏页面
   - 简历页需设置 `VITE_RESUME_FILE`
-  - AI 助手需设置 `VITE_OPENAI_*` 相关变量
 - **自动导航更新**：导航栏动态更新，只显示已启用的页面
 - **子路径支持**：支持部署到子路径（如 GitHub Pages）
 
@@ -56,8 +48,6 @@
 - [React Spring 10.0](https://react-spring.dev/) - 弹簧动画库
 - [GSAP 3.13](https://gsap.com/) - 专业级动画库
 - [OGL 1.0](https://oframe.github.io/ogl/) - WebGL 库
-- [OpenAI API 5.3](https://platform.openai.com/docs/api-reference) - AI 聊天机器人整合
-- [Azure OpenAI 2.0](https://learn.microsoft.com/azure/ai-services/openai/) - Azure OpenAI 服务整合
 - [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器
 - [GitHub API](https://docs.github.com/en/rest) - 获取项目数据
 
@@ -82,13 +72,6 @@ VITE_RESUME_FILE=example.yaml
 
 # 可选：简历 PIN 码保护
 VITE_PIN_CODE=123456
-
-# 可选：OpenAI 聊天机器人（启用站内 AI 助手）
-# 需同时设置以下变量，聊天助手才会显示
-VITE_OPENAI_BASE_URL=https://api.openai.com/v1
-VITE_OPENAI_API_KEY=sk-xxxx
-VITE_OPENAI_MODEL=gpt-5-mini
-# 其他模型选项：gpt-3.5-turbo, gpt-4, gpt-4-turbo, gpt-5 等
 ```
 
 可选：自定义部署根路径（适用于 GitHub Pages 子路径）。若部署于 `https://<user>.github.io/<repo>`，请在 `.env` 设置：
@@ -101,14 +84,6 @@ VITE_ROOT_PATH=/resume
 
 - **智能页面显示**：页面仅在对应环境变量正确设置时才会出现在导航菜单与路由中
   - 简历页（`/resume`）需设置 `VITE_RESUME_FILE`
-  - AI 助手需同时设置 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 和 `VITE_OPENAI_MODEL`
-
-- **OpenAI API 设置**：
-  - 支持 OpenAI 官方 API 和 Azure OpenAI
-  - `VITE_OPENAI_BASE_URL` 示例：
-    - OpenAI：`https://api.openai.com/v1`
-    - Azure：`https://your-resource.openai.azure.com/openai/deployments/your-deployment`
-  - 推理模型（如 GPT-5）会自动显示推理过程
 
 - **路径设置**：
   - 部署到根目录（如 `https://yourdomain.com`）：无需设置 `VITE_ROOT_PATH`
@@ -162,12 +137,6 @@ npm run dev
 - PDF 下载：提供按钮下载简历 PDF（使用 `public/example.pdf`）
 - 响应式设计与动画效果
 - 小技巧：若启用 PIN，可通过 `/resume?pin=你的PIN` 直接解锁；验证后网址会自动移除 PIN。
-
-### AI 助手（浮动聊天）
-
-- 当 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 与 `VITE_OPENAI_MODEL` 已设置时显示
-- 实时流式回复；若选用的模型支持推理，将在答案上方以小型、低调区块呈现推理摘要
-- 可使用「清除对话」按钮重置会话
 
 ## 自定义配置
 
@@ -342,9 +311,6 @@ src/
 │   │   └── FuzzyText.tsx
 │   ├── SplitText/                   # 首页文字分割动画
 │   │   └── SplitText.tsx
-│   ├── ChatBot/                     # 浮动 AI 助手
-│   │   ├── ChatBot.tsx
-│   │   └── index.ts
 │   ├── SpotlightCard/               # 聚光卡片悬停效果
 │   │   ├── SpotlightCard.tsx
 │   │   └── SpotlightCard.css
@@ -373,7 +339,6 @@ src/
 ├── utils/                           # 工具函数
 │   ├── resumeLoader.ts              # YAML 简历加载器
 │   ├── pathUtils.ts                 # 路径工具函数
-│   ├── openai-client.ts             # OpenAI 流式客户端
 │   └── env.ts                       # 环境变量管理与验证
 ├── config/                          # 配置文件
 │   └── site.ts                      # 网站配置与导航配置
@@ -505,8 +470,6 @@ GitHub API 具有速率限制，建议：
 - 设计适当的缓存策略以减少 API 调用
 - 面对大量数据时采用分页加载
 
-### API 限制
-
 ### 页面显示问题
 
 **简历页未出现在导航栏**
@@ -514,15 +477,6 @@ GitHub API 具有速率限制，建议：
 - 确认 `.env` 中是否已设置 `VITE_RESUME_FILE`
 - 检查环境变量值是否正确（本地文件名称或完整 URL）
 - 重新启动开发服务器
-
-**AI 助手未显示**
-
-- 确认已设置以下三个环境变量：
-  - `VITE_OPENAI_BASE_URL`
-  - `VITE_OPENAI_API_KEY`
-  - `VITE_OPENAI_MODEL`
-- 检查 API Key 是否有效
-- 确认 Base URL 格式正确（应包含完整的 API endpoint）
 
 **导航栏完全为空**
 
@@ -535,7 +489,7 @@ GitHub API 具有速率限制，建议：
 
 - 检查文件路径是否正确
 - 如使用 URL，确认 URL 可直接访问（在浏览器中打开测试）
-- GitHub Gist URL 会自动转换为 Raw 格式，无需手动处理
+- GitHub Gist URLs are automatically converted to Raw format, no manual processing needed
 - 检查 YAML 格式是否正确（可使用在线 YAML 验证工具）
 
 **PIN 码验证无法通过**

@@ -13,13 +13,4 @@ export class ResumeLoadError extends Error {
   }
 }
 
-export class OpenAIError extends Error {
-  constructor(
-    message: string,
-    public readonly cause?: Error,
-  ) {
-    super(message);
-    this.name = "OpenAIError";
-    Object.setPrototypeOf(this, OpenAIError.prototype);
-  }
-}
+

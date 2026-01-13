@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH,VITE_OPENAI_BASE_URL,VITE_OPENAI_API_KEY,VITE_OPENAI_MODEL&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </center>
 
@@ -29,18 +29,10 @@
 - **PDF 下載**：提供履歷 PDF 下載功能
 - **JSON Resume 標準**：遵循 JSON Resume Schema 規範，資料格式標準化
 
-### 🤖 AI 助理
-
-- **OpenAI 整合**：支援 OpenAI 和 Azure OpenAI API
-- **串流回覆**：即時串流顯示 AI 回應
-- **推理預覽**：使用具備推理能力的模型時，即時顯示推理過程摘要
-- **浮動介面**：不干擾瀏覽體驗的浮動聊天視窗
-
 ### ⚙️ 智慧配置
 
 - **條件顯示**：根據環境變數自動顯示或隱藏頁面
   - 履歷頁需設定 `VITE_RESUME_FILE`
-  - AI 助理需設定 `VITE_OPENAI_*` 相關變數
 - **自動導覽更新**：導覽列動態更新，只顯示已啟用的頁面
 - **子路徑支援**：支援部署到子路徑（如 GitHub Pages）
 
@@ -56,8 +48,6 @@
 - [React Spring 10.0](https://react-spring.dev/) - 彈簧動畫庫
 - [GSAP 3.13](https://gsap.com/) - 專業級動畫庫
 - [OGL 1.0](https://oframe.github.io/ogl/) - WebGL 函式庫
-- [OpenAI API 5.3](https://platform.openai.com/docs/api-reference) - AI 聊天機器人整合
-- [Azure OpenAI 2.0](https://learn.microsoft.com/azure/ai-services/openai/) - Azure OpenAI 服務整合
 - [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器
 - [GitHub API](https://docs.github.com/en/rest) - 取得專案資料
 
@@ -82,13 +72,6 @@ VITE_RESUME_FILE=example.yaml
 
 # 選填：履歷 PIN 碼保護
 VITE_PIN_CODE=123456
-
-# 選填：OpenAI 聊天機器人（啟用站內 AI 助理）
-# 需同時設定以下變數，聊天助手才會顯示
-VITE_OPENAI_BASE_URL=https://api.openai.com/v1
-VITE_OPENAI_API_KEY=sk-xxxx
-VITE_OPENAI_MODEL=gpt-5-mini
-# 其他模型選項：gpt-3.5-turbo, gpt-4, gpt-4-turbo, gpt-5 等
 ```
 
 可選：自訂部署根路徑（適用於 GitHub Pages 子路徑）。若部署於 `https://<user>.github.io/<repo>`，請在 `.env` 設定：
@@ -101,14 +84,6 @@ VITE_ROOT_PATH=/resume
 
 - **智慧頁面顯示**：頁面僅在對應環境變數正確設定時才會出現在導覽選單與路由中
   - 履歷頁（`/resume`）需設定 `VITE_RESUME_FILE`
-  - AI 助手需同時設定 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 和 `VITE_OPENAI_MODEL`
-
-- **OpenAI API 設定**：
-  - 支援 OpenAI 官方 API 和 Azure OpenAI
-  - `VITE_OPENAI_BASE_URL` 範例：
-    - OpenAI：`https://api.openai.com/v1`
-    - Azure：`https://your-resource.openai.azure.com/openai/deployments/your-deployment`
-  - 推理模型（如 GPT-5）會自動顯示推理過程
 
 - **路徑設定**：
   - 部署到根目錄（如 `https://yourdomain.com`）：無需設定 `VITE_ROOT_PATH`
@@ -162,12 +137,6 @@ npm run dev
 - PDF 下載：提供按鈕下載履歷 PDF（使用 `public/example.pdf`）
 - 響應式設計與動畫效果
 - 小技巧：若啟用 PIN，可透過 `/resume?pin=你的PIN` 直接解鎖；驗證後網址會自動移除 PIN。
-
-### AI 助手（浮動聊天）
-
-- 當 `VITE_OPENAI_BASE_URL`、`VITE_OPENAI_API_KEY` 與 `VITE_OPENAI_MODEL` 已設定時顯示
-- 即時串流回覆；若選用的模型支援推理，將在答案上方以小型、低調區塊呈現推理摘要
-- 可使用「清除對話」按鈕重置會話
 
 ## 自訂設定
 
@@ -342,9 +311,6 @@ src/
 │   │   └── FuzzyText.tsx
 │   ├── SplitText/                   # 首頁文字分割動畫
 │   │   └── SplitText.tsx
-│   ├── ChatBot/                     # 浮動 AI 助手
-│   │   ├── ChatBot.tsx
-│   │   └── index.ts
 │   ├── SpotlightCard/               # 光斑卡片懸停效果
 │   │   ├── SpotlightCard.tsx
 │   │   └── SpotlightCard.css
@@ -373,7 +339,6 @@ src/
 ├── utils/                           # 工具函式
 │   ├── resumeLoader.ts              # YAML 履歷載入器
 │   ├── pathUtils.ts                 # 路徑工具函式
-│   ├── openai-client.ts             # OpenAI 串流客戶端
 │   └── env.ts                       # 環境變數管理與驗證
 ├── config/                          # 設定檔
 │   └── site.ts                      # 網站設定與導覽配置
@@ -381,7 +346,7 @@ src/
 │   ├── index.ts                     # 通用型別（Resume、GitHub API 等）
 │   └── ogl.d.ts                     # OGL WebGL 函式庫型別宣告
 ├── styles/                          # 全域樣式
-│   └── globals.css                  # 全域 CSS 樣式
+│   └── globals.css                  # 全局 CSS 樣式
 ├── App.tsx                          # 應用程式路由進入點
 ├── main.tsx                         # React 渲染進入點
 ├── provider.tsx                     # Context Providers（主題等）
@@ -505,8 +470,6 @@ GitHub API 具有速率限制，建議：
 - 設計適當的快取策略以減少 API 呼叫
 - 面對大量資料時採用分頁載入
 
-### API 限制
-
 ### 頁面顯示問題
 
 **履歷頁未出現在導覽列**
@@ -514,15 +477,6 @@ GitHub API 具有速率限制，建議：
 - 確認 `.env` 中是否已設定 `VITE_RESUME_FILE`
 - 檢查環境變數值是否正確（本機檔案名稱或完整 URL）
 - 重新啟動開發伺服器
-
-**AI 助手未顯示**
-
-- 確認已設定以下三個環境變數：
-  - `VITE_OPENAI_BASE_URL`
-  - `VITE_OPENAI_API_KEY`
-  - `VITE_OPENAI_MODEL`
-- 檢查 API Key 是否有效
-- 確認 Base URL 格式正確（應包含完整的 API endpoint）
 
 **導覽列完全為空**
 
