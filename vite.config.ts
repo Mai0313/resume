@@ -4,6 +4,7 @@ import path from "node:path";
 import { defineConfig, type ResolvedConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
 
 const createSpa404Plugin = () => {
   let outDir = "dist";
@@ -37,7 +38,7 @@ const createSpa404Plugin = () => {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(), createSpa404Plugin()],
+  plugins: [react(), tsconfigPaths(), tailwindcss(), createSpa404Plugin()],
   assetsInclude: ["**/*.yaml", "**/*.yml"],
   // 支援自定義 ROOT PATH，從環境變數 VITE_ROOT_PATH 讀取
   base: process.env.VITE_ROOT_PATH || "/",
