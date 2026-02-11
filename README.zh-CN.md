@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_RESUME_PDF_PATH,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </div>
 
@@ -41,9 +41,9 @@
 - [Vite 6.3.5](https://vitejs.dev/guide/) - 快速的前端构建工具
 - [React 18](https://react.dev/) - UI 库
 - [TypeScript 5.6.3](https://www.typescriptlang.org) - 类型安全的 JavaScript
-- [React Router 7.6.2](https://reactrouter.com/) - 前端路由
+- [React Router 7.12.0](https://reactrouter.com/) - 前端路由
 - [HeroUI](https://heroui.com) - React UI 组件库
-- [Tailwind CSS 3.4.16](https://tailwindcss.com) - CSS 框架
+- [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS 框架
 - [Framer Motion 12.15](https://www.framer.com/motion) - React 动画库
 - [React Spring 10.0](https://react-spring.dev/) - 弹簧动画库
 - [GSAP 3.13](https://gsap.com/) - 专业级动画库
@@ -72,6 +72,10 @@ VITE_RESUME_FILE=example.yaml
 
 # 可选：简历 PIN 码保护
 VITE_PIN_CODE=123456
+
+# 可选：简历 PDF 下载路径
+# 默认值：/example.pdf (对应 public/example.pdf)
+VITE_RESUME_PDF_PATH=/example.pdf
 ```
 
 可选：自定义部署根路径（适用于 GitHub Pages 子路径）。若部署于 `https://<user>.github.io/<repo>`，请在 `.env` 设置：
@@ -302,6 +306,8 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ```
 src/
 ├── components/                      # 可重用组件
+│   ├── ErrorBoundary.tsx            # 错误边界组件
+│   ├── HeroSection.tsx              # 首页 Hero 区块
 │   ├── Particles/                   # 粒子背景特效
 │   │   └── Particles.tsx
 │   ├── Orb/                         # 动态背景球体（WebGL）
@@ -326,6 +332,11 @@ src/
 │   │   ├── VolunteerSection.tsx     # 志愿者经验区块
 │   │   ├── WorkSection.tsx          # 工作经验区块
 │   │   └── index.ts                 # 区块组件导出
+│   ├── shared/                      # 共享的可重用组件
+│   │   ├── BulletList.tsx           # 项目列表组件
+│   │   ├── DateRange.tsx            # 日期范围格式化
+│   │   ├── ItemCard.tsx             # 通用项目卡片
+│   │   └── ...                      # 其他共享组件
 │   ├── ResumeContent.tsx            # 简历内容组件
 │   ├── navbar.tsx                   # 导航栏组件
 │   ├── theme-switch.tsx             # 主题切换组件
@@ -337,16 +348,23 @@ src/
 ├── layouts/                         # 布局
 │   └── default.tsx                  # 默认布局（含导航与主题）
 ├── utils/                           # 工具函数
-│   ├── resumeLoader.ts              # YAML 简历加载器
+│   ├── animations.ts                # 动画辅助函数
+│   ├── env.ts                       # 环境变量管理
+│   ├── formatters.ts                # 数据格式化工具
+│   ├── localStorage.ts              # 本地存储辅助
 │   ├── pathUtils.ts                 # 路径工具函数
-│   └── env.ts                       # 环境变量管理与验证
+│   └── resumeLoader.ts              # YAML 简历加载器
 ├── config/                          # 配置文件
 │   └── site.ts                      # 网站配置与导航配置
+├── constants/                       # 常量
+│   └── index.ts                     # 全局常量
 ├── types/                           # TypeScript 类型定义
+│   ├── errors.ts                    # 错误类型
 │   ├── index.ts                     # 通用类型（Resume、GitHub API 等）
 │   └── ogl.d.ts                     # OGL WebGL 库类型声明
 ├── styles/                          # 全局样式
-│   └── globals.css                  # 全局 CSS 样式
+│   ├── globals.css                  # 全局 CSS 样式
+│   └── plugins.ts                   # Tailwind 插件
 ├── App.tsx                          # 应用程序路由入口
 ├── main.tsx                         # React 渲染入口
 ├── provider.tsx                     # Context Providers（主题等）
@@ -428,7 +446,6 @@ make run
 - **自动部署**（`deploy.yml`）：推送到 main/master 分支时，自动构建并部署到 GitHub Pages
 - **代码扫描**（`code_scan.yml`）：使用 CodeQL 进行安全性分析
 - **代码质量检查**（`code-quality-check.yml`）：自动执行 TypeScript、Prettier 与 ESLint 检查
-- **密钥扫描**（`secret_scan.yml`）：防止敏感信息泄露
 - **依赖项审查**（`dependency-review.yml`）：检查 Pull Request 中的依赖项变更
 - **语义化 PR**（`semantic-pull-request.yml`）：确保 Pull Request 标题符合 Conventional Commits 规范
 - **自动标签**（`auto_labeler.yml`）：根据变更内容自动添加标签

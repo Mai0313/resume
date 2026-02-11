@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_RESUME_PDF_PATH,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </div>
 
@@ -41,9 +41,9 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - [Vite 6.3.5](https://vitejs.dev/guide/) - Fast frontend build tool
 - [React 18](https://react.dev/) - UI library
 - [TypeScript 5.6.3](https://www.typescriptlang.org) - Type-safe JavaScript
-- [React Router 7.6.2](https://reactrouter.com/) - Frontend routing
+- [React Router 7.12.0](https://reactrouter.com/) - Frontend routing
 - [HeroUI](https://heroui.com) - React UI component library
-- [Tailwind CSS 3.4.16](https://tailwindcss.com) - CSS framework
+- [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS framework
 - [Framer Motion 12.15](https://www.framer.com/motion) - React animation library
 - [React Spring 10.0](https://react-spring.dev/) - Spring animation library
 - [GSAP 3.13](https://gsap.com/) - Professional-grade animation library
@@ -72,6 +72,10 @@ VITE_RESUME_FILE=example.yaml
 
 # Optional: Resume PIN code protection
 VITE_PIN_CODE=123456
+
+# Optional: Resume PDF download path
+# Default: /example.pdf (maps to public/example.pdf)
+VITE_RESUME_PDF_PATH=/example.pdf
 ```
 
 Optional: Custom deployment root path (for GitHub Pages subpaths). If deploying to `https://<user>.github.io/<repo>`, set in `.env`:
@@ -302,6 +306,8 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ```
 src/
 ├── components/                      # Reusable components
+│   ├── ErrorBoundary.tsx            # Error boundary component
+│   ├── HeroSection.tsx              # Hero section for home page
 │   ├── Particles/                   # Particle background effects
 │   │   └── Particles.tsx
 │   ├── Orb/                         # Dynamic background orb (WebGL)
@@ -326,6 +332,11 @@ src/
 │   │   ├── VolunteerSection.tsx     # Volunteer experience section
 │   │   ├── WorkSection.tsx          # Work experience section
 │   │   └── index.ts                 # Section components export
+│   ├── shared/                      # Shared reusable components
+│   │   ├── BulletList.tsx           # Bullet list component
+│   │   ├── DateRange.tsx            # Date range formatter
+│   │   ├── ItemCard.tsx             # Generic item card
+│   │   └── ...                      # Other shared components
 │   ├── ResumeContent.tsx            # Resume content component
 │   ├── navbar.tsx                   # Navigation bar component
 │   ├── theme-switch.tsx             # Theme switch component
@@ -337,16 +348,23 @@ src/
 ├── layouts/                         # Layout templates
 │   └── default.tsx                  # Default layout (with navigation and theme)
 ├── utils/                           # Utility functions
-│   ├── resumeLoader.ts              # YAML resume loader
+│   ├── animations.ts                # Animation helper functions
+│   ├── env.ts                       # Environment variable management
+│   ├── formatters.ts                # Data formatting utilities
+│   ├── localStorage.ts              # Local storage helpers
 │   ├── pathUtils.ts                 # Path utility functions
-│   └── env.ts                       # Environment variable management and validation
+│   └── resumeLoader.ts              # YAML resume loader
 ├── config/                          # Configuration files
 │   └── site.ts                      # Site configuration and navigation setup
+├── constants/                       # Constants
+│   └── index.ts                     # Global constants
 ├── types/                           # TypeScript type definitions
+│   ├── errors.ts                    # Error types
 │   ├── index.ts                     # Common types (Resume, GitHub API, etc.)
 │   └── ogl.d.ts                     # OGL WebGL library type declarations
 ├── styles/                          # Global styles
-│   └── globals.css                  # Global CSS styles
+│   ├── globals.css                  # Global CSS styles
+│   └── plugins.ts                   # Tailwind plugins
 ├── App.tsx                          # Application routing entry point
 ├── main.tsx                         # React render entry point
 ├── provider.tsx                     # Context Providers (theme, etc.)
@@ -428,7 +446,6 @@ The project is configured with multiple GitHub Actions workflows:
 - **Automatic Deployment** (`deploy.yml`): Automatically builds and deploys to GitHub Pages when pushing to main/master branch
 - **Code Scanning** (`code_scan.yml`): Security analysis using CodeQL
 - **Code Quality Check** (`code-quality-check.yml`): Automatically runs TypeScript, Prettier, and ESLint checks
-- **Secret Scanning** (`secret_scan.yml`): Prevents sensitive information leaks
 - **Dependency Review** (`dependency-review.yml`): Checks dependency changes in Pull Requests
 - **Semantic PR** (`semantic-pull-request.yml`): Ensures Pull Request titles follow Conventional Commits specification
 - **Auto Labeler** (`auto_labeler.yml`): Automatically adds labels based on changes
