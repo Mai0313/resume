@@ -17,7 +17,7 @@ export const InterestsSection: React.FC<InterestsSectionProps> = ({
   interests,
   itemVariants,
 }) => {
-  const visibleInterests = interests?.filter(item => !item.hidden);
+  const visibleInterests = interests?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

@@ -17,7 +17,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
   skills,
   itemVariants,
 }) => {
-  const visibleSkills = skills?.filter(item => !item.hidden);
+  const visibleSkills = skills?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

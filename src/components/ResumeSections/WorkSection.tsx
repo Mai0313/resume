@@ -20,7 +20,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
   work,
   itemVariants,
 }) => {
-  const visibleWork = work?.filter(item => !item.hidden);
+  const visibleWork = work?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

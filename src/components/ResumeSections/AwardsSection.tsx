@@ -19,7 +19,7 @@ export const AwardsSection: React.FC<AwardsSectionProps> = ({
   awards,
   itemVariants,
 }) => {
-  const visibleAwards = awards?.filter(item => !item.hidden);
+  const visibleAwards = awards?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

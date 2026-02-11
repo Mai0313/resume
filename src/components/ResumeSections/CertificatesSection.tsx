@@ -19,7 +19,7 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
   certificates,
   itemVariants,
 }) => {
-  const visibleCertificates = certificates?.filter(item => !item.hidden);
+  const visibleCertificates = certificates?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

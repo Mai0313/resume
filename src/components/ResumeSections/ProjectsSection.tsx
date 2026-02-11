@@ -27,7 +27,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   data,
   itemVariants,
 }) => {
-  const visibleProjects = data?.sections?.projects?.items?.filter(item => !item.hidden);
+  const visibleProjects = data?.sections?.projects?.items?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

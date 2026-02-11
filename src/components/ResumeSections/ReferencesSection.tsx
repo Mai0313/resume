@@ -29,7 +29,7 @@ export const ReferencesSection: React.FC<ReferencesSectionProps> = ({
   data,
   itemVariants,
 }) => {
-  const visibleReferences = data?.sections?.references?.items?.filter(item => !item.hidden);
+  const visibleReferences = data?.sections?.references?.items?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

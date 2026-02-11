@@ -19,7 +19,7 @@ export const PublicationsSection: React.FC<PublicationsSectionProps> = ({
   publications,
   itemVariants,
 }) => {
-  const visiblePublications = publications?.filter(item => !item.hidden);
+  const visiblePublications = publications?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

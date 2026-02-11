@@ -16,7 +16,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   education,
   itemVariants,
 }) => {
-  const visibleEducation = education?.filter(item => !item.hidden);
+  const visibleEducation = education?.filter((item) => !item.hidden);
   
   return (
     <SectionCard

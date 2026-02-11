@@ -236,7 +236,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                     </svg>
                   </Button>
                 )}
-                {data.sections.profiles?.items.filter(p => !p.hidden).map((profile, index) => (
+                {data.sections.profiles?.items.filter((p) => !p.hidden).map((profile, index) => (
                   <Button
                     key={index}
                     isExternal
@@ -307,7 +307,7 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
               {/* Languages */}
               {data.sections.languages?.items && (
                 <div className="flex flex-wrap justify-center md:justify-start gap-2 pt-2">
-                  {data.sections.languages.items.filter(lang => !lang.hidden).map((lang, index) => (
+                  {data.sections.languages.items.filter((lang) => !lang.hidden).map((lang, index) => (
                     <Chip
                       key={index}
                       className="border-gray-200 dark:border-white/20 bg-white/50 dark:bg-white/5 backdrop-blur-sm"
