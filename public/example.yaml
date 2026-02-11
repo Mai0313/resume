@@ -44,9 +44,17 @@ work:
   - name: Google
     position: Software Engineer
     location: Banqiao, New Taipei, Taiwan
-    description: TBD...
+    description: Software Engineer at Google Pixel Security Team, specializing in ARM Trusted Firmware (TF-A), Rust-based Firmware (RF-A), and Baremetal Test Frameworks (TFTF) for next-generation Pixel SoCs.
     url: https://www.google.com
     startDate: 2025-10
+    summary: >
+      Driving software-led silicon development for Google Pixel SoCs. Focused on pre-silicon validation, firmware stability, and system-level power management (LPM), bridging the gap between hardware bringup and OS deployment.
+    highlights:
+      - Expanded Baremetal Test Framework (TFTF) coverage in pre-silicon environments, decoupling firmware testing from OS readiness and accelerating low-power mode (LPM) development by 4 to 8 weeks.
+      - Developed and optimized ARM Trusted Firmware (TF-A) and Rust-based Firmware (RF-A), introducing mechanisms like deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.
+      - Investigated and resolved complex system-level stability issues, including AXI bus deadlocks, power-down failues, and APC watchdog timeouts.
+      - Implemented and validated critical firmware workarounds for hardware errata (e.g., Double CMO for early write acknowledgement flaws) across varying core architectures to prevent memory corruption.
+      - Facilitated the bringup of next-generation SoC architectures (e.g., P26, CDO) utilizing a dual-track development strategy in TF-A and RF-A to ensure project security and delivery timelines.
 
   - name: MediaTek
     position: Machine Learning Engineer
