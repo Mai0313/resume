@@ -65,6 +65,7 @@ interface SectionProps {
 ```
 
 **Key patterns**:
+
 - `SectionCard` provides consistent section headers, icons, and conditional rendering
 - `ItemCard` standardizes card styling (replaces repeated className strings)
 - All shared components are in [src/components/shared/](../src/components/shared/) and exported via index.ts
