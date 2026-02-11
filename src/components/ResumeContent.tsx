@@ -50,39 +50,40 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
     };
 
     return {
-      work: createSectionComponent(WorkSection, "work", data.work),
+      profiles: null, // Profiles are shown in header as social links
+      experience: createSectionComponent(WorkSection, "work", data.sections.experience?.items),
       volunteer: createSectionComponent(
         VolunteerSection,
         "volunteer",
-        data.volunteer,
+        data.sections.volunteer?.items,
       ),
       education: createSectionComponent(
         EducationSection,
         "education",
-        data.education,
+        data.sections.education?.items,
       ),
-      awards: createSectionComponent(AwardsSection, "awards", data.awards),
+      awards: createSectionComponent(AwardsSection, "awards", data.sections.awards?.items),
       certificates: createSectionComponent(
         CertificatesSection,
         "certificates",
-        data.certificates,
+        data.sections.certificates?.items,
       ),
       publications: createSectionComponent(
         PublicationsSection,
         "publications",
-        data.publications,
+        data.sections.publications?.items,
       ),
-      skills: createSectionComponent(SkillsSection, "skills", data.skills),
+      skills: createSectionComponent(SkillsSection, "skills", data.sections.skills?.items),
       interests: createSectionComponent(
         InterestsSection,
         "interests",
-        data.interests,
+        data.sections.interests?.items,
       ),
-      languages: null,
-      references: data.references
+      languages: null, // Languages are shown in header
+      references: data.sections.references?.items
         ? (props: any) => <ReferencesSection {...props} data={data} />
         : null,
-      projects: data.projects
+      projects: data.sections.projects?.items
         ? (props: any) => <ProjectsSection {...props} data={data} />
         : null,
     };
@@ -167,13 +168,13 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
 
           <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start">
             {/* Profile Image with Glow */}
-            {data.basics.image && (
+            {data.picture && !data.picture.hidden && data.picture.url && (
               <div className="relative group shrink-0">
                 <div className="absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200" />
                 <img
                   alt={`${data.basics.name} profile`}
                   className="relative w-48 h-48 rounded-full object-cover ring-4 ring-white/50 dark:ring-white/10 shadow-2xl"
-                  src={data.basics.image}
+                  src={data.picture.url}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
 
@@ -195,17 +196,18 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 pb-2">
                   {data.basics.name}
                 </h1>
-                {data.basics.label && (
+                {data.basics.headline && (
                   <p className="text-2xl text-blue-600 dark:text-blue-400 font-medium mt-2">
-                    {data.basics.label}
+                    {data.basics.headline}
                   </p>
                 )}
               </div>
 
-              {data.basics.summary && (
-                <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl leading-relaxed">
-                  {data.basics.summary}
-                </p>
+              {data.summary && !data.summary.hidden && (
+                <div 
+                  className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: data.summary.content }}
+                />
               )}
 
               {/* Contact & Social */}
@@ -234,14 +236,14 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                     </svg>
                   </Button>
                 )}
-                {data.basics.profiles?.map((profile, index) => (
+                {data.sections.profiles?.items.filter((p) => !p.hidden).map((profile, index) => (
                   <Button
                     key={index}
                     isExternal
                     isIconOnly
                     as={Link}
                     className="bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-gray-700 dark:text-white border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-md"
-                    href={profile.url}
+                    href={profile.website.url}
                     size="md"
                     variant="flat"
                   >
@@ -303,9 +305,9 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
               </div>
 
               {/* Languages */}
-              {data.languages && (
+              {data.sections.languages?.items && (
                 <div className="flex flex-wrap justify-center md:justify-start gap-2 pt-2">
-                  {data.languages.map((lang, index) => (
+                  {data.sections.languages.items.filter((lang) => !lang.hidden).map((lang, index) => (
                     <Chip
                       key={index}
                       className="border-gray-200 dark:border-white/20 bg-white/50 dark:bg-white/5 backdrop-blur-sm"

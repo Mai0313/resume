@@ -1,4 +1,4 @@
-import type { JSONResumeInterest } from "@/utils/resumeLoader";
+import type { InterestItem } from "@/utils/resumeLoader";
 
 import React from "react";
 import { Chip } from "@heroui/chip";
@@ -9,7 +9,7 @@ import { SectionCard, SectionIcons } from "./SectionCard";
 import { ItemCard } from "@/components/shared";
 
 interface InterestsSectionProps {
-  interests: JSONResumeInterest[] | undefined;
+  interests: InterestItem[] | undefined;
   itemVariants: Variants;
 }
 
@@ -17,18 +17,20 @@ export const InterestsSection: React.FC<InterestsSectionProps> = ({
   interests,
   itemVariants,
 }) => {
+  const visibleInterests = interests?.filter((item) => !item.hidden);
+  
   return (
     <SectionCard
       colorScheme="cyan"
-      data={interests}
+      data={visibleInterests}
       icon={SectionIcons.interests}
       itemVariants={itemVariants}
       sectionKey="interests"
       title="Research Interests"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {interests?.map((interest, index) => (
-          <ItemCard key={`interest-${interest.name || "unknown"}-${index}`}>
+        {visibleInterests?.map((interest, index) => (
+          <ItemCard key={interest.id || `interest-${index}`}>
             <div className="flex-grow">
               <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
                 {interest.name}

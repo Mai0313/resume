@@ -6,13 +6,12 @@ import { SectionCard, SectionIcons } from "./SectionCard";
 import {
   ItemCard,
   ExternalLink,
-  DateRange,
   BuildingIcon,
 } from "@/components/shared";
-import { JSONResumeCertificate } from "@/utils/resumeLoader";
+import { CertificateItem } from "@/utils/resumeLoader";
 
 interface CertificatesSectionProps {
-  certificates: JSONResumeCertificate[] | undefined;
+  certificates: CertificateItem[] | undefined;
   itemVariants: Variants;
 }
 
@@ -20,26 +19,32 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
   certificates,
   itemVariants,
 }) => {
+  const visibleCertificates = certificates?.filter((item) => !item.hidden);
+  
   return (
     <SectionCard
       colorScheme="teal"
-      data={certificates}
+      data={visibleCertificates}
       icon={SectionIcons.certificates}
       itemVariants={itemVariants}
       sectionKey="certificates"
       title="Certificates"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {certificates?.map((cert: JSONResumeCertificate, index: number) => (
-          <ItemCard key={`certificate-${cert.name || "unknown"}-${index}`}>
+        {visibleCertificates?.map((cert: CertificateItem, index: number) => (
+          <ItemCard key={cert.id || `certificate-${index}`}>
             <div className="flex-grow">
               <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
-                <ExternalLink
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400"
-                  url={cert.url}
-                >
-                  {cert.name}
-                </ExternalLink>
+                {cert.website?.url ? (
+                  <ExternalLink
+                    className="hover:text-emerald-600 dark:hover:text-emerald-400"
+                    url={cert.website.url}
+                  >
+                    {cert.title}
+                  </ExternalLink>
+                ) : (
+                  cert.title
+                )}
               </h3>
 
               {cert.issuer && (
@@ -51,7 +56,11 @@ export const CertificatesSection: React.FC<CertificatesSectionProps> = ({
                 </div>
               )}
 
-              <DateRange startDate={cert.date} />
+              {cert.date && (
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {cert.date}
+                </span>
+              )}
             </div>
           </ItemCard>
         ))}

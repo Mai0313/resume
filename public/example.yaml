@@ -1,308 +1,501 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json
+# yaml-language-server: $schema=https://rxresu.me/schema.json
+
+picture:
+  hidden: false
+  url: https://lh3.googleusercontent.com/pw/AP1GczMszOuf7KjSMw1UtWoja-uC9XDUHYZ7LCG9S9esseVDRcadreWNqrIfzt3-PjCrIVJMVrDPh0g8ySeY5F_zfb7Rz73BF8BDy2oqKQ3Pj4NtNEANvMkna8VkYeWZa7mHl4YxL4QIAq963YLyuvFZWFrh=w1349-h1012-s-no-gm?authuser=0
+  size: 128
+  rotation: 0
+  aspectRatio: 1
+  borderRadius: 50
+  borderColor: rgba(0, 0, 0, 0.1)
+  borderWidth: 2
+  shadowColor: rgba(0, 0, 0, 0.1)
+  shadowWidth: 4
 
 basics:
   name: Wei Cheng Lee
-  label: Software Engineer
-  image: https://lh3.googleusercontent.com/pw/AP1GczMszOuf7KjSMw1UtWoja-uC9XDUHYZ7LCG9S9esseVDRcadreWNqrIfzt3-PjCrIVJMVrDPh0g8ySeY5F_zfb7Rz73BF8BDy2oqKQ3Pj4NtNEANvMkna8VkYeWZa7mHl4YxL4QIAq963YLyuvFZWFrh=w1349-h1012-s-no-gm?authuser=0
+  headline: Software Engineer
   email: weichenglee0313@gmail.com
-  # phone: +886-912-345-678
-  # url: https://mai0313.github.io/resume
-  # summary: >
-  #   Software Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
-  #   Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.
-  location:
-    postalCode: "300"
-    city: Hsinchu
-    countryCode: TW
-    region: Taiwan
+  phone: ""
+  location: Hsinchu, Taiwan
+  website:
+    url: https://mai0313.github.io/resume
+    label: Personal Website
+  customFields: []
+
+summary:
+  title: Summary
+  columns: 1
+  hidden: true
+  content: >
+    <p>Software Engineer with experience in multi-agent AI systems, physics-informed neural networks, and automated analog circuit design.
+    Passionate about bridging industry and academia, advancing AI-assisted semiconductor design, and promoting open collaboration.</p>
+
+sections:
   profiles:
-    - network: LinkedIn
-      username: Wei Lee
-      url: https://www.linkedin.com/in/weichenglee0313/
-    - network: GitHub
-      username: Mai0313
-      url: https://github.com/Mai0313
+    title: Profiles
+    columns: 1
+    hidden: false
+    items:
+      - id: profile-linkedin
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        network: LinkedIn
+        username: Wei Lee
+        website:
+          url: https://www.linkedin.com/in/weichenglee0313/
+          label: LinkedIn Profile
+      - id: profile-github
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        network: GitHub
+        username: Mai0313
+        website:
+          url: https://github.com/Mai0313
+          label: GitHub Profile
 
-languages:
-  - language: Chinese
-    fluency: Native
-  - language: English
-    fluency: Advanced
+  experience:
+    title: Work Experience
+    columns: 1
+    hidden: false
+    items:
+      - id: exp-google
+        hidden: false
+        options:
+          showLinkInTitle: false
+        company: Google
+        position: Software Engineer
+        location: Banqiao, New Taipei, Taiwan
+        period: 2025-10 - Present
+        website:
+          url: https://www.google.com
+          label: Google
+        description: >
+          <p>Driving software-led silicon development for Google Pixel SoCs. Focused on pre-silicon validation, firmware stability, and system-level power management (LPM), bridging the gap between hardware bringup and OS deployment.</p>
+          <ul>
+            <li>Expanded Baremetal Test Framework (TFTF) coverage in pre-silicon environments, decoupling firmware testing from OS readiness and accelerating low-power mode (LPM) development by 4 to 8 weeks.</li>
+            <li>Developed and optimized ARM Trusted Firmware (TF-A) and Rust-based Firmware (RF-A), introducing mechanisms like deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.</li>
+            <li>Investigated and resolved complex system-level stability issues, including AXI bus deadlocks, power-down failures, and APC watchdog timeouts.</li>
+            <li>Implemented and validated critical firmware workarounds for hardware errata (e.g., Double CMO for early write acknowledgement flaws) across varying core architectures to prevent memory corruption.</li>
+            <li>Facilitated the bringup of next-generation SoC architectures (e.g., P26, CDO) utilizing a dual-track development strategy in TF-A and RF-A to ensure project security and delivery timelines.</li>
+          </ul>
 
-education:
-  - institution: University of California, San Diego
-    area: Psychology
-    url: https://ucsd.edu/
-    studyType: Bachelor of Science
-    startDate: 2017-09
-    endDate: 2021-09
-    summary: >
-      Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning.
-      Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.
+      - id: exp-mediatek
+        hidden: false
+        options:
+          showLinkInTitle: false
+        company: MediaTek
+        position: Machine Learning Engineer
+        location: Hsinchu, Taiwan
+        period: 2022-08 - 2025-10
+        website:
+          url: https://www.mediatek.com
+          label: MediaTek
+        description: >
+          <p>Spearheaded ML research and industrialization for semiconductor design—thermal simulation, leakage analysis, and multi-agent AI systems.</p>
+          <ul>
+            <li>Developed and deployed physics-aware deep learning models for SoC thermal simulation, reducing maximum temperature prediction error by 34%.</li>
+            <li>Engineered layout-dependent leakage analysis methodology, enhancing pre-silicon estimation accuracy by 10% across multiple product lines.</li>
+            <li>Built scalable data analysis and visualization pipelines for IC design, improving decision-making speed and accuracy.</li>
+            <li>Led automation of RF/analog circuit design using multi-agent LLM systems, driving Pass@1 success rate to over 84% on complex tasks.</li>
+            <li>Published 3 peer-reviewed papers in top conferences (NeurIPS, IEEE VLSI TSA, IEEE ICLAD) as first/co-author.</li>
+            <li>Established industry-academia partnerships and secured research sponsorships, supporting talent development and knowledge exchange.</li>
+            <li>Mentored junior engineers and interns, fostering open collaboration and a culture of continuous learning.</li>
+          </ul>
 
-work:
-  - name: Google
-    position: Software Engineer
-    location: Banqiao, New Taipei, Taiwan
-    description: Software Engineer at Google Pixel Security Team, specializing in ARM Trusted Firmware (TF-A), Rust-based Firmware (RF-A), and Baremetal Test Frameworks (TFTF) for next-generation Pixel SoCs.
-    url: https://www.google.com
-    startDate: 2025-10
-    summary: >
-      Driving software-led silicon development for Google Pixel SoCs. Focused on pre-silicon validation, firmware stability, and system-level power management (LPM), bridging the gap between hardware bringup and OS deployment.
-    highlights:
-      - Expanded Baremetal Test Framework (TFTF) coverage in pre-silicon environments, decoupling firmware testing from OS readiness and accelerating low-power mode (LPM) development by 4 to 8 weeks.
-      - Developed and optimized ARM Trusted Firmware (TF-A) and Rust-based Firmware (RF-A), introducing mechanisms like deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.
-      - Investigated and resolved complex system-level stability issues, including AXI bus deadlocks, power-down failues, and APC watchdog timeouts.
-      - Implemented and validated critical firmware workarounds for hardware errata (e.g., Double CMO for early write acknowledgement flaws) across varying core architectures to prevent memory corruption.
-      - Facilitated the bringup of next-generation SoC architectures (e.g., P26, CDO) utilizing a dual-track development strategy in TF-A and RF-A to ensure project security and delivery timelines.
+  education:
+    title: Education
+    columns: 1
+    hidden: false
+    items:
+      - id: edu-ucsd
+        hidden: false
+        options:
+          showLinkInTitle: false
+        school: University of California, San Diego
+        degree: Bachelor of Science
+        area: Psychology
+        grade: ""
+        location: San Diego, CA, USA
+        period: 2017-09 - 2021-09
+        website:
+          url: https://ucsd.edu/
+          label: UCSD
+        description: >
+          <p>Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning.
+          Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.</p>
 
-  - name: MediaTek
-    position: Machine Learning Engineer
-    location: Hsinchu, Taiwan
-    description: Fabless semiconductor company that designs and manufactures a range of semiconductor products, providing chips for wireless communications, high-definition television, handheld mobile devices like smartphones and tablet computers, navigation systems, consumer multimedia products and digital subscriber line services as well as optical disc drives.
-    url: https://www.mediatek.com
-    startDate: 2022-08
-    endDate: 2025-10
-    summary: >
-      Spearheaded ML research and industrialization for semiconductor design—thermal simulation, leakage analysis, and multi-agent AI systems.
-    highlights:
-      - Developed and deployed physics-aware deep learning models for SoC thermal simulation, reducing maximum temperature prediction error by 34%.
-      - Engineered layout-dependent leakage analysis methodology, enhancing pre-silicon estimation accuracy by 10% across multiple product lines.
-      - Built scalable data analysis and visualization pipelines for IC design, improving decision-making speed and accuracy.
-      - Led automation of RF/analog circuit design using multi-agent LLM systems, driving Pass@1 success rate to over 84% on complex tasks.
-      - Published 3 peer-reviewed papers in top conferences (NeurIPS, IEEE VLSI TSA, IEEE ICLAD) as first/co-author.
-      - Established industry-academia partnerships and secured research sponsorships, supporting talent development and knowledge exchange.
-      - Mentored junior engineers and interns, fostering open collaboration and a culture of continuous learning.
+  projects:
+    title: Projects
+    columns: 1
+    hidden: false
+    items:
+      - id: proj-automotive
+        hidden: false
+        options:
+          showLinkInTitle: false
+        name: Automotive Assistant for Vehicle using multi-agent system
+        period: 2025-01 - 2025-06
+        website:
+          url: https://github.com/Mai0313/automotive-backend
+          label: GitHub
+        description: >
+          <p>Using multi-agent system to develop an automotive assistant for vehicle control, enabling real-time voice commands and automated task execution.
+          Focused on agent orchestration, executor agents, and chain-of-stage reasoning to enhance user experience and system efficiency.</p>
+          <ul>
+            <li>Implemented a multi-agent architecture for real-time voice command processing and task execution.</li>
+            <li>Developed executor agents for specialized tasks, improving system responsiveness and adaptability.</li>
+          </ul>
 
-publications:
-  - name: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design"
-    url: https://arxiv.org/abs/2505.22990
-    publisher: IEEE International Conference on LLM-Aided Design (ICLAD)
-    releaseDate: "2025"
-    summary: >
-      Proposed a scalable, fully-automated multi-agent workflow for RF/Analog circuit netlist design, integrating Diagram-Aware Retrieval-Augmented Generation and Chain-of-Stage reasoning. Achieved state-of-the-art results on real-world analog circuit design tasks, validating the potential of AI-assisted EDA systems.
+      - id: proj-menter
+        hidden: false
+        options:
+          showLinkInTitle: false
+        name: "MenTeR: Multi-Agent Analog Circuit Design System"
+        period: 2025-01 - 2025-05
+        website:
+          url: https://arxiv.org/abs/2505.22990
+          label: arXiv
+        description: >
+          <p>Led engineering and system integration for MenTeR, an end-to-end automated workflow for RF/analog circuit netlist design based on LLM agents. Focused on cross-agent collaboration, reusable knowledge base construction, and seamless integration with industrial flows.</p>
+          <ul>
+            <li>Architected and engineered PI, Circuit, and Testbench agents for automation of specification analysis, netlist generation, and simulation validation.</li>
+            <li>Built the Circuit Think Tank, a reusable domain knowledge base for design pattern acceleration.</li>
+            <li>Significantly reduced manual workload and boosted design success rates on real-world analog circuits.</li>
+            <li>Drove practical adoption through industry-academia collaboration.</li>
+          </ul>
 
-  - name: A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects
-    url: https://ieeexplore.ieee.org/document/10546410
-    publisher: IEEE VLSI TSA
-    releaseDate: "2024"
-    summary: >
-      A novel methodology for digital logic IP-level leakage analysis, incorporating both intra-cell and inter-cell layout-dependent effects. Improved pre-silicon and post-silicon correlation by over 10% in industrial mixed-Vt designs.
+      - id: proj-task-mgmt
+        hidden: false
+        options:
+          showLinkInTitle: false
+        name: Task Management System with Multi-Agent Orchestration
+        period: 2024-01 - 2024-12
+        website:
+          url: ""
+          label: ""
+        description: >
+          <p>Multi-Agent system for task management, including task assignment, progress tracking, and resource allocation.
+          Utilizes executor agents for efficient execution of tasks across various domains.
+          Support delegation of tasks to specialized agents, enhancing system flexibility and adaptability.</p>
+          <ul>
+            <li>Implemented a robust task management framework with multi-agent orchestration.</li>
+            <li>Delegated tasks to specialized executor agents for efficient execution.</li>
+            <li>Enabled dynamic task assignment and resource allocation based on agent capabilities.</li>
+          </ul>
 
-  - name: Fast SoC Thermal Simulation with Physics-aware U-Net
-    url: https://neurips.cc/virtual/2023/76089
-    publisher: NeurIPS 2023
-    releaseDate: "2023"
-    summary: >
-      A physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools.
+      - id: proj-leakage
+        hidden: false
+        options:
+          showLinkInTitle: false
+        name: Leakage Analysis Automation
+        period: 2024-01 - 2024-06
+        website:
+          url: https://ieeexplore.ieee.org/document/10546410
+          label: IEEE Xplore
+        description: >
+          <p>Developed scalable toolchains and visualization dashboards for automated semiconductor leakage analysis, enabling efficient cross-team data-driven validation and model refinement.</p>
+          <ul>
+            <li>Automated extraction and modeling of layout-dependent leakage effects, deployed across multiple product lines.</li>
+            <li>Enabled real-time silicon measurement analysis for rapid debugging and yield improvement.</li>
+          </ul>
 
-projects:
-  - name: Automotive Assistant for Vechicle using multi-agent system
-    description: >
-      Using multi-agent system to develop an automotive assistant for vehicle control, enabling real-time voice commands and automated task execution.
-      Focused on agent orchestration, executor agents, and chain-of-stage reasoning to enhance user experience and system efficiency.
-    highlights:
-      - Implemented a multi-agent architecture for real-time voice command processing and task execution.
-      - Developed executor agents for specialized tasks, improving system responsiveness and adaptability.
-    keywords:
-      - Multi-Agent Systems
-      - Voice Recognition
-      - Automotive
-      - Real-time Processing
-    startDate: 2025-01
-    endDate: 2025-06
-    url: https://github.com/Mai0313/automotive-backend
-    roles:
-      - Technical Lead
-      - System Engineer
-    entity: MediaTek
-    type: application
+      - id: proj-thermal
+        hidden: false
+        options:
+          showLinkInTitle: false
+        name: AI Thermal Simulation
+        period: 2022-10 - 2023-06
+        website:
+          url: https://neurips.cc/virtual/2023/76089
+          label: NeurIPS
+        description: >
+          <p>Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.</p>
+          <ul>
+            <li>Integrated thermal gradient and laplacian constraints, improving data efficiency and model fidelity.</li>
+            <li>Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup.</li>
+            <li>Explored and prototyped transformer-based variants for future research directions.</li>
+          </ul>
 
-  - name: "MenTeR: Multi-Agent Analog Circuit Design System"
-    description: >
-      Led engineering and system integration for MenTeR, an end-to-end automated workflow for RF/analog circuit netlist design based on LLM agents. Focused on cross-agent collaboration, reusable knowledge base construction, and seamless integration with industrial flows.
-    highlights:
-      - Architected and engineered PI, Circuit, and Testbench agents for automation of specification analysis, netlist generation, and simulation validation.
-      - Built the Circuit Think Tank, a reusable domain knowledge base for design pattern acceleration.
-      - Significantly reduced manual workload and boosted design success rates on real-world analog circuits.
-      - Drove practical adoption through industry-academia collaboration.
-    keywords:
-      - Circuit Design
-      - Multi-Agent Systems
-      - LLM
-      - Automation
-    startDate: 2025-01
-    endDate: 2025-05
-    url: https://arxiv.org/abs/2505.22990
-    roles:
-      - Technical Lead
-      - System Engineer
-    entity: MediaTek
-    type: conference
+  publications:
+    title: Publications
+    columns: 1
+    hidden: false
+    items:
+      - id: pub-menter
+        hidden: false
+        options:
+          showLinkInTitle: false
+        title: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design"
+        publisher: IEEE International Conference on LLM-Aided Design (ICLAD)
+        date: "2025"
+        website:
+          url: https://arxiv.org/abs/2505.22990
+          label: arXiv
+        description: >
+          <p>Proposed a scalable, fully-automated multi-agent workflow for RF/Analog circuit netlist design, integrating Diagram-Aware Retrieval-Augmented Generation and Chain-of-Stage reasoning. Achieved state-of-the-art results on real-world analog circuit design tasks, validating the potential of AI-assisted EDA systems.</p>
 
-  - name: Task Management System with Multi-Agent Orchestration
-    description: >
-      Multi-Agent system for task management, including task assignment, progress tracking, and resource allocation.
-      Utilizes executor agents for efficient execution of tasks across various domains.
-      Support delegation of tasks to specialized agents, enhancing system flexibility and adaptability.
-    highlights:
-      - Implemented a robust task management framework with multi-agent orchestration.
-      - Delegated tasks to specialized executor agents for efficient execution.
-      - Enabled dynamic task assignment and resource allocation based on agent capabilities.
-    startDate: 2024-01
-    endDate: 2024-12
-    keywords:
-      - Task Management
-      - Multi-Agent Systems
-      - Resource Allocation
-      - Orchestration
-    roles:
-      - System Engineer
-    entity: MediaTek
-    type: application
+      - id: pub-leakage
+        hidden: false
+        options:
+          showLinkInTitle: false
+        title: A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects
+        publisher: IEEE VLSI TSA
+        date: "2024"
+        website:
+          url: https://ieeexplore.ieee.org/document/10546410
+          label: IEEE Xplore
+        description: >
+          <p>A novel methodology for digital logic IP-level leakage analysis, incorporating both intra-cell and inter-cell layout-dependent effects. Improved pre-silicon and post-silicon correlation by over 10% in industrial mixed-Vt designs.</p>
 
-  - name: Leakage Analysis Automation
-    description: >
-      Developed scalable toolchains and visualization dashboards for automated semiconductor leakage analysis, enabling efficient cross-team data-driven validation and model refinement.
-    highlights:
-      - Automated extraction and modeling of layout-dependent leakage effects, deployed across multiple product lines.
-      - Enabled real-time silicon measurement analysis for rapid debugging and yield improvement.
-    keywords:
-      - Semiconductor
-      - Leakage Analysis
-      - Automation
-      - Data Visualization
-    startDate: 2024-01
-    endDate: 2024-06
-    url: https://ieeexplore.ieee.org/document/10546410
-    roles:
-      - Lead Developer
-      - Data Scientist
-    entity: MediaTek
-    type: conference
+      - id: pub-thermal
+        hidden: false
+        options:
+          showLinkInTitle: false
+        title: Fast SoC Thermal Simulation with Physics-aware U-Net
+        publisher: NeurIPS 2023
+        date: "2023"
+        website:
+          url: https://neurips.cc/virtual/2023/76089
+          label: NeurIPS
+        description: >
+          <p>A physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools.</p>
 
-  - name: AI Thermal Simulation
-    description: >
-      Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.
-    highlights:
-      - Integrated thermal gradient and laplacian constraints, improving data efficiency and model fidelity.
-      - Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup.
-      - Explored and prototyped transformer-based variants for future research directions.
-    keywords:
-      - Thermal Simulation
-      - Physics-Informed Neural Networks
-      - SoC Design
-      - Deep Learning
-    startDate: 2022-10
-    endDate: 2023-06
-    url: https://neurips.cc/virtual/2023/76089
-    roles:
-      - Core Developer
-      - Research Engineer
-    entity: MediaTek
-    type: conference
+  skills:
+    title: Skills & Expertise
+    columns: 1
+    hidden: false
+    items:
+      - id: skill-multi-agent
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: Multi-Agent Systems
+        proficiency: Expert
+        level: 5
+        keywords:
+          - Agent-Oriented Programming
+          - Agent Orchestration
+          - Chain-of-Stage Reasoning
+          - Diagram-Aware Retrieval-Augmented Generation (DA-RAG)
+          - Executor Agent
+          - Circuit Think Tank
 
-skills:
-  - name: Multi-Agent Systems
-    level: Expert
-    keywords:
-      - Agent-Oriented Programming
-      - Agent Orchestration
-      - Chain-of-Stage Reasoning
-      - Diagram-Aware Retrieval-Augmented Generation (DA-RAG)
-      - Executor Agent
-      - Circuit Think Tank
-  - name: Physics-Informed Machine Learning
-    level: Advanced
-    keywords:
-      - Physics-Informed Neural Networks (PINNs)
-      - Fourier-Biot Equation
-      - Gradient and Laplacian Modeling
-      - Physics-aware Loss Functions
-  - name: Programming Languages
-    level: Expert
-    keywords:
-      - Python
-      - JavaScript
-      - TypeScript
-      - Golang
-      - Rust
-      - LaTeX
-  - name: AI/ML Frameworks
-    level: Advanced
-    keywords:
-      - PyTorch
-      - PyTorch Lightning
-      - TensorFlow
-  - name: DevOps & Infrastructure
-    level: Expert
-    keywords:
-      - Docker
-      - BigQuery
-      - Kubernetes
-      - GitHub Actions
-  - name: Research & Analysis
-    level: Advanced
-    keywords:
-      - Statistical Modeling
-      - Data Analysis & Efficiency
-      - Empirical Research Methods
-      - Technical Writing
+      - id: skill-pinn
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: Physics-Informed Machine Learning
+        proficiency: Advanced
+        level: 4
+        keywords:
+          - Physics-Informed Neural Networks (PINNs)
+          - Fourier-Biot Equation
+          - Gradient and Laplacian Modeling
+          - Physics-aware Loss Functions
 
-interests:
-  - name: AI for Semiconductor Design
-    keywords:
-      - Physics-Informed Neural Networks
-      - Circuit Design Automation
-      - Thermal Modeling
-      - Leakage Analysis
-  - name: Multi-Agent & Multimodal AI
-    keywords:
-      - Multi-Agent Systems
-      - Multimodal & Reinforcement Learning
-      - Decision Making
-  - name: Research Methodology
-    keywords:
-      - Integrative Tokenization
-      - Knowledge Distillation
-      - Process-Oriented Evaluation
-      - Cross-disciplinary Research
-  - name: Educational Impact
-    keywords:
-      - Knowledge Democratization
-      - Fair Access to AI Tools
+      - id: skill-programming
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: Programming Languages
+        proficiency: Expert
+        level: 5
+        keywords:
+          - Python
+          - JavaScript
+          - TypeScript
+          - Golang
+          - Rust
+          - LaTeX
 
-volunteer:
-  - organization: Open Source Community
-    position: Contributor
-    url: https://github.com/mai0313
-    startDate: 2022-01
-    summary: >
-      Active contributor to open-source machine learning and semiconductor design tools.
-    highlights:
-      - Contributed to 15+ open-source projects related to AI and EDA tools
-      - Maintained documentation and tutorials for newcomers
+      - id: skill-aiml
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: AI/ML Frameworks
+        proficiency: Advanced
+        level: 4
+        keywords:
+          - PyTorch
+          - PyTorch Lightning
+          - TensorFlow
 
-certificates:
-  - name: Fundamentals of Accelerated Computing with CUDA Python
-    date: "2024-12-06"
-    url: https://learn.nvidia.com/certificates?id=wS6KBhmjTqiLOkau1wi0Tw
-    issuer: NVIDIA
+      - id: skill-devops
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: DevOps & Infrastructure
+        proficiency: Expert
+        level: 5
+        keywords:
+          - Docker
+          - BigQuery
+          - Kubernetes
+          - GitHub Actions
 
-references:
-  - name: Jiayi Xu
-    reference: >
-      Wei Cheng Lee distinguished himself at MediaTek by developing a custom terabyte-scale data analysis platform for IC design, demonstrating remarkable adaptability in mastering complex technical domains and translating challenging requirements into robust, scalable solutions.
+      - id: skill-research
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: Research & Analysis
+        proficiency: Advanced
+        level: 4
+        keywords:
+          - Statistical Modeling
+          - Data Analysis & Efficiency
+          - Empirical Research Methods
+          - Technical Writing
 
-  - name: Yi-Chen Lin
-    reference: >
-      Wei Cheng Lee has proven himself as a proactive contributor to major open-source projects like AutoGen and LangChain, leveraging his community credibility to facilitate collaborations with leading researchers from DeepMind and Penn State while consistently enhancing team productivity through his dedication to knowledge sharing and process improvement.
+  languages:
+    title: Languages
+    columns: 1
+    hidden: false
+    items:
+      - id: lang-chinese
+        hidden: false
+        options:
+          showLinkInTitle: false
+        language: Chinese
+        fluency: Native
+        level: 5
+      - id: lang-english
+        hidden: false
+        options:
+          showLinkInTitle: false
+        language: English
+        fluency: Advanced
+        level: 4
 
-  - name: Yu-Sheng Lin
-    reference: >
-      Wei Cheng Lee served as a key contributor to our AI Thermal Simulation project published at NeurIPS 2023, where he quickly mastered complex concepts like U-Net architecture and thermal gradient algorithms, proactively explored novel approaches such as integrating Swin Transformer V2 for thermal simulation, and demonstrated exceptional adaptability by rapidly re-engineering cutting-edge models for real-world applications while maintaining high code quality and conducting critical validation experiments.
+  interests:
+    title: Interests
+    columns: 1
+    hidden: false
+    items:
+      - id: interest-ai-semiconductor
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: AI for Semiconductor Design
+        keywords:
+          - Physics-Informed Neural Networks
+          - Circuit Design Automation
+          - Thermal Modeling
+          - Leakage Analysis
 
-meta:
-  canonical: https://resume.mai0313.com
-  version: v2.1.0
-  lastModified: "2025-07-15T10:30:00"
+      - id: interest-multi-agent-ai
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: Multi-Agent & Multimodal AI
+        keywords:
+          - Multi-Agent Systems
+          - Multimodal & Reinforcement Learning
+          - Decision Making
+
+      - id: interest-research
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: Research Methodology
+        keywords:
+          - Integrative Tokenization
+          - Knowledge Distillation
+          - Process-Oriented Evaluation
+          - Cross-disciplinary Research
+
+      - id: interest-education
+        hidden: false
+        options:
+          showLinkInTitle: false
+        icon: ""
+        name: Educational Impact
+        keywords:
+          - Knowledge Democratization
+          - Fair Access to AI Tools
+
+  awards:
+    title: Awards & Honors
+    columns: 1
+    hidden: true
+    items: []
+
+  certificates:
+    title: Certificates
+    columns: 1
+    hidden: false
+    items:
+      - id: cert-cuda
+        hidden: false
+        options:
+          showLinkInTitle: false
+        title: Fundamentals of Accelerated Computing with CUDA Python
+        issuer: NVIDIA
+        date: "2024-12-06"
+        website:
+          url: https://learn.nvidia.com/certificates?id=wS6KBhmjTqiLOkau1wi0Tw
+          label: Certificate
+        description: ""
+
+  references:
+    title: References
+    columns: 1
+    hidden: false
+    items:
+      - id: ref-jiayi
+        hidden: false
+        options:
+          showLinkInTitle: false
+        name: Jiayi Xu
+        position: ""
+        company: ""
+        email: ""
+        phone: ""
+        website:
+          url: ""
+          label: ""
+        description: >
+          <p>Wei Cheng Lee distinguished himself at MediaTek by developing a custom terabyte-scale data analysis platform for IC design, demonstrating remarkable adaptability in mastering complex technical domains and translating challenging requirements into robust, scalable solutions.</p>
+
+      - id: ref-yichen
+        hidden: false
+        options:
+          showLinkInTitle: false
+        name: Yi-Chen Lin
+        position: ""
+        company: ""
+        email: ""
+        phone: ""
+        website:
+          url: ""
+          label: ""
+        description: >
+          <p>Wei Cheng Lee has proven himself as a proactive contributor to major open-source projects like AutoGen and LangChain, leveraging his community credibility to facilitate collaborations with leading researchers from DeepMind and Penn State while consistently enhancing team productivity through his dedication to knowledge sharing and process improvement.</p>
+
+      - id: ref-yusheng
+        hidden: false
+        options:
+          showLinkInTitle: false
+        name: Yu-Sheng Lin
+        position: ""
+        company: ""
+        email: ""
+        phone: ""
+        website:
+          url: ""
+          label: ""
+        description: >
+          <p>Wei Cheng Lee served as a key contributor to our AI Thermal Simulation project published at NeurIPS 2023, where he quickly mastered complex concepts like U-Net architecture and thermal gradient algorithms, proactively explored novel approaches such as integrating Swin Transformer V2 for thermal simulation, and demonstrated exceptional adaptability by rapidly re-engineering cutting-edge models for real-world applications while maintaining high code quality and conducting critical validation experiments.</p>
