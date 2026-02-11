@@ -1,4 +1,4 @@
-<center>
+<div align="center" markdown="1">
 
 # 个人简历
 
@@ -9,7 +9,7 @@
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
-</center>
+</div>
 
 这是一个使用 Vite 与 HeroUI 框架构建的个人网站，适合部署到 GitHub Pages。
 

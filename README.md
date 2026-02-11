@@ -1,4 +1,4 @@
-<center>
+<div align="center" markdown="1">
 
 # Personal Resume
 
@@ -9,7 +9,7 @@
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_GITHUB_TOKEN,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
-</center>
+</div>
 
 This is a personal website built with Vite and the HeroUI framework, suitable for deployment on GitHub Pages.
 
