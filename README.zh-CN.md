@@ -304,7 +304,9 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ## 项目结构
 
 ```
-src/
+.
+├── .devcontainer/                   # Dev Container 配置
+├── src/
 ├── components/                      # 可重用组件
 │   ├── ErrorBoundary.tsx            # 错误边界组件
 │   ├── HeroSection.tsx              # 首页 Hero 区块
@@ -328,6 +330,7 @@ src/
 │   │   ├── ProjectsSection.tsx      # 项目经验区块
 │   │   ├── PublicationsSection.tsx  # 发表著作区块
 │   │   ├── ReferencesSection.tsx    # 推荐人区块
+│   │   ├── SectionCard.tsx          # 简历区块包装卡片
 │   │   ├── SkillsSection.tsx        # 技能区块
 │   │   ├── VolunteerSection.tsx     # 志愿者经验区块
 │   │   ├── WorkSection.tsx          # 工作经验区块
@@ -434,9 +437,6 @@ make clean
 
 # 执行格式化与 Lint（等同于 yarn format + yarn lint）
 make fmt
-
-# 运行项目（需要先 build）
-make run
 ```
 
 ### 持续集成 / 持续部署（CI/CD）

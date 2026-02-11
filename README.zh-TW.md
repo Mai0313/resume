@@ -304,14 +304,16 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ## 專案結構
 
 ```
-src/
+.
+├── .devcontainer/                   # Dev Container 配置
+├── src/
 ├── components/                      # 可重用元件
 │   ├── ErrorBoundary.tsx            # 錯誤邊界元件
 │   ├── HeroSection.tsx              # 首頁 Hero 區塊
 │   ├── Particles/                   # 粒子背景特效
 │   │   └── Particles.tsx
 │   ├── Orb/                         # 動態背景球體（WebGL）
-│   │   ├── Orb.tsx
+│   │   └── Orb.tsx
 │   │   └── Orb.css
 │   ├── FuzzyText/                   # 404 頁面文字模糊效果
 │   │   └── FuzzyText.tsx
@@ -328,6 +330,7 @@ src/
 │   │   ├── ProjectsSection.tsx      # 專案經驗區塊
 │   │   ├── PublicationsSection.tsx  # 發表著作區塊
 │   │   ├── ReferencesSection.tsx    # 推薦人區塊
+│   │   ├── SectionCard.tsx          # 履歷區塊包裝卡片
 │   │   ├── SkillsSection.tsx        # 技能區塊
 │   │   ├── VolunteerSection.tsx     # 志工經驗區塊
 │   │   ├── WorkSection.tsx          # 工作經驗區塊
@@ -434,9 +437,6 @@ make clean
 
 # 執行格式化與 Lint（等同於 yarn format + yarn lint）
 make fmt
-
-# 執行專案（需要先 build）
-make run
 ```
 
 ### 持續整合 / 持續部署（CI/CD）

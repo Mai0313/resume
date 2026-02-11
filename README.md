@@ -304,7 +304,9 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ## Project Structure
 
 ```
-src/
+.
+├── .devcontainer/                   # Dev Container configuration
+├── src/
 ├── components/                      # Reusable components
 │   ├── ErrorBoundary.tsx            # Error boundary component
 │   ├── HeroSection.tsx              # Hero section for home page
@@ -328,6 +330,7 @@ src/
 │   │   ├── ProjectsSection.tsx      # Projects section
 │   │   ├── PublicationsSection.tsx  # Publications section
 │   │   ├── ReferencesSection.tsx    # References section
+│   │   ├── SectionCard.tsx          # Wrapper card for resume sections
 │   │   ├── SkillsSection.tsx        # Skills section
 │   │   ├── VolunteerSection.tsx     # Volunteer experience section
 │   │   ├── WorkSection.tsx          # Work experience section
@@ -434,9 +437,6 @@ make clean
 
 # Run format and lint (equivalent to yarn format + yarn lint)
 make fmt
-
-# Run project (requires build first)
-make run
 ```
 
 ### Continuous Integration / Continuous Deployment (CI/CD)
