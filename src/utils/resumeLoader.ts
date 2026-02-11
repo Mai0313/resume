@@ -11,42 +11,200 @@ async function getYaml() {
   return yamlModule;
 }
 
-// JSON Resume Schema interfaces
-export interface JSONResumeBasics {
-  name: string;
-  label?: string;
-  image?: string;
-  email?: string;
-  phone?: string;
-  url?: string;
-  summary?: string;
-  location?: {
-    address?: string;
-    postalCode?: string;
-    city?: string;
-    countryCode?: string;
-    region?: string;
-  };
-  profiles?: Array<{
-    network: string;
-    username: string;
-    url: string;
-  }>;
+// Reactive Resume Schema interfaces
+export interface Website {
+  url: string;
+  label: string;
 }
 
-export interface JSONResumeWork {
+export interface CustomField {
+  id: string;
+  icon: string;
+  text: string;
+  link: string;
+}
+
+export interface ResumeBasics {
+  name: string;
+  headline: string;
+  email: string;
+  phone: string;
+  location: string;
+  website: Website;
+  customFields: CustomField[];
+}
+
+export interface Picture {
+  hidden: boolean;
+  url: string;
+  size: number;
+  rotation: number;
+  aspectRatio: number;
+  borderRadius: number;
+  borderColor: string;
+  borderWidth: number;
+  shadowColor: string;
+  shadowWidth: number;
+}
+
+export interface Summary {
+  title: string;
+  columns: number;
+  hidden: boolean;
+  content: string;
+}
+
+export interface SectionItemOptions {
+  showLinkInTitle: boolean;
+}
+
+export interface BaseItem {
+  id: string;
+  hidden: boolean;
+  options?: SectionItemOptions;
+}
+
+export interface ProfileItem extends BaseItem {
+  icon: string;
+  network: string;
+  username: string;
+  website: Website;
+}
+
+export interface ExperienceItem extends BaseItem {
+  company: string;
+  position: string;
+  location: string;
+  period: string;
+  website: Website;
+  description: string;
+}
+
+export interface EducationItem extends BaseItem {
+  school: string;
+  degree: string;
+  area: string;
+  grade: string;
+  location: string;
+  period: string;
+  website: Website;
+  description: string;
+}
+
+export interface ProjectItem extends BaseItem {
+  name: string;
+  period: string;
+  website: Website;
+  description: string;
+}
+
+export interface SkillItem extends BaseItem {
+  icon: string;
+  name: string;
+  proficiency: string;
+  level: number;
+  keywords: string[];
+}
+
+export interface LanguageItem extends BaseItem {
+  language: string;
+  fluency: string;
+  level: number;
+}
+
+export interface InterestItem extends BaseItem {
+  icon: string;
+  name: string;
+  keywords: string[];
+}
+
+export interface AwardItem extends BaseItem {
+  title: string;
+  awarder: string;
+  date: string;
+  website: Website;
+  description: string;
+}
+
+export interface CertificateItem extends BaseItem {
+  title: string;
+  issuer: string;
+  date: string;
+  website: Website;
+  description: string;
+}
+
+export interface PublicationItem extends BaseItem {
+  title: string;
+  publisher: string;
+  date: string;
+  website: Website;
+  description: string;
+}
+
+export interface ReferenceItem extends BaseItem {
   name: string;
   position: string;
-  url?: string;
-  location?: string;
-  description?: string;
-  startDate?: string;
-  endDate?: string;
-  summary?: string;
-  highlights?: string[];
+  company: string;
+  email: string;
+  phone: string;
+  website: Website;
+  description: string;
 }
 
-export interface JSONResumeVolunteer {
+export interface Section<T> {
+  title: string;
+  columns: number;
+  hidden: boolean;
+  items: T[];
+}
+
+export interface Sections {
+  profiles?: Section<ProfileItem>;
+  experience?: Section<ExperienceItem>;
+  education?: Section<EducationItem>;
+  projects?: Section<ProjectItem>;
+  skills?: Section<SkillItem>;
+  languages?: Section<LanguageItem>;
+  interests?: Section<InterestItem>;
+  awards?: Section<AwardItem>;
+  certificates?: Section<CertificateItem>;
+  publications?: Section<PublicationItem>;
+  references?: Section<ReferenceItem>;
+  [key: string]: Section<any> | undefined;
+}
+
+// Main Reactive Resume interface
+export interface ResumeData {
+  picture?: Picture;
+  basics: ResumeBasics;
+  summary?: Summary;
+  sections: Sections;
+}
+
+// Legacy interfaces for backward compatibility during migration
+export interface JSONResumeWork extends ExperienceItem {
+  name?: string;
+}
+export interface JSONResumeEducation extends EducationItem {
+  institution?: string;
+  studyType?: string;
+  startDate?: string;
+  endDate?: string;
+  score?: string;
+  summary?: string;
+  courses?: string[];
+  url?: string;
+}
+export interface JSONResumeSkill extends SkillItem {}
+export interface JSONResumeLanguage extends LanguageItem {}
+export interface JSONResumeInterest extends InterestItem {}
+export interface JSONResumeProject extends ProjectItem {}
+export interface JSONResumeAward extends AwardItem {}
+export interface JSONResumeCertificate extends CertificateItem {}
+export interface JSONResumePublication extends PublicationItem {}
+export interface JSONResumeReference extends ReferenceItem {}
+export interface JSONResumeVolunteer extends BaseItem {
   organization: string;
   position: string;
   url?: string;
@@ -54,95 +212,6 @@ export interface JSONResumeVolunteer {
   endDate?: string;
   summary?: string;
   highlights?: string[];
-}
-
-export interface JSONResumeEducation {
-  institution: string;
-  url?: string;
-  area?: string;
-  studyType?: string;
-  startDate?: string;
-  endDate?: string;
-  gpa?: string;
-  score?: string;
-  summary?: string;
-  courses?: string[];
-}
-
-export interface JSONResumeAward {
-  title: string;
-  date?: string;
-  awarder: string;
-  summary?: string;
-  url?: string;
-}
-
-export interface JSONResumePublication {
-  name: string;
-  publisher: string;
-  releaseDate?: string;
-  url?: string;
-  summary?: string;
-}
-
-export interface JSONResumeSkill {
-  name: string;
-  level?: string;
-  keywords?: string[];
-}
-
-export interface JSONResumeLanguage {
-  language: string;
-  fluency: string;
-}
-
-export interface JSONResumeInterest {
-  name: string;
-  keywords?: string[];
-}
-
-export interface JSONResumeReference {
-  name: string;
-  reference: string;
-  title?: string;
-  company?: string;
-  email?: string;
-}
-
-export interface JSONResumeCertificate {
-  name: string;
-  date?: string;
-  issuer?: string;
-  url?: string;
-}
-
-export interface JSONResumeProject {
-  name: string;
-  description?: string;
-  highlights?: string[];
-  keywords?: string[];
-  startDate?: string;
-  endDate?: string;
-  url?: string;
-  roles?: string[];
-  entity?: string;
-  type?: string;
-}
-
-// Main JSON Resume interface
-export interface ResumeData {
-  basics: JSONResumeBasics;
-  work?: JSONResumeWork[];
-  volunteer?: JSONResumeVolunteer[];
-  education?: JSONResumeEducation[];
-  awards?: JSONResumeAward[];
-  certificates?: JSONResumeCertificate[];
-  publications?: JSONResumePublication[];
-  skills?: JSONResumeSkill[];
-  languages?: JSONResumeLanguage[];
-  interests?: JSONResumeInterest[];
-  references?: JSONResumeReference[];
-  projects?: JSONResumeProject[];
 }
 
 /**
@@ -240,9 +309,15 @@ export async function loadResumeData(): Promise<
       );
     }
 
-    // Extract key order directly from parsed object
+    if (!data.sections || typeof data.sections !== "object") {
+      throw new Error(
+        "Invalid resume format: missing or invalid 'sections' object",
+      );
+    }
+
+    // Extract section order from sections object
     // YAML parsers preserve key order, so Object.keys will return them in order
-    const sectionOrder = Object.keys(data).filter((key) => key !== "basics");
+    const sectionOrder = Object.keys(data.sections);
 
     return { ...data, sectionOrder };
   } catch (error) {

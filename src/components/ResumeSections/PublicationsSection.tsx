@@ -6,13 +6,12 @@ import { SectionCard, SectionIcons } from "./SectionCard";
 import {
   ItemCard,
   ExternalLink,
-  DateRange,
   BuildingIcon,
 } from "@/components/shared";
-import { JSONResumePublication } from "@/utils/resumeLoader";
+import { PublicationItem } from "@/utils/resumeLoader";
 
 interface PublicationsSectionProps {
-  publications: JSONResumePublication[] | undefined;
+  publications: PublicationItem[] | undefined;
   itemVariants: Variants;
 }
 
@@ -20,29 +19,35 @@ export const PublicationsSection: React.FC<PublicationsSectionProps> = ({
   publications,
   itemVariants,
 }) => {
+  const visiblePublications = publications?.filter(item => !item.hidden);
+  
   return (
     <SectionCard
       colorScheme="purple"
-      data={publications}
+      data={visiblePublications}
       icon={SectionIcons.publications}
       itemVariants={itemVariants}
       sectionKey="publications"
       title="Research Publications"
     >
       <div className="space-y-6">
-        {publications?.map(
-          (publication: JSONResumePublication, index: number) => (
+        {visiblePublications?.map(
+          (publication: PublicationItem, index: number) => (
             <ItemCard
-              key={`publication-${publication.name || "unknown"}-${index}`}
+              key={publication.id || `publication-${index}`}
             >
               <div className="flex-grow">
                 <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">
-                  <ExternalLink
-                    className="hover:text-blue-600 dark:hover:text-blue-400"
-                    url={publication.url}
-                  >
-                    {publication.name}
-                  </ExternalLink>
+                  {publication.website?.url ? (
+                    <ExternalLink
+                      className="hover:text-blue-600 dark:hover:text-blue-400"
+                      url={publication.website.url}
+                    >
+                      {publication.title}
+                    </ExternalLink>
+                  ) : (
+                    publication.title
+                  )}
                 </h3>
 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
@@ -52,13 +57,18 @@ export const PublicationsSection: React.FC<PublicationsSectionProps> = ({
                       {publication.publisher}
                     </span>
                   </div>
-                  <DateRange startDate={publication.releaseDate} />
+                  {publication.date && (
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {publication.date}
+                    </span>
+                  )}
                 </div>
 
-                {publication.summary && (
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {publication.summary}
-                  </p>
+                {publication.description && (
+                  <div 
+                    className="text-gray-700 dark:text-gray-300 leading-relaxed prose prose-sm dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{ __html: publication.description }}
+                  />
                 )}
               </div>
             </ItemCard>
