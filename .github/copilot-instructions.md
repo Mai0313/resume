@@ -144,3 +144,13 @@ VITE_RESUME_PDF_PATH=/resume.pdf # PDF download path (maps to public/)
 4. **Don't repeat card styling** - use `ItemCard` component from [src/components/shared/](../src/components/shared/)
 5. **YAML files must be in public/** - not src/, or they won't be served correctly
 6. **Languages section is special** - rendered in header, not in dynamic sections loop (see [src/components/ResumeContent.tsx](../src/components/ResumeContent.tsx))
+7. **Tailwind dynamic class names** - don't construct color class names via template strings (e.g. `` `bg-${color}-500` ``); Tailwind can't detect them at build time. Use complete class strings or `safelist` in the Tailwind config
+
+## No Test Framework
+
+There is no testing framework configured (no Jest, Vitest, or test scripts). Manual testing checklist:
+
+- Resume loading: local YAML, GitHub Gist URL, raw URL
+- Conditional rendering: with/without `VITE_RESUME_FILE`
+- Subdirectory deployment: with `VITE_ROOT_PATH=/test`
+- Theme: dark mode via HeroUI's `useTheme`
