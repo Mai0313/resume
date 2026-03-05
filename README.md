@@ -303,7 +303,7 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 
 ## Project Structure
 
-```
+````
 .
 ├── .devcontainer/                   # Dev Container configuration
 ├── docker/                          # Docker configuration
@@ -429,7 +429,7 @@ yarn preview
 
 # Deploy to GitHub Pages
 yarn deploy
-```
+````
 
 #### Makefile Commands
 
