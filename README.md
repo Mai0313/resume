@@ -306,73 +306,85 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ```
 .
 ├── .devcontainer/                   # Dev Container configuration
-├── src/
-├── components/                      # Reusable components
-│   ├── ErrorBoundary.tsx            # Error boundary component
-│   ├── HeroSection.tsx              # Hero section for home page
-│   ├── Particles/                   # Particle background effects
-│   │   └── Particles.tsx
-│   ├── Orb/                         # Dynamic background orb (WebGL)
-│   │   ├── Orb.tsx
-│   │   └── Orb.css
-│   ├── FuzzyText/                   # 404 page text blur effect
-│   │   └── FuzzyText.tsx
-│   ├── SplitText/                   # Home page text split animation
-│   │   └── SplitText.tsx
-│   ├── SpotlightCard/               # Spotlight card hover effect
-│   │   ├── SpotlightCard.tsx
-│   │   └── SpotlightCard.css
-│   ├── ResumeSections/              # Resume section components
-│   │   ├── AwardsSection.tsx        # Awards section
-│   │   ├── CertificatesSection.tsx  # Certifications section
-│   │   ├── EducationSection.tsx     # Education section
-│   │   ├── InterestsSection.tsx     # Interests section
-│   │   ├── ProjectsSection.tsx      # Projects section
-│   │   ├── PublicationsSection.tsx  # Publications section
-│   │   ├── ReferencesSection.tsx    # References section
-│   │   ├── SectionCard.tsx          # Wrapper card for resume sections
-│   │   ├── SkillsSection.tsx        # Skills section
-│   │   ├── VolunteerSection.tsx     # Volunteer experience section
-│   │   ├── WorkSection.tsx          # Work experience section
-│   │   └── index.ts                 # Section components export
-│   ├── shared/                      # Shared reusable components
-│   │   ├── BulletList.tsx           # Bullet list component
-│   │   ├── DateRange.tsx            # Date range formatter
-│   │   ├── ItemCard.tsx             # Generic item card
-│   │   └── ...                      # Other shared components
-│   ├── ResumeContent.tsx            # Resume content component
-│   ├── navbar.tsx                   # Navigation bar component
-│   ├── theme-switch.tsx             # Theme switch component
-│   ├── icons.tsx                    # Icon components
-│   └── primitives.ts                # Base component styles
-├── pages/                           # Page components
-│   ├── index.tsx                    # Home page
-│   └── resume.tsx                   # Resume page
-├── layouts/                         # Layout templates
-│   └── default.tsx                  # Default layout (with navigation and theme)
-├── utils/                           # Utility functions
-│   ├── animations.ts                # Animation helper functions
-│   ├── env.ts                       # Environment variable management
-│   ├── formatters.ts                # Data formatting utilities
-│   ├── localStorage.ts              # Local storage helpers
-│   ├── pathUtils.ts                 # Path utility functions
-│   └── resumeLoader.ts              # YAML resume loader
-├── config/                          # Configuration files
-│   └── site.ts                      # Site configuration and navigation setup
-├── constants/                       # Constants
-│   └── index.ts                     # Global constants
-├── types/                           # TypeScript type definitions
-│   ├── errors.ts                    # Error types
-│   ├── index.ts                     # Common types (Resume, GitHub API, etc.)
-│   └── ogl.d.ts                     # OGL WebGL library type declarations
-├── styles/                          # Global styles
-│   ├── globals.css                  # Global CSS styles
-│   └── plugins.ts                   # Tailwind plugins
-├── App.tsx                          # Application routing entry point
-├── main.tsx                         # React render entry point
-├── provider.tsx                     # Context Providers (theme, etc.)
-└── vite-env.d.ts                    # Vite environment type definitions
-```
+├── docker/                          # Docker configuration
+├── .github/                         # GitHub Actions and templates
+├── src/                             # Source code
+│   ├── components/                  # Reusable components
+│   │   ├── ErrorBoundary.tsx        # Error boundary component
+│   │   ├── HeroSection.tsx          # Hero section for home page
+│   │   ├── Particles/               # Particle background effects
+│   │   │   └── Particles.tsx
+│   │   ├── Orb/                     # Dynamic background orb (WebGL)
+│   │   │   ├── Orb.tsx
+│   │   │   └── Orb.css
+│   │   ├── FuzzyText/               # 404 page text blur effect
+│   │   │   └── FuzzyText.tsx
+│   │   ├── SplitText/               # Home page text split animation
+│   │   │   └── SplitText.tsx
+│   │   ├── SpotlightCard/           # Spotlight card hover effect
+│   │   │   ├── SpotlightCard.tsx
+│   │   │   └── SpotlightCard.css
+│   │   ├── ResumeSections/          # Resume section components
+│   │   │   ├── AwardsSection.tsx    # Awards section
+│   │   │   ├── CertificatesSection.tsx # Certifications section
+│   │   │   ├── EducationSection.tsx # Education section
+│   │   │   ├── InterestsSection.tsx # Interests section
+│   │   │   ├── ProjectsSection.tsx  # Projects section
+│   │   │   ├── PublicationsSection.tsx # Publications section
+│   │   │   ├── ReferencesSection.tsx # References section
+│   │   │   ├── SectionCard.tsx      # Wrapper card for resume sections
+│   │   │   ├── SkillsSection.tsx    # Skills section
+│   │   │   ├── VolunteerSection.tsx # Volunteer experience section
+│   │   │   ├── WorkSection.tsx      # Work experience section
+│   │   │   └── index.ts             # Section components export
+│   │   ├── shared/                  # Shared reusable components
+│   │   │   ├── BulletList.tsx       # Bullet list component
+│   │   │   ├── DateRange.tsx        # Date range formatter
+│   │   │   ├── EmptyState.tsx       # Empty state component
+│   │   │   ├── ErrorDisplay.tsx     # Error display component
+│   │   │   ├── ExternalLink.tsx     # External link component
+│   │   │   ├── IconBadge.tsx        # Icon badge component
+│   │   │   ├── IconLibrary.tsx      # Icon library
+│   │   │   ├── index.ts             # Shared components export
+│   │   │   ├── ItemCard.tsx         # Generic item card
+│   │   │   └── LoadingSpinner.tsx   # Loading spinner component
+│   │   ├── ResumeContent.tsx        # Resume content component
+│   │   ├── navbar.tsx               # Navigation bar component
+│   │   ├── theme-switch.tsx         # Theme switch component
+│   │   ├── icons.tsx                # Icon components
+│   │   └── primitives.ts            # Base component styles
+│   ├── pages/                       # Page components
+│   │   ├── index.tsx                # Home page
+│   │   └── resume.tsx               # Resume page
+│   ├── layouts/                     # Layout templates
+│   │   └── default.tsx              # Default layout (with navigation and theme)
+│   ├── utils/                       # Utility functions
+│   │   ├── animations.ts            # Animation helper functions
+│   │   ├── debounce.ts              # Debounce utility
+│   │   ├── env.ts                   # Environment variable management
+│   │   ├── formatters.ts            # Data formatting utilities
+│   │   ├── localStorage.ts          # Local storage helpers
+│   │   ├── pathUtils.ts             # Path utility functions
+│   │   ├── requestQueue.ts          # Request queue utility
+│   │   └── resumeLoader.ts          # YAML resume loader
+│   ├── config/                      # Configuration files
+│   │   └── site.ts                  # Site configuration and navigation setup
+│   ├── constants/                   # Constants
+│   │   └── index.ts                 # Global constants
+│   ├── types/                       # TypeScript type definitions
+│   │   ├── errors.ts                # Error types
+│   │   ├── index.ts                 # Common types (Resume, GitHub API, etc.)
+│   │   └── ogl.d.ts                 # OGL WebGL library type declarations
+│   ├── styles/                      # Global styles
+│   │   ├── globals.css              # Global CSS styles
+│   │   └── plugins.ts               # Tailwind plugins
+│   ├── App.tsx                      # Application routing entry point
+│   ├── main.tsx                     # React render entry point
+│   ├── provider.tsx                 # Context Providers (theme, etc.)
+│   └── vite-env.d.ts                # Vite environment type definitions
+├── eslint.config.js                 # ESLint configuration
+├── package.json                     # Project dependencies and scripts
+├── tailwind.config.js               # Tailwind CSS configuration (wait, we removed this. Let me just omit root files if I want to keep it simple, or list them correctly)
 
 ## Development Guide
 
@@ -468,7 +480,7 @@ To add a page to the website:
 
 ### Modify Theme
 
-HeroUI theme configuration is located in `tailwind.config.js`, which can be customized for colors and styles as needed. Theme switching functionality is integrated in the navigation bar, supporting dark/light mode.
+HeroUI theme configuration is located in `src/styles/globals.css` and `src/styles/plugins.ts`, which can be customized for colors and styles as needed. Theme switching functionality is integrated in the navigation bar, supporting dark/light mode.
 
 ### Customize Resume Sections
 

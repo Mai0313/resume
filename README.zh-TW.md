@@ -306,72 +306,87 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ```
 .
 ├── .devcontainer/                   # Dev Container 配置
-├── src/
-├── components/                      # 可重用元件
-│   ├── ErrorBoundary.tsx            # 錯誤邊界元件
-│   ├── HeroSection.tsx              # 首頁 Hero 區塊
-│   ├── Particles/                   # 粒子背景特效
-│   │   └── Particles.tsx
-│   ├── Orb/                         # 動態背景球體（WebGL）
-│   │   └── Orb.tsx
-│   │   └── Orb.css
-│   ├── FuzzyText/                   # 404 頁面文字模糊效果
-│   │   └── FuzzyText.tsx
-│   ├── SplitText/                   # 首頁文字分割動畫
-│   │   └── SplitText.tsx
-│   ├── SpotlightCard/               # 光斑卡片懸停效果
-│   │   ├── SpotlightCard.tsx
-│   │   └── SpotlightCard.css
-│   ├── ResumeSections/              # 履歷區塊元件
-│   │   ├── AwardsSection.tsx        # 獎項區塊
-│   │   ├── CertificatesSection.tsx  # 證照區塊
-│   │   ├── EducationSection.tsx     # 教育背景區塊
-│   │   ├── InterestsSection.tsx     # 興趣區塊
-│   │   ├── ProjectsSection.tsx      # 專案經驗區塊
-│   │   ├── PublicationsSection.tsx  # 發表著作區塊
-│   │   ├── ReferencesSection.tsx    # 推薦人區塊
-│   │   ├── SectionCard.tsx          # 履歷區塊包裝卡片
-│   │   ├── SkillsSection.tsx        # 技能區塊
-│   │   ├── VolunteerSection.tsx     # 志工經驗區塊
-│   │   ├── WorkSection.tsx          # 工作經驗區塊
-│   │   └── index.ts                 # 區塊元件匯出
-│   ├── shared/                      # 共享的可重用元件
-│   │   ├── BulletList.tsx           # 項目列表元件
-│   │   ├── DateRange.tsx            # 日期範圍格式化
-│   │   ├── ItemCard.tsx             # 通用項目卡片
-│   │   └── ...                      # 其他共享元件
-│   ├── ResumeContent.tsx            # 履歷內容元件
-│   ├── navbar.tsx                   # 導覽列元件
-│   ├── theme-switch.tsx             # 主題切換元件
-│   ├── icons.tsx                    # 圖示元件
-│   └── primitives.ts                # 基礎元件樣式
-├── pages/                           # 頁面元件
-│   ├── index.tsx                    # 首頁
-│   └── resume.tsx                   # 履歷頁
-├── layouts/                         # 版面配置
-│   └── default.tsx                  # 預設版面（含導覽與主題）
-├── utils/                           # 工具函式
-│   ├── animations.ts                # 動畫輔助函式
-│   ├── env.ts                       # 環境變數管理
-│   ├── formatters.ts                # 資料格式化工具
-│   ├── localStorage.ts              # 本地儲存輔助
-│   ├── pathUtils.ts                 # 路徑工具函式
-│   └── resumeLoader.ts              # YAML 履歷載入器
-├── config/                          # 設定檔
-│   └── site.ts                      # 網站設定與導覽配置
-├── constants/                       # 常數
-│   └── index.ts                     # 全域常數
-├── types/                           # TypeScript 型別定義
-│   ├── errors.ts                    # 錯誤型別
-│   ├── index.ts                     # 通用型別（Resume、GitHub API 等）
-│   └── ogl.d.ts                     # OGL WebGL 函式庫型別宣告
-├── styles/                          # 全域樣式
-│   ├── globals.css                  # 全局 CSS 樣式
-│   └── plugins.ts                   # Tailwind 外掛
-├── App.tsx                          # 應用程式路由進入點
-├── main.tsx                         # React 渲染進入點
-├── provider.tsx                     # Context Providers（主題等）
-└── vite-env.d.ts                    # Vite 環境型別定義
+├── docker/                          # Docker 配置
+├── .github/                         # GitHub Actions 及模板
+├── src/                             # 原始碼
+│   ├── components/                  # 可重用元件
+│   │   ├── ErrorBoundary.tsx        # 錯誤邊界元件
+│   │   ├── HeroSection.tsx          # 首頁 Hero 區塊
+│   │   ├── Particles/               # 粒子背景特效
+│   │   │   └── Particles.tsx
+│   │   ├── Orb/                     # 動態背景球體（WebGL）
+│   │   │   ├── Orb.tsx
+│   │   │   └── Orb.css
+│   │   ├── FuzzyText/               # 404 頁面文字模糊效果
+│   │   │   └── FuzzyText.tsx
+│   │   ├── SplitText/               # 首頁文字分割動畫
+│   │   │   └── SplitText.tsx
+│   │   ├── SpotlightCard/           # 光斑卡片懸停效果
+│   │   │   ├── SpotlightCard.tsx
+│   │   │   └── SpotlightCard.css
+│   │   ├── ResumeSections/          # 履歷區塊元件
+│   │   │   ├── AwardsSection.tsx    # 獎項區塊
+│   │   │   ├── CertificatesSection.tsx # 證照區塊
+│   │   │   ├── EducationSection.tsx # 教育背景區塊
+│   │   │   ├── InterestsSection.tsx # 興趣區塊
+│   │   │   ├── ProjectsSection.tsx  # 專案經驗區塊
+│   │   │   ├── PublicationsSection.tsx # 發表著作區塊
+│   │   │   ├── ReferencesSection.tsx # 推薦人區塊
+│   │   │   ├── SectionCard.tsx      # 履歷區塊包裝卡片
+│   │   │   ├── SkillsSection.tsx    # 技能區塊
+│   │   │   ├── VolunteerSection.tsx # 志工經驗區塊
+│   │   │   ├── WorkSection.tsx      # 工作經驗區塊
+│   │   │   └── index.ts             # 區塊元件匯出
+│   │   ├── shared/                  # 共享的可重用元件
+│   │   │   ├── BulletList.tsx       # 項目列表元件
+│   │   │   ├── DateRange.tsx        # 日期範圍格式化
+│   │   │   ├── EmptyState.tsx       # 空狀態元件
+│   │   │   ├── ErrorDisplay.tsx     # 錯誤顯示元件
+│   │   │   ├── ExternalLink.tsx     # 外部連結元件
+│   │   │   ├── IconBadge.tsx        # 圖示徽章元件
+│   │   │   ├── IconLibrary.tsx      # 圖示庫
+│   │   │   ├── index.ts             # 共享元件匯出
+│   │   │   ├── ItemCard.tsx         # 通用項目卡片
+│   │   │   └── LoadingSpinner.tsx   # 載入動畫元件
+│   │   ├── ResumeContent.tsx        # 履歷內容元件
+│   │   ├── navbar.tsx               # 導覽列元件
+│   │   ├── theme-switch.tsx         # 主題切換元件
+│   │   ├── icons.tsx                # 圖示元件
+│   │   └── primitives.ts            # 基礎元件樣式
+│   ├── pages/                       # 頁面元件
+│   │   ├── index.tsx                # 首頁
+│   │   └── resume.tsx               # 履歷頁
+│   ├── layouts/                     # 版面配置
+│   │   └── default.tsx              # 預設版面（含導覽與主題）
+│   ├── utils/                       # 工具函式
+│   │   ├── animations.ts            # 動畫輔助函式
+│   │   ├── debounce.ts              # 防抖工具
+│   │   ├── env.ts                   # 環境變數管理
+│   │   ├── formatters.ts            # 資料格式化工具
+│   │   ├── localStorage.ts          # 本地儲存輔助
+│   │   ├── pathUtils.ts             # 路徑工具函式
+│   │   ├── requestQueue.ts          # 請求佇列工具
+│   │   └── resumeLoader.ts          # YAML 履歷載入器
+│   ├── config/                      # 設定檔
+│   │   └── site.ts                  # 網站設定與導覽配置
+│   ├── constants/                   # 常數
+│   │   └── index.ts                 # 全域常數
+│   ├── types/                       # TypeScript 型別定義
+│   │   ├── errors.ts                # 錯誤型別
+│   │   ├── index.ts                 # 通用型別（Resume、GitHub API 等）
+│   │   └── ogl.d.ts                 # OGL WebGL 函式庫型別宣告
+│   ├── styles/                      # 全域樣式
+│   │   ├── globals.css              # 全局 CSS 樣式
+│   │   └── plugins.ts               # Tailwind 外掛
+│   ├── App.tsx                      # 應用程式路由進入點
+│   ├── main.tsx                     # React 渲染進入點
+│   ├── provider.tsx                 # Context Providers（主題等）
+│   └── vite-env.d.ts                # Vite 環境型別定義
+├── eslint.config.js                 # ESLint 配置
+├── package.json                     # 專案依賴及腳本
+├── tsconfig.json                    # TypeScript 配置
+├── vercel.json                      # Vercel 部署配置
+└── vite.config.ts                   # Vite 配置
 ```
 
 ## 開發指引
@@ -468,7 +483,7 @@ make fmt
 
 ### 修改主題
 
-HeroUI 的主題設定位於 `tailwind.config.js`，可依需求自訂色彩與樣式。主題切換功能已整合在導覽列中，支援深色/淺色模式。
+HeroUI 的主題設定位於 `src/styles/globals.css` 和 `src/styles/plugins.ts`，可依需求自訂色彩與樣式。主題切換功能已整合在導覽列中，支援深色/淺色模式。
 
 ### 自訂履歷區塊
 
