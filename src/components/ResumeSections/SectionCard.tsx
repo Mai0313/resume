@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { motion, Variants } from "framer-motion";
 
-export type ColorScheme =
+type ColorScheme =
   | "blue"
   | "indigo"
   | "orange"

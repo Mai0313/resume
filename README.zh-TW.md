@@ -311,7 +311,6 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ├── src/                             # 原始碼
 │   ├── components/                  # 可重用元件
 │   │   ├── ErrorBoundary.tsx        # 錯誤邊界元件
-│   │   ├── HeroSection.tsx          # 首頁 Hero 區塊
 │   │   ├── Particles/               # 粒子背景特效
 │   │   │   └── Particles.tsx
 │   │   ├── Orb/                     # 動態背景球體（WebGL）
@@ -321,9 +320,6 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   │   └── FuzzyText.tsx
 │   │   ├── SplitText/               # 首頁文字分割動畫
 │   │   │   └── SplitText.tsx
-│   │   ├── SpotlightCard/           # 光斑卡片懸停效果
-│   │   │   ├── SpotlightCard.tsx
-│   │   │   └── SpotlightCard.css
 │   │   ├── ResumeSections/          # 履歷區塊元件
 │   │   │   ├── AwardsSection.tsx    # 獎項區塊
 │   │   │   ├── CertificatesSection.tsx # 證照區塊
@@ -340,19 +336,14 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   ├── shared/                  # 共享的可重用元件
 │   │   │   ├── BulletList.tsx       # 項目列表元件
 │   │   │   ├── DateRange.tsx        # 日期範圍格式化
-│   │   │   ├── EmptyState.tsx       # 空狀態元件
-│   │   │   ├── ErrorDisplay.tsx     # 錯誤顯示元件
 │   │   │   ├── ExternalLink.tsx     # 外部連結元件
-│   │   │   ├── IconBadge.tsx        # 圖示徽章元件
 │   │   │   ├── IconLibrary.tsx      # 圖示庫
 │   │   │   ├── index.ts             # 共享元件匯出
-│   │   │   ├── ItemCard.tsx         # 通用項目卡片
-│   │   │   └── LoadingSpinner.tsx   # 載入動畫元件
+│   │   │   └── ItemCard.tsx         # 通用項目卡片
 │   │   ├── ResumeContent.tsx        # 履歷內容元件
 │   │   ├── navbar.tsx               # 導覽列元件
 │   │   ├── theme-switch.tsx         # 主題切換元件
-│   │   ├── icons.tsx                # 圖示元件
-│   │   └── primitives.ts            # 基礎元件樣式
+│   │   └── icons.tsx                # 圖示元件
 │   ├── pages/                       # 頁面元件
 │   │   ├── index.tsx                # 首頁
 │   │   └── resume.tsx               # 履歷頁

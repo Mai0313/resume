@@ -140,5 +140,3 @@ export const envHelpers = {
 } as const;
 
 // Type exports for better TypeScript support
-export type EnvConfig = typeof env;
-export type EnvHelpers = typeof envHelpers;

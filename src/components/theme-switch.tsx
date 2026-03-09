@@ -6,7 +6,7 @@ import { useTheme } from "@heroui/use-theme";
 
 import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
 
-export interface ThemeSwitchProps {
+interface ThemeSwitchProps {
   className?: string;
   classNames?: SwitchProps["classNames"];
 }

@@ -36,7 +36,6 @@ jobs:
         env:
           VITE_WEBSITE_TITLE: Mai
           VITE_RESUME_FILE: example.yaml
-          VITE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_ROOT_PATH: /${{ github.event.repository.name }}
         run: |
           git config --global user.name "github-actions[bot]"

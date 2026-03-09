@@ -311,7 +311,6 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 ├── src/                             # Source code
 │   ├── components/                  # Reusable components
 │   │   ├── ErrorBoundary.tsx        # Error boundary component
-│   │   ├── HeroSection.tsx          # Hero section for home page
 │   │   ├── Particles/               # Particle background effects
 │   │   │   └── Particles.tsx
 │   │   ├── Orb/                     # Dynamic background orb (WebGL)
@@ -321,9 +320,6 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   │   └── FuzzyText.tsx
 │   │   ├── SplitText/               # Home page text split animation
 │   │   │   └── SplitText.tsx
-│   │   ├── SpotlightCard/           # Spotlight card hover effect
-│   │   │   ├── SpotlightCard.tsx
-│   │   │   └── SpotlightCard.css
 │   │   ├── ResumeSections/          # Resume section components
 │   │   │   ├── AwardsSection.tsx    # Awards section
 │   │   │   ├── CertificatesSection.tsx # Certifications section
@@ -340,19 +336,14 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   ├── shared/                  # Shared reusable components
 │   │   │   ├── BulletList.tsx       # Bullet list component
 │   │   │   ├── DateRange.tsx        # Date range formatter
-│   │   │   ├── EmptyState.tsx       # Empty state component
-│   │   │   ├── ErrorDisplay.tsx     # Error display component
 │   │   │   ├── ExternalLink.tsx     # External link component
-│   │   │   ├── IconBadge.tsx        # Icon badge component
 │   │   │   ├── IconLibrary.tsx      # Icon library
 │   │   │   ├── index.ts             # Shared components export
-│   │   │   ├── ItemCard.tsx         # Generic item card
-│   │   │   └── LoadingSpinner.tsx   # Loading spinner component
+│   │   │   └── ItemCard.tsx         # Generic item card
 │   │   ├── ResumeContent.tsx        # Resume content component
 │   │   ├── navbar.tsx               # Navigation bar component
 │   │   ├── theme-switch.tsx         # Theme switch component
-│   │   ├── icons.tsx                # Icon components
-│   │   └── primitives.ts            # Base component styles
+│   │   └── icons.tsx                # Icon components
 │   ├── pages/                       # Page components
 │   │   ├── index.tsx                # Home page
 │   │   └── resume.tsx               # Resume page
