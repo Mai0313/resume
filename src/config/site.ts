@@ -1,8 +1,6 @@
 import { buildPath } from "@/utils/pathUtils";
 import { env, envHelpers } from "@/utils/env";
 
-export type SiteConfig = typeof siteConfig;
-
 // Generate navigation items once based on environment configuration
 // Cached to avoid redundant generation on every import
 const navItems = (() => {

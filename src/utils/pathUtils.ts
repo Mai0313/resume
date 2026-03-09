@@ -8,7 +8,7 @@ import { envHelpers } from "@/utils/env";
 /**
  * Get normalized root path (without trailing slash unless it's '/')
  */
-export const getRootPath = (): string => {
+const getRootPath = (): string => {
   const rootPath = envHelpers.getRootPath();
 
   return rootPath === "/" ? "/" : rootPath.replace(/\/$/, "");

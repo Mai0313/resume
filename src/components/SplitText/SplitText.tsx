@@ -5,7 +5,7 @@ import { SplitText as GSAPSplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
 
-export interface SplitTextProps {
+interface SplitTextProps {
   text: string;
   className?: string;
   delay?: number;
