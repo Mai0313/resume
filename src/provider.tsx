@@ -11,9 +11,18 @@ declare module "@react-types/shared" {
 
 export function Provider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const routerUseHref = useHref;
+
+  const useHrefWithExternal = (href: string) => {
+    if (href.startsWith("http://") || href.startsWith("https://")) {
+      return href;
+    }
+
+    return routerUseHref(href);
+  };
 
   return (
-    <HeroUIProvider navigate={navigate} useHref={useHref}>
+    <HeroUIProvider navigate={navigate} useHref={useHrefWithExternal}>
       {children}
     </HeroUIProvider>
   );
