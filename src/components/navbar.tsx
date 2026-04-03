@@ -15,7 +15,6 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon, DiscordIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
-import { buildPath } from "@/utils/pathUtils";
 import { env } from "@/utils/env";
 
 export const Navbar = () => {
@@ -30,7 +29,7 @@ export const Navbar = () => {
           <Link
             className="flex justify-start items-center gap-1"
             color="foreground"
-            href={buildPath("/")}
+            href="/"
           >
             <Logo />
             <p className="font-bold text-inherit">{env.WEBSITE_TITLE}</p>
