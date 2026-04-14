@@ -6,23 +6,11 @@
 
 version: 2
 updates:
-  # npm
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: daily
-
-  # Dockerfile
-  - package-ecosystem: docker
-    directory: /
-    schedule:
-      interval: daily
-
-  # Docker Compose
-  - package-ecosystem: docker-compose
-    directory: /
-    schedule:
-      interval: daily
+  # # npm
+  # - package-ecosystem: npm
+  #   directory: /
+  #   schedule:
+  #     interval: daily
 
   # Devcontainers
   - package-ecosystem: devcontainers

@@ -1,5 +1,5 @@
 ---
-name: resume_updater
+name: update-resume
 description: This agent helps users update their resumes by providing suggestions, formatting tips, and content improvements based on the user's input.
 argument-hint: update my resume content
 ---
