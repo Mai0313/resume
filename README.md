@@ -25,9 +25,9 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 
 - **Flexible Data Sources**: Supports local YAML files, GitHub Gist, or any accessible Raw URL
 - **PIN Code Protection**: Optional PIN code verification feature to protect private information
-- **Modular Sections**: 10 types of resume section components (work experience, education, skills, projects, publications, etc.)
-- **PDF Download**: Provides resume PDF download functionality
-- **JSON Resume Standard**: Follows JSON Resume Schema specification for standardized data format
+- **Modular Sections**: 7 entry-type renderers (Experience, Education, Publication, Normal, OneLine, Bullet, Text) covering all common resume sections
+- **PDF Generation via rendercv**: A professionally typeset PDF is rendered from the same YAML using [rendercv](https://github.com/rendercv/rendercv) (Typst-based), committed to the repo, and auto-refreshed on deploy
+- **rendercv Schema**: Uses the [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure) — a single source of truth for both the website and the PDF
 
 ### ⚙️ Smart Configuration
 
@@ -189,27 +189,80 @@ VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 
 ### Resume YAML Format
 
-The resume follows the [JSON Resume Schema](https://jsonresume.org/schema/) standard and supports the following sections:
+The resume uses the [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure). A single YAML file drives both the website and the downloadable PDF.
 
-- `basics`: Basic information (name, job title, contact info, summary, profile photo, etc.)
-- `work`: Work experience
-- `education`: Educational background
-- `skills`: Skills
-- `projects`: Project experience
-- `publications`: Publications
-- `certificates`: Certifications
-- `awards`: Awards
-- `volunteer`: Volunteer experience
-- `interests`: Interests
-- `references`: References
-- `languages`: Language proficiency (displayed in header section)
+**Top-level structure**:
 
-**Special Notes**:
+```yaml
+cv:
+  name: "Your Name"
+  headline: "Your Title"
+  location: "City, Country"
+  email: "you@example.com"
+  photo: "https://..." # URL for web; rendercv accepts local paths too
+  social_networks:
+    - network: LinkedIn # one of the rendercv built-in networks
+      username: your-handle
+    - network: GitHub
+      username: your-handle
+  sections:
+    Experience: # any section name; entry type is auto-detected
+      - company: Acme
+        position: Engineer
+        start_date: 2024-01
+        highlights: [...]
+    Education: [...]
+    Publications: [...] # requires `title` + `authors`
+    Projects: [...]
+    Skills: [...]
+    Languages: [...]
 
-- Section display order is determined by the `sectionOrder` field in the YAML file
-- `languages` is displayed in the personal information block at the top of the page (header)
-- Sections without data will not be displayed
-- Example YAML file located at `public/example.yaml` can be used as a starting template
+design: # PDF appearance — ignored by the website
+  theme: engineeringresumes
+  # colors, typography, section_titles, templates, etc.
+
+settings:
+  bold_keywords: [...] # auto-bold these terms in the PDF
+```
+
+**Entry types** (each section renders based on the shape of its first entry):
+
+| Entry type       | Required fields       | Used for                                   |
+| ---------------- | --------------------- | ------------------------------------------ |
+| ExperienceEntry  | `company`, `position` | Work experience, Volunteer work            |
+| EducationEntry   | `institution`, `area` | Education                                  |
+| PublicationEntry | `title`, `authors`    | Publications                               |
+| NormalEntry      | `name`                | Projects, Awards, Certificates, References |
+| OneLineEntry     | `label`, `details`    | Skills, Languages, Interests               |
+| BulletEntry      | `bullet`              | Simple bullet lists                        |
+| TextEntry        | a plain string        | Paragraph-style sections (e.g. Summary)    |
+
+**Web-only custom fields** (the website reads these; rendercv ignores them in the PDF): `url`, `description` on ExperienceEntry; `url`, `courses` on EducationEntry; `url`, `keywords`, `roles`, `entity`, `issuer` on NormalEntry; `keywords` on OneLineEntry.
+
+**Important caveats**:
+
+- **List-valued custom fields must be comma-separated strings in YAML** (e.g. `keywords: "Python, TypeScript, Rust"`). The loader normalises them to arrays at runtime. This works around a rendercv template-engine limitation — if you write them as YAML lists, `rendercv render` will crash.
+- **Section order follows YAML key order.** The parser uses `Object.keys(cv.sections)` so whatever order you write, that's what the page renders.
+- `Languages` (if present as a `OneLineEntry` section) is hoisted into the header chip row and skipped from the section list.
+- See `public/example.yaml` for a full working example.
+
+### Resume PDF
+
+The PDF is produced by [rendercv](https://github.com/rendercv/rendercv) from the same `public/example.yaml`, checked into git at `public/resume.pdf`.
+
+**Prerequisites**: [uv](https://docs.astral.sh/uv/) installed locally.
+
+**Updating the PDF** (do this after editing the YAML):
+
+```bash
+make pdf                 # runs uv tool install "rendercv[full]" + rendercv render
+git add public/example.yaml public/resume.pdf
+git commit -m "update resume"
+```
+
+The first `make pdf` takes a minute (uv downloads rendercv + Typst); subsequent runs are ~1–2s.
+
+**Customising the PDF appearance**: edit the `design:` block in `public/example.yaml`. See [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/) for the full list of themes, colours, typography and templates.
 
 ### Change PIN Code
 
@@ -225,6 +278,7 @@ The project is configured with GitHub Actions automatic deployment workflow (`.g
 
 1. Push code to `main` or `master` branch
 2. GitHub Actions will automatically:
+   - Install uv and regenerate `public/resume.pdf` from `public/example.yaml` via `make pdf` (a safety net in case you forgot to commit the latest PDF)
    - Execute build (`yarn build`)
    - Deploy to GitHub Pages
 
@@ -235,6 +289,7 @@ No manual commands needed!
 - Ensure GitHub Pages is enabled in repository settings
 - Set Pages deployment source to "GitHub Actions"
 - GitHub Actions automatically uses `VITE_ROOT_PATH=/<repository_name>` for building
+- The PDF regeneration uses [astral-sh/setup-uv@v7](https://github.com/astral-sh/setup-uv); if rendercv fails to render, the deploy fails fast instead of shipping broken content
 
 #### Method 2: Manual Deployment
 
@@ -258,6 +313,10 @@ This project includes `vercel.json` and can be deployed directly on Vercel:
 3. Vercel will automatically detect the Vite project and complete deployment
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume)
+
+**PDF on Vercel**: Vercel runs a pure `yarn install && yarn build` — it does **not** regenerate the PDF. The committed `public/resume.pdf` is what ships. Always run `make pdf` locally and commit before pushing, otherwise Vercel will serve a stale PDF.
+
+**`vercel.json` rewrite note**: the SPA rewrite is scoped to paths without a file extension (`/((?!.*\\.).*)`) so static assets like `/resume.pdf`, `/example.yaml`, `/favicon.ico` are served directly instead of being masked by `index.html` when missing.
 
 ### Deploy Using Docker
 
@@ -430,12 +489,18 @@ The project provides a Makefile to simplify common operations:
 # Show all available commands
 make help
 
-# Build project (default target)
+# Build project (default target — runs `yarn build`)
 make
 # Or
 make build
 
+# Regenerate public/resume.pdf from public/example.yaml via rendercv.
+# Run this after editing the YAML, then commit the updated PDF.
+# Requires `uv` to be installed locally.
+make pdf
+
 # Clean generated files and Git cache
+# (keeps public/resume.pdf, which is committed to git)
 make clean
 
 # Run complete check (equivalent to yarn check: type-check + format + lint)
@@ -586,7 +651,9 @@ If you find bugs or have feature suggestions, please [create an Issue](https://g
 ## Acknowledgments
 
 - [HeroUI](https://heroui.com) - Provides excellent React UI component library
-- [JSON Resume](https://jsonresume.org) - Resume data standard
+- [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV renderer that produces the downloadable PDF from our YAML
+- [Typst](https://typst.app) - Modern typesetting engine powering rendercv
+- [uv](https://docs.astral.sh/uv/) - Fast Python package/tool manager used to install rendercv
 - All open source project contributors
 
 ## License

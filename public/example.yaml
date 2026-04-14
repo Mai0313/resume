@@ -245,11 +245,11 @@ design:
 
   colors:
     body: rgb(30, 30, 30)
-    name: rgb(0, 58, 115)          # deep navy for the name
+    name: rgb(0, 58, 115) # deep navy for the name
     headline: rgb(80, 80, 80)
     connections: rgb(0, 58, 115)
     section_titles: rgb(0, 58, 115)
-    links: rgb(0, 82, 160)         # slightly brighter navy for links
+    links: rgb(0, 82, 160) # slightly brighter navy for links
     footer: rgb(140, 140, 140)
 
   typography:

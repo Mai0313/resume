@@ -25,9 +25,9 @@
 
 - **彈性資料來源**：支援本機 YAML 檔案、GitHub Gist 或任何可存取的 Raw URL
 - **PIN 碼保護**：可選的 PIN 碼驗證功能，保護隱私資訊
-- **模組化區塊**：10 種履歷區塊元件（工作經驗、教育背景、技能、專案、發表著作等）
-- **PDF 下載**：提供履歷 PDF 下載功能
-- **JSON Resume 標準**：遵循 JSON Resume Schema 規範，資料格式標準化
+- **模組化區塊**：7 個 entry-type renderer（Experience / Education / Publication / Normal / OneLine / Bullet / Text）涵蓋所有常見履歷區塊
+- **PDF 透過 rendercv 產生**：同一份 YAML 透過 [rendercv](https://github.com/rendercv/rendercv)（Typst-based）排版成專業 PDF，commit 到 repo 裡，部署時也會自動重新生成
+- **rendercv Schema**：採用 [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure)，同一份檔案就是網站與 PDF 的唯一來源
 
 ### ⚙️ 智慧配置
 
@@ -189,27 +189,80 @@ VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 
 ### 履歷 YAML 格式
 
-履歷採用 [JSON Resume Schema](https://jsonresume.org/schema/) 標準，支援以下區塊：
+履歷採用 [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure)。**同一份 YAML 同時驅動網站與可下載的 PDF**。
 
-- `basics`：基本資訊（姓名、職稱、聯絡方式、個人簡介、大頭照等）
-- `work`：工作經驗
-- `education`：教育背景
-- `skills`：技能
-- `projects`：專案經驗
-- `publications`：發表著作
-- `certificates`：證照
-- `awards`：獎項
-- `volunteer`：志工經驗
-- `interests`：興趣
-- `references`：推薦人
-- `languages`：語言能力（顯示在 header 區塊）
+**Top-level 結構**：
 
-**特別說明**：
+```yaml
+cv:
+  name: "Your Name"
+  headline: "Your Title"
+  location: "City, Country"
+  email: "you@example.com"
+  photo: "https://..." # 網站用 URL，rendercv 也接受本地路徑
+  social_networks:
+    - network: LinkedIn # rendercv 內建 network 名稱之一
+      username: your-handle
+    - network: GitHub
+      username: your-handle
+  sections:
+    Experience: # section 名稱任取,entry 型別自動偵測
+      - company: Acme
+        position: Engineer
+        start_date: 2024-01
+        highlights: [...]
+    Education: [...]
+    Publications: [...] # 必填 `title` + `authors`
+    Projects: [...]
+    Skills: [...]
+    Languages: [...]
 
-- 區塊顯示順序由 YAML 檔案中的 `sectionOrder` 欄位決定
-- `languages` 會顯示在頁面頂部的個人資訊區塊（header）中
-- 未包含資料的區塊不會顯示
-- 範例 YAML 檔案位於 `public/example.yaml`，可作為起始模板
+design: # PDF 外觀設定 — 網站會忽略
+  theme: engineeringresumes
+  # colors, typography, section_titles, templates 等
+
+settings:
+  bold_keywords: [...] # PDF 裡自動把這些關鍵字加粗
+```
+
+**Entry 型別**（每個 section 根據第一個 entry 的欄位自動判斷型別）：
+
+| Entry type       | 必填欄位              | 用在                                       |
+| ---------------- | --------------------- | ------------------------------------------ |
+| ExperienceEntry  | `company`, `position` | 工作經驗、志工經驗                         |
+| EducationEntry   | `institution`, `area` | 教育背景                                   |
+| PublicationEntry | `title`, `authors`    | 發表著作                                   |
+| NormalEntry      | `name`                | Projects, Awards, Certificates, References |
+| OneLineEntry     | `label`, `details`    | Skills, Languages, Interests               |
+| BulletEntry      | `bullet`              | 單純 bullet list                           |
+| TextEntry        | 純字串                | 段落型 section（例如 Summary）             |
+
+**網站專用自訂欄位**（網站會讀但 rendercv 在 PDF 裡會忽略）：ExperienceEntry 的 `url` / `description`；EducationEntry 的 `url` / `courses`；NormalEntry 的 `url` / `keywords` / `roles` / `entity` / `issuer`；OneLineEntry 的 `keywords`。
+
+**重要注意事項**：
+
+- **List 型自訂欄位必須寫成 comma-separated 字串**（例如 `keywords: "Python, TypeScript, Rust"`）。loader 會在 runtime 自動轉回 array。這是 rendercv template engine 的限制 — 若寫成 YAML list 則 `rendercv render` 會 crash。
+- **Section 顯示順序 = YAML key 順序**。Parser 用 `Object.keys(cv.sections)`，你寫什麼順序就渲染什麼順序。
+- `Languages`（若是 `OneLineEntry` section）會被搬到 header 的 chip 區顯示,section 列表裡就不再重複。
+- 完整範例請見 `public/example.yaml`。
+
+### 履歷 PDF
+
+PDF 由 [rendercv](https://github.com/rendercv/rendercv) 從同一份 `public/example.yaml` 產生，commit 到 `public/resume.pdf`。
+
+**前置需求**：本機安裝 [uv](https://docs.astral.sh/uv/)。
+
+**更新 PDF**（編輯 YAML 之後跑一次）：
+
+```bash
+make pdf                 # 執行 uv tool install "rendercv[full]" + rendercv render
+git add public/example.yaml public/resume.pdf
+git commit -m "update resume"
+```
+
+第一次 `make pdf` 要等一分鐘左右（uv 下載 rendercv + Typst），之後只要 1–2 秒。
+
+**客製 PDF 外觀**：編輯 `public/example.yaml` 裡的 `design:` 區塊。完整的 theme、配色、字型、template 選項見 [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/)。
 
 ### 修改 PIN 碼
 
@@ -225,6 +278,7 @@ VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 
 1. 推送程式碼到 `main` 或 `master` 分支
 2. GitHub Actions 會自動：
+   - 安裝 uv 並用 `make pdf` 從 `public/example.yaml` 重新產生 `public/resume.pdf`（保險機制,以防你忘記 commit 最新 PDF）
    - 執行建置（`yarn build`）
    - 部署到 GitHub Pages
 
@@ -235,6 +289,7 @@ VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
 - 確保在 GitHub 倉庫設定中啟用 GitHub Pages
 - 設定 Pages 的部署來源為「GitHub Actions」
 - GitHub Actions 會自動使用 `VITE_ROOT_PATH=/<倉庫名稱>` 進行建置
+- PDF 重新生成使用 [astral-sh/setup-uv@v7](https://github.com/astral-sh/setup-uv)；rendercv 失敗時 deploy 會直接中斷,避免上線壞內容
 
 #### 方式二：手動部署
 
@@ -258,6 +313,10 @@ yarn deploy
 3. Vercel 會自動偵測 Vite 專案並完成部署
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume)
+
+**Vercel 上的 PDF 行為**：Vercel 只跑 `yarn install && yarn build`，**不會** 重新產生 PDF，上線的就是 git 裡 committed 的 `public/resume.pdf`。所以改完 YAML 之後務必先在本地跑 `make pdf` 再 commit、再 push，否則 Vercel 會供應舊的 PDF。
+
+**`vercel.json` rewrite 說明**：SPA 的 rewrite 只套用在沒有副檔名的路徑（`/((?!.*\\.).*)`）,確保 `/resume.pdf`、`/example.yaml`、`/favicon.ico` 等靜態檔案會直接被 serve，不會被 `index.html` 蓋掉（檔案不存在時也會正確回 404 而不是偽裝的 HTML）。
 
 ### 使用 Docker 部署
 
@@ -430,12 +489,18 @@ yarn deploy
 # 顯示所有可用指令
 make help
 
-# 建置專案（預設目標）
+# 建置專案（預設目標 — 執行 `yarn build`）
 make
 # 或
 make build
 
+# 從 public/example.yaml 透過 rendercv 重新產生 public/resume.pdf。
+# 編輯 YAML 之後跑這個,然後 commit 更新的 PDF。
+# 需要本機安裝 `uv`。
+make pdf
+
 # 清理產生的檔案與 Git 快取
+#（保留 public/resume.pdf,因為那是 committed 到 git 的）
 make clean
 
 # 執行完整檢查（等同於 yarn check：型別檢查 + 格式化 + Lint）
@@ -586,7 +651,9 @@ GitHub API 具有速率限制，建議：
 ## 特別感謝
 
 - [HeroUI](https://heroui.com) - 提供優秀的 React UI 元件庫
-- [JSON Resume](https://jsonresume.org) - 履歷資料標準
+- [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV 排版工具,從我們的 YAML 產生可下載的 PDF
+- [Typst](https://typst.app) - 驅動 rendercv 的現代排版引擎
+- [uv](https://docs.astral.sh/uv/) - 快速的 Python 套件/工具管理器,用於安裝 rendercv
 - 所有開源專案的貢獻者
 
 ## 授權條款
