@@ -28,7 +28,7 @@ Contributions are welcome! Whether reporting issues, suggesting features, or sub
 
    ```bash
    VITE_WEBSITE_TITLE=Mai
-   VITE_RESUME_FILE=example.yaml
+   VITE_RESUME_FILE=resume.yaml
    ```
 
 4. Start the development server:

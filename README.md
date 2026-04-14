@@ -63,7 +63,7 @@ VITE_WEBSITE_TITLE=Mai
 # Optional: Resume file - if not set, resume page will be hidden
 # Supports local files and URLs
 # Local file example:
-VITE_RESUME_FILE=example.yaml
+VITE_RESUME_FILE=resume.yaml
 # GitHub Gist example:
 # VITE_RESUME_FILE=https://gist.github.com/username/gist_id
 # Raw URL example:
@@ -73,8 +73,8 @@ VITE_RESUME_FILE=example.yaml
 VITE_PIN_CODE=123456
 
 # Optional: Resume PDF download path
-# Default: /example.pdf (maps to public/example.pdf)
-VITE_RESUME_PDF_PATH=/example.pdf
+# Default: /resume.pdf (maps to public/resume.pdf)
+VITE_RESUME_PDF_PATH=/resume.pdf
 ```
 
 Optional: Custom deployment root path (for GitHub Pages subpaths). If deploying to `https://<user>.github.io/<repo>`, set in `.env`:
@@ -132,12 +132,12 @@ npm run dev
 - Conditional display: Only appears when `VITE_RESUME_FILE` is set
 - Supports PIN code verification protection (optional)
 - Flexible resume loading methods:
-  - Local YAML files: `example.yaml`, `resume.yaml` (loaded from `public/` directory)
+  - Local YAML files: `resume.yaml`, `my-resume.yaml` (loaded from `public/` directory)
   - GitHub Gist: Gist URLs automatically converted to raw format
   - Raw URL: Any accessible YAML file URL
 - YAML-driven resume data management
 - Structured display of personal information, education, work experience, etc.
-- PDF Download: Provides button to download resume PDF (uses `public/example.pdf`)
+- PDF Download: Provides button to download resume PDF (uses `public/resume.pdf`)
 - Responsive design with animation effects
 - Tip: If PIN is enabled, you can unlock directly via `/resume?pin=your_PIN`; the PIN will be automatically removed from the URL after verification.
 
@@ -156,7 +156,7 @@ You have multiple options to set up your resume:
 
 #### Option 1: Local YAML File
 
-Edit `public/example.yaml` or create your own YAML file in the `public/` directory:
+Edit `public/resume.yaml` or create your own YAML file in the `public/` directory:
 
 ```bash
 # In .env file
@@ -244,11 +244,11 @@ settings:
 - **List-valued custom fields must be comma-separated strings in YAML** (e.g. `keywords: "Python, TypeScript, Rust"`). The loader normalises them to arrays at runtime. This works around a rendercv template-engine limitation — if you write them as YAML lists, `rendercv render` will crash.
 - **Section order follows YAML key order.** The parser uses `Object.keys(cv.sections)` so whatever order you write, that's what the page renders.
 - `Languages` (if present as a `OneLineEntry` section) is hoisted into the header chip row and skipped from the section list.
-- See `public/example.yaml` for a full working example.
+- See `public/resume.yaml` for a full working example.
 
 ### Resume PDF
 
-The PDF is produced by [rendercv](https://github.com/rendercv/rendercv) from the same `public/example.yaml`, checked into git at `public/resume.pdf`.
+The PDF is produced by [rendercv](https://github.com/rendercv/rendercv) from the same `public/resume.yaml`, checked into git at `public/resume.pdf`.
 
 **Prerequisites**: [uv](https://docs.astral.sh/uv/) installed locally.
 
@@ -256,13 +256,13 @@ The PDF is produced by [rendercv](https://github.com/rendercv/rendercv) from the
 
 ```bash
 make pdf                 # runs uv tool install "rendercv[full]" + rendercv render
-git add public/example.yaml public/resume.pdf
-git commit -m "update resume"
+git add public/resume.yaml public/resume.pdf
+git commit -m "docs: update resume content"
 ```
 
 The first `make pdf` takes a minute (uv downloads rendercv + Typst); subsequent runs are ~1–2s.
 
-**Customising the PDF appearance**: edit the `design:` block in `public/example.yaml`. See [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/) for the full list of themes, colours, typography and templates.
+**Customising the PDF appearance**: edit the `design:` block in `public/resume.yaml`. See [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/) for the full list of themes, colours, typography and templates.
 
 ### Change PIN Code
 
@@ -278,9 +278,10 @@ The project is configured with GitHub Actions automatic deployment workflow (`.g
 
 1. Push code to `main` or `master` branch
 2. GitHub Actions will automatically:
-   - Install uv and regenerate `public/resume.pdf` from `public/example.yaml` via `make pdf` (a safety net in case you forgot to commit the latest PDF)
-   - Execute build (`yarn build`)
-   - Deploy to GitHub Pages
+
+- Install uv and regenerate `public/resume.pdf` from `public/resume.yaml` via `make pdf` (a safety net in case you forgot to commit the latest PDF)
+- Execute build (`yarn build`)
+- Deploy to GitHub Pages
 
 No manual commands needed!
 
@@ -316,7 +317,7 @@ This project includes `vercel.json` and can be deployed directly on Vercel:
 
 **PDF on Vercel**: Vercel runs a pure `yarn install && yarn build` — it does **not** regenerate the PDF. The committed `public/resume.pdf` is what ships. Always run `make pdf` locally and commit before pushing, otherwise Vercel will serve a stale PDF.
 
-**`vercel.json` rewrite note**: the SPA rewrite is scoped to paths without a file extension (`/((?!.*\\.).*)`) so static assets like `/resume.pdf`, `/example.yaml`, `/favicon.ico` are served directly instead of being masked by `index.html` when missing.
+**`vercel.json` rewrite note**: the SPA rewrite is scoped to paths without a file extension (`/((?!.*\\.).*)`) so static assets like `/resume.pdf`, `/resume.yaml`, `/favicon.ico` are served directly instead of being masked by `index.html` when missing.
 
 ### Deploy Using Docker
 
@@ -494,7 +495,7 @@ make
 # Or
 make build
 
-# Regenerate public/resume.pdf from public/example.yaml via rendercv.
+# Regenerate public/resume.pdf from public/resume.yaml via rendercv.
 # Run this after editing the YAML, then commit the updated PDF.
 # Requires `uv` to be installed locally.
 make pdf

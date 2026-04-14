@@ -63,7 +63,7 @@ VITE_WEBSITE_TITLE=Mai
 # 選填：履歷檔 - 若未設定，履歷頁面會被隱藏
 # 支援本機檔案與 URL
 # 本機檔案範例：
-VITE_RESUME_FILE=example.yaml
+VITE_RESUME_FILE=resume.yaml
 # GitHub Gist 範例：
 # VITE_RESUME_FILE=https://gist.github.com/username/gist_id
 # Raw URL 範例：
@@ -73,8 +73,8 @@ VITE_RESUME_FILE=example.yaml
 VITE_PIN_CODE=123456
 
 # 選填：履歷 PDF 下載路徑
-# 預設值：/example.pdf (對應 public/example.pdf)
-VITE_RESUME_PDF_PATH=/example.pdf
+# 預設值：/resume.pdf (對應 public/resume.pdf)
+VITE_RESUME_PDF_PATH=/resume.pdf
 ```
 
 可選：自訂部署根路徑（適用於 GitHub Pages 子路徑）。若部署於 `https://<user>.github.io/<repo>`，請在 `.env` 設定：
@@ -132,12 +132,12 @@ npm run dev
 - 條件式顯示：僅在設定 `VITE_RESUME_FILE` 後才會出現
 - 支援 PIN 碼驗證保護（選用）
 - 彈性的履歷載入方式：
-  - 本機 YAML 檔案：`example.yaml`、`resume.yaml`（自 `public/` 目錄載入）
+  - 本機 YAML 檔案：`resume.yaml`、`my-resume.yaml`（自 `public/` 目錄載入）
   - GitHub Gist：Gist 連結會自動轉為原始檔格式
   - Raw URL：任何可存取的 YAML 檔案網址
 - 以 YAML 駆動的履歷資料管理
 - 結構化顯示個人資訊、學歷、工作經歷等內容
-- PDF 下載：提供按鈕下載履歷 PDF（使用 `public/example.pdf`）
+- PDF 下載：提供按鈕下載履歷 PDF（使用 `public/resume.pdf`）
 - 響應式設計與動畫效果
 - 小技巧：若啟用 PIN，可透過 `/resume?pin=你的PIN` 直接解鎖；驗證後網址會自動移除 PIN。
 
@@ -156,7 +156,7 @@ npm run dev
 
 #### 選項一：本機 YAML 檔
 
-編輯 `public/example.yaml`，或在 `public/` 目錄建立自己的 YAML 檔：
+編輯 `public/resume.yaml`，或在 `public/` 目錄建立自己的 YAML 檔：
 
 ```bash
 # 在 .env 檔中
@@ -244,11 +244,11 @@ settings:
 - **List 型自訂欄位必須寫成 comma-separated 字串**（例如 `keywords: "Python, TypeScript, Rust"`）。loader 會在 runtime 自動轉回 array。這是 rendercv template engine 的限制 — 若寫成 YAML list 則 `rendercv render` 會 crash。
 - **Section 顯示順序 = YAML key 順序**。Parser 用 `Object.keys(cv.sections)`，你寫什麼順序就渲染什麼順序。
 - `Languages`（若是 `OneLineEntry` section）會被搬到 header 的 chip 區顯示,section 列表裡就不再重複。
-- 完整範例請見 `public/example.yaml`。
+- 完整範例請見 `public/resume.yaml`。
 
 ### 履歷 PDF
 
-PDF 由 [rendercv](https://github.com/rendercv/rendercv) 從同一份 `public/example.yaml` 產生，commit 到 `public/resume.pdf`。
+PDF 由 [rendercv](https://github.com/rendercv/rendercv) 從同一份 `public/resume.yaml` 產生，commit 到 `public/resume.pdf`。
 
 **前置需求**：本機安裝 [uv](https://docs.astral.sh/uv/)。
 
@@ -256,13 +256,13 @@ PDF 由 [rendercv](https://github.com/rendercv/rendercv) 從同一份 `public/ex
 
 ```bash
 make pdf                 # 執行 uv tool install "rendercv[full]" + rendercv render
-git add public/example.yaml public/resume.pdf
-git commit -m "update resume"
+git add public/resume.yaml public/resume.pdf
+git commit -m "docs: update resume content"
 ```
 
 第一次 `make pdf` 要等一分鐘左右（uv 下載 rendercv + Typst），之後只要 1–2 秒。
 
-**客製 PDF 外觀**：編輯 `public/example.yaml` 裡的 `design:` 區塊。完整的 theme、配色、字型、template 選項見 [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/)。
+**客製 PDF 外觀**：編輯 `public/resume.yaml` 裡的 `design:` 區塊。完整的 theme、配色、字型、template 選項見 [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/)。
 
 ### 修改 PIN 碼
 
@@ -278,9 +278,10 @@ git commit -m "update resume"
 
 1. 推送程式碼到 `main` 或 `master` 分支
 2. GitHub Actions 會自動：
-   - 安裝 uv 並用 `make pdf` 從 `public/example.yaml` 重新產生 `public/resume.pdf`（保險機制,以防你忘記 commit 最新 PDF）
-   - 執行建置（`yarn build`）
-   - 部署到 GitHub Pages
+
+- 安裝 uv 並用 `make pdf` 從 `public/resume.yaml` 重新產生 `public/resume.pdf`（保險機制,以防你忘記 commit 最新 PDF）
+- 執行建置（`yarn build`）
+- 部署到 GitHub Pages
 
 無需手動執行任何指令！
 
@@ -316,7 +317,7 @@ yarn deploy
 
 **Vercel 上的 PDF 行為**：Vercel 只跑 `yarn install && yarn build`，**不會** 重新產生 PDF，上線的就是 git 裡 committed 的 `public/resume.pdf`。所以改完 YAML 之後務必先在本地跑 `make pdf` 再 commit、再 push，否則 Vercel 會供應舊的 PDF。
 
-**`vercel.json` rewrite 說明**：SPA 的 rewrite 只套用在沒有副檔名的路徑（`/((?!.*\\.).*)`）,確保 `/resume.pdf`、`/example.yaml`、`/favicon.ico` 等靜態檔案會直接被 serve，不會被 `index.html` 蓋掉（檔案不存在時也會正確回 404 而不是偽裝的 HTML）。
+**`vercel.json` rewrite 說明**：SPA 的 rewrite 只套用在沒有副檔名的路徑（`/((?!.*\\.).*)`）,確保 `/resume.pdf`、`/resume.yaml`、`/favicon.ico` 等靜態檔案會直接被 serve，不會被 `index.html` 蓋掉（檔案不存在時也會正確回 404 而不是偽裝的 HTML）。
 
 ### 使用 Docker 部署
 
@@ -494,7 +495,7 @@ make
 # 或
 make build
 
-# 從 public/example.yaml 透過 rendercv 重新產生 public/resume.pdf。
+# 從 public/resume.yaml 透過 rendercv 重新產生 public/resume.pdf。
 # 編輯 YAML 之後跑這個,然後 commit 更新的 PDF。
 # 需要本機安裝 `uv`。
 make pdf

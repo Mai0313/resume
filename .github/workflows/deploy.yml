@@ -41,7 +41,7 @@ jobs:
       - name: Build website
         env:
           VITE_WEBSITE_TITLE: Mai
-          VITE_RESUME_FILE: example.yaml
+          VITE_RESUME_FILE: resume.yaml
           VITE_RESUME_PDF_PATH: resume.pdf
           VITE_ROOT_PATH: /${{ github.event.repository.name }}
         run: |
