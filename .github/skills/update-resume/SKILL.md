@@ -5,3 +5,5 @@ argument-hint: update my resume content
 ---
 
 User will provide their new experience, skills, or any other relevant information they want to add to their resume. The agent will analyze the input and suggest improvements, formatting tips, and content enhancements to make the resume more effective and appealing to potential employers. The agent can also provide examples of well-written resume sections and offer advice on how to highlight key achievements and skills, then update to `./public/example.yaml` with the new resume content.
+
+Once you are done, you must run `make pdf` to generate the updated resume in PDF format.

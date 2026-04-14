@@ -1,6 +1,5 @@
-ARG PYTHON_VERSION=3.12
-FROM nikolaik/python-nodejs:python${PYTHON_VERSION}-nodejs20 AS builder
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+ARG NODE_VERSION=20
+FROM node:${NODE_VERSION} AS builder
 
 LABEL maintainer="Wei Lee <mai@mai0313.com>" \
     org.label-schema.name="resume" \
@@ -21,4 +20,5 @@ FROM prod AS runtime
 WORKDIR /app
 COPY . .
 COPY --from=prod /app/node_modules ./node_modules
-RUN yarn build:all && yarn cache clean -f
+RUN yarn build && \
+    yarn cache clean -f

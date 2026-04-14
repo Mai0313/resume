@@ -34,7 +34,11 @@ jobs:
           version: "latest"
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build website with PDF
+      - name: Regenerate resume PDF
+        run: |
+          make pdf
+
+      - name: Build website
         env:
           VITE_WEBSITE_TITLE: Mai
           VITE_RESUME_FILE: example.yaml
@@ -44,7 +48,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "<41898282+github-actions[bot]@users.noreply.github.com>"
           yarn install
-          yarn build:all
+          yarn build
 
       - name: Setup Pages
         uses: actions/configure-pages@v6

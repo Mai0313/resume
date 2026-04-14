@@ -8,10 +8,9 @@ node_modules/
 /build/
 *.tsbuildinfo
 
-# rendercv generated output (PDF is produced at build time)
+# rendercv intermediate output (the final public/resume.pdf is committed to git)
 rendercv_output/
 public/rendercv_output/
-public/resume.pdf
 public/photo.jpg
 
 # Debugging and Logs
