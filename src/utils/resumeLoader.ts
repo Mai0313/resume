@@ -152,7 +152,7 @@ export interface RenderCVData {
   cv: CVData;
   design?: Record<string, unknown>;
   locale?: Record<string, unknown>;
-  rendercv_settings?: Record<string, unknown>;
+  settings?: Record<string, unknown>;
 }
 
 // ===============================================

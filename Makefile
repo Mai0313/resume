@@ -1,6 +1,13 @@
 .PHONY: all help clean fmt build run pdf
 
-all: pdf build ## Default target: generate the PDF and build the website
+# Ensure uv installed via `curl | sh` (to ~/.local/bin) is discoverable.
+export PATH := $(HOME)/.local/bin:$(PATH)
+
+# Scripts live in package.json so JS devs can use `yarn <cmd>` directly.
+# This Makefile is a thin wrapper for those who prefer `make`.
+
+all: ## Generate the PDF and build the website
+	yarn build:all
 
 help:  ## Show help
 	@grep -E '^[.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -15,11 +22,9 @@ fmt: ## Run code formatters and linters
 	yarn run check
 
 pdf: ## Generate the resume PDF from public/example.yaml via rendercv
-	uv tool install "rendercv[full]"
-	uv run rendercv render public/example.yaml --pdf-path resume.pdf -nomd -nohtml -nopng
-	@rm -rf public/rendercv_output public/photo.jpg
+	yarn pdf
 
-build: ## Build the website (run `make all` to also generate the PDF)
+build: ## Build the website
 	yarn build
 
 run: ## Run the project

@@ -227,3 +227,114 @@ cv:
       - name: Yu-Sheng Lin
         summary: >
           Wei Cheng Lee served as a key contributor to our AI Thermal Simulation project published at NeurIPS 2023, where he quickly mastered complex concepts like U-Net architecture and thermal gradient algorithms, proactively explored novel approaches such as integrating Swin Transformer V2 for thermal simulation, and demonstrated exceptional adaptability by rapidly re-engineering cutting-edge models for real-world applications while maintaining high code quality and conducting critical validation experiments.
+
+# ---------------------------------------------------------------------------
+# PDF design (rendercv only — ignored by the web UI).
+# Reference: https://docs.rendercv.com/user_guide/yaml_input_structure/design
+# ---------------------------------------------------------------------------
+design:
+  theme: engineeringresumes
+
+  page:
+    size: us-letter
+    top_margin: 1.8cm
+    bottom_margin: 1.8cm
+    left_margin: 1.8cm
+    right_margin: 1.8cm
+    show_footer: true
+
+  colors:
+    body: rgb(30, 30, 30)
+    name: rgb(0, 58, 115)          # deep navy for the name
+    headline: rgb(80, 80, 80)
+    connections: rgb(0, 58, 115)
+    section_titles: rgb(0, 58, 115)
+    links: rgb(0, 82, 160)         # slightly brighter navy for links
+    footer: rgb(140, 140, 140)
+
+  typography:
+    line_spacing: 0.65em
+    alignment: justified
+    date_and_location_column_alignment: right
+    font_size:
+      body: 10pt
+      name: 26pt
+      headline: 11pt
+      connections: 10pt
+      section_titles: 1.2em
+    bold:
+      name: true
+      headline: false
+      connections: false
+      section_titles: true
+    small_caps:
+      name: false
+      headline: false
+      connections: false
+      section_titles: false
+
+  links:
+    underline: false
+    show_external_link_icon: false
+
+  header:
+    alignment: center
+    space_below_name: 0.35cm
+    space_below_headline: 0.35cm
+    space_below_connections: 0.7cm
+    connections:
+      separator: "·"
+      show_icons: true
+      hyperlink: true
+      display_urls_instead_of_usernames: false
+      space_between_connections: 0.4cm
+
+  section_titles:
+    type: with_partial_line
+    line_thickness: 0.6pt
+    space_above: 0.5cm
+    space_below: 0.25cm
+
+  sections:
+    allow_page_break: true
+    space_between_regular_entries: 0.4cm
+    space_between_text_based_entries: 0.15cm
+    show_time_spans_in: []
+
+  entries:
+    date_and_location_width: 4cm
+    side_space: 0cm
+    space_between_columns: 0.2cm
+    allow_page_break: false
+    short_second_row: false
+    degree_width: 1cm
+    summary:
+      space_above: 0.1cm
+      space_left: 0cm
+    highlights:
+      bullet: "◆"
+      nested_bullet: "◦"
+      space_left: 0cm
+      space_above: 0.1cm
+      space_between_items: 0.15cm
+      space_between_bullet_and_text: 0.35em
+
+  templates:
+    footer: "NAME · PAGE_NUMBER / TOTAL_PAGES"
+    single_date: "MONTH_ABBREVIATION YEAR"
+    date_range: "START_DATE – END_DATE"
+    one_line_entry:
+      # Skills/Interests show label, level, and keyword list on one line in PDF.
+      main_column: "**LABEL** (DETAILS): KEYWORDS"
+
+settings:
+  # Auto-bold these keywords wherever they appear in summaries/highlights.
+  # "Wei Cheng Lee" is intentionally NOT listed here — author names use manual
+  # **...** markdown so the web UI can detect self-authorship (and listing it
+  # here would double-bold and break typst rendering in the footer).
+  bold_keywords:
+    - Google
+    - MediaTek
+    - NeurIPS
+    - ICLAD
+    - VLSI TSA

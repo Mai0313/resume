@@ -21,4 +21,4 @@ FROM prod AS runtime
 WORKDIR /app
 COPY . .
 COPY --from=prod /app/node_modules ./node_modules
-RUN make all && yarn cache clean -f
+RUN yarn build:all && yarn cache clean -f

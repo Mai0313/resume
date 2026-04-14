@@ -7,8 +7,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:all": "yarn pdf && yarn build",
     "preview": "vite preview",
     "deploy": "tsc && vite build && gh-pages -d dist",
+    "pdf": "uv tool install 'rendercv[full]' && uv run rendercv render public/example.yaml --pdf-path resume.pdf -nomd -nohtml -nopng && rm -rf public/rendercv_output public/photo.jpg",
+    "dev:pdf": "yarn pdf && yarn dev",
     "format": "prettier --write .",
     "lint": "eslint --fix",
     "type-check": "tsc --noEmit",

@@ -3,8 +3,8 @@
   "name": "Personal Website",
   "framework": "vite",
   "devCommand": "yarn dev",
-  "buildCommand": "yarn build",
-  "installCommand": "yarn install",
+  "installCommand": "yarn install && curl -LsSf https://astral.sh/uv/install.sh | sh",
+  "buildCommand": "export PATH=\"$HOME/.local/bin:$PATH\" && yarn build:all",
   "outputDirectory": "dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
