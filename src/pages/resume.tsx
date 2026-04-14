@@ -14,7 +14,7 @@ import { Spinner } from "@heroui/spinner";
 
 import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
-import { loadResumeData, ResumeData } from "../utils/resumeLoader";
+import { loadResumeData, RenderCVData } from "../utils/resumeLoader";
 
 import { env, envHelpers } from "@/utils/env";
 import DefaultLayout from "@/layouts/default";
@@ -27,7 +27,7 @@ const IS_PIN_ENABLED = envHelpers.isPinEnabled();
  */
 function useResumeData() {
   const [resumeData, setResumeData] = useState<
-    (ResumeData & { sectionOrder: string[] }) | null
+    (RenderCVData & { sectionOrder: string[] }) | null
   >(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
 
@@ -37,7 +37,7 @@ function useResumeData() {
       const data = await loadResumeData();
 
       // Verify data structure integrity
-      if (!data || !data.basics || !data.basics.name) {
+      if (!data || !data.cv || !data.cv.name) {
         throw new Error("Resume data is incomplete or missing required fields");
       }
 
@@ -219,7 +219,7 @@ export default function ResumePage() {
             <div className="flex justify-center items-center min-h-[50vh]">
               <Spinner label="Loading resume..." size="lg" />
             </div>
-          ) : resumeData && resumeData.basics && resumeData.basics.name ? (
+          ) : resumeData && resumeData.cv && resumeData.cv.name ? (
             <div className="space-y-6">
               {/* Resume Content */}
               <ResumeContent data={resumeData} />

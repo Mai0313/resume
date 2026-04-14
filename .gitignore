@@ -8,6 +8,12 @@ node_modules/
 /build/
 *.tsbuildinfo
 
+# rendercv generated output (PDF is produced at build time)
+rendercv_output/
+public/rendercv_output/
+public/resume.pdf
+public/photo.jpg
+
 # Debugging and Logs
 npm-debug.log*
 yarn-debug.log*

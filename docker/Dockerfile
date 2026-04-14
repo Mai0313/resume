@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.10
+ARG PYTHON_VERSION=3.12
 FROM nikolaik/python-nodejs:python${PYTHON_VERSION}-nodejs20 AS builder
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
@@ -21,5 +21,4 @@ FROM prod AS runtime
 WORKDIR /app
 COPY . .
 COPY --from=prod /app/node_modules ./node_modules
-RUN yarn build && \
-    yarn cache clean -f
+RUN make all && yarn cache clean -f

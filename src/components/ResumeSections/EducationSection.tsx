@@ -1,33 +1,39 @@
-import type { JSONResumeEducation } from "@/utils/resumeLoader";
+import type { EducationEntry } from "@/utils/resumeLoader";
 
 import React from "react";
 import { Variants } from "framer-motion";
 
-import { SectionCard, SectionIcons } from "./SectionCard";
+import { SectionCard, getSectionConfig } from "./SectionCard";
 
 import { ItemCard, ExternalLink, DateRange } from "@/components/shared";
 
 interface EducationSectionProps {
-  education: JSONResumeEducation[] | undefined;
+  entries: EducationEntry[] | undefined;
+  sectionName: string;
   itemVariants: Variants;
 }
 
+/**
+ * Renders a rendercv section containing EducationEntry items.
+ */
 export const EducationSection: React.FC<EducationSectionProps> = ({
-  education,
+  entries,
+  sectionName,
   itemVariants,
 }) => {
+  const { colorScheme, displayTitle } = getSectionConfig(sectionName);
+
   return (
     <SectionCard
-      colorScheme="indigo"
-      data={education}
-      icon={SectionIcons.education}
+      colorScheme={colorScheme}
+      data={entries}
       itemVariants={itemVariants}
-      sectionKey="education"
-      title="Education"
+      sectionKey={sectionName}
+      title={displayTitle}
     >
       <div className="space-y-6">
-        {education?.map((edu, index) => (
-          <div key={`education-${edu.institution || "unknown"}-${index}`}>
+        {entries?.map((edu, index) => (
+          <div key={`${sectionName}-${edu.institution || "unknown"}-${index}`}>
             <ItemCard>
               <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
                 <div className="flex-grow">
@@ -41,19 +47,21 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
                         {edu.institution}
                       </ExternalLink>
                     </h3>
-                    <p className="text-indigo-600 dark:text-indigo-400 font-semibold">
-                      {edu.studyType} in {edu.area}
-                    </p>
+                    {(edu.degree || edu.area) && (
+                      <p className="text-indigo-600 dark:text-indigo-400 font-semibold">
+                        {[edu.degree, edu.area].filter(Boolean).join(" in ")}
+                      </p>
+                    )}
                   </div>
 
                   <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
-                    {edu.startDate && (
+                    {(edu.start_date || edu.end_date) && (
                       <DateRange
-                        endDate={edu.endDate}
-                        startDate={edu.startDate}
+                        endDate={edu.end_date}
+                        startDate={edu.start_date}
                       />
                     )}
-                    {edu.score && (
+                    {edu.grade && (
                       <div className="flex items-center gap-1">
                         <svg
                           className="w-4 h-4"
@@ -62,7 +70,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
                         >
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                         </svg>
-                        <span>GPA: {edu.score}</span>
+                        <span>GPA: {edu.grade}</span>
                       </div>
                     )}
                   </div>

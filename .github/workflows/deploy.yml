@@ -28,10 +28,21 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v6
 
-      - name: Deploy website
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate PDF with rendercv
+        run: |
+          make pdf
+
+      - name: Build website
         env:
           VITE_WEBSITE_TITLE: Mai
           VITE_RESUME_FILE: example.yaml
+          VITE_RESUME_PDF_PATH: resume.pdf
           VITE_ROOT_PATH: /${{ github.event.repository.name }}
         run: |
           git config --global user.name "github-actions[bot]"

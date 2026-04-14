@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { motion, Variants } from "framer-motion";
 
-type ColorScheme =
+export type ColorScheme =
   | "blue"
   | "indigo"
   | "orange"
@@ -58,7 +58,6 @@ const colorSchemes: Record<ColorScheme, { gradient: string; text: string }> = {
 
 interface SectionCardProps {
   title: string;
-  icon: ReactNode;
   colorScheme: ColorScheme;
   itemVariants: Variants;
   sectionKey: string;
@@ -262,4 +261,126 @@ export const SectionIcons = {
       />
     </svg>
   ),
+  languages: (
+    <svg
+      className="w-6 h-6 text-white"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+    </svg>
+  ),
+  generic: (
+    <svg
+      className="w-6 h-6 text-white"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M4 6h16M4 12h16M4 18h7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+    </svg>
+  ),
 };
+
+export interface SectionConfig {
+  colorScheme: ColorScheme;
+  icon: ReactNode;
+  displayTitle: string;
+}
+
+/**
+ * Look up rendering config for arbitrary section names. Unknown section names
+ * fall back to a generic icon and use the raw section name as the display title.
+ */
+const SECTION_CONFIG_MAP: Record<string, SectionConfig> = {
+  experience: {
+    colorScheme: "blue",
+    icon: SectionIcons.work,
+    displayTitle: "Work Experience",
+  },
+  work: {
+    colorScheme: "blue",
+    icon: SectionIcons.work,
+    displayTitle: "Work Experience",
+  },
+  education: {
+    colorScheme: "indigo",
+    icon: SectionIcons.education,
+    displayTitle: "Education",
+  },
+  publications: {
+    colorScheme: "purple",
+    icon: SectionIcons.publications,
+    displayTitle: "Research Publications",
+  },
+  projects: {
+    colorScheme: "green",
+    icon: SectionIcons.projects,
+    displayTitle: "Projects",
+  },
+  skills: {
+    colorScheme: "orange",
+    icon: SectionIcons.skills,
+    displayTitle: "Skills & Expertise",
+  },
+  languages: {
+    colorScheme: "teal",
+    icon: SectionIcons.languages,
+    displayTitle: "Languages",
+  },
+  volunteer: {
+    colorScheme: "pink",
+    icon: SectionIcons.volunteer,
+    displayTitle: "Volunteer & Community Engagement",
+  },
+  certificates: {
+    colorScheme: "teal",
+    icon: SectionIcons.certificates,
+    displayTitle: "Certificates",
+  },
+  interests: {
+    colorScheme: "cyan",
+    icon: SectionIcons.interests,
+    displayTitle: "Research Interests",
+  },
+  references: {
+    colorScheme: "red",
+    icon: SectionIcons.references,
+    displayTitle: "References",
+  },
+  awards: {
+    colorScheme: "yellow",
+    icon: SectionIcons.awards,
+    displayTitle: "Awards & Recognition",
+  },
+};
+
+/**
+ * Case-insensitive section config lookup with a generic fallback that uses the
+ * original section name as the display title.
+ */
+export function getSectionConfig(sectionName: string): SectionConfig {
+  const key = sectionName.toLowerCase().replace(/[\s_-]/g, "");
+  const match = SECTION_CONFIG_MAP[key];
+
+  if (match) {
+    return match;
+  }
+
+  return {
+    colorScheme: "blue",
+    icon: SectionIcons.generic,
+    displayTitle: sectionName,
+  };
+}
