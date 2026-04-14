@@ -19,20 +19,20 @@ Thoroughly investigate the codebase using Agent Team (subagents) and update all 
 
 ### Always Update (if they exist)
 
-| File | Purpose |
-|------|---------|
-| `README.md` | Primary project documentation |
-| `README.*.md` | Localized README variants (e.g., `README.zh-CN.md`, `README.zh-TW.md`, `README.ja.md`, etc.) |
-| `CONTRIBUTING.md` | Contribution guidelines |
+| File              | Purpose                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------- |
+| `README.md`       | Primary project documentation                                                                |
+| `README.*.md`     | Localized README variants (e.g., `README.zh-CN.md`, `README.zh-TW.md`, `README.ja.md`, etc.) |
+| `CONTRIBUTING.md` | Contribution guidelines                                                                      |
 
 ### Update If Present (skip if missing)
 
-| File | Purpose |
-|------|---------|
-| `CLAUDE.md` | Claude AI instructions |
-| `GEMINI.md` | Gemini AI instructions |
+| File                              | Purpose                     |
+| --------------------------------- | --------------------------- |
+| `CLAUDE.md`                       | Claude AI instructions      |
+| `GEMINI.md`                       | Gemini AI instructions      |
 | `.github/copilot-instructions.md` | GitHub Copilot instructions |
-| `AGENTS.md` | Agent definitions |
+| `AGENTS.md`                       | Agent definitions           |
 
 **Discovery**: At the start, scan the repo root and `.github/` for all documentation files matching these patterns. Only update files that already exist — never create new ones.
 
@@ -43,7 +43,9 @@ Thoroughly investigate the codebase using Agent Team (subagents) and update all 
 Launch multiple **Explore** subagents in parallel to gather comprehensive codebase information. Each subagent should be given a focused investigation area.
 
 **Subagent 1 — Project Structure & Config:**
+
 > Thoroughly investigate the project structure. Report:
+>
 > - All top-level config files and their purpose
 > - Full directory tree with descriptions of each folder's role
 > - Build system, scripts, and available commands (look for Makefile, package.json scripts, Cargo.toml, pyproject.toml, CMakeLists.txt, Justfile, taskfile, or any build config)
@@ -51,21 +53,27 @@ Launch multiple **Explore** subagents in parallel to gather comprehensive codeba
 > - Project type detection: identify the primary language(s) and framework(s)
 
 **Subagent 2 — Dependencies & Tech Stack:**
+
 > Thoroughly investigate dependencies and tech stack. Report:
+>
 > - Identify the dependency manifest(s) used by this project (e.g., package.json, requirements.txt, pyproject.toml, go.mod, Cargo.toml, build.gradle, pom.xml, Gemfile, etc.)
 > - All dependencies with their EXACT versions as declared in the manifest
 > - Key frameworks and libraries being used and HOW they're used in the code
 > - Any version mismatches between documentation and actual dependency manifests
 
 **Subagent 3 — Features & Architecture:**
+
 > Thoroughly investigate all source code features. Report:
+>
 > - Entry points, modules, pages/routes, APIs, CLI commands — whatever is relevant to the project type
 > - Core components/classes/functions and their responsibilities
 > - Environment variables and configuration mechanisms (grep for common patterns: `env`, `config`, `settings`, `ENV`, `os.environ`, `process.env`, `std::env`, etc.)
 > - Any features not documented or documented features that no longer exist
 
 **Subagent 4 — Existing Documentation Audit:**
+
 > Find and read ALL documentation files in the repo root and `.github/` (README*, CONTRIBUTING*, CLAUDE.md, GEMINI.md, copilot-instructions.md, AGENTS.md, and any other .md files that serve as project docs). Report:
+>
 > - Which files exist and which don't
 > - Current structure and sections of each doc
 > - Any inconsistencies BETWEEN localized versions of the same doc
