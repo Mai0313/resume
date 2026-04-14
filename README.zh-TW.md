@@ -18,7 +18,7 @@
 ### 🎨 視覺效果
 
 - **動態首頁**：整合 Particles 粒子背景、Orb 動態球體和 SplitText 文字動畫，打造引人入勝的視覺體驗
-- **現代化 UI**：採用 HeroUI 元件庫與 Framer Motion、React Spring、GSAP 等動畫庫
+- **現代化 UI**：採用 HeroUI 元件庫與 Framer Motion、GSAP 等動畫庫
 - **響應式設計**：支援深色/淺色主題切換與全響應式版面，在各種裝置上都能完美顯示
 
 ### 📄 履歷系統
@@ -45,7 +45,6 @@
 - [HeroUI](https://heroui.com) - React UI 元件庫
 - [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS 框架
 - [Framer Motion 12.15](https://www.framer.com/motion) - React 動畫庫
-- [React Spring 10.0](https://react-spring.dev/) - 彈簧動畫庫
 - [GSAP 3.13](https://gsap.com/) - 專業級動畫庫
 - [OGL 1.0](https://oframe.github.io/ogl/) - WebGL 函式庫
 - [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器
@@ -351,19 +350,14 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   └── default.tsx              # 預設版面（含導覽與主題）
 │   ├── utils/                       # 工具函式
 │   │   ├── animations.ts            # 動畫輔助函式
-│   │   ├── debounce.ts              # 防抖工具
 │   │   ├── env.ts                   # 環境變數管理
-│   │   ├── formatters.ts            # 資料格式化工具
-│   │   ├── localStorage.ts          # 本地儲存輔助
 │   │   ├── pathUtils.ts             # 路徑工具函式
-│   │   ├── requestQueue.ts          # 請求佇列工具
 │   │   └── resumeLoader.ts          # YAML 履歷載入器
 │   ├── config/                      # 設定檔
 │   │   └── site.ts                  # 網站設定與導覽配置
 │   ├── constants/                   # 常數
 │   │   └── index.ts                 # 全域常數
 │   ├── types/                       # TypeScript 型別定義
-│   │   ├── errors.ts                # 錯誤型別
 │   │   ├── index.ts                 # 通用型別（Resume、GitHub API 等）
 │   │   └── ogl.d.ts                 # OGL WebGL 函式庫型別宣告
 │   ├── styles/                      # 全域樣式
@@ -373,7 +367,10 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   ├── main.tsx                     # React 渲染進入點
 │   ├── provider.tsx                 # Context Providers（主題等）
 │   └── vite-env.d.ts                # Vite 環境型別定義
+├── docker-compose.yaml              # Docker Compose 配置
 ├── eslint.config.js                 # ESLint 配置
+├── index.html                       # 進入點 HTML
+├── Makefile                         # 建置自動化
 ├── package.json                     # 專案依賴及腳本
 ├── tsconfig.json                    # TypeScript 配置
 ├── vercel.json                      # Vercel 部署配置
@@ -441,8 +438,11 @@ make build
 # 清理產生的檔案與 Git 快取
 make clean
 
-# 執行格式化與 Lint（等同於 yarn format + yarn lint）
+# 執行完整檢查（等同於 yarn check：型別檢查 + 格式化 + Lint）
 make fmt
+
+# 執行專案
+make run
 ```
 
 ### 持續整合 / 持續部署（CI/CD）

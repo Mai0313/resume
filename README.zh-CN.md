@@ -18,7 +18,7 @@
 ### 🎨 视觉效果
 
 - **动态首页**：整合 Particles 粒子背景、Orb 动态球体和 SplitText 文字动画，打造引人入胜的视觉体验
-- **现代化 UI**：采用 HeroUI 组件库与 Framer Motion、React Spring、GSAP 等动画库
+- **现代化 UI**：采用 HeroUI 组件库与 Framer Motion、GSAP 等动画库
 - **响应式设计**：支持深色/浅色主题切换与全响应式布局，在各种设备上都能完美显示
 
 ### 📄 简历系统
@@ -45,7 +45,6 @@
 - [HeroUI](https://heroui.com) - React UI 组件库
 - [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS 框架
 - [Framer Motion 12.15](https://www.framer.com/motion) - React 动画库
-- [React Spring 10.0](https://react-spring.dev/) - 弹簧动画库
 - [GSAP 3.13](https://gsap.com/) - 专业级动画库
 - [OGL 1.0](https://oframe.github.io/ogl/) - WebGL 库
 - [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器
@@ -351,19 +350,14 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   └── default.tsx              # 默认布局（含导航与主题）
 │   ├── utils/                       # 工具函数
 │   │   ├── animations.ts            # 动画辅助函数
-│   │   ├── debounce.ts              # 防抖工具
 │   │   ├── env.ts                   # 环境变量管理
-│   │   ├── formatters.ts            # 数据格式化工具
-│   │   ├── localStorage.ts          # 本地存储辅助
 │   │   ├── pathUtils.ts             # 路径工具函数
-│   │   ├── requestQueue.ts          # 请求队列工具
 │   │   └── resumeLoader.ts          # YAML 简历加载器
 │   ├── config/                      # 配置文件
 │   │   └── site.ts                  # 网站配置与导航配置
 │   ├── constants/                   # 常量
 │   │   └── index.ts                 # 全局常量
 │   ├── types/                       # TypeScript 类型定义
-│   │   ├── errors.ts                # 错误类型
 │   │   ├── index.ts                 # 通用类型（Resume、GitHub API 等）
 │   │   └── ogl.d.ts                 # OGL WebGL 库类型声明
 │   ├── styles/                      # 全局样式
@@ -373,7 +367,10 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   ├── main.tsx                     # React 渲染入口
 │   ├── provider.tsx                 # Context Providers（主题等）
 │   └── vite-env.d.ts                # Vite 环境类型定义
+├── docker-compose.yaml              # Docker Compose 配置
 ├── eslint.config.js                 # ESLint 配置
+├── index.html                       # 入口 HTML
+├── Makefile                         # 构建自动化
 ├── package.json                     # 项目依赖及脚本
 ├── tsconfig.json                    # TypeScript 配置
 ├── vercel.json                      # Vercel 部署配置
@@ -441,8 +438,11 @@ make build
 # 清理生成的文件与 Git 缓存
 make clean
 
-# 执行格式化与 Lint（等同于 yarn format + yarn lint）
+# 执行完整检查（等同于 yarn check：类型检查 + 格式化 + Lint）
 make fmt
+
+# 运行项目
+make run
 ```
 
 ### 持续集成 / 持续部署（CI/CD）

@@ -18,7 +18,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 ### 🎨 Visual Effects
 
 - **Dynamic Home Page**: Integrates Particles particle background, Orb dynamic sphere, and SplitText text animation to create an engaging visual experience
-- **Modern UI**: Utilizes HeroUI component library with animation libraries including Framer Motion, React Spring, and GSAP
+- **Modern UI**: Utilizes HeroUI component library with animation libraries including Framer Motion and GSAP
 - **Responsive Design**: Supports dark/light theme switching and fully responsive layouts, displaying perfectly on all devices
 
 ### 📄 Resume System
@@ -45,7 +45,6 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - [HeroUI](https://heroui.com) - React UI component library
 - [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS framework
 - [Framer Motion 12.15](https://www.framer.com/motion) - React animation library
-- [React Spring 10.0](https://react-spring.dev/) - Spring animation library
 - [GSAP 3.13](https://gsap.com/) - Professional-grade animation library
 - [OGL 1.0](https://oframe.github.io/ogl/) - WebGL library
 - [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML parser
@@ -303,7 +302,7 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 
 ## Project Structure
 
-````
+```
 .
 ├── .devcontainer/                   # Dev Container configuration
 ├── docker/                          # Docker configuration
@@ -351,19 +350,14 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   └── default.tsx              # Default layout (with navigation and theme)
 │   ├── utils/                       # Utility functions
 │   │   ├── animations.ts            # Animation helper functions
-│   │   ├── debounce.ts              # Debounce utility
 │   │   ├── env.ts                   # Environment variable management
-│   │   ├── formatters.ts            # Data formatting utilities
-│   │   ├── localStorage.ts          # Local storage helpers
 │   │   ├── pathUtils.ts             # Path utility functions
-│   │   ├── requestQueue.ts          # Request queue utility
 │   │   └── resumeLoader.ts          # YAML resume loader
 │   ├── config/                      # Configuration files
 │   │   └── site.ts                  # Site configuration and navigation setup
 │   ├── constants/                   # Constants
 │   │   └── index.ts                 # Global constants
 │   ├── types/                       # TypeScript type definitions
-│   │   ├── errors.ts                # Error types
 │   │   ├── index.ts                 # Common types (Resume, GitHub API, etc.)
 │   │   └── ogl.d.ts                 # OGL WebGL library type declarations
 │   ├── styles/                      # Global styles
@@ -373,9 +367,15 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   ├── main.tsx                     # React render entry point
 │   ├── provider.tsx                 # Context Providers (theme, etc.)
 │   └── vite-env.d.ts                # Vite environment type definitions
+├── docker-compose.yaml              # Docker Compose configuration
 ├── eslint.config.js                 # ESLint configuration
+├── index.html                       # Entry HTML
+├── Makefile                         # Build automation
 ├── package.json                     # Project dependencies and scripts
-├── tailwind.config.js               # Tailwind CSS configuration (wait, we removed this. Let me just omit root files if I want to keep it simple, or list them correctly)
+├── tsconfig.json                    # TypeScript configuration
+├── vercel.json                      # Vercel deployment configuration
+└── vite.config.ts                   # Vite configuration
+```
 
 ## Development Guide
 
@@ -420,7 +420,7 @@ yarn preview
 
 # Deploy to GitHub Pages
 yarn deploy
-````
+```
 
 #### Makefile Commands
 
@@ -438,8 +438,11 @@ make build
 # Clean generated files and Git cache
 make clean
 
-# Run format and lint (equivalent to yarn format + yarn lint)
+# Run complete check (equivalent to yarn check: type-check + format + lint)
 make fmt
+
+# Run the project
+make run
 ```
 
 ### Continuous Integration / Continuous Deployment (CI/CD)
