@@ -8,6 +8,11 @@ node_modules/
 /build/
 *.tsbuildinfo
 
+# rendercv intermediate output (the final public/resume.pdf is committed to git)
+rendercv_output/
+public/rendercv_output/
+public/photo.jpg
+
 # Debugging and Logs
 npm-debug.log*
 yarn-debug.log*

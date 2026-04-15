@@ -3994,11 +3994,6 @@ tinyglobby@^0.2.13:
     fdir "^6.5.0"
     picomatch "^4.0.4"
 
-tinypdf@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/tinypdf/-/tinypdf-0.3.1.tgz#489d221ca07bc5c75f5eb41046acd177b0a9590b"
-  integrity sha512-evwxwl+t2X/YG7GYH6HYuXun8H2nCDf2iw6SsFq6QK5/22yziyT3pRi1zvE6ppL1uGh9i2idFx7vzDyWavqODQ==
-
 to-regex-range@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/to-regex-range/-/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"

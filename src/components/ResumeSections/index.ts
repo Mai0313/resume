@@ -1,10 +1,14 @@
-export { WorkSection } from "./WorkSection";
-export { VolunteerSection } from "./VolunteerSection";
+export { ExperienceSection } from "./ExperienceSection";
 export { EducationSection } from "./EducationSection";
-export { AwardsSection } from "./AwardsSection";
-export { CertificatesSection } from "./CertificatesSection";
-export { PublicationsSection } from "./PublicationsSection";
-export { SkillsSection } from "./SkillsSection";
-export { InterestsSection } from "./InterestsSection";
-export { ReferencesSection } from "./ReferencesSection";
-export { ProjectsSection } from "./ProjectsSection";
+export { PublicationSection } from "./PublicationSection";
+export { NormalSection } from "./NormalSection";
+export { OneLineSection } from "./OneLineSection";
+export { BulletSection } from "./BulletSection";
+export { TextSection } from "./TextSection";
+export {
+  SectionCard,
+  SectionIcons,
+  getSectionConfig,
+  type ColorScheme,
+  type SectionConfig,
+} from "./SectionCard";

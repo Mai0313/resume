@@ -1,9 +1,9 @@
-import type { JSONResumeWork } from "@/utils/resumeLoader";
+import type { ExperienceEntry } from "@/utils/resumeLoader";
 
 import React from "react";
 import { Variants } from "framer-motion";
 
-import { SectionCard, SectionIcons } from "./SectionCard";
+import { SectionCard, getSectionConfig } from "./SectionCard";
 
 import {
   ItemCard,
@@ -13,83 +13,93 @@ import {
   LocationIcon,
 } from "@/components/shared";
 
-interface WorkSectionProps {
-  work: JSONResumeWork[] | undefined;
+interface ExperienceSectionProps {
+  entries: ExperienceEntry[] | undefined;
+  sectionName: string;
   itemVariants: Variants;
 }
 
-export const WorkSection: React.FC<WorkSectionProps> = ({
-  work,
+/**
+ * Renders a rendercv section containing ExperienceEntry items.
+ * Used for Experience, Volunteer, and any other section with {company, position}.
+ */
+export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
+  entries,
+  sectionName,
   itemVariants,
 }) => {
+  const { colorScheme, displayTitle, icon } = getSectionConfig(sectionName);
+
   return (
     <SectionCard
-      colorScheme="blue"
-      data={work}
-      icon={SectionIcons.work}
+      colorScheme={colorScheme}
+      data={entries}
+      icon={icon}
       itemVariants={itemVariants}
-      sectionKey="work"
-      title="Work Experience"
+      sectionKey={sectionName}
+      title={displayTitle}
     >
       <div className="space-y-8">
-        {work?.map((workItem, index) => (
+        {entries?.map((entry, index) => (
           <div
-            key={`work-${workItem.name || "unknown"}-${index}`}
+            key={`${sectionName}-${entry.company || "unknown"}-${index}`}
             className="pb-8 last:pb-0"
           >
             <ItemCard>
               <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-4">
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-                    {workItem.name}
+                    {entry.company}
                   </h3>
                   <p className="text-lg text-blue-600 dark:text-blue-400 font-semibold mb-2">
-                    {workItem.position}
+                    {entry.position}
                   </p>
-                  {workItem.location && (
+                  {entry.location && (
                     <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                       <LocationIcon />
-                      {workItem.location}
+                      {entry.location}
                     </p>
                   )}
                 </div>
                 <div className="mt-2 lg:mt-0 lg:text-right">
-                  <span className="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full">
-                    <DateRange
-                      endDate={workItem.endDate || "Present"}
-                      startDate={workItem.startDate}
-                    />
-                  </span>
+                  {(entry.start_date || entry.end_date || entry.date) && (
+                    <span className="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full">
+                      <DateRange
+                        endDate={entry.date ?? (entry.end_date || "Present")}
+                        startDate={entry.start_date}
+                      />
+                    </span>
+                  )}
                 </div>
               </div>
 
-              {workItem.description && (
+              {entry.description && (
                 <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 italic">
-                  {workItem.description}
+                  {entry.description}
                 </p>
               )}
 
-              {workItem.summary && (
+              {entry.summary && (
                 <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                  {workItem.summary}
+                  {entry.summary}
                 </p>
               )}
 
-              {workItem.highlights && workItem.highlights.length > 0 && (
+              {entry.highlights && entry.highlights.length > 0 && (
                 <BulletList
                   bulletColor="blue-500"
-                  items={workItem.highlights}
+                  items={entry.highlights}
                   title="Key Achievements:"
                 />
               )}
 
-              {workItem.url && (
+              {entry.url && (
                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <ExternalLink
                     className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
-                    url={workItem.url}
+                    url={entry.url}
                   >
-                    Company Website
+                    Website
                   </ExternalLink>
                 </div>
               )}

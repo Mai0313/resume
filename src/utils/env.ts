@@ -20,7 +20,7 @@ const DEFAULT_VALUES = {
   VITE_PIN_CODE: null,
   VITE_ROOT_PATH: "/",
   VITE_RESUME_FILE: null,
-  VITE_RESUME_PDF_PATH: "/example.pdf",
+  VITE_RESUME_PDF_PATH: "/resume.pdf",
 } as const;
 
 /**
@@ -126,7 +126,7 @@ export const envHelpers = {
    * Ensures local paths start with /
    */
   getResumePdfPath(): string {
-    const path = env.RESUME_PDF_PATH || "/example.pdf";
+    const path = env.RESUME_PDF_PATH || "/resume.pdf";
 
     // If it's a full URL, return as is
     if (path.match(/^https?:\/\//)) return path;
