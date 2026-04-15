@@ -243,7 +243,7 @@ settings:
 
 - **List 型自訂欄位必須寫成 comma-separated 字串**（例如 `keywords: "Python, TypeScript, Rust"`）。loader 會在 runtime 自動轉回 array。這是 rendercv template engine 的限制 — 若寫成 YAML list 則 `rendercv render` 會 crash。
 - **Section 顯示順序 = YAML key 順序**。Parser 用 `Object.keys(cv.sections)`，你寫什麼順序就渲染什麼順序。
-- `Languages`（若是 `OneLineEntry` section）會被搬到 header 的 chip 區顯示,section 列表裡就不再重複。
+- **`Languages` 是 magic section name**。任何 key 叫 `Languages`(大小寫不敏感)的 `OneLineEntry` section 會被搬到 header 的 chip 區顯示,不再出現在主 section 列表裡。這個 match 寫死在 `ResumeContent.tsx`,如果改名成 `Spoken Languages` 之類就會被當作普通 section 渲染。
 - 完整範例請見 `public/resume.yaml`。
 
 ### 履歷 PDF

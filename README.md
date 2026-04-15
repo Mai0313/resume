@@ -243,7 +243,7 @@ settings:
 
 - **List-valued custom fields must be comma-separated strings in YAML** (e.g. `keywords: "Python, TypeScript, Rust"`). The loader normalises them to arrays at runtime. This works around a rendercv template-engine limitation — if you write them as YAML lists, `rendercv render` will crash.
 - **Section order follows YAML key order.** The parser uses `Object.keys(cv.sections)` so whatever order you write, that's what the page renders.
-- `Languages` (if present as a `OneLineEntry` section) is hoisted into the header chip row and skipped from the section list.
+- **`Languages` is a magic section name.** Any `OneLineEntry` section whose key is `Languages` (case-insensitive) is hoisted into the header chip row and skipped from the main section list. This match is hard-coded in `ResumeContent.tsx` — renaming the section to e.g. `Spoken Languages` will cause it to render as a regular section instead.
 - See `public/resume.yaml` for a full working example.
 
 ### Resume PDF
