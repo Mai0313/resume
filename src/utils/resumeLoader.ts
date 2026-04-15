@@ -1,4 +1,5 @@
 import { envHelpers } from "@/utils/env";
+import { buildPath } from "@/utils/pathUtils";
 
 // Dynamically import js-yaml to reduce initial bundle size
 let yamlModule: typeof import("js-yaml") | null = null;
@@ -355,7 +356,10 @@ function getResumeSource(): string {
     return convertGistToRawURL(resumeFile);
   }
 
-  return resumeFile.startsWith("/") ? resumeFile : `/${resumeFile}`;
+  // Local files live under the Vite `base` (VITE_ROOT_PATH). On GitHub Pages
+  // subpath deploys (e.g. /resume/) a bare "/resume.yaml" would 404 because
+  // the asset is actually served at "/resume/resume.yaml".
+  return buildPath(resumeFile);
 }
 
 // ===============================================

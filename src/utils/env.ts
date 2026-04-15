@@ -122,20 +122,19 @@ export const envHelpers = {
   },
 
   /**
-   * Get resume PDF path with validation and formatting
-   * Ensures local paths start with /
+   * Get resume PDF path with validation and formatting.
+   * Remote URLs are returned as-is; local paths are prefixed with
+   * VITE_ROOT_PATH so GitHub Pages subpath deploys resolve correctly.
    */
   getResumePdfPath(): string {
     const path = env.RESUME_PDF_PATH || "/resume.pdf";
 
-    // If it's a full URL, return as is
     if (path.match(/^https?:\/\//)) return path;
 
-    // If it starts with /, return as is
-    if (path.startsWith("/")) return path;
+    const root = this.getRootPath().replace(/\/$/, "");
+    const cleanPath = path.replace(/^\//, "");
 
-    // Otherwise prepend /
-    return `/${path}`;
+    return root === "" ? `/${cleanPath}` : `${root}/${cleanPath}`;
   },
 } as const;
 
