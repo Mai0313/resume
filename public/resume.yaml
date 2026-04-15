@@ -186,16 +186,16 @@ cv:
 
     Interests:
       - label: AI for Semiconductor Design
-        details: Physics-Informed Neural Networks, Circuit Design Automation, Thermal Modeling, Leakage Analysis
+        details: Research Focus
         keywords: "Physics-Informed Neural Networks, Circuit Design Automation, Thermal Modeling, Leakage Analysis"
       - label: Multi-Agent & Multimodal AI
-        details: Multi-Agent Systems, Multimodal & Reinforcement Learning, Decision Making
+        details: Research Focus
         keywords: "Multi-Agent Systems, Multimodal & Reinforcement Learning, Decision Making"
       - label: Research Methodology
-        details: Integrative Tokenization, Knowledge Distillation, Process-Oriented Evaluation, Cross-disciplinary Research
+        details: Research Focus
         keywords: "Integrative Tokenization, Knowledge Distillation, Process-Oriented Evaluation, Cross-disciplinary Research"
       - label: Educational Impact
-        details: Knowledge Democratization, Fair Access to AI Tools
+        details: Community
         keywords: "Knowledge Democratization, Fair Access to AI Tools"
 
     Volunteer:

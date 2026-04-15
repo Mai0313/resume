@@ -255,11 +255,6 @@ export function detectEntryType(entries: Entry[]): EntryKind {
     return "publication";
   }
 
-  if ("title" in first) {
-    // Treat title-only entries as publications (rendercv's minimal PublicationEntry)
-    return "publication";
-  }
-
   if ("label" in first && "details" in first) {
     return "oneline";
   }
