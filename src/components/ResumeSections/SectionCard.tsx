@@ -58,6 +58,7 @@ const colorSchemes: Record<ColorScheme, { gradient: string; text: string }> = {
 
 interface SectionCardProps {
   title: string;
+  icon: ReactNode;
   colorScheme: ColorScheme;
   itemVariants: Variants;
   sectionKey: string;
@@ -67,6 +68,7 @@ interface SectionCardProps {
 
 export const SectionCard: React.FC<SectionCardProps> = ({
   title,
+  icon,
   colorScheme,
   itemVariants,
   sectionKey,
@@ -78,12 +80,17 @@ export const SectionCard: React.FC<SectionCardProps> = ({
     return null;
   }
 
-  const { text } = colorSchemes[colorScheme];
+  const { gradient, text } = colorSchemes[colorScheme];
 
   return (
     <motion.div key={sectionKey} variants={itemVariants}>
       <div className="group">
         <div className="flex items-center gap-4 mb-6">
+          <div
+            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg shrink-0`}
+          >
+            {icon}
+          </div>
           <h2 className={`text-2xl font-bold ${text}`}>{title}</h2>
           <div className="h-px flex-1 bg-gradient-to-r from-default-200 to-transparent" />
         </div>

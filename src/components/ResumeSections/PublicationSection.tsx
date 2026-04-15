@@ -25,12 +25,13 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
   sectionName,
   itemVariants,
 }) => {
-  const { colorScheme, displayTitle } = getSectionConfig(sectionName);
+  const { colorScheme, displayTitle, icon } = getSectionConfig(sectionName);
 
   return (
     <SectionCard
       colorScheme={colorScheme}
       data={entries}
+      icon={icon}
       itemVariants={itemVariants}
       sectionKey={sectionName}
       title={displayTitle}

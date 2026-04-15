@@ -29,7 +29,7 @@ export const OneLineSection: React.FC<OneLineSectionProps> = ({
   sectionName,
   itemVariants,
 }) => {
-  const { colorScheme, displayTitle } = getSectionConfig(sectionName);
+  const { colorScheme, displayTitle, icon } = getSectionConfig(sectionName);
 
   const hasKeywords = !!entries?.some(
     (entry) => entry.keywords && entry.keywords.length > 0,
@@ -39,6 +39,7 @@ export const OneLineSection: React.FC<OneLineSectionProps> = ({
     <SectionCard
       colorScheme={colorScheme}
       data={entries}
+      icon={icon}
       itemVariants={itemVariants}
       sectionKey={sectionName}
       title={displayTitle}

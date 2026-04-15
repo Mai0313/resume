@@ -32,7 +32,7 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
   sectionName,
   itemVariants,
 }) => {
-  const { colorScheme, displayTitle } = getSectionConfig(sectionName);
+  const { colorScheme, displayTitle, icon } = getSectionConfig(sectionName);
 
   const hasComplexEntries = !!entries?.some(
     (entry) =>
@@ -50,6 +50,7 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
     <SectionCard
       colorScheme={colorScheme}
       data={entries}
+      icon={icon}
       itemVariants={itemVariants}
       sectionKey={sectionName}
       title={displayTitle}
