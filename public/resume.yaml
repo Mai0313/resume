@@ -42,7 +42,7 @@ cv:
         highlights:
           - Expanded Baremetal Test Framework (TFTF) coverage in pre-silicon environments, decoupling firmware testing from OS readiness and accelerating low-power mode (LPM) development by 4 to 8 weeks.
           - Developed and optimized ARM Trusted Firmware (TF-A) and Rust-based Firmware (RF-A), introducing mechanisms like deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.
-          - Investigated and resolved complex system-level stability issues, including AXI bus deadlocks, power-down failues, and APC watchdog timeouts.
+          - Investigated and resolved complex system-level stability issues, including AXI bus deadlocks, power-down failures, and APC watchdog timeouts.
           - Implemented and validated critical firmware workarounds for hardware errata (e.g., Double CMO for early write acknowledgement flaws) across varying core architectures to prevent memory corruption.
           - Facilitated the bringup of next-generation SoC architectures (e.g., P26, CDO) utilizing a dual-track development strategy in TF-A and RF-A to ensure project security and delivery timelines.
 
@@ -93,7 +93,7 @@ cv:
           A physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools.
 
     Projects:
-      - name: Automotive Assistant for Vechicle using multi-agent system
+      - name: Automotive Assistant for Vehicle using multi-agent system
         start_date: 2025-01
         end_date: 2025-06
         url: https://github.com/Mai0313/automotive-backend
@@ -129,7 +129,7 @@ cv:
         summary: >
           Multi-Agent system for task management, including task assignment, progress tracking, and resource allocation.
           Utilizes executor agents for efficient execution of tasks across various domains.
-          Support delegation of tasks to specialized agents, enhancing system flexibility and adaptability.
+          Supports delegation of tasks to specialized agents, enhancing system flexibility and adaptability.
         highlights:
           - Implemented a robust task management framework with multi-agent orchestration.
           - Delegated tasks to specialized executor agents for efficient execution.
@@ -158,7 +158,7 @@ cv:
         summary: >
           Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.
         highlights:
-          - Integrated thermal gradient and laplacian constraints, improving data efficiency and model fidelity.
+          - Integrated thermal gradient and Laplacian constraints, improving data efficiency and model fidelity.
           - Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup.
           - Explored and prototyped transformer-based variants for future research directions.
         keywords: "Thermal Simulation, Physics-Informed Neural Networks, SoC Design, Deep Learning"
