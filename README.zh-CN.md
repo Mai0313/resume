@@ -48,7 +48,7 @@
 - [GSAP 3.13](https://gsap.com/) - 专业级动画库
 - [OGL 1.0](https://oframe.github.io/ogl/) - WebGL 库
 - [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器
-- [GitHub API](https://docs.github.com/en/rest) - 获取项目数据
+- [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV 排版工具,从同一份 YAML 产生可下载的 PDF
 
 ## 环境配置
 
@@ -379,18 +379,15 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   │   └── FuzzyText.tsx
 │   │   ├── SplitText/               # 首页文字分割动画
 │   │   │   └── SplitText.tsx
-│   │   ├── ResumeSections/          # 简历区块组件
-│   │   │   ├── AwardsSection.tsx    # 奖项区块
-│   │   │   ├── CertificatesSection.tsx # 证书区块
-│   │   │   ├── EducationSection.tsx # 教育背景区块
-│   │   │   ├── InterestsSection.tsx # 兴趣区块
-│   │   │   ├── ProjectsSection.tsx  # 项目经验区块
-│   │   │   ├── PublicationsSection.tsx # 发表著作区块
-│   │   │   ├── ReferencesSection.tsx # 推荐人区块
-│   │   │   ├── SectionCard.tsx      # 简历区块包装卡片
-│   │   │   ├── SkillsSection.tsx    # 技能区块
-│   │   │   ├── VolunteerSection.tsx # 志愿者经验区块
-│   │   │   ├── WorkSection.tsx      # 工作经验区块
+│   │   ├── ResumeSections/          # 每一个 rendercv entry type 对应一支 renderer
+│   │   │   ├── BulletSection.tsx    # BulletEntry renderer
+│   │   │   ├── EducationSection.tsx # EducationEntry renderer
+│   │   │   ├── ExperienceSection.tsx # ExperienceEntry renderer（Work、Volunteer 等）
+│   │   │   ├── NormalSection.tsx    # NormalEntry renderer（Projects、Awards、Certificates、References）
+│   │   │   ├── OneLineSection.tsx   # OneLineEntry renderer（Skills、Interests 等）
+│   │   │   ├── PublicationSection.tsx # PublicationEntry renderer
+│   │   │   ├── SectionCard.tsx      # 共享卡片 + section name → icon/颜色映射
+│   │   │   ├── TextSection.tsx      # TextEntry（段落型）renderer
 │   │   │   └── index.ts             # 区块组件导出
 │   │   ├── shared/                  # 共享的可重用组件
 │   │   │   ├── BulletList.tsx       # 项目列表组件
@@ -418,7 +415,7 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   ├── constants/                   # 常量
 │   │   └── index.ts                 # 全局常量
 │   ├── types/                       # TypeScript 类型定义
-│   │   ├── index.ts                 # 通用类型（Resume、GitHub API 等）
+│   │   ├── index.ts                 # 共享 TS 类型（rendercv 的 type 实际在 utils/resumeLoader.ts）
 │   │   └── ogl.d.ts                 # OGL WebGL 库类型声明
 │   ├── styles/                      # 全局样式
 │   │   ├── globals.css              # 全局 CSS 样式
@@ -515,13 +512,13 @@ make run
 
 项目配置了多个 GitHub Actions 工作流程：
 
-- **自动部署**（`deploy.yml`）：推送到 main/master 分支时，自动构建并部署到 GitHub Pages
+- **自动部署**（`deploy.yml`）：推送到 main/master 分支时,先用 `make pdf` 重新产生 `public/resume.pdf`,再跑 `yarn build` 并部署到 GitHub Pages
 - **代码扫描**（`code_scan.yml`）：使用 CodeQL 进行安全性分析
-- **代码质量检查**（`code-quality-check.yml`）：自动执行 TypeScript、Prettier 与 ESLint 检查
-- **依赖项审查**（`dependency-review.yml`）：检查 Pull Request 中的依赖项变更
+- **代码质量检查**（`code-quality-check.yml`）：对 Pull Request 执行 TypeScript、Prettier 与 ESLint 检查
+- **Dependabot 自动合并**（`auto_review_merge.yml`）：对 Pull Request 做 dependency review,通过的 Dependabot PR 自动 merge
 - **语义化 PR**（`semantic-pull-request.yml`）：确保 Pull Request 标题符合 Conventional Commits 规范
-- **自动标签**（`auto_labeler.yml`）：根据变更内容自动添加标签
-- **Release 草稿**（`release_drafter.yml`）：自动生成 Release Notes 草稿
+- **自动标签**（`auto_labeler.yml`）：根据变更路径自动添加标签
+- **Release 草稿**（`release_drafter.yml`）：从已合并的 PR 生成 Release Notes 草稿
 - **Docker 镜像构建**（`build_image.yml`）：构建并推送 Docker 镜像
 
 ### 新增页面
@@ -544,20 +541,13 @@ HeroUI 的主题设置位于 `src/styles/globals.css` 和 `src/styles/plugins.ts
 
 ### 自定义简历区块
 
-简历系统采用模块化设计，每个区块都是独立组件：
+简历是按 **rendercv entry type** 而非 section 名称分派的。`src/utils/resumeLoader.ts` 里的 `detectEntryType` 会看每个 YAML section 的第一个 entry,自动挑对应的 renderer,所以你在 YAML 里新增任何 section 都会自动 route 到正确的 component。
 
-1. 在 `src/components/ResumeSections/` 新增或修改区块组件
-2. 在 `src/components/ResumeContent.tsx` 中引入并使用新组件
-3. 确保 YAML 数据结构与组件预期的格式相符
+如何调整呈现方式：
 
-### API 限制
-
-GitHub API 具有速率限制，建议：
-
-- 使用个人访问令牌（PAT）以提高限制（每小时 5,000 次请求）
-- 未认证请求限制为每小时 60 次
-- 设计适当的缓存策略以减少 API 调用
-- 面对大量数据时采用分页加载
+1. 修改 `src/components/ResumeSections/` 下的对应 `*Section.tsx` 来改变某一类 entry 的外观（例如 `ExperienceSection.tsx` 同时处理 Work 与 Volunteer,因为它们都用 `company` + `position`）。
+2. 调整 `SectionCard.tsx` 可以改动共享卡片样式,或透过 `getSectionConfig` 修改 section 名称 → icon / `ColorScheme` 对应。
+3. 如果要在 YAML 加新的自定义字段,请到 `src/utils/resumeLoader.ts` 扩充对应的 interface（注意:list 型自定义字段在 YAML 里必须写成 comma-separated 字符串,请看上面的说明）。
 
 ### 页面显示问题
 

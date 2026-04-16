@@ -48,7 +48,7 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 - [GSAP 3.13](https://gsap.com/) - Professional-grade animation library
 - [OGL 1.0](https://oframe.github.io/ogl/) - WebGL library
 - [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML parser
-- [GitHub API](https://docs.github.com/en/rest) - Fetch project data
+- [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV renderer that produces the downloadable PDF from the same YAML
 
 ## Environment Setup
 
@@ -379,18 +379,15 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   │   │   └── FuzzyText.tsx
 │   │   ├── SplitText/               # Home page text split animation
 │   │   │   └── SplitText.tsx
-│   │   ├── ResumeSections/          # Resume section components
-│   │   │   ├── AwardsSection.tsx    # Awards section
-│   │   │   ├── CertificatesSection.tsx # Certifications section
-│   │   │   ├── EducationSection.tsx # Education section
-│   │   │   ├── InterestsSection.tsx # Interests section
-│   │   │   ├── ProjectsSection.tsx  # Projects section
-│   │   │   ├── PublicationsSection.tsx # Publications section
-│   │   │   ├── ReferencesSection.tsx # References section
-│   │   │   ├── SectionCard.tsx      # Wrapper card for resume sections
-│   │   │   ├── SkillsSection.tsx    # Skills section
-│   │   │   ├── VolunteerSection.tsx # Volunteer experience section
-│   │   │   ├── WorkSection.tsx      # Work experience section
+│   │   ├── ResumeSections/          # One renderer per rendercv entry type
+│   │   │   ├── BulletSection.tsx    # BulletEntry renderer
+│   │   │   ├── EducationSection.tsx # EducationEntry renderer
+│   │   │   ├── ExperienceSection.tsx # ExperienceEntry renderer (work, volunteer, …)
+│   │   │   ├── NormalSection.tsx    # NormalEntry renderer (projects, awards, certs, refs)
+│   │   │   ├── OneLineSection.tsx   # OneLineEntry renderer (skills, interests, etc.)
+│   │   │   ├── PublicationSection.tsx # PublicationEntry renderer
+│   │   │   ├── SectionCard.tsx      # Shared card + section-name → icon/colour registry
+│   │   │   ├── TextSection.tsx      # TextEntry (paragraph) renderer
 │   │   │   └── index.ts             # Section components export
 │   │   ├── shared/                  # Shared reusable components
 │   │   │   ├── BulletList.tsx       # Bullet list component
@@ -418,7 +415,7 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 │   ├── constants/                   # Constants
 │   │   └── index.ts                 # Global constants
 │   ├── types/                       # TypeScript type definitions
-│   │   ├── index.ts                 # Common types (Resume, GitHub API, etc.)
+│   │   ├── index.ts                 # Shared TS types (rendercv types live in utils/resumeLoader.ts)
 │   │   └── ogl.d.ts                 # OGL WebGL library type declarations
 │   ├── styles/                      # Global styles
 │   │   ├── globals.css              # Global CSS styles
@@ -515,14 +512,14 @@ make run
 
 The project is configured with multiple GitHub Actions workflows:
 
-- **Automatic Deployment** (`deploy.yml`): Automatically builds and deploys to GitHub Pages when pushing to main/master branch
+- **Automatic Deployment** (`deploy.yml`): Regenerates `public/resume.pdf` via `make pdf`, builds with `yarn build`, and deploys to GitHub Pages on pushes to main/master
 - **Code Scanning** (`code_scan.yml`): Security analysis using CodeQL
-- **Code Quality Check** (`code-quality-check.yml`): Automatically runs TypeScript, Prettier, and ESLint checks
-- **Dependency Review** (`dependency-review.yml`): Checks dependency changes in Pull Requests
-- **Semantic PR** (`semantic-pull-request.yml`): Ensures Pull Request titles follow Conventional Commits specification
-- **Auto Labeler** (`auto_labeler.yml`): Automatically adds labels based on changes
-- **Release Drafter** (`release_drafter.yml`): Automatically generates Release Notes drafts
-- **Docker Image Build** (`build_image.yml`): Builds and pushes Docker images
+- **Code Quality Check** (`code-quality-check.yml`): Runs TypeScript, Prettier, and ESLint checks on pull requests
+- **Dependabot Auto Merge** (`auto_review_merge.yml`): Runs dependency review on pull requests and auto-merges passing Dependabot bumps
+- **Semantic PR** (`semantic-pull-request.yml`): Ensures Pull Request titles follow the Conventional Commits specification
+- **Auto Labeler** (`auto_labeler.yml`): Applies labels to pull requests based on changed paths
+- **Release Drafter** (`release_drafter.yml`): Generates Release Notes drafts from merged PRs
+- **Docker Image Build** (`build_image.yml`): Builds and publishes Docker images
 
 ### Adding a New Page
 
@@ -544,20 +541,13 @@ HeroUI theme configuration is located in `src/styles/globals.css` and `src/style
 
 ### Customize Resume Sections
 
-The resume system uses a modular design where each section is an independent component:
+The resume is dispatched by **rendercv entry type**, not by section name. `detectEntryType` in `src/utils/resumeLoader.ts` inspects the first entry in each YAML section and picks the matching renderer, so any new section you add to the YAML automatically routes to the correct component.
 
-1. Add or modify section components in `src/components/ResumeSections/`
-2. Import and use new components in `src/components/ResumeContent.tsx`
-3. Ensure YAML data structure matches the format expected by components
+To customise rendering:
 
-### API Limitations
-
-GitHub API has rate limits, recommendations:
-
-- Use Personal Access Token (PAT) to increase limits (5,000 requests per hour)
-- Unauthenticated requests are limited to 60 per hour
-- Design appropriate caching strategies to reduce API calls
-- Use paginated loading for large amounts of data
+1. Edit the relevant `*Section.tsx` in `src/components/ResumeSections/` to change how a given entry type is displayed (e.g. `ExperienceSection.tsx` covers both work and volunteer sections because both use `company` + `position`).
+2. Tweak the shared card, per-section icons, or accent colours via `SectionCard.tsx` — the `getSectionConfig` helper maps section names to icons and `ColorScheme` values.
+3. Extend the rendercv interfaces in `src/utils/resumeLoader.ts` if you add new custom fields to the YAML (remember: list-valued custom fields must be stored as comma-separated strings in YAML — see the caveat above).
 
 ### Page Display Issues
 
