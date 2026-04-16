@@ -315,19 +315,14 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                 ))}
 
                 <Button
+                  isExternal
                   isIconOnly
+                  aria-label="Open resume PDF in new tab"
+                  as={Link}
                   className="bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-gray-700 dark:text-white border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-md"
+                  href={envHelpers.getResumePdfPath()}
                   size="md"
                   variant="flat"
-                  onPress={() => {
-                    const link = document.createElement("a");
-
-                    link.href = envHelpers.getResumePdfPath();
-                    link.download = "resume.pdf";
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  }}
                 >
                   <svg
                     className="w-5 h-5"
@@ -336,11 +331,28 @@ export const ResumeContent: React.FC<ResumeContentProps> = ({ data }) => {
                     viewBox="0 0 24 24"
                   >
                     <path
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                      d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={1.5}
                     />
+                    <path
+                      d="M14 2v6h6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                    />
+                    <text
+                      fill="currentColor"
+                      fontSize="6"
+                      fontWeight="700"
+                      stroke="none"
+                      textAnchor="middle"
+                      x="12"
+                      y="18"
+                    >
+                      PDF
+                    </text>
                   </svg>
                 </Button>
               </div>
