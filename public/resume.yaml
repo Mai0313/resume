@@ -28,7 +28,7 @@ cv:
         url: https://ucsd.edu/
         summary: >
           Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning.
-          Understood human cognition and social factors influencing learning, inspiring a shift toward computational solutions that address real-world educational inequities.
+          Cross-disciplinary training in cognition, computation, and systems thinking shaped a career spanning AI research for silicon design and firmware engineering for next-generation SoCs.
 
     Experience:
       - company: Google
@@ -36,12 +36,12 @@ cv:
         location: Banqiao, New Taipei, Taiwan
         start_date: 2025-10
         url: https://www.google.com
-        description: Software Engineer at Google Pixel Security Team, specializing in ARM Trusted Firmware (TF-A), Rust-based Firmware (RF-A), and Baremetal Test Frameworks (TFTF) for next-generation Pixel SoCs.
+        description: Software Engineer at Google Pixel Security Team, specializing in ARM Trusted Firmware (TF-A), Rust Trusted Firmware (RF-A), and Baremetal Test Frameworks (TFTF) for next-generation Pixel SoCs.
         summary: >
           Driving software-led silicon development for Google Pixel SoCs. Focused on pre-silicon validation, firmware stability, and system-level power management (LPM), bridging the gap between hardware bringup and OS deployment.
         highlights:
           - Expanded Baremetal Test Framework (TFTF) coverage in pre-silicon environments, decoupling firmware testing from OS readiness and accelerating low-power mode (LPM) development by 4 to 8 weeks.
-          - Developed and optimized ARM Trusted Firmware (TF-A) and Rust-based Firmware (RF-A), introducing mechanisms like deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.
+          - Developed and optimized ARM Trusted Firmware (TF-A) and Rust Trusted Firmware (RF-A), introducing mechanisms like deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.
           - Investigated and resolved complex system-level stability issues, including AXI bus deadlocks, power-down failures, and APC watchdog timeouts.
           - Implemented and validated critical firmware workarounds for hardware errata (e.g., Double CMO for early write acknowledgement flaws) across varying core architectures to prevent memory corruption.
           - Facilitated the bringup of next-generation SoC architectures (e.g., P26, CDO) utilizing a dual-track development strategy in TF-A and RF-A to ensure project security and delivery timelines.
@@ -93,6 +93,31 @@ cv:
           A physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools.
 
     Projects:
+      - name: Pre-Silicon Firmware Validation (TFTF) for Pixel SoCs
+        start_date: 2025-10
+        entity: Google
+        summary: >
+          Expanding the Baremetal Test Framework (TFTF) for pre-silicon environments across next-generation Pixel SoCs (P26, CDO), enabling firmware verification to run independently of OS readiness.
+        highlights:
+          - Built targeted test coverage for system-level power management (LPM) flows, shortening the critical path by 4 to 8 weeks.
+          - Designed test harnesses for hardware errata and firmware workaround validation prior to tape-out.
+          - Partnered with hardware, firmware, and validation teams to align on shared pre-silicon test infrastructure.
+        keywords: "Baremetal Testing, TFTF, Pre-Silicon Validation, Low-Power Mode, SoC Bringup"
+        roles: "Software Engineer"
+
+      - name: ARM Trusted Firmware & Rust Trusted Firmware (RF-A) for Pixel SoCs
+        start_date: 2025-10
+        entity: Google
+        summary: >
+          Contributing to ARM Trusted Firmware (TF-A) and the Rust Trusted Firmware (RF-A) stack for Pixel SoCs, focused on secure low-power transitions, system-level stability, and hardware errata mitigations.
+        highlights:
+          - Executed a dual-track TF-A/RF-A strategy to balance delivery timelines with long-term firmware security goals.
+          - Introduced deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.
+          - Diagnosed and resolved AXI bus deadlocks, power-down failures, and APC watchdog timeouts at the system level.
+          - Implemented Double CMO workarounds for early write acknowledgement errata across varying core architectures.
+        keywords: "ARM Trusted Firmware, Rust, Low-Power Mode, Hardware Errata, Firmware Security"
+        roles: "Software Engineer"
+
       - name: Automotive Assistant for Vehicle using multi-agent system
         start_date: 2025-01
         end_date: 2025-06
@@ -165,6 +190,12 @@ cv:
         roles: "Core Developer, Research Engineer"
 
     Skills:
+      - label: Firmware & Systems Programming
+        details: Advanced
+        keywords: "ARM Trusted Firmware (TF-A), Rust Trusted Firmware (RF-A), Baremetal Test Framework (TFTF), Low-Power Mode (LPM), SMC Handling, Deterministic Sleep Algorithms, Exponential Backoff"
+      - label: SoC & Hardware Integration
+        details: Advanced
+        keywords: "Pre-Silicon Validation, SoC Bringup, Hardware Errata Workarounds, AXI Bus Debugging, APC Watchdog, Power Management, Double CMO"
       - label: Multi-Agent Systems
         details: Expert
         keywords: "Agent-Oriented Programming, Agent Orchestration, Chain-of-Stage Reasoning, Diagram-Aware Retrieval-Augmented Generation (DA-RAG), Executor Agent, Circuit Think Tank"
@@ -173,7 +204,7 @@ cv:
         keywords: "Physics-Informed Neural Networks (PINNs), Fourier-Biot Equation, Gradient and Laplacian Modeling, Physics-aware Loss Functions"
       - label: Programming Languages
         details: Expert
-        keywords: "Python, JavaScript, TypeScript, Golang, Rust, LaTeX"
+        keywords: "Python, C, C++, Rust, Golang, TypeScript, JavaScript, ARM Assembly, LaTeX"
       - label: AI/ML Frameworks
         details: Advanced
         keywords: "PyTorch, PyTorch Lightning, TensorFlow"
@@ -182,9 +213,15 @@ cv:
         keywords: "Docker, BigQuery, Kubernetes, GitHub Actions"
       - label: Research & Analysis
         details: Advanced
-        keywords: "Statistical Modeling, Data Analysis & Efficiency, Empirical Research Methods, Technical Writing"
+        keywords: "Statistical Modeling, Data Analysis, Empirical Research Methods, Technical Writing"
 
     Interests:
+      - label: Firmware & Silicon Systems
+        details: Research Focus
+        keywords: "Trusted Firmware, Pre-Silicon Validation, Low-Power Systems, SoC Architecture, Hardware/Software Co-Design"
+      - label: Systems Programming
+        details: Research Focus
+        keywords: "Rust, ARM Architecture, Baremetal Testing, Memory Safety, Real-Time Systems"
       - label: AI for Semiconductor Design
         details: Research Focus
         keywords: "Physics-Informed Neural Networks, Circuit Design Automation, Thermal Modeling, Leakage Analysis"
@@ -218,15 +255,15 @@ cv:
     References:
       - name: Jiayi Xu
         summary: >
-          Wei Cheng Lee distinguished himself at MediaTek by developing a custom terabyte-scale data analysis platform for IC design, demonstrating remarkable adaptability in mastering complex technical domains and translating challenging requirements into robust, scalable solutions.
+          As Manager of MediaTek's Standard Cell Library Dept. II, I witnessed Wei Cheng Lee architect and deliver a custom terabyte-scale data analysis and visualization platform for IC design — replacing Splunk to overcome its scalability and customization limits, and enabling real-time analysis of SPICE models, sidefile models, and silicon measurement data. His command of scalable data pipelines and performance-critical algorithms, paired with deep engagement with IC design workflows, turned a long-standing tooling gap into a decision-making accelerator for the broader engineering organization.
 
       - name: Yi-Chen Lin
         summary: >
-          Wei Cheng Lee has proven himself as a proactive contributor to major open-source projects like AutoGen and LangChain, leveraging his community credibility to facilitate collaborations with leading researchers from DeepMind and Penn State while consistently enhancing team productivity through his dedication to knowledge sharing and process improvement.
+          As MediaTek's ML Team Manager, I observed Wei Cheng Lee translate his open-source credibility — built through contributions to AutoGen, LangChain, LangGraph, and MLflow — into tangible team outcomes. He directly engaged AutoGen's co-authors, Chi Wang (DeepMind) and Qingyun Wu (Penn State University), to fast-track fixes aligned with our needs and host technical exchanges at MediaTek. He also routinely took on the less visible, high-leverage work of hardening testing and data pipelines, raising productivity across the department.
 
       - name: Yu-Sheng Lin
         summary: >
-          Wei Cheng Lee served as a key contributor to our AI Thermal Simulation project published at NeurIPS 2023, where he quickly mastered complex concepts like U-Net architecture and thermal gradient algorithms, proactively explored novel approaches such as integrating Swin Transformer V2 for thermal simulation, and demonstrated exceptional adaptability by rapidly re-engineering cutting-edge models for real-world applications while maintaining high code quality and conducting critical validation experiments.
+          As project manager for MediaTek's AI Thermal Simulation initiative, I saw Wei Cheng Lee drive the core technical execution behind "Fast SoC Thermal Simulation with Physics-aware U-Net" (NeurIPS 2023) — integrating physics-aware thermal gradient constraints into the model architecture, validating data efficiency gains through rigorous experimentation, and delivering production-grade code the team could readily extend. He further broadened our research horizon by prototyping a Swin Transformer V2 variant for thermal image generation, showcasing both depth and strategic initiative.
 
 # ---------------------------------------------------------------------------
 # PDF design (rendercv only — ignored by the web UI).
