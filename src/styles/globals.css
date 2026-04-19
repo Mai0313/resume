@@ -5,9 +5,104 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ────────────────────────────────────────────────────────────
+   Oxide Design System — Monochrome Editorial
+   Dark-first. Light mode is supported but secondary.
+   ──────────────────────────────────────────────────────────── */
+
 @theme {
-  --font-sans: "Inter", sans-serif;
-  --font-mono: "Fira Code", monospace;
+  /* Typography */
+  --font-sans: "Geist", "Inter", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Fira Code", ui-monospace, monospace;
+  --font-display: "Fraunces", "Times New Roman", serif;
+
+  /* Oxide palette — resolved through CSS vars below, exposed as tailwind colors */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-signal: var(--signal);
+}
+
+/* Light mode tokens (default in :root) */
+:root {
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --elevated: #f1f0ec;
+  --border: #e5e4de;
+  --fg: #0a0a0b;
+  --fg-muted: #52525b;
+  --fg-subtle: #a1a1aa;
+  --accent: #0a0a0b;
+  --accent-subtle: rgba(10, 10, 11, 0.06);
+  --signal: #16a34a;
+}
+
+/* Dark mode tokens */
+.dark {
+  --bg: #0a0a0b;
+  --surface: #111113;
+  --elevated: #1a1a1d;
+  --border: #26262a;
+  --fg: #fafaf7;
+  --fg-muted: #a1a1aa;
+  --fg-subtle: #52525b;
+  --accent: #fafaf7;
+  --accent-subtle: rgba(250, 250, 247, 0.08);
+  --signal: #4ade80;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Base styles
+   ──────────────────────────────────────────────────────────── */
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01", "ss03";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Utilities
+   ──────────────────────────────────────────────────────────── */
+
+/* Serif display class — adjust Fraunces variable axes for editorial feel */
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings:
+    "opsz" 144,
+    "SOFT" 50,
+    "wght" 400;
+  letter-spacing: -0.035em;
+}
+
+/* Mono label — small-caps vibe */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
 }
 
 /* Line clamp utilities */
@@ -33,4 +128,25 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
+}
+
+/* Animated underline used on hover */
+.link-underline {
+  position: relative;
+  display: inline-flex;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
 }

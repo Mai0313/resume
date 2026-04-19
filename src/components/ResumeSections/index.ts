@@ -7,8 +7,6 @@ export { BulletSection } from "./BulletSection";
 export { TextSection } from "./TextSection";
 export {
   SectionCard,
-  SectionIcons,
   getSectionConfig,
-  type ColorScheme,
   type SectionConfig,
 } from "./SectionCard";

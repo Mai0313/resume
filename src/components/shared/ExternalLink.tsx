@@ -1,8 +1,6 @@
 import type { FC, ReactNode } from "react";
 
-import { Link } from "@heroui/link";
-
-import { ExternalLinkIcon } from "./IconLibrary";
+import { cn } from "@/lib/utils";
 
 interface ExternalLinkProps {
   url?: string;
@@ -11,9 +9,25 @@ interface ExternalLinkProps {
   showIcon?: boolean;
 }
 
+const ArrowUpRight = () => (
+  <svg
+    aria-hidden="true"
+    fill="none"
+    height="14"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="1.5"
+    viewBox="0 0 24 24"
+    width="14"
+  >
+    <path d="M7 17L17 7M7 7h10v10" />
+  </svg>
+);
+
 /**
- * Conditional external link component
- * Renders as a link if URL is provided, otherwise renders as plain text
+ * External link, renders as plain text when no URL is provided.
+ * Uses link-underline hover animation.
  */
 export const ExternalLink: FC<ExternalLinkProps> = ({
   url,
@@ -26,13 +40,21 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
   }
 
   return (
-    <Link
-      isExternal
-      className={`hover:opacity-80 flex items-center gap-2 ${className}`}
+    <a
+      className={cn(
+        "group inline-flex items-center gap-1.5 text-fg transition-opacity hover:opacity-80",
+        className,
+      )}
       href={url}
+      rel="noopener noreferrer"
+      target="_blank"
     >
-      {children}
-      {showIcon && <ExternalLinkIcon className="w-4 h-4" />}
-    </Link>
+      <span className="link-underline">{children}</span>
+      {showIcon && (
+        <span className="text-fg-muted transition-colors group-hover:text-fg">
+          <ArrowUpRight />
+        </span>
+      )}
+    </a>
   );
 };

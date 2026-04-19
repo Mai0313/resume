@@ -1,36 +1,31 @@
 import type { FC } from "react";
 
-import { CalendarIcon } from "./IconLibrary";
+import { cn } from "@/lib/utils";
 
 interface DateRangeProps {
   startDate?: string;
   endDate?: string;
   className?: string;
+  /** kept for backward compatibility, ignored — editorial style has no icon */
   showIcon?: boolean;
 }
 
-/**
- * Display a date range with optional calendar icon
- * Handles "Present" for ongoing items
- */
 export const DateRange: FC<DateRangeProps> = ({
   startDate,
   endDate,
   className = "",
-  showIcon = true,
 }) => {
   if (!startDate && !endDate) {
     return null;
   }
 
+  let text = "";
+
+  if (startDate && endDate) text = `${startDate} — ${endDate}`;
+  else if (startDate) text = startDate;
+  else if (endDate) text = endDate;
+
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      {showIcon && <CalendarIcon className="w-4 h-4 text-gray-500" />}
-      <span className="text-sm text-gray-600 dark:text-gray-400">
-        {startDate && endDate && `${startDate} - ${endDate}`}
-        {startDate && !endDate && startDate}
-        {!startDate && endDate && endDate}
-      </span>
-    </div>
+    <span className={cn("label-mono text-fg-muted", className)}>{text}</span>
   );
 };

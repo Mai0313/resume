@@ -1,87 +1,61 @@
-import { useState, useEffect, useCallback } from "react";
-import { InputOtp } from "@heroui/input-otp";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  useDisclosure,
-} from "@heroui/modal";
-import { addToast } from "@heroui/toast";
-import { motion, useAnimation } from "framer-motion";
-import { useTheme } from "@heroui/use-theme";
-import { Spinner } from "@heroui/spinner";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
 
-import FuzzyText from "../components/FuzzyText/FuzzyText";
 import { ResumeContent } from "../components/ResumeContent";
 import { loadResumeData, RenderCVData } from "../utils/resumeLoader";
 
 import { env, envHelpers } from "@/utils/env";
 import DefaultLayout from "@/layouts/default";
+import { cn } from "@/lib/utils";
 
-// Read PIN code from .env via VITE_PIN_CODE
 const IS_PIN_ENABLED = envHelpers.isPinEnabled();
+const MAX_FAIL_ATTEMPTS = 3;
 
-/**
- * Custom hook to handle resume data loading with error handling
- */
 function useResumeData() {
   const [resumeData, setResumeData] = useState<
     (RenderCVData & { sectionOrder: string[] }) | null
   >(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const loadResume = useCallback(async () => {
     setIsLoadingResume(true);
+    setError(null);
     try {
       const data = await loadResumeData();
 
-      // Verify data structure integrity
       if (!data || !data.cv || !data.cv.name) {
         throw new Error("Resume data is incomplete or missing required fields");
       }
 
       setResumeData(data);
-    } catch (error) {
-      addToast({
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to load resume data",
-        color: "danger",
-      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load resume");
       setResumeData(null);
     } finally {
       setIsLoadingResume(false);
     }
   }, []);
 
-  return { resumeData, isLoadingResume, loadResume };
+  return { resumeData, isLoadingResume, loadResume, error };
 }
 
 export default function ResumePage() {
-  const [isMounted, setIsMounted] = useState(false);
   const [pin, setPin] = useState("");
   const [authenticated, setAuthenticated] = useState(!IS_PIN_ENABLED);
   const [failCount, setFailCount] = useState(0);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const controls = useAnimation();
-  const { theme } = useTheme();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Use custom hook for resume data loading
-  const { resumeData, isLoadingResume, loadResume } = useResumeData();
+  const { resumeData, isLoadingResume, loadResume, error } = useResumeData();
 
-  // Dynamically get PIN length
   const pinLength = env.PIN_CODE?.length || 4;
+  const attemptsLeft = Math.max(0, MAX_FAIL_ATTEMPTS - failCount);
 
-  // Consolidated initialization effect
   useEffect(() => {
-    setIsMounted(true);
-
-    // Check if URL parameters contain PIN code
     const urlParams = new URLSearchParams(window.location.search);
     const urlPin = urlParams.get("pin");
 
-    // If PIN code is not set, directly load resume content
     if (!IS_PIN_ENABLED) {
       setAuthenticated(true);
       loadResume();
@@ -89,14 +63,9 @@ export default function ResumePage() {
       return;
     }
 
-    // Open PIN modal
-    onOpen();
-
-    // If URL contains PIN code, check if it's correct
     if (urlPin && urlPin === env.PIN_CODE) {
       setAuthenticated(true);
       loadResume();
-      // Remove PIN parameter from URL to protect privacy
       urlParams.delete("pin");
       const newUrl =
         window.location.pathname +
@@ -104,82 +73,69 @@ export default function ResumePage() {
 
       window.history.replaceState({}, "", newUrl);
     }
-  }, [loadResume, onOpen]);
+  }, [loadResume]);
 
-  const handleSubmit = useCallback(
-    (onClose: () => void) => {
-      if (!IS_PIN_ENABLED) return;
+  const handleSubmit = useCallback(() => {
+    if (!IS_PIN_ENABLED) return;
 
-      if (!pin) {
-        setFailCount((c) => c + 1);
+    if (!pin) {
+      setFailCount((c) => c + 1);
 
-        return;
-      }
+      return;
+    }
 
-      if (pin === env.PIN_CODE) {
-        setAuthenticated(true);
-        loadResume();
-        onClose();
-      } else {
-        setFailCount((c) => c + 1);
-        controls.start({
-          x: [0, -10, 10, -10, 10, 0],
-          transition: { duration: 0.5 },
-        });
-        addToast({
-          title: "Invalid PIN",
-          description: "Please try again",
-          color: "danger",
-        });
-        setPin("");
-      }
-    },
-    [pin, controls, loadResume],
-  );
+    if (pin === env.PIN_CODE) {
+      setAuthenticated(true);
+      loadResume();
+    } else {
+      setFailCount((c) => c + 1);
+      controls.start({
+        x: [0, -10, 10, -10, 10, 0],
+        transition: { duration: 0.5 },
+      });
+      setPin("");
+    }
+  }, [pin, controls, loadResume]);
 
-  // Auto-submit when PIN length is reached
   useEffect(() => {
     if (IS_PIN_ENABLED && pin.length === pinLength) {
-      handleSubmit(onOpenChange);
+      handleSubmit();
     }
-  }, [pin, pinLength, onOpenChange, handleSubmit]);
+  }, [pin, pinLength, handleSubmit]);
 
-  // Handle modal close without authentication
+  const showPinModal =
+    IS_PIN_ENABLED && !authenticated && failCount < MAX_FAIL_ATTEMPTS;
+
   useEffect(() => {
-    if (IS_PIN_ENABLED && !isOpen && !authenticated && isMounted) {
-      setFailCount(3);
+    if (showPinModal) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 100);
+
+      return () => clearTimeout(timer);
     }
-  }, [isOpen, authenticated, isMounted]);
+  }, [showPinModal]);
 
-  // Show 404 after 3 errors, wrapped in DefaultLayout (only when PIN code is enabled)
-  if (IS_PIN_ENABLED && failCount >= 3) {
-    const textColor = theme === "dark" ? "#ffffff" : "#000000";
+  const show404 = IS_PIN_ENABLED && failCount >= MAX_FAIL_ATTEMPTS;
 
+  if (show404) {
     return (
       <DefaultLayout>
-        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2">
-          {isMounted && (
-            <div key={theme}>
-              <FuzzyText
-                baseIntensity={0.15}
-                color={textColor}
-                enableHover={true}
-                fontSize="clamp(2rem, 8vw, 8rem)"
-                hoverIntensity={0.5}
-              >
-                404
-              </FuzzyText>
-              <FuzzyText
-                baseIntensity={0.15}
-                color={textColor}
-                enableHover={true}
-                fontSize="clamp(2rem, 4vw, 4rem)"
-                hoverIntensity={0.5}
-              >
-                Not Found
-              </FuzzyText>
-            </div>
-          )}
+        <div className="flex min-h-[80vh] flex-col items-center justify-center px-6 text-center">
+          <div className="label-mono mb-6 text-fg-subtle">ACCESS DENIED</div>
+          <h1
+            className="font-display mb-4 font-normal leading-none text-fg"
+            style={{
+              fontSize: "clamp(6rem, 18vw, 12rem)",
+              letterSpacing: "-0.06em",
+            }}
+          >
+            404
+          </h1>
+          <p
+            className="font-display text-xl font-light italic text-fg-muted md:text-2xl"
+            style={{ fontVariationSettings: "'opsz' 144, 'SOFT' 100" }}
+          >
+            Not found
+          </p>
         </div>
       </DefaultLayout>
     );
@@ -187,108 +143,115 @@ export default function ResumePage() {
 
   return (
     <DefaultLayout>
-      {/* Display PIN modal only if PIN is enabled */}
-      {IS_PIN_ENABLED && (
-        <Modal isOpen={isOpen && !authenticated} onOpenChange={onOpenChange}>
-          <ModalContent className="overflow-hidden">
-            {/* Remove unused onClose parameter */}
+      <AnimatePresence>
+        {showPinModal && (
+          <motion.div
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-bg/90 px-4 backdrop-blur-xl"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
             <motion.div
-              animate={controls}
-              className="flex flex-col items-center gap-4 p-4"
-              initial={{ x: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="w-full max-w-sm"
+              exit={{ y: 10, opacity: 0 }}
+              initial={{ y: 20, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             >
-              <ModalHeader className="text-center">
-                Enter {pinLength}-digit PIN Code
-              </ModalHeader>
-              <ModalBody className="flex justify-center">
-                <InputOtp
-                  length={pinLength}
+              <motion.div
+                animate={controls}
+                className="rounded-2xl border border-border bg-surface p-8 shadow-2xl shadow-black/40"
+              >
+                <div className="label-mono mb-3 flex items-center gap-2 text-fg-subtle">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal" />
+                  Restricted
+                </div>
+                <h2 className="font-display mb-2 text-2xl leading-tight text-fg">
+                  Enter access code
+                </h2>
+                <p className="mb-8 text-[13.5px] text-fg-muted">
+                  {pinLength}-digit PIN required to view this résumé.
+                </p>
+                <input
+                  ref={inputRef}
+                  aria-label={`${pinLength}-digit PIN code`}
+                  className={cn(
+                    "w-full rounded-md border border-border bg-bg px-4 py-3.5 text-center font-mono text-2xl tracking-[0.5em] text-fg transition-colors",
+                    "placeholder:text-fg-subtle focus:border-fg focus:outline-none",
+                  )}
+                  inputMode="numeric"
+                  maxLength={pinLength}
+                  pattern="[0-9]*"
+                  placeholder={"·".repeat(pinLength)}
+                  type="text"
                   value={pin}
-                  onValueChange={setPin}
+                  onChange={(e) =>
+                    setPin(
+                      e.target.value.replace(/\D/g, "").slice(0, pinLength),
+                    )
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleSubmit();
+                  }}
                 />
-              </ModalBody>
+                {failCount > 0 && (
+                  <p className="label-mono mt-4 text-fg-subtle">
+                    Invalid code · {attemptsLeft}{" "}
+                    {attemptsLeft === 1 ? "attempt" : "attempts"} left
+                  </p>
+                )}
+              </motion.div>
             </motion.div>
-          </ModalContent>
-        </Modal>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Display resume content */}
       {authenticated && (
-        <div className="min-h-[calc(100vh-4rem)]">
+        <>
           {isLoadingResume ? (
-            <div className="flex justify-center items-center min-h-[50vh]">
-              <Spinner label="Loading resume..." size="lg" />
+            <div className="flex min-h-[70vh] items-center justify-center">
+              <div className="label-mono animate-pulse text-fg-muted">
+                Loading résumé…
+              </div>
+            </div>
+          ) : error ? (
+            <div className="mx-auto max-w-2xl px-6 pb-24 pt-40">
+              <div className="label-mono mb-4 text-fg-subtle">Error</div>
+              <h3 className="font-display mb-4 text-3xl leading-tight text-fg">
+                Résumé loading failed
+              </h3>
+              <p className="mb-8 leading-relaxed text-fg-muted">{error}</p>
+              <div className="rounded-lg border border-border bg-surface p-6">
+                <div className="label-mono mb-4 text-fg-subtle">
+                  Check VITE_RESUME_FILE
+                </div>
+                <div className="space-y-2.5 font-mono text-[13px]">
+                  <div>
+                    <span className="text-fg-subtle">local &nbsp;</span>
+                    <code className="text-fg">resume.yaml</code>
+                  </div>
+                  <div>
+                    <span className="text-fg-subtle">gist &nbsp;&nbsp;</span>
+                    <code className="break-all text-fg">
+                      https://gist.github.com/user/id
+                    </code>
+                  </div>
+                  <div>
+                    <span className="text-fg-subtle">
+                      url &nbsp;&nbsp;&nbsp;
+                    </span>
+                    <code className="break-all text-fg">
+                      https://raw.githubusercontent.com/user/repo/main/resume.yaml
+                    </code>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : resumeData && resumeData.cv && resumeData.cv.name ? (
-            <div className="space-y-6">
-              {/* Resume Content */}
-              <ResumeContent data={resumeData} />
-            </div>
-          ) : (
-            <div className="flex justify-center items-center min-h-[50vh] px-4">
-              <motion.div
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center max-w-2xl mx-auto p-8"
-                initial={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="mb-6">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                    Resume Loading Failed
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Unable to load resume content. Please check your resume
-                    configuration or try refreshing the page.
-                  </p>
-                </div>
-                <div className="p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                  <p className="text-base text-red-700 dark:text-red-300 mb-4">
-                    Check your{" "}
-                    <code className="bg-red-100 dark:bg-red-800 px-2 py-1 rounded text-sm font-mono">
-                      VITE_RESUME_FILE
-                    </code>{" "}
-                    environment variable:
-                  </p>
-                  <div className="text-sm text-red-600 dark:text-red-400 space-y-2">
-                    <div>
-                      • <strong>Local file:</strong>{" "}
-                      <code className="bg-red-100 dark:bg-red-800 px-2 py-1 rounded font-mono">
-                        resume.yaml
-                      </code>
-                    </div>
-                    <div>
-                      • <strong>GitHub Gist:</strong>{" "}
-                      <code className="bg-red-100 dark:bg-red-800 px-2 py-1 rounded font-mono break-all">
-                        https://gist.github.com/user/gist_id
-                      </code>
-                    </div>
-                    <div>
-                      • <strong>Raw URL:</strong>{" "}
-                      <code className="bg-red-100 dark:bg-red-800 px-2 py-1 rounded font-mono break-all">
-                        https://raw.githubusercontent.com/user/repo/main/resume.yaml
-                      </code>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </div>
+            <ResumeContent data={resumeData} />
+          ) : null}
+        </>
       )}
     </DefaultLayout>
   );
