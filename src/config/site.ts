@@ -1,12 +1,9 @@
-import { env, envHelpers } from "@/utils/env";
+import { envHelpers } from "@/utils/env";
 
 // Generate navigation items once based on environment configuration
-// Cached to avoid redundant generation on every import
-// Note: href values are raw route paths — React Router's basename handles the prefix
 const navItems = (() => {
   const items: Array<{ label: string; href: string }> = [];
 
-  // Only add Resume page if resume file is available
   if (envHelpers.isResumeFileAvailable()) {
     items.push({ label: "Resume", href: "/resume" });
   }
@@ -15,12 +12,8 @@ const navItems = (() => {
 })();
 
 export const siteConfig = {
-  name: env.WEBSITE_TITLE,
-  description: "Make beautiful websites regardless of your design experience.",
   navItems,
-  navMenuItems: navItems, // Reuse the same array reference
   links: {
     github: "https://github.com/Mai0313",
-    discord: "mai9999",
   },
 };

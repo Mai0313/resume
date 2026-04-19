@@ -1,17 +1,22 @@
 import type { FC, ReactNode } from "react";
 
+import { cn } from "@/lib/utils";
+
 interface ItemCardProps {
   children: ReactNode;
   className?: string;
 }
 
 /**
- * Reusable card container for resume items with consistent styling
- * Replaces repeated card styling across all ResumeSections
+ * Reusable entry container for resume items.
+ * Oxide editorial style — no backgrounds, just spacing and hover affordance.
  */
 export const ItemCard: FC<ItemCardProps> = ({ children, className = "" }) => (
   <div
-    className={`bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] ${className}`}
+    className={cn(
+      "group -mx-4 rounded-lg px-4 py-6 transition-colors duration-200 hover:bg-elevated/40",
+      className,
+    )}
   >
     {children}
   </div>

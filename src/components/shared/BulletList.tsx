@@ -1,19 +1,16 @@
 import type { FC } from "react";
 
+import { cn } from "@/lib/utils";
+
 interface BulletListProps {
   items: string[];
   title?: string;
-  bulletColor?: string;
   className?: string;
 }
 
-/**
- * Display a list of items with custom bullet points
- */
 export const BulletList: FC<BulletListProps> = ({
   items,
   title,
-  bulletColor = "blue-500",
   className = "",
 }) => {
   if (!items || items.length === 0) {
@@ -22,21 +19,23 @@ export const BulletList: FC<BulletListProps> = ({
 
   return (
     <div className={className}>
-      {title && (
-        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
-          {title}
-        </h4>
-      )}
-      <ul className="space-y-2">
+      {title && <h4 className="label-mono mb-3 text-fg-subtle">{title}</h4>}
+      <ul className="space-y-2.5">
         {items.map((item, index) => (
           <li
             key={index}
-            className="flex items-start gap-3 text-gray-700 dark:text-gray-300"
+            className={cn(
+              "grid grid-cols-[auto_1fr] items-start gap-3",
+              "text-[14.5px] leading-[1.6] text-fg-muted",
+            )}
           >
-            <div
-              className={`w-1.5 h-1.5 bg-${bulletColor} rounded-full mt-2 flex-shrink-0`}
-            />
-            <span className="text-sm leading-relaxed">{item}</span>
+            <span
+              aria-hidden="true"
+              className="label-mono mt-[0.55rem] text-fg-subtle"
+            >
+              &mdash;
+            </span>
+            <span>{item}</span>
           </li>
         ))}
       </ul>

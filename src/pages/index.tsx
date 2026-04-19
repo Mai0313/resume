@@ -1,106 +1,120 @@
-import { lazy, Suspense, useState, useEffect } from "react";
-import { Link } from "@heroui/link";
-import { button as buttonStyles } from "@heroui/theme";
-import { Spinner } from "@heroui/spinner";
+import { lazy, Suspense } from "react";
 
-import SplitText from "../components/SplitText/SplitText";
-
-import { siteConfig } from "@/config/site";
-import { GithubIcon } from "@/components/icons";
+import DecryptedText from "@/components/DecryptedText/DecryptedText";
 import DefaultLayout from "@/layouts/default";
-import { env } from "@/utils/env";
-import { BREAKPOINTS, PARTICLE_COUNTS } from "@/constants";
+import { siteConfig } from "@/config/site";
+import { env, envHelpers } from "@/utils/env";
+import { buildPath } from "@/utils/pathUtils";
 
-// Lazy load heavy WebGL components
-const Orb = lazy(() => import("../components/Orb/Orb"));
-const Particles = lazy(() => import("../components/Particles/Particles"));
+const Threads = lazy(() => import("@/components/Threads/Threads"));
 
-// Loading fallback component
-const AnimationLoadingFallback = () => (
-  <div className="flex items-center justify-center h-full">
-    <Spinner
-      className="text-gray-500"
-      label="Loading animations..."
-      size="lg"
+const ArrowUpRight = () => (
+  <svg
+    fill="none"
+    height="16"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="1.5"
+    viewBox="0 0 24 24"
+    width="16"
+  >
+    <path d="M7 17L17 7M7 7h10v10" />
+  </svg>
+);
+
+const ArrowRight = () => (
+  <svg
+    fill="none"
+    height="14"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="1.75"
+    viewBox="0 0 24 24"
+    width="14"
+  >
+    <path d="M5 12h14M13 5l7 7-7 7" />
+  </svg>
+);
+
+const GithubIcon = () => (
+  <svg fill="currentColor" height="16" viewBox="0 0 24 24" width="16">
+    <path
+      clipRule="evenodd"
+      d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z"
+      fillRule="evenodd"
     />
-  </div>
+  </svg>
 );
 
 export default function IndexPage() {
-  const [particleCount, setParticleCount] = useState<number>(
-    PARTICLE_COUNTS.DESKTOP,
-  );
-
-  useEffect(() => {
-    const updateParticleCount = () => {
-      // Reduce particle count on mobile and tablet devices for better performance
-      if (window.innerWidth < BREAKPOINTS.MOBILE) {
-        setParticleCount(PARTICLE_COUNTS.MOBILE);
-      } else if (window.innerWidth < BREAKPOINTS.TABLET) {
-        setParticleCount(PARTICLE_COUNTS.TABLET);
-      } else {
-        setParticleCount(PARTICLE_COUNTS.DESKTOP);
-      }
-    };
-
-    updateParticleCount();
-    window.addEventListener("resize", updateParticleCount);
-
-    return () => window.removeEventListener("resize", updateParticleCount);
-  }, []);
+  const resumeAvailable = envHelpers.isResumeFileAvailable();
 
   return (
     <DefaultLayout>
-      <section className="flex flex-col items-center justify-center min-h-[70vh] gap-6 relative">
-        {/* Particles as background layer with lazy loading */}
-        <div className="fixed inset-0 w-screen h-screen -z-10">
+      {/* ────── Hero ────── */}
+      <section className="relative flex min-h-screen items-center overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.28]"
+        >
           <Suspense fallback={null}>
-            <Particles
-              alphaParticles={false}
-              disableRotation={false}
-              moveParticlesOnHover={true}
-              particleBaseSize={100}
-              particleCount={particleCount}
-              particleSpread={10}
-              speed={0.1}
+            <Threads
+              amplitude={1.4}
+              color={[1, 1, 1]}
+              distance={0.25}
+              enableMouseInteraction={false}
             />
           </Suspense>
         </div>
-        {/* Orb and SplitText content centered on top layer */}
-        <div style={{ width: "100%", height: "600px", position: "relative" }}>
-          <Suspense fallback={<AnimationLoadingFallback />}>
-            <Orb
-              forceHoverState={false}
-              hoverIntensity={0.5}
-              hue={0}
-              rotateOnHover={true}
-            />
-          </Suspense>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <SplitText
-              className="text-5xl font-bold text-center"
-              delay={150}
-              duration={0.6}
-              ease={(t) => t}
-              from={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
-              rootMargin="50px"
-              splitType="words, chars"
-              text={env.WEBSITE_TITLE}
-              textAlign="center"
-              threshold={0.2}
-              to={{ opacity: 1, transform: "translate3d(0,0,0)" }}
-            />
-          </div>
-        </div>
-        <div className="mt-6 flex justify-center">
-          <Link
-            isExternal
-            className={buttonStyles({ variant: "bordered", radius: "full" })}
-            href={siteConfig.links.github}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-60 bg-gradient-to-b from-transparent to-bg"
+        />
+
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-24 pt-32 sm:pt-40">
+          <h1
+            className="font-display mb-12 font-normal leading-[1.02]"
+            style={{
+              fontSize: "clamp(3.25rem, 10vw, 7rem)",
+              letterSpacing: "-0.04em",
+            }}
           >
-            <GithubIcon size={24} />
-            <span className="ml-2">GitHub</span>
-          </Link>
+            <DecryptedText
+              animateOn="view"
+              className="text-fg"
+              encryptedClassName="text-fg-subtle opacity-60"
+              revealDirection="start"
+              sequential={true}
+              speed={55}
+              text={env.WEBSITE_TITLE}
+            />
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-3">
+            {resumeAvailable && (
+              <a
+                className="group inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-all hover:opacity-90"
+                href={buildPath("/resume")}
+              >
+                View Resume
+                <span className="transition-transform group-hover:translate-x-0.5">
+                  <ArrowRight />
+                </span>
+              </a>
+            )}
+            <a
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-5 py-2.5 text-sm font-medium text-fg backdrop-blur-sm transition-colors hover:bg-elevated"
+              href={siteConfig.links.github}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <GithubIcon />
+              GitHub
+              <ArrowUpRight />
+            </a>
+          </div>
         </div>
       </section>
     </DefaultLayout>
