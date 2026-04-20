@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_RESUME_PDF_PATH,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_RESUME_FILE,VITE_RESUME_PDF_PATH,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </div>
 
@@ -24,7 +24,6 @@
 ### 📄 简历系统
 
 - **弹性数据来源**：支持本地 YAML 文件、GitHub Gist 或任何可访问的 Raw URL
-- **PIN 码保护**：可选的 PIN 码验证功能，保护隐私信息
 - **模块化区块**：7 个 entry-type renderer（Experience / Education / Publication / Normal / OneLine / Bullet / Text）涵盖所有常见简历区块
 - **PDF 通过 rendercv 生成**：同一份 YAML 通过 [rendercv](https://github.com/rendercv/rendercv)（Typst-based）排版成专业 PDF，commit 到 repo 里，部署时也会自动重新生成
 - **rendercv Schema**：采用 [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure)，同一份文件就是网站与 PDF 的唯一来源
@@ -68,9 +67,6 @@ VITE_RESUME_FILE=resume.yaml
 # VITE_RESUME_FILE=https://gist.github.com/username/gist_id
 # Raw URL 示例：
 # VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
-
-# 可选：简历 PIN 码保护
-VITE_PIN_CODE=123456
 
 # 可选：简历 PDF 下载路径
 # 默认值：/resume.pdf (对应 public/resume.pdf)
@@ -130,7 +126,6 @@ npm run dev
 ### 简历页（`/resume`）
 
 - 条件式显示：仅在设置 `VITE_RESUME_FILE` 后才会出现
-- 支持 PIN 码验证保护（可选）
 - 弹性的简历加载方式：
   - 本地 YAML 文件：`resume.yaml`、`my-resume.yaml`（自 `public/` 目录加载）
   - GitHub Gist：Gist 链接会自动转为原始文件格式
@@ -139,7 +134,6 @@ npm run dev
 - 结构化显示个人信息、学历、工作经历等内容
 - PDF 下载：提供按钮下载简历 PDF（使用 `public/resume.pdf`）
 - 响应式设计与动画效果
-- 小技巧：若启用 PIN，可通过 `/resume?pin=你的PIN` 直接解锁；验证后网址会自动移除 PIN。
 
 ## 自定义配置
 
@@ -263,10 +257,6 @@ git commit -m "docs: update resume content"
 第一次 `make pdf` 要等一分钟左右（uv 下载 rendercv + Typst），之后只要 1–2 秒。
 
 **定制 PDF 外观**：编辑 `public/resume.yaml` 里的 `design:` 区块。完整的 theme、配色、字体、template 选项见 [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/)。
-
-### 修改 PIN 码
-
-在 `.env` 文件中调整 `VITE_PIN_CODE` 的值。
 
 ## 部署
 
@@ -570,12 +560,6 @@ HeroUI 的主题设置位于 `src/styles/globals.css` 和 `src/styles/plugins.ts
 - 如使用 URL，确认 URL 可直接访问（在浏览器中打开测试）
 - GitHub Gist URLs are automatically converted to Raw format, no manual processing needed
 - 检查 YAML 格式是否正确（可使用在线 YAML 验证工具）
-
-**PIN 码验证无法通过**
-
-- 确认 `.env` 中的 `VITE_PIN_CODE` 值与输入相符
-- 注意 PIN 码有大小写区分
-- 可通过 URL 参数传递 PIN：`/resume?pin=你的PIN`
 
 ### 构建与开发问题
 

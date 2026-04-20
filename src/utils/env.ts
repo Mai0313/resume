@@ -17,7 +17,6 @@ const REQUIRED_ENV_VARS = ["VITE_WEBSITE_TITLE"] as const;
 
 // Environment variables with default values
 const DEFAULT_VALUES = {
-  VITE_PIN_CODE: null,
   VITE_ROOT_PATH: "/",
   VITE_RESUME_FILE: null,
   VITE_RESUME_PDF_PATH: "/resume.pdf",
@@ -73,9 +72,6 @@ export const env = {
   RESUME_FILE: getEnvVar("VITE_RESUME_FILE", {
     defaultValue: DEFAULT_VALUES.VITE_RESUME_FILE,
   }),
-  PIN_CODE: getEnvVar("VITE_PIN_CODE", {
-    defaultValue: DEFAULT_VALUES.VITE_PIN_CODE,
-  }),
   ROOT_PATH: getEnvVar("VITE_ROOT_PATH", {
     defaultValue: DEFAULT_VALUES.VITE_ROOT_PATH,
   }),
@@ -86,13 +82,6 @@ export const env = {
 
 // Helper functions for specific use cases
 export const envHelpers = {
-  /**
-   * Check if PIN code protection is enabled
-   */
-  isPinEnabled(): boolean {
-    return isNonEmptyString(env.PIN_CODE);
-  },
-
   /**
    * Get the root path with fallback to default
    */
