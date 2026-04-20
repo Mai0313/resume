@@ -72,9 +72,7 @@ export default function ResumePage() {
                 </code>
               </div>
               <div>
-                <span className="text-fg-subtle">
-                  url &nbsp;&nbsp;&nbsp;
-                </span>
+                <span className="text-fg-subtle">url &nbsp;&nbsp;&nbsp;</span>
                 <code className="break-all text-fg">
                   https://raw.githubusercontent.com/user/repo/main/resume.yaml
                 </code>
