@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_RESUME_FILE,VITE_PIN_CODE,VITE_RESUME_PDF_PATH,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_RESUME_FILE,VITE_RESUME_PDF_PATH,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </div>
 
@@ -24,7 +24,6 @@ This is a personal website built with Vite and the HeroUI framework, suitable fo
 ### 📄 Resume System
 
 - **Flexible Data Sources**: Supports local YAML files, GitHub Gist, or any accessible Raw URL
-- **PIN Code Protection**: Optional PIN code verification feature to protect private information
 - **Modular Sections**: 7 entry-type renderers (Experience, Education, Publication, Normal, OneLine, Bullet, Text) covering all common resume sections
 - **PDF Generation via rendercv**: A professionally typeset PDF is rendered from the same YAML using [rendercv](https://github.com/rendercv/rendercv) (Typst-based), committed to the repo, and auto-refreshed on deploy
 - **rendercv Schema**: Uses the [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure) — a single source of truth for both the website and the PDF
@@ -68,9 +67,6 @@ VITE_RESUME_FILE=resume.yaml
 # VITE_RESUME_FILE=https://gist.github.com/username/gist_id
 # Raw URL example:
 # VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
-
-# Optional: Resume PIN code protection
-VITE_PIN_CODE=123456
 
 # Optional: Resume PDF download path
 # Default: /resume.pdf (maps to public/resume.pdf)
@@ -130,7 +126,6 @@ npm run dev
 ### Resume Page (`/resume`)
 
 - Conditional display: Only appears when `VITE_RESUME_FILE` is set
-- Supports PIN code verification protection (optional)
 - Flexible resume loading methods:
   - Local YAML files: `resume.yaml`, `my-resume.yaml` (loaded from `public/` directory)
   - GitHub Gist: Gist URLs automatically converted to raw format
@@ -139,7 +134,6 @@ npm run dev
 - Structured display of personal information, education, work experience, etc.
 - PDF Download: Provides button to download resume PDF (uses `public/resume.pdf`)
 - Responsive design with animation effects
-- Tip: If PIN is enabled, you can unlock directly via `/resume?pin=your_PIN`; the PIN will be automatically removed from the URL after verification.
 
 ## Custom Configuration
 
@@ -263,10 +257,6 @@ git commit -m "docs: update resume content"
 The first `make pdf` takes a minute (uv downloads rendercv + Typst); subsequent runs are ~1–2s.
 
 **Customising the PDF appearance**: edit the `design:` block in `public/resume.yaml`. See [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/) for the full list of themes, colours, typography and templates.
-
-### Change PIN Code
-
-Adjust the value of `VITE_PIN_CODE` in the `.env` file.
 
 ## Deployment
 
@@ -570,12 +560,6 @@ To customise rendering:
 - If using URL, verify URL is directly accessible (test by opening in browser)
 - GitHub Gist URLs are automatically converted to Raw format, no manual processing needed
 - Check YAML format is correct (use online YAML validation tools)
-
-**PIN Code Verification Fails**
-
-- Verify `VITE_PIN_CODE` value in `.env` matches input
-- Note that PIN code is case-sensitive
-- Can pass PIN via URL parameter: `/resume?pin=your_PIN`
 
 ### Build and Development Issues
 

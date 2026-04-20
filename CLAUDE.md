@@ -49,10 +49,6 @@ This drives three load-bearing design choices:
 
 - **Vercel does NOT regenerate the PDF** — it only runs `yarn install && yarn build`. GitHub Actions (`deploy.yml`) does run `make pdf` as a safety net. For Vercel, always `make pdf` locally and commit before pushing, or it serves a stale PDF.
 
-## PIN protection
-
-Optional `VITE_PIN_CODE` gates the `/resume` page via a modal. PIN length is auto-detected from the env var. URL param `?pin=xxx` auto-submits and is then stripped from history. Three wrong attempts trigger a 404 render via the FuzzyText component. All wired in `src/pages/resume.tsx`.
-
 ## Commit conventions
 
 Enforced by the `semantic-pull-request.yml` workflow — **PR titles must follow [Conventional Commits](https://www.conventionalcommits.org/)** (`feat:`, `fix:`, `docs:`, `chore:`, etc.). Commit messages should follow the same format. English only.
