@@ -369,7 +369,7 @@ design:
   templates:
     footer: "NAME · PAGE_NUMBER / TOTAL_PAGES"
     single_date: "MONTH_ABBREVIATION YEAR"
-    date_range: "START_DATE – END_DATE"
+    date_range: "START_DATE - END_DATE"
     one_line_entry:
       # Skills/Interests show label, level, and keyword list on one line in PDF.
       main_column: "**LABEL** (DETAILS): KEYWORDS"
