@@ -326,6 +326,10 @@ design:
 
   header:
     alignment: center
+    photo_width: 3.5cm
+    photo_position: left
+    photo_space_left: 0.4cm
+    photo_space_right: 0.4cm
     space_below_name: 0.35cm
     space_below_headline: 0.35cm
     space_below_connections: 0.7cm
@@ -374,7 +378,45 @@ design:
       # Skills/Interests show label, level, and keyword list on one line in PDF.
       main_column: "**LABEL** (DETAILS): KEYWORDS"
 
+locale:
+  language: english
+  last_updated: Last updated in
+  month: month
+  months: months
+  year: year
+  years: years
+  present: present
+  phrases:
+    degree_with_area: DEGREE in AREA
+  month_abbreviations:
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - June
+    - July
+    - Aug
+    - Sept
+    - Oct
+    - Nov
+    - Dec
+  month_names:
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+
 settings:
+  current_date: today
   # Auto-bold these keywords wherever they appear in summaries/highlights.
   # "Wei Cheng Lee" is intentionally NOT listed here — author names use manual
   # **...** markdown so the web UI can detect self-authorship (and listing it
