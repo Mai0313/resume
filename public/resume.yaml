@@ -36,14 +36,16 @@ cv:
         location: Banqiao, New Taipei, Taiwan
         start_date: 2025-10
         url: https://www.google.com
-        description: Software Engineer at Google Pixel Security Team, specializing in ARM Trusted Firmware (TF-A), Rust Trusted Firmware (RF-A), and Baremetal Test Frameworks (TFTF) for next-generation Pixel SoCs.
+        description: Software Engineer at Google Pixel Security Team, specializing in Trusted Firmware-A (TF-A) and its ground-up Rust rewrite (RF-A), plus the Baremetal Test Framework (TFTF), for next-generation Pixel SoCs.
         summary: >
           Driving software-led silicon development for Google Pixel SoCs. Focused on pre-silicon validation, firmware stability, and system-level power management (LPM), bridging the gap between hardware bringup and OS deployment.
         highlights:
           - Expanded Baremetal Test Framework (TFTF) coverage in pre-silicon environments, decoupling firmware testing from OS readiness and accelerating low-power mode (LPM) development by 4 to 8 weeks.
-          - Developed and optimized ARM Trusted Firmware (TF-A) and Rust Trusted Firmware (RF-A), introducing mechanisms like deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.
-          - Investigated and resolved complex system-level stability issues, including AXI bus deadlocks, power-down failures, and APC watchdog timeouts.
-          - Implemented and validated critical firmware workarounds for hardware errata (e.g., Double CMO for early write acknowledgement flaws) across varying core architectures to prevent memory corruption.
+          - Re-architected RF-A OSI-mode suspend with horizontal sibling state coordination, narrowing PSCI lock scope from MAX_POWER_LEVEL to highest_affected_level and cutting C2 suspend latency by 14% (84 → 72 µs/cycle) while eliminating cross-cluster lock contention.
+          - Introduced deterministic sleep algorithms and exponential backoff in TF-A and RF-A low-power paths to eliminate SMC storms and timer-framework race conditions observed under multi-core LPM stress.
+          - Shipped Target-Aware Dynamic IRQ LPM, replacing IPM software-IRQ notification with PPU hardware events (LOCKED IRQ / STA_ACCEPT) to eliminate CAP/TF-A race conditions that caused APC watchdog timeouts on suspend/resume paths.
+          - Diagnosed and resolved system-level stability issues including AXI bus deadlocks, power-down failures, and MMIO hangs in PSCI_SYSTEM_SUSPEND by correlating PC/ESR dumps with bl31 objdump and scandump evidence.
+          - Implemented and validated critical firmware workarounds for hardware errata (e.g., Double CMO for the MBU-B0 premature CMO completion / early write acknowledgement flaw) across varying core architectures to prevent memory corruption.
           - Facilitated the bringup of next-generation SoC architectures (e.g., P26, CDO) utilizing a dual-track development strategy in TF-A and RF-A to ensure project security and delivery timelines.
 
       - company: MediaTek
@@ -100,21 +102,29 @@ cv:
           Expanding the Baremetal Test Framework (TFTF) for pre-silicon environments across next-generation Pixel SoCs (P26, CDO), enabling firmware verification to run independently of OS readiness.
         highlights:
           - Built targeted test coverage for system-level power management (LPM) flows, shortening the critical path by 4 to 8 weeks.
+          - Ported the LGA TFTF stress suite onto MBU's 2+4+1 core topology, unblocking multi-core power/LPM stability validation on new silicon.
+          - Added microsecond-precision support to the TFTF timer framework (1000× scale) with overflow protection, enabling finer-grained LPM timing tests.
+          - Implemented the TFTF-side Double CMO workaround for the MBU-B0 premature CMO completion errata, stabilizing baremetal tests previously flaky from stale-data reads.
+          - Stabilized multi-core stress tests by removing nondeterministic rand()-driven sleeps, introducing exponential backoff (10→200 ms) on suspend retries, and relaxing CORE_DOWN_CHECK thresholds to eliminate SMC storms and false negatives.
+          - Added a GSA-request failure counter in TF-A to distinguish intermittent TRNG failures from persistent GSA lockups, validated via fault injection.
           - Designed test harnesses for hardware errata and firmware workaround validation prior to tape-out.
           - Partnered with hardware, firmware, and validation teams to align on shared pre-silicon test infrastructure.
         keywords: "Baremetal Testing, TFTF, Pre-Silicon Validation, Low-Power Mode, SoC Bringup"
         roles: "Software Engineer"
 
-      - name: ARM Trusted Firmware & Rust Trusted Firmware (RF-A) for Pixel SoCs
+      - name: Trusted Firmware-A (TF-A / RF-A) for Pixel SoCs
         start_date: 2025-10
         entity: Google
         summary: >
-          Contributing to ARM Trusted Firmware (TF-A) and the Rust Trusted Firmware (RF-A) stack for Pixel SoCs, focused on secure low-power transitions, system-level stability, and hardware errata mitigations.
+          Contributing to Trusted Firmware-A for Pixel SoCs across both the C reference implementation (TF-A) and its ground-up Rust rewrite (RF-A), focused on secure low-power transitions, system-level stability, and hardware errata mitigations.
         highlights:
           - Executed a dual-track TF-A/RF-A strategy to balance delivery timelines with long-term firmware security goals.
-          - Introduced deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions.
-          - Diagnosed and resolved AXI bus deadlocks, power-down failures, and APC watchdog timeouts at the system level.
-          - Implemented Double CMO workarounds for early write acknowledgement errata across varying core architectures.
+          - Re-architected OSI-mode suspend in RF-A with horizontal sibling state coordination, narrowing PSCI lock scope from MAX_POWER_LEVEL to highest_affected_level and reducing C2 suspend latency by 14% (84 → 72 µs/cycle).
+          - Introduced deterministic sleep algorithms and exponential backoff to eliminate SMC storms and timer race conditions in multi-core LPM stress.
+          - Shipped Target-Aware Dynamic IRQ LPM, replacing IPM software-IRQ with PPU hardware events (LOCKED IRQ / STA_ACCEPT) to eliminate CAP/TF-A race conditions causing APC watchdog timeouts.
+          - Landed the P26 MBU BL31 debug-artifact fix (bl31_log.lst), re-laying the memory map to reconcile ABL/TF-A disagreement on BL31_DRAM base and restoring EL3 crash-log visibility.
+          - Root-caused and fixed a thermal-reboot regression on GS201/Whitechapel Pro (Panther/Cheetah/Felix) by restoring the inverted eob check in the TF-A priv_reg access-control list.
+          - Implemented Double CMO workarounds for the MBU-B0 premature CMO completion errata across varying core architectures.
         keywords: "ARM Trusted Firmware, Rust, Low-Power Mode, Hardware Errata, Firmware Security"
         roles: "Software Engineer"
 
@@ -192,7 +202,7 @@ cv:
     Skills:
       - label: Firmware & Systems Programming
         details: Advanced
-        keywords: "ARM Trusted Firmware (TF-A), Rust Trusted Firmware (RF-A), Baremetal Test Framework (TFTF), Low-Power Mode (LPM), SMC Handling, Deterministic Sleep Algorithms, Exponential Backoff"
+        keywords: "Trusted Firmware-A (TF-A), Rust Firmware-A rewrite (RF-A), Baremetal Test Framework (TFTF), Low-Power Mode (LPM), SMC Handling, Deterministic Sleep Algorithms, Exponential Backoff"
       - label: SoC & Hardware Integration
         details: Advanced
         keywords: "Pre-Silicon Validation, SoC Bringup, Hardware Errata Workarounds, AXI Bus Debugging, APC Watchdog, Power Management, Double CMO"
