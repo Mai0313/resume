@@ -417,20 +417,20 @@ locale:
 
 settings:
   current_date: today
-  # render_command:
-  #   output_folder: rendercv_output
-  #   design:
-  #   locale:
-  #   typst_path: OUTPUT_FOLDER/NAME_IN_SNAKE_CASE_CV.typ
-  #   pdf_path: OUTPUT_FOLDER/NAME_IN_SNAKE_CASE_CV.pdf
-  #   markdown_path: OUTPUT_FOLDER/NAME_IN_SNAKE_CASE_CV.md
-  #   html_path: OUTPUT_FOLDER/NAME_IN_SNAKE_CASE_CV.html
-  #   png_path: OUTPUT_FOLDER/NAME_IN_SNAKE_CASE_CV.png
-  #   dont_generate_markdown: false
-  #   dont_generate_html: false
-  #   dont_generate_typst: false
-  #   dont_generate_pdf: false
-  #   dont_generate_png: false
+  render_command:
+    output_folder: ""
+    design:
+    locale:
+    # typst_path: OUTPUT_FOLDER/NAME_IN_SNAKE_CASE_CV.typ
+    pdf_path: OUTPUT_FOLDER/resume.pdf
+    markdown_path: OUTPUT_FOLDER/resume.md
+    # html_path: OUTPUT_FOLDER/NAME_IN_SNAKE_CASE_CV.html
+    # png_path: OUTPUT_FOLDER/NAME_IN_SNAKE_CASE_CV.png
+    dont_generate_markdown: false
+    dont_generate_html: true
+    dont_generate_typst: true
+    dont_generate_pdf: false
+    dont_generate_png: false
   # Auto-bold these keywords wherever they appear in summaries/highlights.
   # "Wei Cheng Lee" is intentionally NOT listed here — author names use manual
   # **...** markdown so the web UI can detect self-authorship (and listing it
