@@ -13,7 +13,8 @@ yarn preview          # preview production build
 yarn deploy           # build + gh-pages push (manual GitHub Pages deploy)
 
 make pdf              # regenerate public/resume.pdf from public/resume.yaml via rendercv.
-                      # Requires uv. First run ~1 min (installs rendercv+Typst); subsequent ~1-2s.
+                      # Requires uv. Uses uvx to run rendercv in an isolated env (no global install).
+                      # First run ~1 min (downloads rendercv+Typst); subsequent ~1-2s.
                       # Run after editing YAML, then commit BOTH resume.yaml and resume.pdf.
 make fmt              # alias for `yarn check`
 make clean            # removes dist/target/cache and rendercv_output, keeps public/resume.pdf

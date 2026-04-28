@@ -249,12 +249,12 @@ The PDF is produced by [rendercv](https://github.com/rendercv/rendercv) from the
 **Updating the PDF** (do this after editing the YAML):
 
 ```bash
-make pdf                 # runs uv tool install "rendercv[full]" + rendercv render
+make pdf                 # runs rendercv via uvx (isolated env, no global install)
 git add public/resume.yaml public/resume.pdf
 git commit -m "docs: update resume content"
 ```
 
-The first `make pdf` takes a minute (uv downloads rendercv + Typst); subsequent runs are ~1–2s.
+The first `make pdf` takes a minute (uvx downloads rendercv + Typst); subsequent runs are ~1–2s.
 
 **Customising the PDF appearance**: edit the `design:` block in `public/resume.yaml`. See [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/) for the full list of themes, colours, typography and templates.
 

@@ -249,12 +249,12 @@ PDF 由 [rendercv](https://github.com/rendercv/rendercv) 从同一份 `public/re
 **更新 PDF**（编辑 YAML 之后跑一次）：
 
 ```bash
-make pdf                 # 执行 uv tool install "rendercv[full]" + rendercv render
+make pdf                 # 通过 uvx 执行 rendercv（isolated env，不需要全局安装）
 git add public/resume.yaml public/resume.pdf
 git commit -m "docs: update resume content"
 ```
 
-第一次 `make pdf` 要等一分钟左右（uv 下载 rendercv + Typst），之后只要 1–2 秒。
+第一次 `make pdf` 要等一分钟左右（uvx 下载 rendercv + Typst），之后只要 1–2 秒。
 
 **定制 PDF 外观**：编辑 `public/resume.yaml` 里的 `design:` 区块。完整的 theme、配色、字体、template 选项见 [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/)。
 

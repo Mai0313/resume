@@ -8,7 +8,7 @@ Contributions are welcome! Whether reporting issues, suggesting features, or sub
 
 - [Node.js](https://nodejs.org/) 18.x or higher
 - [Yarn](https://yarnpkg.com/) (recommended) or npm
-- [uv](https://docs.astral.sh/uv/) — only required if you need to regenerate `public/resume.pdf` locally via `make pdf` (rendercv is installed via `uv tool install`)
+- [uv](https://docs.astral.sh/uv/) — only required if you need to regenerate `public/resume.pdf` locally via `make pdf` (rendercv is run via `uvx` in an isolated environment, no global install needed)
 
 ### Development Setup
 

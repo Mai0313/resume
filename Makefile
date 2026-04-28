@@ -15,8 +15,7 @@ fmt: ## Run code formatters and linters
 	yarn run check
 
 pdf: ## Regenerate public/resume.pdf from public/resume.yaml. Run this manually after editing the YAML, then commit the updated PDF.
-	uv tool install "rendercv[full]"
-	uv run rendercv render public/resume.yaml --pdf-path resume.pdf -nomd -nohtml -nopng
+	uvx --from "rendercv[full]" rendercv render public/resume.yaml --pdf-path resume.pdf -nomd -nohtml -nopng
 	@rm -rf public/rendercv_output public/photo.jpg
 
 build: ## Build the website
