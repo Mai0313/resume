@@ -17,9 +17,9 @@
 
 ### 🎨 視覺效果
 
-- **動態首頁**：整合 Particles 粒子背景、Orb 動態球體和 SplitText 文字動畫，打造引人入勝的視覺體驗
-- **現代化 UI**：採用 HeroUI 元件庫與 Framer Motion、GSAP 等動畫庫
-- **響應式設計**：支援深色/淺色主題切換與全響應式版面，在各種裝置上都能完美顯示
+- **動態首頁**：使用 WebGL `Threads` 背景（OGL）搭配 `DecryptedText` 字元揭示動畫呈現網站標題
+- **現代化 UI**：HeroUI 元件、Tailwind CSS v4 design token，搭配 Framer Motion 處理頁面與區塊轉場
+- **響應式設計**：內建深色/淺色主題切換（透過 `@heroui/use-theme` 在導覽列切換），版面完全響應式
 
 ### 📄 履歷系統
 
@@ -41,12 +41,12 @@
 - [React 18](https://react.dev/) - UI 函式庫
 - [TypeScript 5.6.3](https://www.typescriptlang.org) - 型別安全的 JavaScript
 - [React Router 7.12.0](https://reactrouter.com/) - 前端路由
-- [HeroUI](https://heroui.com) - React UI 元件庫
-- [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS 框架
+- [HeroUI](https://heroui.com) - React UI primitives（`@heroui/button`、`@heroui/card`、`@heroui/system`、`@heroui/theme`、`@heroui/use-theme`）
+- [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS 框架（透過 `@tailwindcss/vite` 載入）
 - [Framer Motion 12.15](https://www.framer.com/motion) - React 動畫庫
-- [GSAP 3.13](https://gsap.com/) - 專業級動畫庫
-- [OGL 1.0](https://oframe.github.io/ogl/) - WebGL 函式庫
-- [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器
+- [OGL 1.0](https://oframe.github.io/ogl/) - WebGL renderer，用在首頁 `Threads` 背景
+- [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器（在 `resumeLoader.ts` 內做 lazy load）
+- [tailwind-merge](https://github.com/dcastil/tailwind-merge) + [clsx](https://github.com/lukeed/clsx) - 透過 `src/lib/utils.ts` 的 `cn()` helper 包出來用
 - [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV 排版工具,從同一份 YAML 產生可下載的 PDF
 
 ## 環境設定
@@ -118,10 +118,10 @@ npm run dev
 
 ### 首頁（`/`）
 
-- 互動式背景效果（Particles + Orb）
-- 以 SplitText 動畫顯示網站標題（`VITE_WEBSITE_TITLE`）
-- 快速連結到你的 GitHub 個人頁
-- 響應式設計與主題切換
+- WebGL `Threads` 動態背景（lazy load,不擋首屏渲染）
+- 以 `DecryptedText` 字元揭示動畫顯示網站標題（`VITE_WEBSITE_TITLE`）
+- 「View Resume」按鈕僅在設定 `VITE_RESUME_FILE` 時顯示；GitHub 連結固定顯示
+- 響應式版面,主題切換功能整合在浮動導覽列
 
 ### 履歷頁（`/resume`）
 
@@ -354,74 +354,72 @@ docker run -d -p 5173:3000 --env-file .env resume:latest
 
 ```
 .
-├── .devcontainer/                   # Dev Container 配置
-├── docker/                          # Docker 配置
-├── .github/                         # GitHub Actions 及模板
-├── src/                             # 原始碼
-│   ├── components/                  # 可重用元件
-│   │   ├── ErrorBoundary.tsx        # 錯誤邊界元件
-│   │   ├── Particles/               # 粒子背景特效
-│   │   │   └── Particles.tsx
-│   │   ├── Orb/                     # 動態背景球體（WebGL）
-│   │   │   ├── Orb.tsx
-│   │   │   └── Orb.css
-│   │   ├── FuzzyText/               # 404 頁面文字模糊效果
-│   │   │   └── FuzzyText.tsx
-│   │   ├── SplitText/               # 首頁文字分割動畫
-│   │   │   └── SplitText.tsx
-│   │   ├── ResumeSections/          # 每一個 rendercv entry type 對應一支 renderer
-│   │   │   ├── BulletSection.tsx    # BulletEntry renderer
-│   │   │   ├── EducationSection.tsx # EducationEntry renderer
+├── .devcontainer/                    # Dev Container 配置
+├── docker/                           # Docker 配置（Dockerfile）
+├── .github/workflows/                # GitHub Actions
+├── public/                           # 靜態資源,直接 serve
+│   ├── resume.yaml                   # 單一來源（同時驅動網站與 PDF）
+│   ├── resume.pdf                    # 預先 render 好的 PDF（commit 到 git,由 `make pdf` 重新生成）
+│   ├── favicon.ico
+│   ├── robots.txt
+│   └── vite.svg
+├── src/                              # 原始碼
+│   ├── components/                   # 可重用元件
+│   │   ├── ErrorBoundary.tsx         # 頂層 error boundary
+│   │   ├── navbar.tsx                # 浮動玻璃風導覽列 + 主題切換（用 @heroui/use-theme）
+│   │   ├── ResumeContent.tsx         # 標頭、Languages 上提、section dispatch
+│   │   ├── DecryptedText/            # 字元 scramble 揭示動畫（首頁標題用）
+│   │   │   └── DecryptedText.tsx
+│   │   ├── Threads/                  # WebGL 背景 shader（OGL）；首頁 lazy load
+│   │   │   └── Threads.tsx
+│   │   ├── AIChat/                   # 預留給後續的 AI 聊天功能（目前是空的）
+│   │   ├── ResumeSections/           # 每一個 rendercv entry type 對應一支 renderer
+│   │   │   ├── BulletSection.tsx     # BulletEntry renderer
+│   │   │   ├── EducationSection.tsx  # EducationEntry renderer
 │   │   │   ├── ExperienceSection.tsx # ExperienceEntry renderer（Work、Volunteer 等）
-│   │   │   ├── NormalSection.tsx    # NormalEntry renderer（Projects、Awards、Certificates、References）
-│   │   │   ├── OneLineSection.tsx   # OneLineEntry renderer（Skills、Interests 等）
+│   │   │   ├── NormalSection.tsx     # NormalEntry renderer（Projects、Awards、Certificates、References）
+│   │   │   ├── OneLineSection.tsx    # OneLineEntry renderer（Skills、Interests 等）
 │   │   │   ├── PublicationSection.tsx # PublicationEntry renderer
-│   │   │   ├── SectionCard.tsx      # 共享卡片 + section name → icon/顏色 的對應
-│   │   │   ├── TextSection.tsx      # TextEntry（段落型）renderer
-│   │   │   └── index.ts             # 區塊元件匯出
-│   │   ├── shared/                  # 共享的可重用元件
-│   │   │   ├── BulletList.tsx       # 項目列表元件
-│   │   │   ├── DateRange.tsx        # 日期範圍格式化
-│   │   │   ├── ExternalLink.tsx     # 外部連結元件
-│   │   │   ├── IconLibrary.tsx      # 圖示庫
-│   │   │   ├── index.ts             # 共享元件匯出
-│   │   │   └── ItemCard.tsx         # 通用項目卡片
-│   │   ├── ResumeContent.tsx        # 履歷內容元件
-│   │   ├── navbar.tsx               # 導覽列元件
-│   │   ├── theme-switch.tsx         # 主題切換元件
-│   │   └── icons.tsx                # 圖示元件
-│   ├── pages/                       # 頁面元件
-│   │   ├── index.tsx                # 首頁
-│   │   └── resume.tsx               # 履歷頁
-│   ├── layouts/                     # 版面配置
-│   │   └── default.tsx              # 預設版面（含導覽與主題）
-│   ├── utils/                       # 工具函式
-│   │   ├── animations.ts            # 動畫輔助函式
-│   │   ├── env.ts                   # 環境變數管理
-│   │   ├── pathUtils.ts             # 路徑工具函式
-│   │   └── resumeLoader.ts          # YAML 履歷載入器
-│   ├── config/                      # 設定檔
-│   │   └── site.ts                  # 網站設定與導覽配置
-│   ├── constants/                   # 常數
-│   │   └── index.ts                 # 全域常數
-│   ├── types/                       # TypeScript 型別定義
-│   │   ├── index.ts                 # 共享 TS 型別（rendercv 的 type 實際在 utils/resumeLoader.ts）
-│   │   └── ogl.d.ts                 # OGL WebGL 函式庫型別宣告
-│   ├── styles/                      # 全域樣式
-│   │   ├── globals.css              # 全局 CSS 樣式
-│   │   └── plugins.ts               # Tailwind 外掛
-│   ├── App.tsx                      # 應用程式路由進入點
-│   ├── main.tsx                     # React 渲染進入點
-│   ├── provider.tsx                 # Context Providers（主題等）
-│   └── vite-env.d.ts                # Vite 環境型別定義
-├── docker-compose.yaml              # Docker Compose 配置
-├── eslint.config.js                 # ESLint 配置
-├── index.html                       # 進入點 HTML
-├── Makefile                         # 建置自動化
-├── package.json                     # 專案依賴及腳本
-├── tsconfig.json                    # TypeScript 配置
-├── vercel.json                      # Vercel 部署配置
-└── vite.config.ts                   # Vite 配置
+│   │   │   ├── SectionCard.tsx       # 共享卡片 + section name → icon/顏色 的對應
+│   │   │   ├── TextSection.tsx       # TextEntry（段落型）renderer
+│   │   │   └── index.ts
+│   │   └── shared/                   # 共享的可重用子元件
+│   │       ├── BulletList.tsx
+│   │       ├── DateRange.tsx
+│   │       ├── ExternalLink.tsx
+│   │       ├── ItemCard.tsx
+│   │       └── index.ts
+│   ├── pages/
+│   │   ├── index.tsx                 # 首頁
+│   │   └── resume.tsx                # 履歷頁（載入 YAML 後丟給 ResumeContent）
+│   ├── layouts/
+│   │   └── default.tsx               # 預設版面（Navbar + main slot）
+│   ├── utils/
+│   │   ├── animations.ts             # Framer Motion stagger variants
+│   │   ├── env.ts                    # 集中管理 VITE_* env，模組載入時就 validate
+│   │   ├── pathUtils.ts              # VITE_ROOT_PATH helpers（buildPath / getBasename）
+│   │   └── resumeLoader.ts           # rendercv schema types、entry-type dispatch、YAML loader
+│   ├── lib/
+│   │   └── utils.ts                  # `cn()`：clsx + tailwind-merge
+│   ├── config/
+│   │   └── site.ts                   # 依 env 動態產生 nav items、外部連結
+│   ├── types/
+│   │   └── ogl.d.ts                  # OGL module shim
+│   ├── styles/
+│   │   ├── globals.css               # Tailwind layers + design tokens（bg/fg/border/elevated/signal）
+│   │   └── plugins.ts                # HeroUI Tailwind plugin 入口
+│   ├── App.tsx                       # 路由（`/` 永遠在；`/resume` 僅在 VITE_RESUME_FILE 已設時掛載）
+│   ├── main.tsx                      # React render 進入點、BrowserRouter 串接
+│   ├── provider.tsx                  # HeroUIProvider
+│   └── vite-env.d.ts
+├── docker-compose.yaml               # Docker Compose 配置
+├── eslint.config.js                  # ESLint 配置
+├── index.html                        # 進入點 HTML（用 %VITE_WEBSITE_TITLE%）
+├── Makefile                          # `make pdf`、`make build`、`make fmt`、`make clean`、`make run`
+├── package.json
+├── tsconfig.json
+├── vercel.json                       # Vercel framework 設定 + 副檔名 scoped 的 SPA rewrite
+└── vite.config.ts                    # `base` 由 VITE_ROOT_PATH 控制、客製 404.html plugin
 ```
 
 ## 開發指引
@@ -527,7 +525,7 @@ make run
 
 ### 修改主題
 
-HeroUI 的主題設定位於 `src/styles/globals.css` 和 `src/styles/plugins.ts`，可依需求自訂色彩與樣式。主題切換功能已整合在導覽列中，支援深色/淺色模式。
+Design token（`bg`、`fg`、`fg-muted`、`fg-subtle`、`border`、`surface`、`elevated`、`signal`）寫在 `src/styles/globals.css`；HeroUI 的 Tailwind plugin 接在 `src/styles/plugins.ts`。主題切換沒有獨立元件,導覽列（`src/components/navbar.tsx`）直接用 `@heroui/use-theme` 的 `useTheme()` 在 `dark` / `light` 之間切換。
 
 ### 自訂履歷區塊
 
