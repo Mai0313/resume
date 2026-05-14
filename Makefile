@@ -21,5 +21,5 @@ pdf: ## Regenerate public/resume.pdf from public/resume.yaml. Run this manually 
 build: ## Build the website
 	yarn build
 
-run: ## Run the project
-	yarn start
+run: ## Run the Vite dev server
+	yarn dev

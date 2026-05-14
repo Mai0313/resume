@@ -4,188 +4,74 @@
 
 [![React](https://img.shields.io/badge/-React_18-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/-TypeScript_5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
+[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/blob/main/LICENSE)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_RESUME_FILE,VITE_RESUME_PDF_PATH,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </div>
 
-This is a personal website built with Vite and the HeroUI framework, suitable for deployment on GitHub Pages.
+A personal resume website built with Vite, React, HeroUI, and Tailwind CSS. The web resume and the downloadable PDF share one rendercv-compatible YAML file, so profile content stays in one place while the site can be deployed to GitHub Pages, Vercel, or Docker.
 
 ## Features
 
-### 🎨 Visual Effects
+- YAML-driven resume content from `public/resume.yaml`, GitHub Gist, or any raw YAML URL.
+- Seven rendercv entry renderers for experience, education, publications, projects, skills, bullets, and text sections.
+- Downloadable `public/resume.pdf` generated from the same YAML with [rendercv](https://github.com/rendercv/rendercv).
+- Responsive home and resume pages with a WebGL `Threads` background, `DecryptedText` headline animation, theme switching, and Framer Motion transitions.
+- Subpath-aware routing and asset paths through `VITE_ROOT_PATH`, suitable for GitHub Pages.
 
-- **Dynamic Home Page**: WebGL `Threads` background (OGL) paired with the `DecryptedText` reveal animation for the headline title
-- **Modern UI**: HeroUI component primitives, Tailwind CSS v4 design tokens, and Framer Motion page/section transitions
-- **Responsive Design**: Built-in dark/light theme switching (toggled in the navbar via `@heroui/use-theme`) and fully responsive layouts
+## Quick Start
 
-### 📄 Resume System
+Prerequisites:
 
-- **Flexible Data Sources**: Supports local YAML files, GitHub Gist, or any accessible Raw URL
-- **Modular Sections**: 7 entry-type renderers (Experience, Education, Publication, Normal, OneLine, Bullet, Text) covering all common resume sections
-- **PDF Generation via rendercv**: A professionally typeset PDF is rendered from the same YAML using [rendercv](https://github.com/rendercv/rendercv) (Typst-based), committed to the repo, and auto-refreshed on deploy
-- **rendercv Schema**: Uses the [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure) — a single source of truth for both the website and the PDF
-
-### ⚙️ Smart Configuration
-
-- **Conditional Display**: Pages automatically show or hide based on environment variables
-  - Resume page requires `VITE_RESUME_FILE`
-- **Automatic Navigation Updates**: Navigation bar dynamically updates to show only enabled pages
-- **Subpath Support**: Supports deployment to subpaths (e.g., GitHub Pages)
-
-## Tech Stack
-
-- [Vite 6.3.5](https://vitejs.dev/guide/) - Fast frontend build tool
-- [React 18](https://react.dev/) - UI library
-- [TypeScript 5.6.3](https://www.typescriptlang.org) - Type-safe JavaScript
-- [React Router 7.12.0](https://reactrouter.com/) - Frontend routing
-- [HeroUI](https://heroui.com) - React UI primitives (`@heroui/button`, `@heroui/card`, `@heroui/system`, `@heroui/theme`, `@heroui/use-theme`)
-- [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS framework (loaded via `@tailwindcss/vite`)
-- [Framer Motion 12.15](https://www.framer.com/motion) - React animation library
-- [OGL 1.0](https://oframe.github.io/ogl/) - WebGL renderer used by the home-page `Threads` background
-- [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML parser (lazy-loaded inside `resumeLoader.ts`)
-- [tailwind-merge](https://github.com/dcastil/tailwind-merge) + [clsx](https://github.com/lukeed/clsx) - exposed via the `cn()` helper in `src/lib/utils.ts`
-- [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV renderer that produces the downloadable PDF from the same YAML
-
-## Environment Setup
-
-### Environment Variables
-
-Create a `.env` file and configure the following variables:
-
-```bash
-# Required: Website title
-VITE_WEBSITE_TITLE=Mai
-
-# Optional: Resume file - if not set, resume page will be hidden
-# Supports local files and URLs
-# Local file example:
-VITE_RESUME_FILE=resume.yaml
-# GitHub Gist example:
-# VITE_RESUME_FILE=https://gist.github.com/username/gist_id
-# Raw URL example:
-# VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
-
-# Optional: Resume PDF download path
-# Default: /resume.pdf (maps to public/resume.pdf)
-VITE_RESUME_PDF_PATH=/resume.pdf
-```
-
-Optional: Custom deployment root path (for GitHub Pages subpaths). If deploying to `https://<user>.github.io/<repo>`, set in `.env`:
-
-```bash
-VITE_ROOT_PATH=/resume
-```
-
-**Important Notes:**
-
-- **Smart Page Display**: Pages only appear in navigation menu and routing when corresponding environment variables are properly configured
-  - Resume page (`/resume`) requires `VITE_RESUME_FILE`
-
-- **Path Configuration**:
-  - Deploying to root directory (e.g., `https://yourdomain.com`): No need to set `VITE_ROOT_PATH`
-  - Deploying to subdirectory (e.g., `https://username.github.io/resume`): Set `VITE_ROOT_PATH=/resume`
-
-### Install Dependencies
-
-Using `yarn` is recommended:
+- Node.js 18 or newer.
+- Yarn, as used by the committed `yarn.lock`.
+- [uv](https://docs.astral.sh/uv/) only when regenerating the PDF with `make pdf`.
 
 ```bash
 yarn install
-```
-
-Or use `npm`:
-
-```bash
-npm install
-```
-
-### Start Development Server
-
-```bash
+cp .env.example .env
 yarn dev
 ```
 
-Or:
+The dev server runs on Vite's default port, usually `http://localhost:5173`.
+
+Useful commands:
 
 ```bash
-npm run dev
+yarn dev              # start the Vite dev server
+yarn build            # tsc && vite build
+yarn preview          # preview the production build
+yarn type-check       # TypeScript only
+yarn format:nofix     # Prettier check
+yarn lint:nofix       # ESLint check
+yarn check            # type-check, format, and lint with fixes
+
+make pdf              # regenerate public/resume.pdf from public/resume.yaml
+make run              # shortcut for yarn dev
+make fmt              # shortcut for yarn check
+make clean            # remove generated output/caches, then prune Git refs and GC
 ```
 
-## Page Features
+## Configuration
 
-### Home Page (`/`)
-
-- Animated WebGL `Threads` background (lazy-loaded so it never blocks first paint)
-- Website title (`VITE_WEBSITE_TITLE`) revealed character-by-character with the `DecryptedText` component
-- "View Resume" CTA appears only when `VITE_RESUME_FILE` is configured; GitHub link is always shown
-- Responsive layout, theme switching handled in the floating navbar
-
-### Resume Page (`/resume`)
-
-- Conditional display: Only appears when `VITE_RESUME_FILE` is set
-- Flexible resume loading methods:
-  - Local YAML files: `resume.yaml`, `my-resume.yaml` (loaded from `public/` directory)
-  - GitHub Gist: Gist URLs automatically converted to raw format
-  - Raw URL: Any accessible YAML file URL
-- YAML-driven resume data management
-- Structured display of personal information, education, work experience, etc.
-- PDF Download: Provides button to download resume PDF (uses `public/resume.pdf`)
-- Responsive design with animation effects
-
-## Custom Configuration
-
-### Configure Page Display
-
-The website automatically shows/hides pages based on environment variables:
-
-- Resume page: Only appears when `VITE_RESUME_FILE` is set
-- Navigation bar: Dynamically updates to show only available pages
-
-### Edit Resume Content
-
-You have multiple options to set up your resume:
-
-#### Option 1: Local YAML File
-
-Edit `public/resume.yaml` or create your own YAML file in the `public/` directory:
+Create `.env` from `.env.example` and set the Vite environment variables:
 
 ```bash
-# In .env file
-VITE_RESUME_FILE=my-resume.yaml
+VITE_WEBSITE_TITLE=Mai
+VITE_RESUME_FILE=resume.yaml
+VITE_RESUME_PDF_PATH=resume.pdf
+# VITE_ROOT_PATH=/resume
 ```
 
-#### Option 2: GitHub Gist (Recommended)
+`VITE_WEBSITE_TITLE` is required at module load. `VITE_RESUME_FILE` is optional; when it is empty, the `/resume` route and nav item are hidden. Local resume files are served from `public/`, while GitHub Gist URLs and raw YAML URLs are fetched directly. `VITE_RESUME_PDF_PATH` defaults to `/resume.pdf`; local paths are prefixed with `VITE_ROOT_PATH` for subpath deployments.
 
-Create a GitHub Gist containing your resume YAML and use the Gist URL:
+Set `VITE_ROOT_PATH=/resume` when deploying to a GitHub Pages subpath such as `https://<user>.github.io/resume/`. Leave it unset for root-domain deployments.
 
-```bash
-# In .env file
-VITE_RESUME_FILE=https://gist.github.com/your-username/your-gist-id
-```
+## Resume Content
 
-Benefits of using GitHub Gist:
-
-- Update resume without redeploying
-- Resume version control
-- Option to make public or private
-
-#### Option 3: Raw URL
-
-Use any accessible YAML file URL:
-
-```bash
-# In .env file
-VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
-```
-
-### Resume YAML Format
-
-The resume uses the [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure). A single YAML file drives both the website and the downloadable PDF.
-
-**Top-level structure**:
+Edit `public/resume.yaml` to change the resume. The file follows the [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure), with a `cv` block for content, a `design` block for PDF styling, and optional `settings`.
 
 ```yaml
 cv:
@@ -193,446 +79,91 @@ cv:
   headline: "Your Title"
   location: "City, Country"
   email: "you@example.com"
-  photo: "https://..." # URL for web; rendercv accepts local paths too
   social_networks:
-    - network: LinkedIn # one of the rendercv built-in networks
-      username: your-handle
     - network: GitHub
       username: your-handle
   sections:
-    Experience: # any section name; entry type is auto-detected
+    Experience:
       - company: Acme
         position: Engineer
         start_date: 2024-01
-        highlights: [...]
-    Education: [...]
-    Publications: [...] # requires `title` + `authors`
-    Projects: [...]
-    Skills: [...]
-    Languages: [...]
+        highlights:
+          - Built useful systems.
+    Education: []
+    Skills: []
 
-design: # PDF appearance — ignored by the website
+design:
   theme: engineeringresumes
-  # colors, typography, section_titles, templates, etc.
-
-settings:
-  bold_keywords: [...] # auto-bold these terms in the PDF
 ```
 
-**Entry types** (each section renders based on the shape of its first entry):
+Entry type is detected from the first entry in each section, not from the section name:
 
-| Entry type       | Required fields       | Used for                                   |
+| Entry type       | Required fields       | Typical sections                           |
 | ---------------- | --------------------- | ------------------------------------------ |
-| ExperienceEntry  | `company`, `position` | Work experience, Volunteer work            |
+| ExperienceEntry  | `company`, `position` | Work experience, volunteer work            |
 | EducationEntry   | `institution`, `area` | Education                                  |
 | PublicationEntry | `title`, `authors`    | Publications                               |
-| NormalEntry      | `name`                | Projects, Awards, Certificates, References |
-| OneLineEntry     | `label`, `details`    | Skills, Languages, Interests               |
+| NormalEntry      | `name`                | Projects, awards, certificates, references |
+| OneLineEntry     | `label`, `details`    | Skills, languages, interests               |
 | BulletEntry      | `bullet`              | Simple bullet lists                        |
-| TextEntry        | a plain string        | Paragraph-style sections (e.g. Summary)    |
+| TextEntry        | plain string          | Summary or paragraph sections              |
 
-**Web-only custom fields** (the website reads these; rendercv ignores them in the PDF): `url`, `description` on ExperienceEntry; `url`, `courses` on EducationEntry; `url`, `keywords`, `roles`, `entity`, `issuer` on NormalEntry; `keywords` on OneLineEntry.
+Important YAML behavior:
 
-**Important caveats**:
+- Section order follows YAML key order.
+- A `Languages` OneLine section is hoisted into the resume header and skipped from the main section list.
+- Web-only list fields such as `keywords`, `roles`, and `courses` must be comma-separated strings in YAML, for example `keywords: "TypeScript, React, Vite"`. rendercv can fail on list-valued custom fields, and the website normalizes these strings to arrays at runtime.
 
-- **List-valued custom fields must be comma-separated strings in YAML** (e.g. `keywords: "Python, TypeScript, Rust"`). The loader normalises them to arrays at runtime. This works around a rendercv template-engine limitation — if you write them as YAML lists, `rendercv render` will crash.
-- **Section order follows YAML key order.** The parser uses `Object.keys(cv.sections)` so whatever order you write, that's what the page renders.
-- **`Languages` is a magic section name.** Any `OneLineEntry` section whose key is `Languages` (case-insensitive) is hoisted into the header chip row and skipped from the main section list. This match is hard-coded in `ResumeContent.tsx` — renaming the section to e.g. `Spoken Languages` will cause it to render as a regular section instead.
-- See `public/resume.yaml` for a full working example.
+## Resume PDF
 
-### Resume PDF
-
-The PDF is produced by [rendercv](https://github.com/rendercv/rendercv) from the same `public/resume.yaml`, checked into git at `public/resume.pdf`.
-
-**Prerequisites**: [uv](https://docs.astral.sh/uv/) installed locally.
-
-**Updating the PDF** (do this after editing the YAML):
+`public/resume.pdf` is generated from `public/resume.yaml` and committed so static hosts can serve it directly.
 
 ```bash
-make pdf                 # runs rendercv via uvx (isolated env, no global install)
+make pdf
 git add public/resume.yaml public/resume.pdf
 git commit -m "docs: update resume content"
 ```
 
-The first `make pdf` takes a minute (uvx downloads rendercv + Typst); subsequent runs are ~1–2s.
+`make pdf` runs rendercv through `uvx` in an isolated environment. The first run downloads rendercv and Typst, while later runs are usually faster.
 
-**Customising the PDF appearance**: edit the `design:` block in `public/resume.yaml`. See [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/) for the full list of themes, colours, typography and templates.
+GitHub Actions regenerates the PDF during the GitHub Pages deployment as a safety net. Vercel only runs `yarn install && yarn build`, so Vercel serves the committed `public/resume.pdf`; regenerate and commit it before pushing resume content changes.
 
 ## Deployment
 
-### Deploy to GitHub Pages
+GitHub Pages:
 
-#### Method 1: Automatic Deployment (Recommended)
+- `.github/workflows/deploy.yml` runs on pushes to `main`, `master`, and `v*` tags.
+- The workflow runs `make pdf`, sets `VITE_ROOT_PATH=/${{ github.event.repository.name }}`, builds with `yarn build`, and deploys `dist/` through GitHub Pages.
+- In repository settings, set Pages source to GitHub Actions.
 
-The project is configured with GitHub Actions automatic deployment workflow (`.github/workflows/deploy.yml`):
-
-1. Push code to `main` or `master` branch
-2. GitHub Actions will automatically:
-
-- Install uv and regenerate `public/resume.pdf` from `public/resume.yaml` via `make pdf` (a safety net in case you forgot to commit the latest PDF)
-- Execute build (`yarn build`)
-- Deploy to GitHub Pages
-
-No manual commands needed!
-
-**Notes**:
-
-- Ensure GitHub Pages is enabled in repository settings
-- Set Pages deployment source to "GitHub Actions"
-- GitHub Actions automatically uses `VITE_ROOT_PATH=/<repository_name>` for building
-- The PDF regeneration uses [astral-sh/setup-uv@v7](https://github.com/astral-sh/setup-uv); if rendercv fails to render, the deploy fails fast instead of shipping broken content
-
-#### Method 2: Manual Deployment
+Manual GitHub Pages deployment:
 
 ```bash
 yarn build
 yarn deploy
 ```
 
-Manual deployment notes:
+Vercel:
 
-- Set `VITE_ROOT_PATH` in `.env` to your repository name (e.g., `/resume`)
-- `package.json` has `homepage` configured, and Vite's `base` is controlled by `VITE_ROOT_PATH`
-- `yarn deploy` uses the `gh-pages` package to push the `dist` directory to the `gh-pages` branch
+- Import the repository.
+- Set `VITE_WEBSITE_TITLE`, `VITE_RESUME_FILE`, `VITE_RESUME_PDF_PATH`, and optionally `VITE_ROOT_PATH`.
+- `vercel.json` rewrites only extensionless routes to the SPA, so files such as `/resume.pdf` and `/resume.yaml` are served as static assets.
 
-### Deploy to Vercel
-
-This project includes `vercel.json` and can be deployed directly on Vercel:
-
-1. Import your GitHub repository on Vercel
-2. Configure environment variables (refer to `.env` example)
-3. Vercel will automatically detect the Vite project and complete deployment
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume)
-
-**PDF on Vercel**: Vercel runs a pure `yarn install && yarn build` — it does **not** regenerate the PDF. The committed `public/resume.pdf` is what ships. Always run `make pdf` locally and commit before pushing, otherwise Vercel will serve a stale PDF.
-
-**`vercel.json` rewrite note**: the SPA rewrite is scoped to paths without a file extension (`/((?!.*\\.).*)`) so static assets like `/resume.pdf`, `/resume.yaml`, `/favicon.ico` are served directly instead of being masked by `index.html` when missing.
-
-### Deploy Using Docker
-
-The project includes Docker support for convenient local development or server deployment:
-
-#### Using Docker Compose (Recommended)
+Docker:
 
 ```bash
-# Build and start using Docker Compose
 docker compose up -d
-
-# View logs
 docker compose logs -f
-
-# Stop service
 docker compose down
 ```
 
-Docker Compose configuration:
+The runtime image uses Node.js 20, builds the Vite app, and runs `yarn preview --host=0.0.0.0 --port=3000`, mapped to host port `5173`.
 
-- **Build Stage**: Uses multi-stage build to optimize image size
-- **Runtime Mode**: Runs preview server using `yarn preview`
-- **Port Mapping**: Container port 3000 mapped to host port 5173
-- **Environment Variables**: Automatically loads `.env` file
-- **Access URL**: `http://localhost:5173`
+## More Docs
 
-#### Manual Docker Image Build
-
-```bash
-# Build image
-docker build -f docker/Dockerfile -t resume:latest .
-
-# Run container
-docker run -d -p 5173:3000 --env-file .env resume:latest
-```
-
-**Docker Notes**:
-
-- Ensure `.env` file exists in project root directory
-- Docker image uses Node.js 20 and Python 3.10
-- Build automatically executes `yarn install` and `yarn build`
-
-## Project Structure
-
-```
-.
-├── .devcontainer/                    # Dev Container configuration
-├── docker/                           # Docker configuration (Dockerfile)
-├── .github/workflows/                # GitHub Actions
-├── public/                           # Static assets served as-is
-│   ├── resume.yaml                   # Single source of truth (web + PDF)
-│   ├── resume.pdf                    # Pre-rendered PDF (committed; regenerated by `make pdf`)
-│   ├── favicon.ico
-│   ├── robots.txt
-│   └── vite.svg
-├── src/                              # Source code
-│   ├── components/                   # Reusable components
-│   │   ├── ErrorBoundary.tsx         # Top-level error boundary
-│   │   ├── navbar.tsx                # Floating glass navbar + theme toggle (uses @heroui/use-theme)
-│   │   ├── ResumeContent.tsx         # Header rendering, Languages hoist, section dispatch
-│   │   ├── DecryptedText/            # Character-scramble reveal animation (home headline)
-│   │   │   └── DecryptedText.tsx
-│   │   ├── Threads/                  # WebGL background shader (OGL); lazy-loaded on the home page
-│   │   │   └── Threads.tsx
-│   │   ├── AIChat/                   # Reserved for upcoming AI chat surface (currently empty)
-│   │   ├── ResumeSections/           # One renderer per rendercv entry type
-│   │   │   ├── BulletSection.tsx     # BulletEntry renderer
-│   │   │   ├── EducationSection.tsx  # EducationEntry renderer
-│   │   │   ├── ExperienceSection.tsx # ExperienceEntry renderer (work, volunteer, …)
-│   │   │   ├── NormalSection.tsx     # NormalEntry renderer (projects, awards, certs, refs)
-│   │   │   ├── OneLineSection.tsx    # OneLineEntry renderer (skills, interests, etc.)
-│   │   │   ├── PublicationSection.tsx # PublicationEntry renderer
-│   │   │   ├── SectionCard.tsx       # Shared card + section-name → icon/colour registry
-│   │   │   ├── TextSection.tsx       # TextEntry (paragraph) renderer
-│   │   │   └── index.ts
-│   │   └── shared/                   # Shared reusable subcomponents
-│   │       ├── BulletList.tsx
-│   │       ├── DateRange.tsx
-│   │       ├── ExternalLink.tsx
-│   │       ├── ItemCard.tsx
-│   │       └── index.ts
-│   ├── pages/
-│   │   ├── index.tsx                 # Home page
-│   │   └── resume.tsx                # Resume page (loads YAML + renders ResumeContent)
-│   ├── layouts/
-│   │   └── default.tsx               # Default layout (Navbar + main slot)
-│   ├── utils/
-│   │   ├── animations.ts             # Framer Motion stagger variants
-│   │   ├── env.ts                    # Centralized VITE_* env access (validates on load)
-│   │   ├── pathUtils.ts              # VITE_ROOT_PATH helpers (buildPath / getBasename)
-│   │   └── resumeLoader.ts           # rendercv schema types, entry-type dispatch, YAML loader
-│   ├── lib/
-│   │   └── utils.ts                  # `cn()` — clsx + tailwind-merge
-│   ├── config/
-│   │   └── site.ts                   # Nav items derived from env; external links
-│   ├── types/
-│   │   └── ogl.d.ts                  # OGL module shim
-│   ├── styles/
-│   │   ├── globals.css               # Tailwind layers + design tokens (bg/fg/border/elevated/signal)
-│   │   └── plugins.ts                # HeroUI Tailwind plugin entry
-│   ├── App.tsx                       # Routes (`/` always; `/resume` only if VITE_RESUME_FILE set)
-│   ├── main.tsx                      # React render entry, BrowserRouter wiring
-│   ├── provider.tsx                  # HeroUIProvider
-│   └── vite-env.d.ts
-├── docker-compose.yaml               # Docker Compose configuration
-├── eslint.config.js                  # ESLint configuration
-├── index.html                        # Entry HTML (uses %VITE_WEBSITE_TITLE%)
-├── Makefile                          # `make pdf`, `make build`, `make fmt`, `make clean`, `make run`
-├── package.json
-├── tsconfig.json
-├── vercel.json                       # Vercel framework + extension-scoped SPA rewrite
-└── vite.config.ts                    # `base` from VITE_ROOT_PATH, custom 404.html plugin
-```
-
-## Development Guide
-
-### Development Tools
-
-The project uses the following development tools to ensure code quality:
-
-- **ESLint**: Code style checking and error detection
-- **Prettier**: Automatic code formatting
-- **TypeScript**: Type checking
-- **Makefile**: Provides simplified development commands
-
-#### Yarn/NPM Commands
-
-```bash
-# Development mode
-yarn dev
-
-# Type checking
-yarn type-check
-
-# Code formatting
-yarn format
-
-# Code checking (no auto-fix)
-yarn format:nofix
-
-# Code checking and fixing
-yarn lint
-
-# Lint checking (no auto-fix)
-yarn lint:nofix
-
-# Complete check (type + format + lint)
-yarn check
-
-# Build project
-yarn build
-
-# Preview build results
-yarn preview
-
-# Deploy to GitHub Pages
-yarn deploy
-```
-
-#### Makefile Commands
-
-The project provides a Makefile to simplify common operations:
-
-```bash
-# Show all available commands
-make help
-
-# Build project (default target — runs `yarn build`)
-make
-# Or
-make build
-
-# Regenerate public/resume.pdf from public/resume.yaml via rendercv.
-# Run this after editing the YAML, then commit the updated PDF.
-# Requires `uv` to be installed locally.
-make pdf
-
-# Clean generated files and Git cache
-# (keeps public/resume.pdf, which is committed to git)
-make clean
-
-# Run complete check (equivalent to yarn check: type-check + format + lint)
-make fmt
-
-# Run the project
-make run
-```
-
-### Continuous Integration / Continuous Deployment (CI/CD)
-
-The project is configured with multiple GitHub Actions workflows:
-
-- **Automatic Deployment** (`deploy.yml`): Regenerates `public/resume.pdf` via `make pdf`, builds with `yarn build`, and deploys to GitHub Pages on pushes to main/master
-- **Code Scanning** (`code_scan.yml`): Security analysis using CodeQL
-- **Code Quality Check** (`code-quality-check.yml`): Runs TypeScript, Prettier, and ESLint checks on pull requests
-- **Dependabot Auto Merge** (`auto_review_merge.yml`): Runs dependency review on pull requests and auto-merges passing Dependabot bumps
-- **Semantic PR** (`semantic-pull-request.yml`): Ensures Pull Request titles follow the Conventional Commits specification
-- **Auto Labeler** (`auto_labeler.yml`): Applies labels to pull requests based on changed paths
-- **Release Drafter** (`release_drafter.yml`): Generates Release Notes drafts from merged PRs
-- **Docker Image Build** (`build_image.yml`): Builds and publishes Docker images
-
-### Adding a New Page
-
-To add a page to the website:
-
-1. **Create Page Component**: Add page component in `src/pages/` directory (e.g., `new-page.tsx`)
-2. **Add Route**: Add new route configuration in `src/App.tsx`
-3. **Update Navigation Menu**: Update `siteConfig.navItems` configuration in `src/config/site.ts`
-4. **Conditional Display (Optional)**:
-   - To show/hide page based on environment variables, add environment variable check function in `src/utils/env.ts`
-   - Use that check function in `src/config/site.ts` to determine whether to show navigation item
-   - Use the same check in `src/App.tsx` to determine whether to register route
-
-**Example**: Refer to the implementation of Resume page (`/resume`)
-
-### Modify Theme
-
-Design tokens (`bg`, `fg`, `fg-muted`, `fg-subtle`, `border`, `surface`, `elevated`, `signal`) live in `src/styles/globals.css`; the HeroUI Tailwind plugin is wired in `src/styles/plugins.ts`. Theme switching has no standalone component — the navbar (`src/components/navbar.tsx`) toggles `dark` / `light` directly through `useTheme()` from `@heroui/use-theme`.
-
-### Customize Resume Sections
-
-The resume is dispatched by **rendercv entry type**, not by section name. `detectEntryType` in `src/utils/resumeLoader.ts` inspects the first entry in each YAML section and picks the matching renderer, so any new section you add to the YAML automatically routes to the correct component.
-
-To customise rendering:
-
-1. Edit the relevant `*Section.tsx` in `src/components/ResumeSections/` to change how a given entry type is displayed (e.g. `ExperienceSection.tsx` covers both work and volunteer sections because both use `company` + `position`).
-2. Tweak the shared card, per-section icons, or accent colours via `SectionCard.tsx` — the `getSectionConfig` helper maps section names to icons and `ColorScheme` values.
-3. Extend the rendercv interfaces in `src/utils/resumeLoader.ts` if you add new custom fields to the YAML (remember: list-valued custom fields must be stored as comma-separated strings in YAML — see the caveat above).
-
-### Page Display Issues
-
-**Resume Page Not Appearing in Navigation**
-
-- Verify `VITE_RESUME_FILE` is set in `.env`
-- Check environment variable value is correct (local filename or full URL)
-- Restart development server
-
-**Navigation Bar Completely Empty**
-
-- At least one page's environment variable must be set (`VITE_RESUME_FILE`)
-- Home page (`/`) is always available, no configuration needed
-
-### Resume Loading Issues
-
-**Unable to Load Resume YAML**
-
-- Check if file path is correct
-- If using URL, verify URL is directly accessible (test by opening in browser)
-- GitHub Gist URLs are automatically converted to Raw format, no manual processing needed
-- Check YAML format is correct (use online YAML validation tools)
-
-### Build and Development Issues
-
-**Build Fails**
-
-- Verify all dependencies are correctly installed: `yarn install`
-- Check Node.js version (recommended 18.x or higher)
-- Run type checking: `yarn type-check`
-- Clear cache and reinstall:
-  ```bash
-  rm -rf node_modules yarn.lock
-  yarn install
-  ```
-
-**Development Server Fails to Start**
-
-- Check if port 5173 is already in use
-- Verify `.env` file format is correct
-- Check for required environment variables (at least `VITE_WEBSITE_TITLE` is needed)
-
-**TypeScript Errors**
-
-- Run `yarn type-check` to see detailed errors
-- Verify all `@types/*` packages are installed
-- Check `tsconfig.json` configuration is correct
-
-### Docker Related Issues
-
-**Container Fails to Start**
-
-- Verify `.env` file exists and format is correct
-- Check Docker and Docker Compose versions
-- View container logs: `docker compose logs -f`
-
-**Unable to Access Service**
-
-- Verify port 5173 is not occupied by other services
-- Check firewall settings
-- Try accessing `http://localhost:5173` in browser
-
-## Contributing
-
-Contributions are welcome! Whether reporting issues, suggesting features, or submitting Pull Requests, all are greatly appreciated.
-
-### How to Contribute
-
-1. Fork this project
-2. Create your feature branch: `git checkout -b feature/AmazingFeature`
-3. Commit your changes: `git commit -m 'Add some AmazingFeature'`
-4. Push to the branch: `git push origin feature/AmazingFeature`
-5. Open a Pull Request
-
-### Development Standards
-
-- Follow existing code style (using ESLint and Prettier)
-- Run `yarn check` before committing to ensure code quality
-- Write clear commit messages
-- Update relevant documentation
-
-### Report Issues
-
-If you find bugs or have feature suggestions, please [create an Issue](https://github.com/Mai0313/resume/issues).
-
-## Acknowledgments
-
-- [HeroUI](https://heroui.com) - Provides excellent React UI component library
-- [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV renderer that produces the downloadable PDF from our YAML
-- [Typst](https://typst.app) - Modern typesetting engine powering rendercv
-- [uv](https://docs.astral.sh/uv/) - Fast Python package/tool manager used to install rendercv
-- All open source project contributors
+- [CONTRIBUTING.md](CONTRIBUTING.md) covers local development, CI, project layout, and PR conventions.
+- [CLAUDE.md](CLAUDE.md) contains concise project-specific notes for AI coding agents.
 
 ## License
 
 Licensed under the [MIT license](LICENSE).
-
----
-
-**If this project helps you, please give it a ⭐️!**

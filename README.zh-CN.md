@@ -4,188 +4,74 @@
 
 [![React](https://img.shields.io/badge/-React_18-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/-TypeScript_5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/tree/master?tab=License-1-ov-file)
+[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/blob/main/LICENSE)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
 [![contributors](https://img.shields.io/github/contributors/Mai0313/resume.svg)](https://github.com/Mai0313/resume/graphs/contributors)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume&env=VITE_WEBSITE_TITLE,VITE_RESUME_FILE,VITE_RESUME_PDF_PATH,VITE_ROOT_PATH&project-name=resume-web&repository-name=resume-web&skippable-integrations=1)
 
 </div>
 
-这是一个使用 Vite 与 HeroUI 框架构建的个人网站，适合部署到 GitHub Pages。
+这是一个用 Vite、React、HeroUI 和 Tailwind CSS 构建的个人简历网站。网页简历和可下载的 PDF 共用同一份 rendercv 兼容 YAML，因此简历内容只需要维护一份，同时可以部署到 GitHub Pages、Vercel 或 Docker。
 
 ## 功能特性
 
-### 🎨 视觉效果
+- 以 YAML 驱动简历内容，来源可以是 `public/resume.yaml`、GitHub Gist 或任何 raw YAML URL。
+- 提供七种 rendercv entry renderer，覆盖 experience、education、publications、projects、skills、bullets 和 text sections。
+- 可下载的 `public/resume.pdf` 由同一份 YAML 通过 [rendercv](https://github.com/rendercv/rendercv) 生成。
+- Responsive home 和 resume pages，包含 WebGL `Threads` 背景、`DecryptedText` headline animation、theme switching 和 Framer Motion transitions。
+- 通过 `VITE_ROOT_PATH` 支持 subpath-aware routing 和 asset paths，适合 GitHub Pages。
 
-- **动态首页**：使用 WebGL `Threads` 背景（OGL）搭配 `DecryptedText` 字符揭示动画呈现网站标题
-- **现代化 UI**：HeroUI 组件、Tailwind CSS v4 design token，搭配 Framer Motion 处理页面与区块过渡
-- **响应式设计**：内建深色/浅色主题切换（透过 `@heroui/use-theme` 在导航栏切换），版面完全响应式
+## 快速开始
 
-### 📄 简历系统
+前置需求：
 
-- **弹性数据来源**：支持本地 YAML 文件、GitHub Gist 或任何可访问的 Raw URL
-- **模块化区块**：7 个 entry-type renderer（Experience / Education / Publication / Normal / OneLine / Bullet / Text）涵盖所有常见简历区块
-- **PDF 通过 rendercv 生成**：同一份 YAML 通过 [rendercv](https://github.com/rendercv/rendercv)（Typst-based）排版成专业 PDF，commit 到 repo 里，部署时也会自动重新生成
-- **rendercv Schema**：采用 [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure)，同一份文件就是网站与 PDF 的唯一来源
-
-### ⚙️ 智能配置
-
-- **条件显示**：根据环境变量自动显示或隐藏页面
-  - 简历页需设置 `VITE_RESUME_FILE`
-- **自动导航更新**：导航栏动态更新，只显示已启用的页面
-- **子路径支持**：支持部署到子路径（如 GitHub Pages）
-
-## 技术栈
-
-- [Vite 6.3.5](https://vitejs.dev/guide/) - 快速的前端构建工具
-- [React 18](https://react.dev/) - UI 库
-- [TypeScript 5.6.3](https://www.typescriptlang.org) - 类型安全的 JavaScript
-- [React Router 7.12.0](https://reactrouter.com/) - 前端路由
-- [HeroUI](https://heroui.com) - React UI primitives（`@heroui/button`、`@heroui/card`、`@heroui/system`、`@heroui/theme`、`@heroui/use-theme`）
-- [Tailwind CSS 4.1.18](https://tailwindcss.com) - CSS 框架（透过 `@tailwindcss/vite` 载入）
-- [Framer Motion 12.15](https://www.framer.com/motion) - React 动画库
-- [OGL 1.0](https://oframe.github.io/ogl/) - WebGL renderer，用在首页 `Threads` 背景
-- [js-yaml 4.1](https://github.com/nodeca/js-yaml) - YAML 解析器（在 `resumeLoader.ts` 内做 lazy load）
-- [tailwind-merge](https://github.com/dcastil/tailwind-merge) + [clsx](https://github.com/lukeed/clsx) - 透过 `src/lib/utils.ts` 的 `cn()` helper 包出来用
-- [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV 排版工具,从同一份 YAML 产生可下载的 PDF
-
-## 环境配置
-
-### 环境变量
-
-创建一个 `.env` 文件并设置以下变量：
-
-```bash
-# 必填：网站标题
-VITE_WEBSITE_TITLE=Mai
-
-# 可选：简历文件 - 若未设置，简历页面会被隐藏
-# 支持本地文件与 URL
-# 本地文件示例：
-VITE_RESUME_FILE=resume.yaml
-# GitHub Gist 示例：
-# VITE_RESUME_FILE=https://gist.github.com/username/gist_id
-# Raw URL 示例：
-# VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
-
-# 可选：简历 PDF 下载路径
-# 默认值：/resume.pdf (对应 public/resume.pdf)
-VITE_RESUME_PDF_PATH=/resume.pdf
-```
-
-可选：自定义部署根路径（适用于 GitHub Pages 子路径）。若部署于 `https://<user>.github.io/<repo>`，请在 `.env` 设置：
-
-```bash
-VITE_ROOT_PATH=/resume
-```
-
-**重要说明：**
-
-- **智能页面显示**：页面仅在对应环境变量正确设置时才会出现在导航菜单与路由中
-  - 简历页（`/resume`）需设置 `VITE_RESUME_FILE`
-
-- **路径设置**：
-  - 部署到根目录（如 `https://yourdomain.com`）：无需设置 `VITE_ROOT_PATH`
-  - 部署到子路径（如 `https://username.github.io/resume`）：设置 `VITE_ROOT_PATH=/resume`
-
-### 安装依赖包
-
-建议使用 `yarn`：
+- Node.js 18 或更新版本。
+- Yarn，与 repo 内 committed `yarn.lock` 一致。
+- 只有在使用 `make pdf` 重新生成 PDF 时才需要 [uv](https://docs.astral.sh/uv/)。
 
 ```bash
 yarn install
-```
-
-或使用 `npm`：
-
-```bash
-npm install
-```
-
-### 启动开发服务器
-
-```bash
+cp .env.example .env
 yarn dev
 ```
 
-或：
+Dev server 会跑在 Vite 默认 port，通常是 `http://localhost:5173`。
+
+常用 commands：
 
 ```bash
-npm run dev
+yarn dev              # start the Vite dev server
+yarn build            # tsc && vite build
+yarn preview          # preview the production build
+yarn type-check       # TypeScript only
+yarn format:nofix     # Prettier check
+yarn lint:nofix       # ESLint check
+yarn check            # type-check, format, and lint with fixes
+
+make pdf              # regenerate public/resume.pdf from public/resume.yaml
+make run              # shortcut for yarn dev
+make fmt              # shortcut for yarn check
+make clean            # remove generated output/caches, then prune Git refs and GC
 ```
 
-## 页面功能
+## 配置
 
-### 首页（`/`）
-
-- WebGL `Threads` 动态背景（lazy load,不挡首屏渲染）
-- 以 `DecryptedText` 字符揭示动画显示网站标题（`VITE_WEBSITE_TITLE`）
-- 「View Resume」按钮仅在设置 `VITE_RESUME_FILE` 时显示；GitHub 链接固定显示
-- 响应式版面,主题切换功能整合在浮动导航栏
-
-### 简历页（`/resume`）
-
-- 条件式显示：仅在设置 `VITE_RESUME_FILE` 后才会出现
-- 弹性的简历加载方式：
-  - 本地 YAML 文件：`resume.yaml`、`my-resume.yaml`（自 `public/` 目录加载）
-  - GitHub Gist：Gist 链接会自动转为原始文件格式
-  - Raw URL：任何可访问的 YAML 文件网址
-- 以 YAML 驱动的简历数据管理
-- 结构化显示个人信息、学历、工作经历等内容
-- PDF 下载：提供按钮下载简历 PDF（使用 `public/resume.pdf`）
-- 响应式设计与动画效果
-
-## 自定义配置
-
-### 配置页面显示
-
-网站会依据环境变量自动显示/隐藏页面：
-
-- 简历页：仅在设置 `VITE_RESUME_FILE` 后显示
-- 导航栏：动态更新，只显示可用的页面
-
-### 编辑简历内容
-
-你有多种方式设置简历：
-
-#### 选项一：本地 YAML 文件
-
-编辑 `public/resume.yaml`，或在 `public/` 目录创建自己的 YAML 文件：
+从 `.env.example` 创建 `.env`，并设置 Vite environment variables：
 
 ```bash
-# 在 .env 文件中
-VITE_RESUME_FILE=my-resume.yaml
+VITE_WEBSITE_TITLE=Mai
+VITE_RESUME_FILE=resume.yaml
+VITE_RESUME_PDF_PATH=resume.pdf
+# VITE_ROOT_PATH=/resume
 ```
 
-#### 选项二：GitHub Gist（推荐）
+`VITE_WEBSITE_TITLE` 会在 module load 时检查，必填。`VITE_RESUME_FILE` 是可选项，空值时 `/resume` route 和 nav item 会被隐藏。本地 resume files 会从 `public/` serve，GitHub Gist URLs 和 raw YAML URLs 则会直接 fetch。`VITE_RESUME_PDF_PATH` 默认是 `/resume.pdf`；local paths 会依 `VITE_ROOT_PATH` 加上 prefix，以支持 subpath deployments。
 
-创建一个包含简历 YAML 的 GitHub Gist，并使用该 Gist 链接：
+部署到 `https://<user>.github.io/resume/` 这类 GitHub Pages subpath 时，设置 `VITE_ROOT_PATH=/resume`。如果部署在 root domain，保持未设置即可。
 
-```bash
-# 在 .env 文件中
-VITE_RESUME_FILE=https://gist.github.com/your-username/your-gist-id
-```
+## 简历内容
 
-使用 GitHub Gist 的好处：
-
-- 不需重新部署即可更新简历
-- 简历版本控制
-- 可选择公开或私密
-
-#### 选项三：Raw URL
-
-使用任何可访问的 YAML 文件网址：
-
-```bash
-# 在 .env 文件中
-VITE_RESUME_FILE=https://raw.githubusercontent.com/user/repo/main/resume.yaml
-```
-
-### 简历 YAML 格式
-
-简历采用 [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure)。**同一份 YAML 同时驱动网站与可下载的 PDF**。
-
-**Top-level 结构**：
+编辑 `public/resume.yaml` 来更新简历。这份文件采用 [rendercv YAML schema](https://docs.rendercv.com/user_guide/yaml_input_structure)，`cv` block 放内容，`design` block 放 PDF styling，另外可选择加入 `settings`。
 
 ```yaml
 cv:
@@ -193,446 +79,91 @@ cv:
   headline: "Your Title"
   location: "City, Country"
   email: "you@example.com"
-  photo: "https://..." # 网站用 URL，rendercv 也接受本地路径
   social_networks:
-    - network: LinkedIn # rendercv 内置 network 名称之一
-      username: your-handle
     - network: GitHub
       username: your-handle
   sections:
-    Experience: # section 名称任取,entry 类型自动识别
+    Experience:
       - company: Acme
         position: Engineer
         start_date: 2024-01
-        highlights: [...]
-    Education: [...]
-    Publications: [...] # 必填 `title` + `authors`
-    Projects: [...]
-    Skills: [...]
-    Languages: [...]
+        highlights:
+          - Built useful systems.
+    Education: []
+    Skills: []
 
-design: # PDF 外观设定 — 网站会忽略
+design:
   theme: engineeringresumes
-  # colors, typography, section_titles, templates 等
-
-settings:
-  bold_keywords: [...] # PDF 里自动把这些关键字加粗
 ```
 
-**Entry 类型**（每个 section 根据第一个 entry 的字段自动判断类型）：
+Entry type 会依每个 section 的第一个 entry 自动识别，不依 section name：
 
-| Entry type       | 必填字段              | 用在                                       |
+| Entry type       | Required fields       | Typical sections                           |
 | ---------------- | --------------------- | ------------------------------------------ |
-| ExperienceEntry  | `company`, `position` | 工作经验、志愿者经验                       |
-| EducationEntry   | `institution`, `area` | 教育背景                                   |
-| PublicationEntry | `title`, `authors`    | 发表著作                                   |
-| NormalEntry      | `name`                | Projects, Awards, Certificates, References |
-| OneLineEntry     | `label`, `details`    | Skills, Languages, Interests               |
-| BulletEntry      | `bullet`              | 单纯 bullet list                           |
-| TextEntry        | 纯字符串              | 段落型 section（例如 Summary）             |
+| ExperienceEntry  | `company`, `position` | Work experience, volunteer work            |
+| EducationEntry   | `institution`, `area` | Education                                  |
+| PublicationEntry | `title`, `authors`    | Publications                               |
+| NormalEntry      | `name`                | Projects, awards, certificates, references |
+| OneLineEntry     | `label`, `details`    | Skills, languages, interests               |
+| BulletEntry      | `bullet`              | Simple bullet lists                        |
+| TextEntry        | plain string          | Summary or paragraph sections              |
 
-**网站专用自定义字段**（网站会读但 rendercv 在 PDF 里会忽略）：ExperienceEntry 的 `url` / `description`；EducationEntry 的 `url` / `courses`；NormalEntry 的 `url` / `keywords` / `roles` / `entity` / `issuer`；OneLineEntry 的 `keywords`。
+重要 YAML 行为：
 
-**重要注意事项**：
+- Section order 会跟 YAML key order 一致。
+- `Languages` OneLine section 会被 hoist 到 resume header，并从 main section list 跳过。
+- Web-only list fields 像 `keywords`、`roles` 和 `courses` 必须在 YAML 写成 comma-separated strings，例如 `keywords: "TypeScript, React, Vite"`。rendercv 可能会在 list-valued custom fields 上失败，而网站会在 runtime 把这些字符串 normalize 成 arrays。
 
-- **List 型自定义字段必须写成 comma-separated 字符串**（例如 `keywords: "Python, TypeScript, Rust"`）。loader 会在 runtime 自动转回 array。这是 rendercv template engine 的限制 — 如果写成 YAML list 则 `rendercv render` 会 crash。
-- **Section 显示顺序 = YAML key 顺序**。Parser 用 `Object.keys(cv.sections)`，你写什么顺序就渲染什么顺序。
-- **`Languages` 是 magic section name**。任何 key 叫 `Languages`（大小写不敏感）的 `OneLineEntry` section 会被搬到 header 的 chip 区显示,不再出现在主 section 列表里。这个匹配写死在 `ResumeContent.tsx`,如果改名成 `Spoken Languages` 之类就会当作普通 section 渲染。
-- 完整示例请见 `public/resume.yaml`。
+## 简历 PDF
 
-### 简历 PDF
-
-PDF 由 [rendercv](https://github.com/rendercv/rendercv) 从同一份 `public/resume.yaml` 生成，commit 到 `public/resume.pdf`。
-
-**前置需求**：本地安装 [uv](https://docs.astral.sh/uv/)。
-
-**更新 PDF**（编辑 YAML 之后跑一次）：
+`public/resume.pdf` 由 `public/resume.yaml` 生成并 commit，让 static hosts 可以直接 serve。
 
 ```bash
-make pdf                 # 通过 uvx 执行 rendercv（isolated env，不需要全局安装）
+make pdf
 git add public/resume.yaml public/resume.pdf
 git commit -m "docs: update resume content"
 ```
 
-第一次 `make pdf` 要等一分钟左右（uvx 下载 rendercv + Typst），之后只要 1–2 秒。
+`make pdf` 会通过 `uvx` 在 isolated environment 执行 rendercv。第一次会下载 rendercv 和 Typst，后续通常会比较快。
 
-**定制 PDF 外观**：编辑 `public/resume.yaml` 里的 `design:` 区块。完整的 theme、配色、字体、template 选项见 [rendercv design options](https://docs.rendercv.com/user_guide/yaml_input_structure/design/)。
+GitHub Actions 在 GitHub Pages deployment 期间会重新生成 PDF，作为 safety net。Vercel 只跑 `yarn install && yarn build`，所以 Vercel 会 serve committed `public/resume.pdf`；更新简历内容后，push 前要先重新生成并 commit PDF。
 
 ## 部署
 
-### 部署到 GitHub Pages
+GitHub Pages：
 
-#### 方式一：自动部署（推荐）
+- `.github/workflows/deploy.yml` 会在 push 到 `main`、`master` 和 `v*` tags 时执行。
+- Workflow 会跑 `make pdf`，设置 `VITE_ROOT_PATH=/${{ github.event.repository.name }}`，用 `yarn build` build，并通过 GitHub Pages 部署 `dist/`。
+- Repository settings 里的 Pages source 要设为 GitHub Actions。
 
-项目已配置 GitHub Actions 自动部署工作流程（`.github/workflows/deploy.yml`）：
-
-1. 推送代码到 `main` 或 `master` 分支
-2. GitHub Actions 会自动：
-
-- 安装 uv 并用 `make pdf` 从 `public/resume.yaml` 重新生成 `public/resume.pdf`（保险机制,以防你忘记 commit 最新 PDF）
-- 执行构建（`yarn build`）
-- 部署到 GitHub Pages
-
-无需手动执行任何命令！
-
-**注意事项**：
-
-- 确保在 GitHub 仓库设置中启用 GitHub Pages
-- 设置 Pages 的部署来源为「GitHub Actions」
-- GitHub Actions 会自动使用 `VITE_ROOT_PATH=/<仓库名称>` 进行构建
-- PDF 重新生成使用 [astral-sh/setup-uv@v7](https://github.com/astral-sh/setup-uv)；rendercv 失败时 deploy 会直接中断,避免上线坏内容
-
-#### 方式二：手动部署
+Manual GitHub Pages deployment：
 
 ```bash
 yarn build
 yarn deploy
 ```
 
-手动部署注意事项：
+Vercel：
 
-- 将 `.env` 中的 `VITE_ROOT_PATH` 设为你的仓库名称（例如 `/resume`）
-- `package.json` 已设置 `homepage`，而 Vite 的 `base` 亦由 `VITE_ROOT_PATH` 控制
-- `yarn deploy` 会使用 `gh-pages` 包将 `dist` 目录推送到 `gh-pages` 分支
+- Import repository。
+- 设置 `VITE_WEBSITE_TITLE`、`VITE_RESUME_FILE`、`VITE_RESUME_PDF_PATH`，以及可选的 `VITE_ROOT_PATH`。
+- `vercel.json` 只会把没有 extension 的 routes rewrite 到 SPA，因此 `/resume.pdf` 和 `/resume.yaml` 这类文件会以 static assets serve。
 
-### 部署到 Vercel
-
-此项目已包含 `vercel.json`，可直接在 Vercel 上部署：
-
-1. 在 Vercel 上导入你的 GitHub 仓库
-2. 设置环境变量（参考 `.env` 示例）
-3. Vercel 会自动检测 Vite 项目并完成部署
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMai0313%2Fresume)
-
-**Vercel 上的 PDF 行为**：Vercel 只跑 `yarn install && yarn build`，**不会** 重新生成 PDF，上线的就是 git 里 committed 的 `public/resume.pdf`。所以改完 YAML 之后务必先在本地跑 `make pdf` 再 commit、再 push，否则 Vercel 会供应旧的 PDF。
-
-**`vercel.json` rewrite 说明**：SPA 的 rewrite 只套用在没有扩展名的路径（`/((?!.*\\.).*)`）,确保 `/resume.pdf`、`/resume.yaml`、`/favicon.ico` 等静态文件会直接被 serve，不会被 `index.html` 盖掉（文件不存在时也会正确回 404 而不是伪装的 HTML）。
-
-### 使用 Docker 部署
-
-项目包含 Docker 支持，方便本地开发或服务器部署：
-
-#### 使用 Docker Compose（推荐）
+Docker：
 
 ```bash
-# 使用 Docker Compose 构建并启动
 docker compose up -d
-
-# 查看日志
 docker compose logs -f
-
-# 停止服务
 docker compose down
 ```
 
-Docker Compose 配置：
+Runtime image 使用 Node.js 20，会 build Vite app，并执行 `yarn preview --host=0.0.0.0 --port=3000`，映射到 host port `5173`。
 
-- **构建阶段**：使用多阶段构建优化镜像大小
-- **运行模式**：使用 `yarn preview` 运行预览服务器
-- **Port 映射**：容器内 Port 3000 映射到主机 Port 5173
-- **环境变量**：自动加载 `.env` 文件
-- **访问地址**：`http://localhost:5173`
+## 更多文档
 
-#### 手动构建 Docker 镜像
+- [CONTRIBUTING.md](CONTRIBUTING.md) 说明 local development、CI、project layout 和 PR conventions。
+- [CLAUDE.md](CLAUDE.md) 提供 AI coding agents 使用的精简 project-specific notes。
 
-```bash
-# 构建镜像
-docker build -f docker/Dockerfile -t resume:latest .
+## 授权
 
-# 运行容器
-docker run -d -p 5173:3000 --env-file .env resume:latest
-```
-
-**Docker 注意事项**：
-
-- 确保在项目根目录存在 `.env` 文件
-- Docker 镜像使用 Node.js 20 与 Python 3.10
-- 构建会自动执行 `yarn install` 和 `yarn build`
-
-## 项目结构
-
-```
-.
-├── .devcontainer/                    # Dev Container 配置
-├── docker/                           # Docker 配置（Dockerfile）
-├── .github/workflows/                # GitHub Actions
-├── public/                           # 静态资源,直接 serve
-│   ├── resume.yaml                   # 单一来源（同时驱动网站与 PDF）
-│   ├── resume.pdf                    # 预先 render 好的 PDF（commit 到 git,由 `make pdf` 重新生成）
-│   ├── favicon.ico
-│   ├── robots.txt
-│   └── vite.svg
-├── src/                              # 源代码
-│   ├── components/                   # 可重用组件
-│   │   ├── ErrorBoundary.tsx         # 顶层 error boundary
-│   │   ├── navbar.tsx                # 浮动玻璃风导航栏 + 主题切换（用 @heroui/use-theme）
-│   │   ├── ResumeContent.tsx         # 头部、Languages 上提、section dispatch
-│   │   ├── DecryptedText/            # 字符 scramble 揭示动画（首页标题用）
-│   │   │   └── DecryptedText.tsx
-│   │   ├── Threads/                  # WebGL 背景 shader（OGL）；首页 lazy load
-│   │   │   └── Threads.tsx
-│   │   ├── AIChat/                   # 预留给后续的 AI 聊天功能（目前是空的）
-│   │   ├── ResumeSections/           # 每一个 rendercv entry type 对应一支 renderer
-│   │   │   ├── BulletSection.tsx     # BulletEntry renderer
-│   │   │   ├── EducationSection.tsx  # EducationEntry renderer
-│   │   │   ├── ExperienceSection.tsx # ExperienceEntry renderer（Work、Volunteer 等）
-│   │   │   ├── NormalSection.tsx     # NormalEntry renderer（Projects、Awards、Certificates、References）
-│   │   │   ├── OneLineSection.tsx    # OneLineEntry renderer（Skills、Interests 等）
-│   │   │   ├── PublicationSection.tsx # PublicationEntry renderer
-│   │   │   ├── SectionCard.tsx       # 共享卡片 + section name → icon/颜色映射
-│   │   │   ├── TextSection.tsx       # TextEntry（段落型）renderer
-│   │   │   └── index.ts
-│   │   └── shared/                   # 共享的可重用子组件
-│   │       ├── BulletList.tsx
-│   │       ├── DateRange.tsx
-│   │       ├── ExternalLink.tsx
-│   │       ├── ItemCard.tsx
-│   │       └── index.ts
-│   ├── pages/
-│   │   ├── index.tsx                 # 首页
-│   │   └── resume.tsx                # 简历页（载入 YAML 后丢给 ResumeContent）
-│   ├── layouts/
-│   │   └── default.tsx               # 默认布局（Navbar + main slot）
-│   ├── utils/
-│   │   ├── animations.ts             # Framer Motion stagger variants
-│   │   ├── env.ts                    # 集中管理 VITE_* env，模块载入时就 validate
-│   │   ├── pathUtils.ts              # VITE_ROOT_PATH helpers（buildPath / getBasename）
-│   │   └── resumeLoader.ts           # rendercv schema types、entry-type dispatch、YAML loader
-│   ├── lib/
-│   │   └── utils.ts                  # `cn()`：clsx + tailwind-merge
-│   ├── config/
-│   │   └── site.ts                   # 依 env 动态产生 nav items、外部链接
-│   ├── types/
-│   │   └── ogl.d.ts                  # OGL module shim
-│   ├── styles/
-│   │   ├── globals.css               # Tailwind layers + design tokens（bg/fg/border/elevated/signal）
-│   │   └── plugins.ts                # HeroUI Tailwind plugin 入口
-│   ├── App.tsx                       # 路由（`/` 永远在；`/resume` 仅在 VITE_RESUME_FILE 已设时挂载）
-│   ├── main.tsx                      # React render 入口、BrowserRouter 串接
-│   ├── provider.tsx                  # HeroUIProvider
-│   └── vite-env.d.ts
-├── docker-compose.yaml               # Docker Compose 配置
-├── eslint.config.js                  # ESLint 配置
-├── index.html                        # 入口 HTML（用 %VITE_WEBSITE_TITLE%）
-├── Makefile                          # `make pdf`、`make build`、`make fmt`、`make clean`、`make run`
-├── package.json
-├── tsconfig.json
-├── vercel.json                       # Vercel framework 设定 + 副档名 scoped 的 SPA rewrite
-└── vite.config.ts                    # `base` 由 VITE_ROOT_PATH 控制、客制 404.html plugin
-```
-
-## 开发指南
-
-### 开发工具
-
-项目使用以下开发工具确保代码质量：
-
-- **ESLint**：代码风格检查与错误检测
-- **Prettier**：自动格式化代码
-- **TypeScript**：类型检查
-- **Makefile**：提供简化的开发命令
-
-#### Yarn/NPM 命令
-
-```bash
-# 开发模式
-yarn dev
-
-# 类型检查
-yarn type-check
-
-# 代码格式化
-yarn format
-
-# 代码检查（不自动修复）
-yarn format:nofix
-
-# 代码检查与修复
-yarn lint
-
-# Lint 检查（不自动修复）
-yarn lint:nofix
-
-# 完整检查（类型 + 格式化 + Lint）
-yarn check
-
-# 构建项目
-yarn build
-
-# 预览构建结果
-yarn preview
-
-# 部署到 GitHub Pages
-yarn deploy
-```
-
-#### Makefile 命令
-
-项目提供 Makefile 简化常用操作：
-
-```bash
-# 显示所有可用命令
-make help
-
-# 构建项目（默认目标 — 执行 `yarn build`）
-make
-# 或
-make build
-
-# 从 public/resume.yaml 通过 rendercv 重新生成 public/resume.pdf。
-# 编辑 YAML 之后跑这个,然后 commit 更新的 PDF。
-# 需要本地安装 `uv`。
-make pdf
-
-# 清理生成的文件与 Git 缓存
-#（保留 public/resume.pdf,因为那是 committed 到 git 的）
-make clean
-
-# 执行完整检查（等同于 yarn check：类型检查 + 格式化 + Lint）
-make fmt
-
-# 运行项目
-make run
-```
-
-### 持续集成 / 持续部署（CI/CD）
-
-项目配置了多个 GitHub Actions 工作流程：
-
-- **自动部署**（`deploy.yml`）：推送到 main/master 分支时,先用 `make pdf` 重新产生 `public/resume.pdf`,再跑 `yarn build` 并部署到 GitHub Pages
-- **代码扫描**（`code_scan.yml`）：使用 CodeQL 进行安全性分析
-- **代码质量检查**（`code-quality-check.yml`）：对 Pull Request 执行 TypeScript、Prettier 与 ESLint 检查
-- **Dependabot 自动合并**（`auto_review_merge.yml`）：对 Pull Request 做 dependency review,通过的 Dependabot PR 自动 merge
-- **语义化 PR**（`semantic-pull-request.yml`）：确保 Pull Request 标题符合 Conventional Commits 规范
-- **自动标签**（`auto_labeler.yml`）：根据变更路径自动添加标签
-- **Release 草稿**（`release_drafter.yml`）：从已合并的 PR 生成 Release Notes 草稿
-- **Docker 镜像构建**（`build_image.yml`）：构建并推送 Docker 镜像
-
-### 新增页面
-
-如需新增页面到网站：
-
-1. **创建页面组件**：在 `src/pages/` 目录新增页面组件（例如 `new-page.tsx`）
-2. **新增路由**：在 `src/App.tsx` 中添加新的路由配置
-3. **更新导航菜单**：在 `src/config/site.ts` 中更新 `siteConfig.navItems` 配置
-4. **条件式显示（可选）**：
-   - 如需根据环境变量显示/隐藏页面，在 `src/utils/env.ts` 添加环境变量检查函数
-   - 在 `src/config/site.ts` 中使用该检查函数来决定是否显示导航项目
-   - 在 `src/App.tsx` 中使用相同的检查来决定是否注册路由
-
-**示例**：参考 Resume 页面（`/resume`）的实现方式
-
-### 修改主题
-
-Design token（`bg`、`fg`、`fg-muted`、`fg-subtle`、`border`、`surface`、`elevated`、`signal`）写在 `src/styles/globals.css`；HeroUI 的 Tailwind plugin 接在 `src/styles/plugins.ts`。主题切换没有独立组件,导航栏（`src/components/navbar.tsx`）直接用 `@heroui/use-theme` 的 `useTheme()` 在 `dark` / `light` 之间切换。
-
-### 自定义简历区块
-
-简历是按 **rendercv entry type** 而非 section 名称分派的。`src/utils/resumeLoader.ts` 里的 `detectEntryType` 会看每个 YAML section 的第一个 entry,自动挑对应的 renderer,所以你在 YAML 里新增任何 section 都会自动 route 到正确的 component。
-
-如何调整呈现方式：
-
-1. 修改 `src/components/ResumeSections/` 下的对应 `*Section.tsx` 来改变某一类 entry 的外观（例如 `ExperienceSection.tsx` 同时处理 Work 与 Volunteer,因为它们都用 `company` + `position`）。
-2. 调整 `SectionCard.tsx` 可以改动共享卡片样式,或透过 `getSectionConfig` 修改 section 名称 → icon / `ColorScheme` 对应。
-3. 如果要在 YAML 加新的自定义字段,请到 `src/utils/resumeLoader.ts` 扩充对应的 interface（注意:list 型自定义字段在 YAML 里必须写成 comma-separated 字符串,请看上面的说明）。
-
-### 页面显示问题
-
-**简历页未出现在导航栏**
-
-- 确认 `.env` 中是否已设置 `VITE_RESUME_FILE`
-- 检查环境变量值是否正确（本地文件名称或完整 URL）
-- 重新启动开发服务器
-
-**导航栏完全为空**
-
-- 至少需要设置一个页面的环境变量（`VITE_RESUME_FILE`）
-- 首页（`/`）永远可用，不需要特别设置
-
-### 简历加载问题
-
-**无法加载简历 YAML**
-
-- 检查文件路径是否正确
-- 如使用 URL，确认 URL 可直接访问（在浏览器中打开测试）
-- GitHub Gist URLs are automatically converted to Raw format, no manual processing needed
-- 检查 YAML 格式是否正确（可使用在线 YAML 验证工具）
-
-### 构建与开发问题
-
-**构建失败**
-
-- 确认所有依赖已正确安装：`yarn install`
-- 检查 Node.js 版本（建议使用 18.x 或更高版本）
-- 执行类型检查：`yarn type-check`
-- 清除缓存并重新安装：
-  ```bash
-  rm -rf node_modules yarn.lock
-  yarn install
-  ```
-
-**开发服务器无法启动**
-
-- 检查 Port 5173 是否被占用
-- 确认 `.env` 文件格式正确
-- 检查是否有必要的环境变量（至少需要 `VITE_WEBSITE_TITLE`）
-
-**TypeScript 错误**
-
-- 执行 `yarn type-check` 查看详细错误
-- 确认所有 `@types/*` 包已安装
-- 检查 `tsconfig.json` 设置是否正确
-
-### Docker 相关问题
-
-**容器无法启动**
-
-- 确认 `.env` 文件存在且格式正确
-- 检查 Docker 和 Docker Compose 版本
-- 查看容器日志：`docker compose logs -f`
-
-**无法访问服务**
-
-- 确认 Port 5173 未被其他服务占用
-- 检查防火墙设置
-- 在浏览器中尝试访问 `http://localhost:5173`
-
-## 贡献指南
-
-欢迎贡献！无论是报告问题、提出功能建议或提交 Pull Request，都十分感谢。
-
-### 如何贡献
-
-1. Fork 此项目
-2. 创建你的功能分支：`git checkout -b feature/AmazingFeature`
-3. 提交你的变更：`git commit -m 'Add some AmazingFeature'`
-4. 推送到分支：`git push origin feature/AmazingFeature`
-5. 打开 Pull Request
-
-### 开发规范
-
-- 遵循现有的代码风格（使用 ESLint 和 Prettier）
-- 提交前执行 `yarn check` 确保代码质量
-- 撰写清晰的提交消息
-- 更新相关文档
-
-### 报告问题
-
-如果发现 Bug 或有功能建议，请[创建 Issue](https://github.com/Mai0313/resume/issues)。
-
-## 特别感谢
-
-- [HeroUI](https://heroui.com) - 提供优秀的 React UI 组件库
-- [rendercv](https://github.com/rendercv/rendercv) - Typst-based CV 排版工具,从我们的 YAML 生成可下载的 PDF
-- [Typst](https://typst.app) - 驱动 rendercv 的现代排版引擎
-- [uv](https://docs.astral.sh/uv/) - 快速的 Python 包/工具管理器,用于安装 rendercv
-- 所有开源项目的贡献者
-
-## 许可证
-
-依据 [MIT 许可证](LICENSE) 授权。
-
----
-
-**如果这个项目对你有帮助，请给个 ⭐️！**
+依据 [MIT license](LICENSE) 授权。

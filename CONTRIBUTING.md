@@ -1,148 +1,115 @@
 # Contributing
 
-Contributions are welcome! Whether reporting issues, suggesting features, or submitting Pull Requests, all are greatly appreciated.
+Contributions are welcome. Keep changes focused, update docs when behavior changes, and use Conventional Commits for commit messages and PR titles.
 
-## Getting Started
+## Local Setup
 
-### Prerequisites
+Prerequisites:
 
-- [Node.js](https://nodejs.org/) 18.x or higher
-- [Yarn](https://yarnpkg.com/) (recommended) or npm
-- [uv](https://docs.astral.sh/uv/) — only required if you need to regenerate `public/resume.pdf` locally via `make pdf` (rendercv is run via `uvx` in an isolated environment, no global install needed)
-
-### Development Setup
-
-1. Fork and clone the repository:
-
-   ```bash
-   git clone https://github.com/<your-username>/resume.git
-   cd resume
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   yarn install
-   ```
-
-3. Create a `.env` file in the project root (refer to `.env` example in README):
-
-   ```bash
-   VITE_WEBSITE_TITLE=Mai
-   VITE_RESUME_FILE=resume.yaml
-   ```
-
-4. Start the development server:
-
-   ```bash
-   yarn dev
-   ```
-
-## How to Contribute
-
-1. Fork this project
-2. Create your feature branch: `git checkout -b feature/AmazingFeature`
-3. Make your changes
-4. If you edited `public/resume.yaml`, regenerate the PDF with `make pdf` and commit `public/resume.pdf` alongside the YAML — the `deploy.yml` workflow also regenerates it, but Vercel does not, so shipping both keeps every target in sync
-5. Run quality checks: `yarn check`
-6. Commit your changes following [Conventional Commits](#commit-conventions)
-7. Push to the branch: `git push origin feature/AmazingFeature`
-8. Open a Pull Request
-
-## Development Standards
-
-### Code Quality
-
-The project uses the following tools to ensure code quality:
-
-- **ESLint** - Code style checking and error detection
-- **Prettier** - Automatic code formatting
-- **TypeScript** - Type checking
-
-Before committing, always run:
+- Node.js 18 or newer.
+- Yarn, matching the committed `yarn.lock`.
+- [uv](https://docs.astral.sh/uv/) only when regenerating `public/resume.pdf`.
 
 ```bash
-# Complete check (type-check + format + lint)
-yarn check
+git clone https://github.com/<your-username>/resume.git
+cd resume
+yarn install
+cp .env.example .env
+yarn dev
 ```
 
-Or use individual commands:
+Common commands:
 
 ```bash
-# Type checking only
+yarn dev              # start the Vite dev server
+yarn build            # tsc && vite build
+yarn preview          # preview the production build
+yarn type-check       # tsc --noEmit
+yarn format           # prettier --write .
+yarn format:nofix     # prettier --check .
+yarn lint             # eslint --fix
+yarn lint:nofix       # eslint
+yarn check            # tsc --noEmit && prettier --write . && eslint --fix
+yarn deploy           # tsc && vite build && gh-pages -d dist
+
+make pdf              # regenerate public/resume.pdf from public/resume.yaml
+make run              # yarn dev
+make fmt              # yarn check
+make clean            # remove generated output/caches, then prune Git refs and GC
+```
+
+If you edit `public/resume.yaml`, run `make pdf` and commit `public/resume.pdf` with the YAML. GitHub Pages deployment regenerates the PDF as a safety net, but Vercel serves the committed PDF.
+
+## Project Layout
+
+- `src/pages/` contains the home and resume route components.
+- `src/components/` contains reusable UI, including `navbar.tsx`, `ResumeContent.tsx`, `Threads/`, `DecryptedText/`, and the `ResumeSections/` renderers.
+- `src/components/shared/` contains small cross-section primitives such as `BulletList`, `DateRange`, `ExternalLink`, and `ItemCard`.
+- `src/utils/` contains environment access, path helpers, resume YAML loading, entry-type detection, and animation variants.
+- `src/config/site.ts` defines navigation items and external links from the current environment.
+- `src/styles/` contains Tailwind layers, design tokens, and the HeroUI Tailwind plugin entry.
+- `public/` contains static assets, including `resume.yaml` and the generated `resume.pdf`.
+- `.github/workflows/` contains CI, security scanning, GitHub Pages deployment, release drafting, labeler, and Docker image workflows.
+- `docker/` and `docker-compose.yaml` contain the production Docker setup.
+- `.devcontainer/` contains the VS Code Dev Container setup.
+
+## Workflow
+
+1. Create a focused branch.
+2. Make the change and keep unrelated formatting churn out of the diff.
+3. Update docs when commands, environment variables, resume schema behavior, deployment behavior, or public UI behavior changes.
+4. Run the relevant local checks before opening a PR.
+5. Use a Conventional Commits title, such as `fix: correct resume PDF path handling`.
+6. Open a PR and wait for CI to pass before requesting review.
+
+Commit and PR title format:
+
+```text
+<type>(<scope>): <description>
+```
+
+Common types are `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, and `ci`.
+
+## Testing And Quality Gates
+
+There is no dedicated test runner. Quality is enforced through TypeScript, Prettier, ESLint, builds, and GitHub Actions.
+
+Run these before submitting code changes:
+
+```bash
 yarn type-check
-
-# Code formatting
-yarn format
-
-# Linting with auto-fix
-yarn lint
+yarn format:nofix
+yarn lint:nofix
+yarn build
 ```
 
-### Commit Conventions
+Use `yarn check` when you want TypeScript plus auto-format and auto-fix in one command.
 
-This project follows the [Conventional Commits](https://www.conventionalcommits.org/) specification. Pull Request titles are validated by CI to ensure compliance.
+CI coverage:
 
-Format: `<type>(<scope>): <description>`
+- `code-quality-check.yml` runs `yarn format:nofix` and `yarn lint:nofix` on pull requests.
+- `deploy.yml` runs `make pdf`, `yarn install`, and `yarn build` before deploying GitHub Pages.
+- `code_scan.yml` runs Gitleaks, TruffleHog, CodeQL, and Trivy.
+- `semantic-pull-request.yml` validates PR titles against Conventional Commits.
+- `auto_review_merge.yml` runs dependency review and auto-merges passing Dependabot PRs.
+- `auto_labeler.yml` labels PRs from branch names and changed paths.
+- `build_image.yml` builds and publishes the Docker image to GHCR on pushes to `main`, `master`, and `v*` tags.
 
-Common types:
+## Release Process
 
-- `feat` - A new feature
-- `fix` - A bug fix
-- `docs` - Documentation changes
-- `style` - Code style changes (formatting, semicolons, etc.)
-- `refactor` - Code refactoring without feature changes or bug fixes
-- `perf` - Performance improvements
-- `test` - Adding or updating tests
-- `chore` - Build process, dependency updates, or auxiliary tool changes
-- `ci` - CI/CD configuration changes
+Releases are drafted automatically by `release_drafter.yml` on pushes to `main` or `master`. It uses `orhun/git-cliff-action` to generate the next tag and changelog body, then creates a draft GitHub release with `softprops/action-gh-release`.
 
-Examples:
+GitHub Pages deployment runs on pushes to `main`, `master`, and `v*` tags. Manual Pages deployment is available with:
 
-```
-feat: add PDF download button to resume page
-fix: resolve navigation bar display issue on mobile
-docs: update environment variable documentation
-chore: upgrade HeroUI dependencies
+```bash
+yarn build
+yarn deploy
 ```
 
-### Pull Request Guidelines
+## Issues
 
-- Keep PRs focused on a single concern
-- Ensure the PR title follows Conventional Commits format
-- Provide a clear description of the changes
-- Make sure all CI checks pass before requesting review
-- Update relevant documentation if applicable
-
-## Project Structure Overview
-
-Key directories for contributors:
-
-- `src/pages/` — Page components (`index.tsx` home, `resume.tsx`)
-- `src/components/` — Reusable UI components, including the floating `navbar.tsx` (theme toggle lives here, no separate component), `ResumeContent.tsx`, and the visual building blocks `Threads/` (WebGL background) and `DecryptedText/` (headline reveal)
-- `src/components/ResumeSections/` — One renderer per rendercv entry type (Experience, Education, Publication, Normal, OneLine, Bullet, Text); dispatch is driven by `detectEntryType` in `src/utils/resumeLoader.ts`
-- `src/components/shared/` — Cross-section primitives (`BulletList`, `DateRange`, `ExternalLink`, `ItemCard`)
-- `src/utils/` — `resumeLoader.ts` (rendercv schema + YAML loader), `env.ts` (centralized `VITE_*` access with load-time validation), `pathUtils.ts` (`VITE_ROOT_PATH` helpers), `animations.ts` (Framer Motion variants)
-- `src/lib/utils.ts` — `cn()` helper (clsx + tailwind-merge)
-- `src/config/site.ts` — Site config and env-conditional nav items
-- `src/styles/` — `globals.css` design tokens, `plugins.ts` HeroUI Tailwind plugin
-- `src/types/ogl.d.ts` — Module shim for OGL (the only file in `src/types/` today)
-- `public/` — Static assets including `resume.yaml` (source) and `resume.pdf` (generated by `make pdf`)
-
-For detailed project structure, see [README.md](README.md#project-structure).
-
-## Report Issues
-
-If you find bugs or have feature suggestions, please [create an Issue](https://github.com/Mai0313/resume/issues).
-
-When reporting bugs, please include:
-
-- Steps to reproduce the issue
-- Expected behavior
-- Actual behavior
-- Browser and OS information (if applicable)
-- Screenshots (if applicable)
+When reporting a bug, include steps to reproduce, expected behavior, actual behavior, browser and OS details when relevant, and screenshots for UI issues.
 
 ## License
 
-By contributing to this project, you agree that your contributions will be licensed under the [MIT License](LICENSE).
+By contributing, you agree that your contributions are licensed under the [MIT License](LICENSE).
