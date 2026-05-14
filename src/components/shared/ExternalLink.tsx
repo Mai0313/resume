@@ -1,5 +1,7 @@
 import type { FC, ReactNode } from "react";
 
+import { ArrowUpRightIcon } from "./icons";
+
 import { cn } from "@/lib/utils";
 
 interface ExternalLinkProps {
@@ -8,22 +10,6 @@ interface ExternalLinkProps {
   className?: string;
   showIcon?: boolean;
 }
-
-const ArrowUpRight = () => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    height="14"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="1.5"
-    viewBox="0 0 24 24"
-    width="14"
-  >
-    <path d="M7 17L17 7M7 7h10v10" />
-  </svg>
-);
 
 /**
  * External link, renders as plain text when no URL is provided.
@@ -52,7 +38,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
       <span className="link-underline">{children}</span>
       {showIcon && (
         <span className="text-fg-muted transition-colors group-hover:text-fg">
-          <ArrowUpRight />
+          <ArrowUpRightIcon />
         </span>
       )}
     </a>

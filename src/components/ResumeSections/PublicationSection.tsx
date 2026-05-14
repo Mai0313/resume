@@ -3,7 +3,7 @@ import { Variants } from "framer-motion";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
-import { ItemCard, ExternalLink } from "@/components/shared";
+import { ArrowUpRightIcon, ItemCard, ExternalLink } from "@/components/shared";
 import { PublicationEntry } from "@/utils/resumeLoader";
 
 interface PublicationSectionProps {
@@ -88,18 +88,7 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <svg
-                      fill="none"
-                      height="16"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      viewBox="0 0 24 24"
-                      width="16"
-                    >
-                      <path d="M7 17L17 7M7 7h10v10" />
-                    </svg>
+                    <ArrowUpRightIcon size={16} />
                   </a>
                 )}
               </div>

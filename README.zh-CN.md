@@ -11,7 +11,7 @@
 
 </div>
 
-这是一个用 Vite、React、HeroUI 和 Tailwind CSS 构建的个人简历网站。网页简历和可下载的 PDF 共用同一份 rendercv 兼容 YAML，因此简历内容只需要维护一份，同时可以部署到 GitHub Pages、Vercel 或 Docker。
+这是一个用 Vite、React、Tailwind CSS 和 HeroUI theme utilities 构建的个人简历网站。网页简历和可下载的 PDF 共用同一份 rendercv 兼容 YAML，因此简历内容只需要维护一份，同时可以部署到 GitHub Pages、Vercel 或 Docker。
 
 ## 功能特性
 
@@ -19,6 +19,7 @@
 - 提供七种 rendercv entry renderer，覆盖 experience、education、publications、projects、skills、bullets 和 text sections。
 - 可下载的 `public/resume.pdf` 由同一份 YAML 通过 [rendercv](https://github.com/rendercv/rendercv) 生成。
 - Responsive home 和 resume pages，包含 WebGL `Threads` 背景、`DecryptedText` headline animation、theme switching 和 Framer Motion transitions。
+- Lazy-loaded route bundles 让 resume rendering 和 YAML parsing 不会进入 home page 的 initial load。
 - 通过 `VITE_ROOT_PATH` 支持 subpath-aware routing 和 asset paths，适合 GitHub Pages。
 
 ## 快速开始

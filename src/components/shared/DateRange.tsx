@@ -6,8 +6,6 @@ interface DateRangeProps {
   startDate?: string;
   endDate?: string;
   className?: string;
-  /** kept for backward compatibility, ignored — editorial style has no icon */
-  showIcon?: boolean;
 }
 
 export const DateRange: FC<DateRangeProps> = ({

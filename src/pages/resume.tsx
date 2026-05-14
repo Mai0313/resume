@@ -1,14 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 
 import { ResumeContent } from "../components/ResumeContent";
-import { loadResumeData, RenderCVData } from "../utils/resumeLoader";
+import { loadResumeData, type LoadedResumeData } from "../utils/resumeLoader";
 
 import DefaultLayout from "@/layouts/default";
 
 function useResumeData() {
-  const [resumeData, setResumeData] = useState<
-    (RenderCVData & { sectionOrder: string[] }) | null
-  >(null);
+  const [resumeData, setResumeData] = useState<LoadedResumeData | null>(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

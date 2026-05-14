@@ -30,6 +30,8 @@ Section order follows YAML key order. `loadResumeData()` stores `Object.keys(cv.
 
 List-like web custom fields must be comma-separated strings in YAML. `keywords`, `roles`, and `courses` are normalized into arrays at runtime; YAML lists can break rendercv's Typst template rendering.
 
+`App.tsx` lazy-loads route pages. Resume-specific rendering and the `js-yaml` parser should stay out of the home page's initial route bundle.
+
 ## Gotchas
 
 - `Languages` is special. A `OneLineEntry` section named `Languages` case-insensitively is hoisted into the header chip row and skipped from the main section list.
@@ -42,9 +44,12 @@ List-like web custom fields must be comma-separated strings in YAML. `keywords`,
 
 ## Key Files
 
-- `src/utils/resumeLoader.ts`: rendercv schema types, entry detection, YAML loading, social URL templates, list-field normalization.
-- `src/components/ResumeContent.tsx`: header rendering, PDF link, `Languages` hoist, section dispatch.
-- `src/components/ResumeSections/SectionCard.tsx`: shared section shell and section-name icon/color mapping.
+- `src/utils/resume/`: rendercv schema types, entry detection, YAML loading, social URL templates, source resolution, list-field normalization.
+- `src/utils/resumeLoader.ts`: compatibility barrel for resume utilities and types.
+- `src/components/ResumeContent.tsx`: resume layout composition and section order rendering.
+- `src/components/ResumeHeader.tsx`: header rendering, PDF link, social links, and `Languages` hoist display.
+- `src/components/ResumeSections/ResumeSectionRenderer.tsx`: entry-shape dispatch to section renderers.
+- `src/components/ResumeSections/SectionCard.tsx`: shared section shell and section-title mapping.
 - `src/utils/env.ts`: centralized `VITE_*` access and validation.
 - `src/utils/pathUtils.ts`: `VITE_ROOT_PATH` helpers.
 - `vite.config.ts`: Vite base and SPA 404 plugin.

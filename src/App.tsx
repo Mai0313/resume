@@ -1,18 +1,29 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import IndexPage from "@/pages/index";
-import ResumePage from "@/pages/resume";
 import { envHelpers } from "@/utils/env";
+
+const IndexPage = lazy(() => import("@/pages/index"));
+const ResumePage = lazy(() => import("@/pages/resume"));
+
+function RouteFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-bg">
+      <div className="label-mono animate-pulse text-fg-muted">Loading…</div>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <Routes>
-      <Route element={<IndexPage />} path="/" />
-      {/* 只有在 Resume 文件可用時才渲染 Resume 路由 */}
-      {envHelpers.isResumeFileAvailable() && (
-        <Route element={<ResumePage />} path="/resume" />
-      )}
-    </Routes>
+    <Suspense fallback={<RouteFallback />}>
+      <Routes>
+        <Route element={<IndexPage />} path="/" />
+        {envHelpers.isResumeFileAvailable() && (
+          <Route element={<ResumePage />} path="/resume" />
+        )}
+      </Routes>
+    </Suspense>
   );
 }
 

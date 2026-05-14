@@ -3,39 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTheme } from "@heroui/use-theme";
 
+import { MoonIcon, SunIcon } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
-
-const SunIcon = () => (
-  <svg
-    fill="none"
-    height="18"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="1.75"
-    viewBox="0 0 24 24"
-    width="18"
-  >
-    <circle cx="12" cy="12" r="4" />
-    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-  </svg>
-);
-
-const MoonIcon = () => (
-  <svg
-    fill="none"
-    height="18"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="1.75"
-    viewBox="0 0 24 24"
-    width="18"
-  >
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-  </svg>
-);
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);

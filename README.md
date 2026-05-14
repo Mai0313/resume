@@ -11,7 +11,7 @@
 
 </div>
 
-A personal resume website built with Vite, React, HeroUI, and Tailwind CSS. The web resume and the downloadable PDF share one rendercv-compatible YAML file, so profile content stays in one place while the site can be deployed to GitHub Pages, Vercel, or Docker.
+A personal resume website built with Vite, React, Tailwind CSS, and HeroUI theme utilities. The web resume and the downloadable PDF share one rendercv-compatible YAML file, so profile content stays in one place while the site can be deployed to GitHub Pages, Vercel, or Docker.
 
 ## Features
 
@@ -19,6 +19,7 @@ A personal resume website built with Vite, React, HeroUI, and Tailwind CSS. The 
 - Seven rendercv entry renderers for experience, education, publications, projects, skills, bullets, and text sections.
 - Downloadable `public/resume.pdf` generated from the same YAML with [rendercv](https://github.com/rendercv/rendercv).
 - Responsive home and resume pages with a WebGL `Threads` background, `DecryptedText` headline animation, theme switching, and Framer Motion transitions.
+- Lazy-loaded route bundles keep resume rendering and YAML parsing out of the home page's initial load.
 - Subpath-aware routing and asset paths through `VITE_ROOT_PATH`, suitable for GitHub Pages.
 
 ## Quick Start
