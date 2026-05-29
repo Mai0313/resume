@@ -1,11 +1,11 @@
-import type { CVData } from "@/utils/resumeLoader";
+import type { CVData } from "@/utils/resume";
 import type { LanguagesSection } from "@/components/ResumeSections/languages";
 
 import { useState } from "react";
 
-import { ArrowUpRightIcon } from "@/components/shared";
+import { ExternalLink } from "@/components/shared";
 import { envHelpers } from "@/utils/env";
-import { buildSocialUrl } from "@/utils/resumeLoader";
+import { buildSocialUrl } from "@/utils/resume";
 
 interface ResumeHeaderProps {
   cv: CVData;
@@ -31,22 +31,6 @@ function formatUpdatedAt(): string {
   const now = new Date();
 
   return `UPDATED ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
-}
-
-function ExternalHeaderLink({ href, label }: { href: string; label: string }) {
-  return (
-    <a
-      className="group inline-flex items-center gap-1.5 text-[13.5px] text-fg transition-opacity hover:opacity-80"
-      href={href}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <span className="link-underline">{label}</span>
-      <span className="text-fg-muted transition-colors group-hover:text-fg">
-        <ArrowUpRightIcon />
-      </span>
-    </a>
-  );
 }
 
 export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
@@ -93,13 +77,17 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
 
           <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
             {cv.social_networks?.map(({ network, username }) => (
-              <ExternalHeaderLink
+              <ExternalLink
                 key={network}
-                href={buildSocialUrl(network, username)}
-                label={network}
-              />
+                className="text-[13.5px]"
+                url={buildSocialUrl(network, username)}
+              >
+                {network}
+              </ExternalLink>
             ))}
-            <ExternalHeaderLink href={pdfPath} label="Download PDF" />
+            <ExternalLink className="text-[13.5px]" url={pdfPath}>
+              Download PDF
+            </ExternalLink>
           </div>
         </div>
 

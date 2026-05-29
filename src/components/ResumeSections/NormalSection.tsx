@@ -1,4 +1,4 @@
-import type { NormalEntry } from "@/utils/resumeLoader";
+import type { NormalEntry } from "@/utils/resume";
 
 import React from "react";
 import { Variants } from "framer-motion";
@@ -10,7 +10,9 @@ import {
   ExternalLink,
   DateRange,
   BulletList,
+  SummaryText,
 } from "@/components/shared";
+import { formatList } from "@/lib/utils";
 
 interface NormalSectionProps {
   entries: NormalEntry[] | undefined;
@@ -34,10 +36,10 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
     >
       <div className="divide-y divide-border">
         {entries?.map((entry, index) => {
-          const entityText = entry.entity ?? entry.issuer;
-          const metaLine = [entityText, entry.location]
-            .filter(Boolean)
-            .join(" · ");
+          const metaLine = formatList([
+            entry.entity ?? entry.issuer,
+            entry.location,
+          ]);
 
           return (
             <ItemCard key={`${sectionName}-${index}-${entry.name || ""}`}>
@@ -47,11 +49,7 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
                     className="font-display text-xl leading-tight text-fg md:text-[1.5rem]"
                     style={{ fontVariationSettings: "'opsz' 60, 'SOFT' 40" }}
                   >
-                    {entry.url ? (
-                      <ExternalLink url={entry.url}>{entry.name}</ExternalLink>
-                    ) : (
-                      entry.name
-                    )}
+                    <ExternalLink url={entry.url}>{entry.name}</ExternalLink>
                   </h3>
                   {metaLine && (
                     <p className="label-mono mt-1.5 text-fg-muted">
@@ -60,7 +58,7 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
                   )}
                   {entry.roles && entry.roles.length > 0 && (
                     <p className="mt-0.5 text-[13.5px] text-fg-muted">
-                      {entry.roles.join(" · ")}
+                      {formatList(entry.roles)}
                     </p>
                   )}
                 </div>
@@ -72,11 +70,7 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
                 </div>
               </div>
 
-              {entry.summary && (
-                <p className="mb-5 max-w-3xl text-[14.5px] leading-[1.65] text-fg-muted">
-                  {entry.summary}
-                </p>
-              )}
+              <SummaryText text={entry.summary} />
 
               {entry.highlights && entry.highlights.length > 0 && (
                 <BulletList className="mb-5" items={entry.highlights} />
@@ -84,7 +78,7 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
 
               {entry.keywords && entry.keywords.length > 0 && (
                 <p className="label-mono text-fg-subtle">
-                  {entry.keywords.join(" · ")}
+                  {formatList(entry.keywords)}
                 </p>
               )}
             </ItemCard>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
 import { ResumeContent } from "../components/ResumeContent";
-import { loadResumeData, type LoadedResumeData } from "../utils/resumeLoader";
+import { loadResumeData, type LoadedResumeData } from "../utils/resume";
 
 import DefaultLayout from "@/layouts/default";
 

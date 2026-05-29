@@ -1,4 +1,4 @@
-import type { LoadedResumeData } from "@/utils/resumeLoader";
+import type { LoadedResumeData } from "@/utils/resume";
 
 import { motion } from "framer-motion";
 

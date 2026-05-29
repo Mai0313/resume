@@ -24,7 +24,7 @@ No test runner is configured. Use TypeScript, Prettier, ESLint, and builds for v
 
 The web resume and downloadable PDF both come from `public/resume.yaml`. The browser loads YAML at runtime; `make pdf` generates `public/resume.pdf` ahead of time with rendercv. Commit both YAML and PDF after resume content changes because Vercel serves the committed PDF.
 
-Resume section rendering is entry-shape based, not section-name based. `detectEntryType()` in `src/utils/resumeLoader.ts` chooses one of the renderers in `src/components/ResumeSections/` from the first non-null entry.
+Resume section rendering is entry-shape based, not section-name based. `detectEntryType()` in `src/utils/resume/entryTypes.ts` chooses one of the renderers in `src/components/ResumeSections/` from the first non-null entry.
 
 Section order follows YAML key order. `loadResumeData()` stores `Object.keys(cv.sections)` as `sectionOrder`, and `ResumeContent` renders in that order.
 
@@ -44,8 +44,7 @@ List-like web custom fields must be comma-separated strings in YAML. `keywords`,
 
 ## Key Files
 
-- `src/utils/resume/`: rendercv schema types, entry detection, YAML loading, social URL templates, source resolution, list-field normalization.
-- `src/utils/resumeLoader.ts`: compatibility barrel for resume utilities and types.
+- `src/utils/resume/`: rendercv schema types, entry detection, YAML loading, social URL templates, source resolution, list-field normalization. `index.ts` is the public barrel for resume utilities and types.
 - `src/components/ResumeContent.tsx`: resume layout composition and section order rendering.
 - `src/components/ResumeHeader.tsx`: header rendering, PDF link, social links, and `Languages` hoist display.
 - `src/components/ResumeSections/ResumeSectionRenderer.tsx`: entry-shape dispatch to section renderers.

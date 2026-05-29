@@ -1,6 +1,6 @@
-import type { Entry, OneLineEntry } from "@/utils/resumeLoader";
+import type { Entry, OneLineEntry } from "@/utils/resume";
 
-import { detectEntryType } from "@/utils/resumeLoader";
+import { detectEntryType } from "@/utils/resume";
 
 export interface LanguagesSection {
   key: string;

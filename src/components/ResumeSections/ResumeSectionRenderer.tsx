@@ -7,7 +7,7 @@ import type {
   NormalEntry,
   OneLineEntry,
   PublicationEntry,
-} from "@/utils/resumeLoader";
+} from "@/utils/resume";
 
 import { BulletSection } from "./BulletSection";
 import { EducationSection } from "./EducationSection";
@@ -17,7 +17,7 @@ import { OneLineSection } from "./OneLineSection";
 import { PublicationSection } from "./PublicationSection";
 import { TextSection } from "./TextSection";
 
-import { detectEntryType } from "@/utils/resumeLoader";
+import { detectEntryType } from "@/utils/resume";
 
 interface ResumeSectionRendererProps {
   entries: Entry[] | undefined;
