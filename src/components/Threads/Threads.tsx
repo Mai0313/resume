@@ -5,7 +5,6 @@ type ThreadsProps = Omit<HTMLAttributes<HTMLDivElement>, "color"> & {
   color?: [number, number, number];
   amplitude?: number;
   distance?: number;
-  enableMouseInteraction?: boolean;
 };
 
 const vertexShader = `
@@ -129,7 +128,6 @@ export default function Threads({
   color = [1, 1, 1],
   amplitude = 1,
   distance = 0,
-  enableMouseInteraction = false,
   className = "",
   ...rest
 }: ThreadsProps) {
@@ -182,37 +180,7 @@ export default function Threads({
     window.addEventListener("resize", resize);
     resize();
 
-    const currentMouse: [number, number] = [0.5, 0.5];
-    let targetMouse: [number, number] = [0.5, 0.5];
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = 1.0 - (e.clientY - rect.top) / rect.height;
-
-      targetMouse = [x, y];
-    };
-    const handleMouseLeave = () => {
-      targetMouse = [0.5, 0.5];
-    };
-
-    if (enableMouseInteraction) {
-      container.addEventListener("mousemove", handleMouseMove);
-      container.addEventListener("mouseleave", handleMouseLeave);
-    }
-
     const update = (t: number) => {
-      if (enableMouseInteraction) {
-        const smoothing = 0.05;
-
-        currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0]);
-        currentMouse[1] += smoothing * (targetMouse[1] - currentMouse[1]);
-        program.uniforms.uMouse.value[0] = currentMouse[0];
-        program.uniforms.uMouse.value[1] = currentMouse[1];
-      } else {
-        program.uniforms.uMouse.value[0] = 0.5;
-        program.uniforms.uMouse.value[1] = 0.5;
-      }
       program.uniforms.iTime.value = t * 0.001;
 
       renderer.render({ scene: mesh });
@@ -227,14 +195,10 @@ export default function Threads({
       }
       window.removeEventListener("resize", resize);
 
-      if (enableMouseInteraction) {
-        container.removeEventListener("mousemove", handleMouseMove);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-      }
       if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, [color, amplitude, distance, enableMouseInteraction]);
+  }, [color, amplitude, distance]);
 
   return (
     <div
