@@ -1,9 +1,11 @@
-import type { OneLineEntry } from "@/utils/resumeLoader";
+import type { OneLineEntry } from "@/utils/resume";
 
 import React from "react";
 import { Variants } from "framer-motion";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
+
+import { formatList } from "@/lib/utils";
 
 interface OneLineSectionProps {
   entries: OneLineEntry[] | undefined;
@@ -56,7 +58,7 @@ export const OneLineSection: React.FC<OneLineSectionProps> = ({
               </div>
               {entry.keywords && entry.keywords.length > 0 && (
                 <p className="max-w-3xl text-[13.5px] leading-relaxed text-fg-muted">
-                  {entry.keywords.join(" · ")}
+                  {formatList(entry.keywords)}
                 </p>
               )}
             </div>

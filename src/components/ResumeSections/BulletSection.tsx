@@ -1,4 +1,4 @@
-import type { BulletEntry } from "@/utils/resumeLoader";
+import type { BulletEntry } from "@/utils/resume";
 
 import React from "react";
 import { Variants } from "framer-motion";

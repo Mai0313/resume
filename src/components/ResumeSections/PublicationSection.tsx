@@ -3,8 +3,14 @@ import { Variants } from "framer-motion";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
-import { ArrowUpRightIcon, ItemCard, ExternalLink } from "@/components/shared";
-import { PublicationEntry } from "@/utils/resumeLoader";
+import {
+  ArrowUpRightIcon,
+  ItemCard,
+  ExternalLink,
+  SummaryText,
+} from "@/components/shared";
+import { PublicationEntry } from "@/utils/resume";
+import { formatList } from "@/lib/utils";
 
 interface PublicationSectionProps {
   entries: PublicationEntry[] | undefined;
@@ -30,7 +36,7 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
         {entries?.map((pub, index) => {
           const url =
             pub.url ?? (pub.doi ? `https://doi.org/${pub.doi}` : undefined);
-          const meta = [pub.journal, pub.date].filter(Boolean).join(" · ");
+          const meta = formatList([pub.journal, pub.date]);
 
           return (
             <ItemCard key={`${sectionName}-${pub.title || "unknown"}-${index}`}>
@@ -43,13 +49,9 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                     className="font-display text-xl leading-snug text-fg md:text-[1.5rem]"
                     style={{ fontVariationSettings: "'opsz' 72, 'SOFT' 50" }}
                   >
-                    {url ? (
-                      <ExternalLink showIcon={false} url={url}>
-                        {pub.title}
-                      </ExternalLink>
-                    ) : (
-                      pub.title
-                    )}
+                    <ExternalLink showIcon={false} url={url}>
+                      {pub.title}
+                    </ExternalLink>
                   </h3>
                   {meta && (
                     <div className="label-mono mt-2 text-fg-muted">{meta}</div>
@@ -74,11 +76,7 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                       })}
                     </p>
                   )}
-                  {pub.summary && (
-                    <p className="mt-4 max-w-3xl text-[14.5px] leading-[1.65] text-fg-muted">
-                      {pub.summary}
-                    </p>
-                  )}
+                  <SummaryText className="mt-4" text={pub.summary} />
                 </div>
                 {url && (
                   <a

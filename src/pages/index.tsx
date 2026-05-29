@@ -25,12 +25,7 @@ export default function IndexPage() {
           className="pointer-events-none absolute inset-0 opacity-[0.28]"
         >
           <Suspense fallback={null}>
-            <Threads
-              amplitude={1.4}
-              color={[1, 1, 1]}
-              distance={0.25}
-              enableMouseInteraction={false}
-            />
+            <Threads amplitude={1.4} color={[1, 1, 1]} distance={0.25} />
           </Suspense>
         </div>
         <div
@@ -47,11 +42,9 @@ export default function IndexPage() {
             }}
           >
             <DecryptedText
-              animateOn="view"
               className="text-fg"
               encryptedClassName="text-fg-subtle opacity-60"
               revealDirection="start"
-              sequential={true}
               speed={55}
               text={env.WEBSITE_TITLE}
             />
