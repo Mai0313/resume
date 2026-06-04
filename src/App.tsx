@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import { Spinner } from "@heroui/react";
 
 import { envHelpers } from "@/utils/env";
 
@@ -8,8 +9,8 @@ const ResumePage = lazy(() => import("@/pages/resume"));
 
 function RouteFallback() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg">
-      <div className="label-mono animate-pulse text-fg-muted">Loading…</div>
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <Spinner size="lg" />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 # Personal Resume
 
-[![React](https://img.shields.io/badge/-React_18-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/-React_19-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/-TypeScript_5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/blob/main/LICENSE)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
@@ -11,7 +11,7 @@
 
 </div>
 
-A personal resume website built with Vite, React, Tailwind CSS, and HeroUI theme utilities. The web resume and the downloadable PDF share one rendercv-compatible YAML file, so profile content stays in one place while the site can be deployed to GitHub Pages, Vercel, or Docker.
+A personal resume website built with Vite, React 19, Tailwind CSS v4, and [HeroUI v3](https://heroui.com). The web resume and the downloadable PDF share one rendercv-compatible YAML file, so profile content stays in one place while the site can be deployed to GitHub Pages, Vercel, or Docker.
 
 ## Features
 

@@ -1,7 +1,7 @@
 import type { CVData } from "@/utils/resume";
 import type { LanguagesSection } from "@/components/ResumeSections/languages";
 
-import { useState } from "react";
+import { Avatar, Chip, Link } from "@heroui/react";
 
 import { ExternalLink } from "@/components/shared";
 import { envHelpers } from "@/utils/env";
@@ -33,45 +33,49 @@ function formatUpdatedAt(): string {
   return `UPDATED ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
 }
 
+function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .map((word) => word[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
 export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
-  const [photoLoaded, setPhotoLoaded] = useState(true);
   const pdfPath = envHelpers.getResumePdfPath();
 
   return (
     <header className="mb-16 border-b border-border pb-14 md:mb-20 md:pb-20">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto] md:items-start md:gap-10">
         <div className="order-2 md:order-1">
-          <div className="label-mono mb-8 flex items-center gap-2.5 text-fg-subtle">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal" />
-            PROFILE · {formatUpdatedAt()}
+          <div className="mb-8">
+            <Chip size="sm" variant="soft">
+              <span className="size-1.5 rounded-full bg-success" />
+              <Chip.Label>PROFILE · {formatUpdatedAt()}</Chip.Label>
+            </Chip>
           </div>
 
-          <h1
-            className="font-display mb-4 font-normal leading-[1.02] text-fg"
-            style={{
-              fontSize: "clamp(3rem, 9vw, 6rem)",
-              letterSpacing: "-0.04em",
-            }}
-          >
+          <h1 className="mb-4 text-5xl font-bold tracking-tight text-foreground md:text-7xl">
             {cv.name}
           </h1>
 
           {cv.headline && (
-            <p
-              className="font-display mb-10 text-xl font-light italic text-fg-muted md:text-2xl"
-              style={{ fontVariationSettings: "'opsz' 144, 'SOFT' 100" }}
-            >
+            <p className="mb-10 text-xl text-muted md:text-2xl">
               {cv.headline}
             </p>
           )}
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[14.5px] text-fg-muted">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
             {cv.location && <span>{cv.location}</span>}
-            {cv.location && cv.email && <span className="text-border">·</span>}
+            {cv.location && cv.email && (
+              <span className="text-muted/50">·</span>
+            )}
             {cv.email && (
-              <a className="link-underline text-fg" href={`mailto:${cv.email}`}>
+              <Link className="text-sm" href={`mailto:${cv.email}`}>
                 {cv.email}
-              </a>
+              </Link>
             )}
           </div>
 
@@ -79,49 +83,42 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
             {cv.social_networks?.map(({ network, username }) => (
               <ExternalLink
                 key={network}
-                className="text-[13.5px]"
+                className="text-sm"
                 url={buildSocialUrl(network, username)}
               >
                 {network}
               </ExternalLink>
             ))}
-            <ExternalLink className="text-[13.5px]" url={pdfPath}>
+            <ExternalLink className="text-sm" url={pdfPath}>
               Download PDF
             </ExternalLink>
           </div>
         </div>
 
-        {cv.photo && photoLoaded && (
+        {cv.photo && (
           <div className="order-1 flex justify-start md:order-2 md:justify-end">
-            <img
-              alt={cv.name}
-              className="h-24 w-24 rounded-full border border-border object-cover md:h-32 md:w-32"
-              src={cv.photo}
-              onError={() => setPhotoLoaded(false)}
-            />
+            <Avatar className="size-24 md:size-32">
+              <Avatar.Image alt={cv.name} src={cv.photo} />
+              <Avatar.Fallback>{initials(cv.name)}</Avatar.Fallback>
+            </Avatar>
           </div>
         )}
       </div>
 
       {languages && languages.entries.length > 0 && (
-        <div className="mt-10 grid grid-cols-[auto_1fr] items-baseline gap-x-8 border-t border-border pt-6">
-          <span className="label-mono text-fg-subtle">Languages</span>
-          <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+        <div className="mt-10 grid grid-cols-[auto_1fr] items-center gap-x-8 border-t border-border pt-6">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+            Languages
+          </span>
+          <div className="flex flex-wrap gap-1.5">
             {languages.entries.map((lang, index) => (
-              <span
+              <Chip
                 key={`lang-${index}-${lang.label}`}
-                className="text-[14.5px]"
+                size="sm"
+                variant="soft"
               >
-                <span className="text-fg">{lang.label}</span>
-                {lang.details && (
-                  <>
-                    <span className="mx-1.5 text-fg-subtle">·</span>
-                    <span className="label-mono normal-case tracking-normal text-fg-muted">
-                      {lang.details}
-                    </span>
-                  </>
-                )}
-              </span>
+                {lang.details ? `${lang.label} · ${lang.details}` : lang.label}
+              </Chip>
             ))}
           </div>
         </div>

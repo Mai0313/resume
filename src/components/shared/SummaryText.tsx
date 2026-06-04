@@ -22,10 +22,7 @@ export const SummaryText: FC<SummaryTextProps> = ({
 
   return (
     <p
-      className={cn(
-        "max-w-3xl text-[14.5px] leading-[1.65] text-fg-muted",
-        className,
-      )}
+      className={cn("max-w-3xl text-sm leading-relaxed text-muted", className)}
     >
       {text}
     </p>

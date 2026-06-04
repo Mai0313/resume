@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { Alert, Card, Skeleton } from "@heroui/react";
 
 import { ResumeContent } from "../components/ResumeContent";
 import { loadResumeData, type LoadedResumeData } from "../utils/resume";
@@ -32,6 +33,21 @@ function useResumeData() {
   return { resumeData, isLoadingResume, loadResume, error };
 }
 
+function ResumeLoadingSkeleton() {
+  return (
+    <div className="mx-auto max-w-4xl px-6 pb-24 pt-32 sm:pt-40">
+      <Skeleton className="h-6 w-44 rounded-full" />
+      <Skeleton className="mt-8 h-14 w-2/3 rounded-lg" />
+      <Skeleton className="mt-4 h-6 w-1/2 rounded-lg" />
+      <div className="mt-12 space-y-3">
+        <Skeleton className="h-4 w-full rounded-lg" />
+        <Skeleton className="h-4 w-5/6 rounded-lg" />
+        <Skeleton className="h-4 w-4/6 rounded-lg" />
+      </div>
+    </div>
+  );
+}
+
 export default function ResumePage() {
   const { resumeData, isLoadingResume, loadResume, error } = useResumeData();
 
@@ -42,41 +58,45 @@ export default function ResumePage() {
   return (
     <DefaultLayout>
       {isLoadingResume ? (
-        <div className="flex min-h-[70vh] items-center justify-center">
-          <div className="label-mono animate-pulse text-fg-muted">
-            Loading résumé…
-          </div>
-        </div>
+        <ResumeLoadingSkeleton />
       ) : error ? (
         <div className="mx-auto max-w-2xl px-6 pb-24 pt-40">
-          <div className="label-mono mb-4 text-fg-subtle">Error</div>
-          <h3 className="font-display mb-4 text-3xl leading-tight text-fg">
-            Résumé loading failed
-          </h3>
-          <p className="mb-8 leading-relaxed text-fg-muted">{error}</p>
-          <div className="rounded-lg border border-border bg-surface p-6">
-            <div className="label-mono mb-4 text-fg-subtle">
-              Check VITE_RESUME_FILE
-            </div>
-            <div className="space-y-2.5 font-mono text-[13px]">
-              <div>
-                <span className="text-fg-subtle">local &nbsp;</span>
-                <code className="text-fg">resume.yaml</code>
+          <Alert status="danger">
+            <Alert.Indicator />
+            <Alert.Content>
+              <Alert.Title>Résumé loading failed</Alert.Title>
+              <Alert.Description>{error}</Alert.Description>
+            </Alert.Content>
+          </Alert>
+
+          <Card className="mt-6 w-full">
+            <Card.Header>
+              <Card.Title>Check VITE_RESUME_FILE</Card.Title>
+              <Card.Description>
+                Supported sources for the resume file.
+              </Card.Description>
+            </Card.Header>
+            <Card.Content>
+              <div className="space-y-2.5 font-mono text-xs">
+                <div>
+                  <span className="text-muted">local &nbsp;</span>
+                  <code className="text-foreground">resume.yaml</code>
+                </div>
+                <div>
+                  <span className="text-muted">gist &nbsp;&nbsp;</span>
+                  <code className="break-all text-foreground">
+                    https://gist.github.com/user/id
+                  </code>
+                </div>
+                <div>
+                  <span className="text-muted">url &nbsp;&nbsp;&nbsp;</span>
+                  <code className="break-all text-foreground">
+                    https://raw.githubusercontent.com/user/repo/main/resume.yaml
+                  </code>
+                </div>
               </div>
-              <div>
-                <span className="text-fg-subtle">gist &nbsp;&nbsp;</span>
-                <code className="break-all text-fg">
-                  https://gist.github.com/user/id
-                </code>
-              </div>
-              <div>
-                <span className="text-fg-subtle">url &nbsp;&nbsp;&nbsp;</span>
-                <code className="break-all text-fg">
-                  https://raw.githubusercontent.com/user/repo/main/resume.yaml
-                </code>
-              </div>
-            </div>
-          </div>
+            </Card.Content>
+          </Card>
         </div>
       ) : resumeData && resumeData.cv && resumeData.cv.name ? (
         <ResumeContent data={resumeData} />

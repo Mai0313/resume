@@ -23,7 +23,5 @@ export const DateRange: FC<DateRangeProps> = ({
   else if (startDate) text = startDate;
   else if (endDate) text = endDate;
 
-  return (
-    <span className={cn("label-mono text-fg-muted", className)}>{text}</span>
-  );
+  return <span className={cn("text-xs text-muted", className)}>{text}</span>;
 };

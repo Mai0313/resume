@@ -1,17 +1,46 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <script>
+      // Apply the persisted theme before first paint to avoid a flash of the
+      // wrong theme. Mirrors the storage key used by HeroUI's useTheme hook.
+      (function () {
+        try {
+          var stored = localStorage.getItem("heroui-theme");
+
+          if (stored !== "light" && stored !== "dark" && stored !== "system") {
+            // Drop corrupted values so HeroUI's useTheme falls back to its
+            // default instead of re-applying the bad value after mount.
+            if (stored !== null) localStorage.removeItem("heroui-theme");
+            stored = "dark";
+          }
+          var theme =
+            stored === "system"
+              ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light"
+              : stored;
+          var root = document.documentElement;
+
+          root.classList.remove("light", "dark");
+          root.classList.add(theme);
+          root.setAttribute("data-theme", theme);
+        } catch (e) {
+          /* keep the static dark default */
+        }
+      })();
+    </script>
     <meta
-      content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+      content="viewport-fit=cover, width=device-width, initial-scale=1.0"
       name="viewport"
     />
     <title>%VITE_WEBSITE_TITLE%</title>
     <meta name="description" content="%VITE_WEBSITE_TITLE% - Resume" />
 
     <!-- Theme color (used by Discord embed sidebar, Chrome mobile, etc.) -->
-    <meta name="theme-color" content="#0ea5e9" />
+    <meta name="theme-color" content="#020b10" />
 
     <!-- Open Graph / Facebook / LinkedIn / Discord -->
     <meta property="og:type" content="website" />
@@ -23,13 +52,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="%VITE_WEBSITE_TITLE%" />
     <meta name="twitter:description" content="%VITE_WEBSITE_TITLE% - Resume" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400..500&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <div id="root"></div>

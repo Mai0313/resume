@@ -15,10 +15,10 @@ interface ResumeContentProps {
 function InvalidResumeData() {
   return (
     <div className="mx-auto max-w-2xl px-6 py-32 text-center">
-      <h3 className="font-display mb-3 text-3xl text-fg">
+      <h3 className="mb-3 text-3xl font-semibold text-foreground">
         Invalid resume data
       </h3>
-      <p className="text-fg-muted">
+      <p className="text-muted">
         The resume file is missing a <code className="font-mono">cv.name</code>{" "}
         field. Check <code className="font-mono">public/resume.yaml</code>.
       </p>

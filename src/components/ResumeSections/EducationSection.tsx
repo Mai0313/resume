@@ -42,8 +42,10 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
 
             {edu.courses && edu.courses.length > 0 && (
               <div className="border-l border-border pl-4">
-                <div className="label-mono mb-2 text-fg-subtle">Coursework</div>
-                <p className="text-[13.5px] leading-relaxed text-fg-muted">
+                <div className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">
+                  Coursework
+                </div>
+                <p className="text-sm leading-relaxed text-muted">
                   {formatList(edu.courses)}
                 </p>
               </div>

@@ -1,9 +1,4 @@
-import clsx, { type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+export { cn } from "@heroui/react";
 
 /**
  * Join a list of values with a separator, skipping empty entries.

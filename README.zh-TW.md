@@ -2,7 +2,7 @@
 
 # 個人履歷
 
-[![React](https://img.shields.io/badge/-React_18-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/-React_19-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/-TypeScript_5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/blob/main/LICENSE)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
@@ -11,7 +11,7 @@
 
 </div>
 
-這是一個用 Vite、React、Tailwind CSS 和 HeroUI theme utilities 建立的個人履歷網站。網頁履歷和可下載的 PDF 共用同一份 rendercv 相容 YAML，因此履歷內容只需要維護一份，同時可以部署到 GitHub Pages、Vercel 或 Docker。
+這是一個用 Vite、React 19、Tailwind CSS v4 和 [HeroUI v3](https://heroui.com) 建立的個人履歷網站。網頁履歷和可下載的 PDF 共用同一份 rendercv 相容 YAML，因此履歷內容只需要維護一份，同時可以部署到 GitHub Pages、Vercel 或 Docker。
 
 ## 功能特色
 

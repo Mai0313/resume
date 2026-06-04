@@ -2,6 +2,7 @@ import type { NormalEntry } from "@/utils/resume";
 
 import React from "react";
 import { Variants } from "framer-motion";
+import { Chip } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
@@ -40,19 +41,16 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
             <ItemCard key={`${sectionName}-${index}-${entry.name || ""}`}>
               <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-6">
                 <div className="flex-1">
-                  <h3
-                    className="font-display text-xl leading-tight text-fg md:text-[1.5rem]"
-                    style={{ fontVariationSettings: "'opsz' 60, 'SOFT' 40" }}
-                  >
-                    <ExternalLink url={entry.url}>{entry.name}</ExternalLink>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    <ExternalLink className="text-foreground" url={entry.url}>
+                      {entry.name}
+                    </ExternalLink>
                   </h3>
                   {metaLine && (
-                    <p className="label-mono mt-1.5 text-fg-muted">
-                      {metaLine}
-                    </p>
+                    <p className="mt-1.5 text-xs text-muted">{metaLine}</p>
                   )}
                   {entry.roles && entry.roles.length > 0 && (
-                    <p className="mt-0.5 text-[13.5px] text-fg-muted">
+                    <p className="mt-0.5 text-sm text-muted">
                       {formatList(entry.roles)}
                     </p>
                   )}
@@ -72,9 +70,13 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
               )}
 
               {entry.keywords && entry.keywords.length > 0 && (
-                <p className="label-mono text-fg-subtle">
-                  {formatList(entry.keywords)}
-                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {entry.keywords.map((keyword) => (
+                    <Chip key={keyword} size="sm" variant="soft">
+                      {keyword}
+                    </Chip>
+                  ))}
+                </div>
               )}
             </ItemCard>
           );

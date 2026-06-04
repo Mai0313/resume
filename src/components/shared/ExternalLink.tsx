@@ -1,8 +1,6 @@
 import type { FC, ReactNode } from "react";
 
-import { ArrowUpRightIcon } from "./icons";
-
-import { cn } from "@/lib/utils";
+import { Link } from "@heroui/react";
 
 interface ExternalLinkProps {
   url?: string;
@@ -12,8 +10,8 @@ interface ExternalLinkProps {
 }
 
 /**
- * External link, renders as plain text when no URL is provided.
- * Uses link-underline hover animation.
+ * External link built on the HeroUI Link component.
+ * Renders as plain text when no URL is provided.
  */
 export const ExternalLink: FC<ExternalLinkProps> = ({
   url,
@@ -26,21 +24,14 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
   }
 
   return (
-    <a
-      className={cn(
-        "group inline-flex items-center gap-1.5 text-fg transition-opacity hover:opacity-80",
-        className,
-      )}
+    <Link
+      className={className}
       href={url}
       rel="noopener noreferrer"
       target="_blank"
     >
-      <span className="link-underline">{children}</span>
-      {showIcon && (
-        <span className="text-fg-muted transition-colors group-hover:text-fg">
-          <ArrowUpRightIcon />
-        </span>
-      )}
-    </a>
+      {children}
+      {showIcon && <Link.Icon />}
+    </Link>
   );
 };

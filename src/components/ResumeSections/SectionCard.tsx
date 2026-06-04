@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { motion, Variants } from "framer-motion";
+import { Separator } from "@heroui/react";
 
 interface SectionCardProps {
   title: string;
@@ -8,8 +9,8 @@ interface SectionCardProps {
 }
 
 /**
- * Oxide editorial section wrapper.
- * Renders a mono-label title followed by a full-width divider, then content.
+ * Section wrapper: an uppercase heading followed by a full-width
+ * HeroUI Separator, then content.
  */
 export const SectionCard: React.FC<SectionCardProps> = ({
   title,
@@ -18,9 +19,11 @@ export const SectionCard: React.FC<SectionCardProps> = ({
 }) => {
   return (
     <motion.section className="scroll-mt-24" variants={itemVariants}>
-      <div className="mb-8 flex items-baseline gap-4">
-        <h2 className="label-mono text-fg">{title}</h2>
-        <span className="h-px flex-1 bg-border" />
+      <div className="mb-8 flex items-center gap-4">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+          {title}
+        </h2>
+        <Separator className="flex-1" />
       </div>
       <div>{children}</div>
     </motion.section>
