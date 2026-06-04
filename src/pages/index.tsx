@@ -56,12 +56,17 @@ export default function IndexPage() {
               <Link
                 className="button button--primary gap-2"
                 href="/resume"
-                render={(props) => (
-                  <RouterLink
-                    {...(props as ComponentPropsWithRef<"a">)}
-                    to="/resume"
-                  />
-                )}
+                render={(props) => {
+                  // Drop the placeholder href so RouterLink fully owns the
+                  // basename-aware href it computes from `to`.
+                  const anchorProps = {
+                    ...(props as ComponentPropsWithRef<"a">),
+                  };
+
+                  delete anchorProps.href;
+
+                  return <RouterLink {...anchorProps} to="/resume" />;
+                }}
               >
                 View Resume
                 <ArrowRightIcon />
