@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Alert, Card, Skeleton, Typography } from "@heroui/react";
 
-import { ResumeContent } from "../components/ResumeContent";
-import { loadResumeData, type LoadedResumeData } from "../utils/resume";
-
+import { ResumeContent } from "@/components/ResumeContent";
+import { loadResumeData, type LoadedResumeData } from "@/utils/resume";
 import DefaultLayout from "@/layouts/default";
 
 function useResumeData() {
@@ -15,13 +14,7 @@ function useResumeData() {
     setIsLoadingResume(true);
     setError(null);
     try {
-      const data = await loadResumeData();
-
-      if (!data || !data.cv || !data.cv.name) {
-        throw new Error("Resume data is incomplete or missing required fields");
-      }
-
-      setResumeData(data);
+      setResumeData(await loadResumeData());
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load resume");
       setResumeData(null);
@@ -100,7 +93,7 @@ export default function ResumePage() {
             </Card.Content>
           </Card>
         </div>
-      ) : resumeData && resumeData.cv && resumeData.cv.name ? (
+      ) : resumeData ? (
         <ResumeContent data={resumeData} />
       ) : null}
     </DefaultLayout>
