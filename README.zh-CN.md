@@ -2,7 +2,7 @@
 
 # 个人简历
 
-[![React](https://img.shields.io/badge/-React_18-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/-React_19-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/-TypeScript_5.6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/resume/blob/main/LICENSE)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/resume/pulls)
@@ -11,7 +11,7 @@
 
 </div>
 
-这是一个用 Vite、React、Tailwind CSS 和 HeroUI theme utilities 构建的个人简历网站。网页简历和可下载的 PDF 共用同一份 rendercv 兼容 YAML，因此简历内容只需要维护一份，同时可以部署到 GitHub Pages、Vercel 或 Docker。
+这是一个用 Vite、React 19、Tailwind CSS v4 和 [HeroUI v3](https://heroui.com) 构建的个人简历网站。网页简历和可下载的 PDF 共用同一份 rendercv 兼容 YAML，因此简历内容只需要维护一份，同时可以部署到 GitHub Pages、Vercel 或 Docker。
 
 ## 功能特性
 

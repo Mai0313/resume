@@ -48,7 +48,7 @@ If you edit `public/resume.yaml`, run `make pdf` and commit `public/resume.pdf` 
 - `src/utils/` contains environment access, path helpers, resume compatibility exports, and animation variants.
 - `src/utils/resume/` contains focused resume modules for schema types, YAML loading, entry-type detection, list-field normalization, source resolution, and social URLs.
 - `src/config/site.ts` defines navigation items and external links from the current environment.
-- `src/styles/` contains Tailwind layers, design tokens, and the HeroUI Tailwind plugin entry.
+- `src/styles/` contains the global stylesheet importing Tailwind CSS v4 and `@heroui/styles`.
 - `public/` contains static assets, including `resume.yaml` and the generated `resume.pdf`.
 - `.github/workflows/` contains CI, security scanning, GitHub Pages deployment, release drafting, labeler, and Docker image workflows.
 - `docker/` and `docker-compose.yaml` contain the production Docker setup.

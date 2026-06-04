@@ -30,7 +30,11 @@ Section order follows YAML key order. `loadResumeData()` stores `Object.keys(cv.
 
 List-like web custom fields must be comma-separated strings in YAML. `keywords`, `roles`, and `courses` are normalized into arrays at runtime; YAML lists can break rendercv's Typst template rendering.
 
-`App.tsx` lazy-loads route pages. Resume-specific rendering and the `js-yaml` parser should stay out of the home page's initial route bundle.
+The UI is built on HeroUI v3 (`@heroui/react` + `@heroui/styles`, React 19, Tailwind CSS v4). There is no provider; `src/styles/globals.css` just imports Tailwind then `@heroui/styles`. Theming uses HeroUI's semantic tokens (`bg-background`, `text-foreground`, `text-muted`, `border-border`, `bg-default`).
+
+Dark mode is class plus `data-theme` on `<html>`, managed by `useTheme` from `@heroui/react` (localStorage key `heroui-theme`). An inline script in `index.html` syncs the persisted theme before first paint; keep it aligned with the hook's storage key.
+
+`App.tsx` lazy-loads route pages. Resume-specific rendering, the `js-yaml` parser, and resume-only HeroUI components (Avatar, Chip, Alert, Skeleton) should stay out of the home page's initial route bundle.
 
 ## Gotchas
 
