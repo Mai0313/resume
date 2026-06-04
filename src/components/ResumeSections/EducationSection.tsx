@@ -2,6 +2,7 @@ import type { EducationEntry } from "@/utils/resume";
 
 import React from "react";
 import { Variants } from "framer-motion";
+import { Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
@@ -42,12 +43,18 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
 
             {edu.courses && edu.courses.length > 0 && (
               <div className="border-l border-border pl-4">
-                <div className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">
+                <Typography
+                  className="mb-2 text-xs font-medium uppercase leading-4 tracking-wider text-muted"
+                  type="body-xs"
+                >
                   Coursework
-                </div>
-                <p className="text-sm leading-relaxed text-muted">
+                </Typography>
+                <Typography
+                  className="text-sm leading-relaxed text-muted"
+                  type="body-sm"
+                >
                   {formatList(edu.courses)}
-                </p>
+                </Typography>
               </div>
             )}
           </ItemCard>

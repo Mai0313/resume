@@ -1,5 +1,8 @@
+import type { ComponentPropsWithRef } from "react";
+
 import { lazy, Suspense } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { Link, Typography } from "@heroui/react";
 
 import DecryptedText from "@/components/DecryptedText/DecryptedText";
 import {
@@ -34,8 +37,9 @@ export default function IndexPage() {
         />
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-24 pt-32 sm:pt-40">
-          <h1
+          <Typography.Heading
             className="mb-12 font-bold leading-[1.02] tracking-tight"
+            level={1}
             style={{ fontSize: "clamp(3.25rem, 10vw, 7rem)" }}
           >
             <DecryptedText
@@ -45,17 +49,26 @@ export default function IndexPage() {
               speed={55}
               text={env.WEBSITE_TITLE}
             />
-          </h1>
+          </Typography.Heading>
 
           <div className="flex flex-wrap items-center gap-3">
             {resumeAvailable && (
-              <RouterLink className="button button--primary" to="/resume">
+              <Link
+                className="button button--primary gap-2"
+                href="/resume"
+                render={(props) => (
+                  <RouterLink
+                    {...(props as ComponentPropsWithRef<"a">)}
+                    to="/resume"
+                  />
+                )}
+              >
                 View Resume
                 <ArrowRightIcon />
-              </RouterLink>
+              </Link>
             )}
-            <a
-              className="button button--outline"
+            <Link
+              className="button button--outline gap-2"
               href={siteConfig.links.github}
               rel="noopener noreferrer"
               target="_blank"
@@ -63,7 +76,7 @@ export default function IndexPage() {
               <GitHubIcon />
               GitHub
               <ArrowUpRightIcon size={16} />
-            </a>
+            </Link>
           </div>
         </div>
       </section>

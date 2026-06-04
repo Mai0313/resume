@@ -1,6 +1,7 @@
 import type { LoadedResumeData } from "@/utils/resume";
 
 import { motion } from "framer-motion";
+import { Typography } from "@heroui/react";
 
 import { ResumeHeader } from "./ResumeHeader";
 import { findLanguagesSection } from "./ResumeSections/languages";
@@ -15,13 +16,16 @@ interface ResumeContentProps {
 function InvalidResumeData() {
   return (
     <div className="mx-auto max-w-2xl px-6 py-32 text-center">
-      <h3 className="mb-3 text-3xl font-semibold text-foreground">
+      <Typography.Heading
+        className="mb-3 text-3xl font-semibold tracking-normal text-foreground"
+        level={3}
+      >
         Invalid resume data
-      </h3>
-      <p className="text-muted">
-        The resume file is missing a <code className="font-mono">cv.name</code>{" "}
-        field. Check <code className="font-mono">public/resume.yaml</code>.
-      </p>
+      </Typography.Heading>
+      <Typography className="text-base leading-6 text-muted" type="body">
+        The resume file is missing a <Typography.Code>cv.name</Typography.Code>{" "}
+        field. Check <Typography.Code>public/resume.yaml</Typography.Code>.
+      </Typography>
     </div>
   );
 }

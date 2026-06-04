@@ -1,6 +1,6 @@
 import React from "react";
 import { Variants } from "framer-motion";
-import { Link } from "@heroui/react";
+import { Link, Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
@@ -32,11 +32,17 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
           return (
             <ItemCard key={`${sectionName}-${pub.title || "unknown"}-${index}`}>
               <div className="grid grid-cols-[auto_1fr_auto] items-baseline gap-4 md:gap-6">
-                <span className="font-mono text-xs text-muted">
+                <Typography
+                  className="font-mono text-xs leading-4 text-muted"
+                  type="body-xs"
+                >
                   {String(index + 1).padStart(2, "0")}
-                </span>
+                </Typography>
                 <div>
-                  <h3 className="text-lg font-semibold leading-snug text-foreground">
+                  <Typography.Heading
+                    className="text-lg font-semibold leading-snug tracking-normal text-foreground"
+                    level={3}
+                  >
                     <ExternalLink
                       className="text-foreground"
                       showIcon={false}
@@ -44,12 +50,20 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                     >
                       {pub.title}
                     </ExternalLink>
-                  </h3>
+                  </Typography.Heading>
                   {meta && (
-                    <div className="mt-2 text-xs text-muted">{meta}</div>
+                    <Typography
+                      className="mt-2 text-xs leading-4 text-muted"
+                      type="body-xs"
+                    >
+                      {meta}
+                    </Typography>
                   )}
                   {pub.authors && pub.authors.length > 0 && (
-                    <p className="mt-3 text-sm text-muted">
+                    <Typography
+                      className="mt-3 text-sm leading-5 text-muted"
+                      type="body-sm"
+                    >
                       {pub.authors.map((author, i) => {
                         const bold = author.match(/^\*\*(.+)\*\*$/);
 
@@ -68,7 +82,7 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                           </React.Fragment>
                         );
                       })}
-                    </p>
+                    </Typography>
                   )}
                   <SummaryText className="mt-4" text={pub.summary} />
                 </div>

@@ -1,7 +1,7 @@
 import type { CVData } from "@/utils/resume";
 import type { LanguagesSection } from "@/components/ResumeSections/languages";
 
-import { Avatar, Chip, Link } from "@heroui/react";
+import { Avatar, Chip, Link, Typography } from "@heroui/react";
 
 import { ExternalLink } from "@/components/shared";
 import { envHelpers } from "@/utils/env";
@@ -57,20 +57,38 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
             </Chip>
           </div>
 
-          <h1 className="mb-4 text-5xl font-bold tracking-tight text-foreground md:text-7xl">
+          <Typography.Heading
+            className="mb-4 text-5xl font-bold tracking-tight text-foreground md:text-7xl"
+            level={1}
+          >
             {cv.name}
-          </h1>
+          </Typography.Heading>
 
           {cv.headline && (
-            <p className="mb-10 text-xl text-muted md:text-2xl">
+            <Typography
+              className="mb-10 text-xl leading-7 text-muted md:text-2xl md:leading-8"
+              type="body"
+            >
               {cv.headline}
-            </p>
+            </Typography>
           )}
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
-            {cv.location && <span>{cv.location}</span>}
+            {cv.location && (
+              <Typography
+                className="text-sm leading-5 text-muted"
+                type="body-sm"
+              >
+                {cv.location}
+              </Typography>
+            )}
             {cv.location && cv.email && (
-              <span className="text-muted/50">·</span>
+              <Typography
+                className="text-sm leading-5 text-muted/50"
+                type="body-sm"
+              >
+                ·
+              </Typography>
             )}
             {cv.email && (
               <Link className="text-sm" href={`mailto:${cv.email}`}>
@@ -107,9 +125,12 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
 
       {languages && languages.entries.length > 0 && (
         <div className="mt-10 grid grid-cols-[auto_1fr] items-center gap-x-8 border-t border-border pt-6">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+          <Typography
+            className="text-xs font-semibold uppercase leading-4 tracking-wider text-muted"
+            type="body-xs"
+          >
             Languages
-          </span>
+          </Typography>
           <div className="flex flex-wrap gap-1.5">
             {languages.entries.map((lang, index) => (
               <Chip

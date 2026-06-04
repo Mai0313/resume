@@ -1,5 +1,5 @@
 import { Component, ReactNode, ErrorInfo } from "react";
-import { Button, Card } from "@heroui/react";
+import { Button, Card, Typography } from "@heroui/react";
 
 interface Props {
   children: ReactNode;
@@ -67,9 +67,12 @@ class ErrorBoundary extends Component<Props, State> {
 
             {this.state.error && (
               <Card.Content>
-                <p className="break-all rounded-lg bg-default p-3 font-mono text-xs text-foreground">
+                <Typography
+                  className="break-all rounded-lg bg-default p-3 font-mono text-xs leading-4 text-foreground"
+                  type="body-xs"
+                >
                   {this.state.error.toString()}
-                </p>
+                </Typography>
                 {import.meta.env.DEV && this.state.errorInfo && (
                   <details className="mt-4">
                     <summary className="cursor-pointer text-sm font-medium text-muted">

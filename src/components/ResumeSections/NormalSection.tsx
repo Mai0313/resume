@@ -2,7 +2,7 @@ import type { NormalEntry } from "@/utils/resume";
 
 import React from "react";
 import { Variants } from "framer-motion";
-import { Chip } from "@heroui/react";
+import { Chip, Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
@@ -41,18 +41,29 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
             <ItemCard key={`${sectionName}-${index}-${entry.name || ""}`}>
               <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-6">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-foreground">
+                  <Typography.Heading
+                    className="text-lg font-semibold tracking-normal text-foreground"
+                    level={3}
+                  >
                     <ExternalLink className="text-foreground" url={entry.url}>
                       {entry.name}
                     </ExternalLink>
-                  </h3>
+                  </Typography.Heading>
                   {metaLine && (
-                    <p className="mt-1.5 text-xs text-muted">{metaLine}</p>
+                    <Typography
+                      className="mt-1.5 text-xs leading-4 text-muted"
+                      type="body-xs"
+                    >
+                      {metaLine}
+                    </Typography>
                   )}
                   {entry.roles && entry.roles.length > 0 && (
-                    <p className="mt-0.5 text-sm text-muted">
+                    <Typography
+                      className="mt-0.5 text-sm leading-5 text-muted"
+                      type="body-sm"
+                    >
                       {formatList(entry.roles)}
-                    </p>
+                    </Typography>
                   )}
                 </div>
                 <div className="shrink-0">

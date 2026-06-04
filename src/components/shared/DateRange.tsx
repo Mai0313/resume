@@ -1,5 +1,7 @@
 import type { FC } from "react";
 
+import { Typography } from "@heroui/react";
+
 import { cn } from "@/lib/utils";
 
 interface DateRangeProps {
@@ -23,5 +25,12 @@ export const DateRange: FC<DateRangeProps> = ({
   else if (startDate) text = startDate;
   else if (endDate) text = endDate;
 
-  return <span className={cn("text-xs text-muted", className)}>{text}</span>;
+  return (
+    <Typography
+      className={cn("text-xs leading-4 text-muted", className)}
+      type="body-xs"
+    >
+      {text}
+    </Typography>
+  );
 };

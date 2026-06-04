@@ -1,5 +1,6 @@
 import React from "react";
 import { Variants } from "framer-motion";
+import { Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
@@ -20,12 +21,13 @@ export const TextSection: React.FC<TextSectionProps> = ({
     <SectionCard itemVariants={itemVariants} title={displayTitle}>
       <div className="max-w-3xl space-y-4">
         {entries?.map((text, index) => (
-          <p
+          <Typography
             key={`${sectionName}-text-${index}`}
             className="text-sm leading-relaxed text-muted"
+            type="body-sm"
           >
             {text}
-          </p>
+          </Typography>
         ))}
       </div>
     </SectionCard>
