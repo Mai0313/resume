@@ -1,7 +1,6 @@
+import type { FC } from "react";
+import type { Variants } from "framer-motion";
 import type { ExperienceEntry } from "@/utils/resume";
-
-import React from "react";
-import { Variants } from "framer-motion";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
@@ -18,7 +17,7 @@ interface ExperienceSectionProps {
   itemVariants: Variants;
 }
 
-export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
+export const ExperienceSection: FC<ExperienceSectionProps> = ({
   entries,
   sectionName,
   itemVariants,

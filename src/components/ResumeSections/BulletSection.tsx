@@ -1,7 +1,6 @@
+import type { FC } from "react";
+import type { Variants } from "framer-motion";
 import type { BulletEntry } from "@/utils/resume";
-
-import React from "react";
-import { Variants } from "framer-motion";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
@@ -13,7 +12,7 @@ interface BulletSectionProps {
   itemVariants: Variants;
 }
 
-export const BulletSection: React.FC<BulletSectionProps> = ({
+export const BulletSection: FC<BulletSectionProps> = ({
   entries,
   sectionName,
   itemVariants,

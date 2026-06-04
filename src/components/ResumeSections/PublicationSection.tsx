@@ -1,11 +1,13 @@
-import React from "react";
-import { Variants } from "framer-motion";
+import type { FC } from "react";
+import type { Variants } from "framer-motion";
+import type { PublicationEntry } from "@/utils/resume";
+
+import { Fragment } from "react";
 import { Link, Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
 import { ItemCard, ExternalLink, SummaryText } from "@/components/shared";
-import { PublicationEntry } from "@/utils/resume";
 import { formatList } from "@/lib/utils";
 
 interface PublicationSectionProps {
@@ -14,7 +16,7 @@ interface PublicationSectionProps {
   itemVariants: Variants;
 }
 
-export const PublicationSection: React.FC<PublicationSectionProps> = ({
+export const PublicationSection: FC<PublicationSectionProps> = ({
   entries,
   sectionName,
   itemVariants,
@@ -68,7 +70,7 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                         const bold = author.match(/^\*\*(.+)\*\*$/);
 
                         return (
-                          <React.Fragment key={i}>
+                          <Fragment key={i}>
                             {i > 0 && (
                               <span className="text-muted/60"> · </span>
                             )}
@@ -79,7 +81,7 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                             ) : (
                               author
                             )}
-                          </React.Fragment>
+                          </Fragment>
                         );
                       })}
                     </Typography>

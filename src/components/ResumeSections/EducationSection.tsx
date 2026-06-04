@@ -1,7 +1,7 @@
+import type { FC } from "react";
+import type { Variants } from "framer-motion";
 import type { EducationEntry } from "@/utils/resume";
 
-import React from "react";
-import { Variants } from "framer-motion";
 import { Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
@@ -15,7 +15,7 @@ interface EducationSectionProps {
   itemVariants: Variants;
 }
 
-export const EducationSection: React.FC<EducationSectionProps> = ({
+export const EducationSection: FC<EducationSectionProps> = ({
   entries,
   sectionName,
   itemVariants,

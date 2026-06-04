@@ -1,7 +1,7 @@
+import type { FC } from "react";
+import type { Variants } from "framer-motion";
 import type { OneLineEntry } from "@/utils/resume";
 
-import React from "react";
-import { Variants } from "framer-motion";
 import { Chip, Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
@@ -17,7 +17,7 @@ interface OneLineSectionProps {
  * - With keywords (Skills/Interests): label + level + keyword chips
  * - Without keywords (Languages-like): compact label · details pairs
  */
-export const OneLineSection: React.FC<OneLineSectionProps> = ({
+export const OneLineSection: FC<OneLineSectionProps> = ({
   entries,
   sectionName,
   itemVariants,

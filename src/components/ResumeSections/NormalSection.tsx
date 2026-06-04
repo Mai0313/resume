@@ -1,7 +1,7 @@
+import type { FC } from "react";
+import type { Variants } from "framer-motion";
 import type { NormalEntry } from "@/utils/resume";
 
-import React from "react";
-import { Variants } from "framer-motion";
 import { Chip, Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
@@ -21,7 +21,7 @@ interface NormalSectionProps {
   itemVariants: Variants;
 }
 
-export const NormalSection: React.FC<NormalSectionProps> = ({
+export const NormalSection: FC<NormalSectionProps> = ({
   entries,
   sectionName,
   itemVariants,
