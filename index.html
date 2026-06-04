@@ -3,6 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <script>
+      // Apply the persisted theme before first paint to avoid a flash of the
+      // wrong theme. Mirrors the storage key used by HeroUI's useTheme hook.
+      (function () {
+        try {
+          var stored = localStorage.getItem("heroui-theme") || "dark";
+          var theme =
+            stored === "system"
+              ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light"
+              : stored;
+          var root = document.documentElement;
+
+          root.classList.remove("light", "dark");
+          root.classList.add(theme);
+          root.setAttribute("data-theme", theme);
+        } catch (e) {
+          /* keep the static dark default */
+        }
+      })();
+    </script>
     <meta
       content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
       name="viewport"
