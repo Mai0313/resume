@@ -11,6 +11,9 @@
           var stored = localStorage.getItem("heroui-theme");
 
           if (stored !== "light" && stored !== "dark" && stored !== "system") {
+            // Drop corrupted values so HeroUI's useTheme falls back to its
+            // default instead of re-applying the bad value after mount.
+            if (stored !== null) localStorage.removeItem("heroui-theme");
             stored = "dark";
           }
           var theme =
