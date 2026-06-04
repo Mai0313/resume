@@ -10,14 +10,13 @@ import { siteConfig } from "@/config/site";
 const tabs = [{ label: "Home", href: "/" }, ...siteConfig.navItems];
 
 export const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(() => window.scrollY > 24);
   const { resolvedTheme, setTheme } = useTheme("dark");
   const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 24);
 
-    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", onScroll);
