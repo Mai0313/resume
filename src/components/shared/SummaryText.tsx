@@ -1,5 +1,7 @@
 import type { FC } from "react";
 
+import { Typography } from "@heroui/react";
+
 import { cn } from "@/lib/utils";
 
 interface SummaryTextProps {
@@ -21,10 +23,11 @@ export const SummaryText: FC<SummaryTextProps> = ({
   }
 
   return (
-    <p
+    <Typography
       className={cn("max-w-3xl text-sm leading-relaxed text-muted", className)}
+      type="body-sm"
     >
       {text}
-    </p>
+    </Typography>
   );
 };

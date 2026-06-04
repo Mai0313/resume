@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Alert, Card, Skeleton } from "@heroui/react";
+import { Alert, Card, Skeleton, Typography } from "@heroui/react";
 
 import { ResumeContent } from "../components/ResumeContent";
 import { loadResumeData, type LoadedResumeData } from "../utils/resume";
@@ -80,19 +80,21 @@ export default function ResumePage() {
               <div className="space-y-2.5 font-mono text-xs">
                 <div>
                   <span className="text-muted">local &nbsp;</span>
-                  <code className="text-foreground">resume.yaml</code>
+                  <Typography.Code className="text-xs text-foreground">
+                    resume.yaml
+                  </Typography.Code>
                 </div>
                 <div>
                   <span className="text-muted">gist &nbsp;&nbsp;</span>
-                  <code className="break-all text-foreground">
+                  <Typography.Code className="break-all text-xs text-foreground">
                     https://gist.github.com/user/id
-                  </code>
+                  </Typography.Code>
                 </div>
                 <div>
                   <span className="text-muted">url &nbsp;&nbsp;&nbsp;</span>
-                  <code className="break-all text-foreground">
+                  <Typography.Code className="break-all text-xs text-foreground">
                     https://raw.githubusercontent.com/user/repo/main/resume.yaml
-                  </code>
+                  </Typography.Code>
                 </div>
               </div>
             </Card.Content>

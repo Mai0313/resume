@@ -1,5 +1,7 @@
 import type { FC, ReactNode } from "react";
 
+import { Typography } from "@heroui/react";
+
 import { DateRange } from "./DateRange";
 import { ExternalLink } from "./ExternalLink";
 
@@ -36,17 +38,32 @@ export const EntryHeader: FC<EntryHeaderProps> = ({
     )}
   >
     <div className="flex-1">
-      <h3 className="text-lg font-semibold text-foreground">
+      <Typography.Heading
+        className="text-lg font-semibold tracking-normal text-foreground"
+        level={3}
+      >
         <ExternalLink className="text-foreground" showIcon={false} url={url}>
           {title}
         </ExternalLink>
-      </h3>
-      {subtitle && <p className="mt-0.5 text-sm text-muted">{subtitle}</p>}
+      </Typography.Heading>
+      {subtitle && (
+        <Typography
+          className="mt-0.5 text-sm leading-5 text-muted"
+          type="body-sm"
+        >
+          {subtitle}
+        </Typography>
+      )}
     </div>
     <div className="flex shrink-0 flex-col items-start md:items-end">
       <DateRange endDate={endDate} startDate={startDate} />
       {rightMeta && (
-        <span className="mt-1 text-xs text-muted">{rightMeta}</span>
+        <Typography
+          className="mt-1 text-xs leading-4 text-muted"
+          type="body-xs"
+        >
+          {rightMeta}
+        </Typography>
       )}
     </div>
   </div>

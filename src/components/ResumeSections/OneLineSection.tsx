@@ -2,7 +2,7 @@ import type { OneLineEntry } from "@/utils/resume";
 
 import React from "react";
 import { Variants } from "framer-motion";
-import { Chip } from "@heroui/react";
+import { Chip, Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
@@ -38,13 +38,19 @@ export const OneLineSection: React.FC<OneLineSectionProps> = ({
               className="py-6"
             >
               <div className="mb-3 flex items-baseline justify-between gap-4">
-                <h3 className="text-base font-semibold text-foreground">
+                <Typography.Heading
+                  className="text-base font-semibold tracking-normal text-foreground"
+                  level={3}
+                >
                   {entry.label}
-                </h3>
+                </Typography.Heading>
                 {entry.details && (
-                  <span className="shrink-0 text-xs text-muted">
+                  <Typography
+                    className="shrink-0 text-xs leading-4 text-muted"
+                    type="body-xs"
+                  >
                     {entry.details}
-                  </span>
+                  </Typography>
                 )}
               </div>
               {entry.keywords && entry.keywords.length > 0 && (
@@ -66,9 +72,19 @@ export const OneLineSection: React.FC<OneLineSectionProps> = ({
               key={`${sectionName}-${entry.label || "unknown"}-${index}`}
               className="flex items-baseline justify-between gap-3 border-b border-border py-3"
             >
-              <span className="text-sm text-foreground">{entry.label}</span>
+              <Typography
+                className="text-sm leading-5 text-foreground"
+                type="body-sm"
+              >
+                {entry.label}
+              </Typography>
               {entry.details && (
-                <span className="text-xs text-muted">{entry.details}</span>
+                <Typography
+                  className="text-xs leading-4 text-muted"
+                  type="body-xs"
+                >
+                  {entry.details}
+                </Typography>
               )}
             </div>
           ))}
