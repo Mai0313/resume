@@ -10,7 +10,6 @@ yarn build            # tsc && vite build
 yarn check            # tsc --noEmit && prettier --write . && eslint --fix
 yarn type-check       # tsc --noEmit
 yarn preview          # preview production build
-yarn deploy           # build + gh-pages deploy
 
 make pdf              # regenerate public/resume.pdf from public/resume.yaml via uvx rendercv
 make run              # yarn dev

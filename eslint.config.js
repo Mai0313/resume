@@ -15,7 +15,6 @@ export default defineConfig([
     "**/node_modules",
     "**/coverage",
     "**/.DS_Store",
-    "**/.next",
     "**/build",
   ]),
   {
@@ -84,13 +83,6 @@ export default defineConfig([
             "parent",
             "sibling",
             "index",
-          ],
-          "pathGroups": [
-            {
-              pattern: "~/**",
-              group: "external",
-              position: "after",
-            },
           ],
           "newlines-between": "always",
         },
