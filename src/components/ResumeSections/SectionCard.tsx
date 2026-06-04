@@ -4,9 +4,7 @@ import { motion, Variants } from "framer-motion";
 interface SectionCardProps {
   title: string;
   itemVariants: Variants;
-  sectionKey: string;
   children: ReactNode;
-  data?: unknown[];
 }
 
 /**
@@ -16,20 +14,10 @@ interface SectionCardProps {
 export const SectionCard: React.FC<SectionCardProps> = ({
   title,
   itemVariants,
-  sectionKey,
   children,
-  data,
 }) => {
-  if (data !== undefined && (!data || data.length === 0)) {
-    return null;
-  }
-
   return (
-    <motion.section
-      key={sectionKey}
-      className="scroll-mt-24"
-      variants={itemVariants}
-    >
+    <motion.section className="scroll-mt-24" variants={itemVariants}>
       <div className="mb-8 flex items-baseline gap-4">
         <h2 className="label-mono text-fg">{title}</h2>
         <span className="h-px flex-1 bg-border" />

@@ -26,12 +26,7 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard
-      data={entries}
-      itemVariants={itemVariants}
-      sectionKey={sectionName}
-      title={displayTitle}
-    >
+    <SectionCard itemVariants={itemVariants} title={displayTitle}>
       <div className="divide-y divide-border">
         {entries?.map((pub, index) => {
           const url =

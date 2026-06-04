@@ -6,7 +6,7 @@ const LIST_FIELDS = ["keywords", "roles", "courses"] as const;
  * Normalize a field that may arrive as a comma-separated string or as an array.
  * Missing or unsupported values return undefined so callers can delete them.
  */
-export function normalizeListField(value: unknown): string[] | undefined {
+function normalizeListField(value: unknown): string[] | undefined {
   if (value == null) {
     return undefined;
   }

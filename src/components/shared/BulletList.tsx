@@ -4,22 +4,16 @@ import { cn } from "@/lib/utils";
 
 interface BulletListProps {
   items: string[];
-  title?: string;
   className?: string;
 }
 
-export const BulletList: FC<BulletListProps> = ({
-  items,
-  title,
-  className = "",
-}) => {
+export const BulletList: FC<BulletListProps> = ({ items, className = "" }) => {
   if (!items || items.length === 0) {
     return null;
   }
 
   return (
     <div className={className}>
-      {title && <h4 className="label-mono mb-3 text-fg-subtle">{title}</h4>}
       <ul className="space-y-2.5">
         {items.map((item, index) => (
           <li

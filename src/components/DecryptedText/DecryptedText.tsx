@@ -3,9 +3,9 @@ import {
   useState,
   useRef,
   useCallback,
+  type ComponentPropsWithoutRef,
   type CSSProperties,
 } from "react";
-import { motion, type HTMLMotionProps } from "framer-motion";
 
 type RevealDirection = "start" | "end" | "center";
 
@@ -18,7 +18,7 @@ interface DecryptedTextOwnProps {
 }
 
 type DecryptedTextProps = DecryptedTextOwnProps &
-  Omit<HTMLMotionProps<"span">, keyof DecryptedTextOwnProps>;
+  Omit<ComponentPropsWithoutRef<"span">, keyof DecryptedTextOwnProps>;
 
 const AVAILABLE_CHARS =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+".split("");
@@ -174,7 +174,7 @@ export default function DecryptedText({
   }, [hasAnimated, triggerDecrypt]);
 
   return (
-    <motion.span ref={containerRef} style={styles.wrapper} {...props}>
+    <span ref={containerRef} style={styles.wrapper} {...props}>
       <span style={styles.srOnly}>{displayText}</span>
 
       <span aria-hidden="true">
@@ -191,6 +191,6 @@ export default function DecryptedText({
           );
         })}
       </span>
-    </motion.span>
+    </span>
   );
 }

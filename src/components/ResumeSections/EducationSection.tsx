@@ -22,12 +22,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard
-      data={entries}
-      itemVariants={itemVariants}
-      sectionKey={sectionName}
-      title={displayTitle}
-    >
+    <SectionCard itemVariants={itemVariants} title={displayTitle}>
       <div className="divide-y divide-border">
         {entries?.map((edu, index) => (
           <ItemCard
