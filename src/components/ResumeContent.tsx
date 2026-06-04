@@ -1,6 +1,6 @@
 import type { LoadedResumeData } from "@/utils/resume";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 import { ResumeHeader } from "./ResumeHeader";
 import { findLanguagesSection } from "./ResumeSections/languages";
@@ -18,15 +18,15 @@ export const ResumeContent = ({ data }: ResumeContentProps) => {
   const languages = findLanguagesSection(cv.sections);
 
   return (
-    <motion.div
+    <m.div
       animate="visible"
       className="mx-auto max-w-4xl px-6 pb-24 pt-32 sm:pt-40"
       initial="hidden"
       variants={containerVariants}
     >
-      <motion.div variants={itemVariants}>
+      <m.div variants={itemVariants}>
         <ResumeHeader cv={cv} languages={languages} />
-      </motion.div>
+      </m.div>
 
       <div className="space-y-20 md:space-y-24">
         {data.sectionOrder.map((sectionName) => {
@@ -44,6 +44,6 @@ export const ResumeContent = ({ data }: ResumeContentProps) => {
           );
         })}
       </div>
-    </motion.div>
+    </m.div>
   );
 };

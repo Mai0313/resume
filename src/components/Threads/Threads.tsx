@@ -187,7 +187,13 @@ export default function Threads({
       animationFrameId.current = requestAnimationFrame(update);
     };
 
-    animationFrameId.current = requestAnimationFrame(update);
+    // Respect prefers-reduced-motion: draw a single static frame instead of
+    // running the animation loop.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      renderer.render({ scene: mesh });
+    } else {
+      animationFrameId.current = requestAnimationFrame(update);
+    }
 
     return () => {
       if (animationFrameId.current) {

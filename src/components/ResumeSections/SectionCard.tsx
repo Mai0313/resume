@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { motion, Variants } from "framer-motion";
+import { m, Variants } from "framer-motion";
 import { Separator, Typography } from "@heroui/react";
 
 interface SectionCardProps {
@@ -18,7 +18,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
   children,
 }) => {
   return (
-    <motion.section className="scroll-mt-24" variants={itemVariants}>
+    <m.section className="scroll-mt-24" variants={itemVariants}>
       <div className="mb-8 flex items-center gap-4">
         <Typography.Heading
           className="text-xs font-semibold uppercase tracking-wider text-muted"
@@ -29,7 +29,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
         <Separator className="flex-1" />
       </div>
       <div>{children}</div>
-    </motion.section>
+    </m.section>
   );
 };
 
