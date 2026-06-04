@@ -23,12 +23,7 @@ export const BulletSection: React.FC<BulletSectionProps> = ({
   const items = entries?.map((entry) => entry.bullet) ?? [];
 
   return (
-    <SectionCard
-      data={entries}
-      itemVariants={itemVariants}
-      sectionKey={sectionName}
-      title={displayTitle}
-    >
+    <SectionCard itemVariants={itemVariants} title={displayTitle}>
       <BulletList items={items} />
     </SectionCard>
   );

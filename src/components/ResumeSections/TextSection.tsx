@@ -17,12 +17,7 @@ export const TextSection: React.FC<TextSectionProps> = ({
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard
-      data={entries}
-      itemVariants={itemVariants}
-      sectionKey={sectionName}
-      title={displayTitle}
-    >
+    <SectionCard itemVariants={itemVariants} title={displayTitle}>
       <div className="max-w-3xl space-y-4">
         {entries?.map((text, index) => (
           <p

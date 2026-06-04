@@ -28,12 +28,7 @@ export const NormalSection: React.FC<NormalSectionProps> = ({
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard
-      data={entries}
-      itemVariants={itemVariants}
-      sectionKey={sectionName}
-      title={displayTitle}
-    >
+    <SectionCard itemVariants={itemVariants} title={displayTitle}>
       <div className="divide-y divide-border">
         {entries?.map((entry, index) => {
           const metaLine = formatList([
