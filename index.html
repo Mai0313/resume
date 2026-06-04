@@ -8,7 +8,11 @@
       // wrong theme. Mirrors the storage key used by HeroUI's useTheme hook.
       (function () {
         try {
-          var stored = localStorage.getItem("heroui-theme") || "dark";
+          var stored = localStorage.getItem("heroui-theme");
+
+          if (stored !== "light" && stored !== "dark" && stored !== "system") {
+            stored = "dark";
+          }
           var theme =
             stored === "system"
               ? window.matchMedia("(prefers-color-scheme: dark)").matches
