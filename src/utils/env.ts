@@ -12,38 +12,6 @@ function isNonEmptyString(value: string | null | undefined): boolean {
   return value !== null && value !== undefined && value.trim() !== "";
 }
 
-// Environment variables that require values (will throw error if not provided)
-const REQUIRED_ENV_VARS = ["VITE_WEBSITE_TITLE"] as const;
-
-// Environment variables with default values
-const DEFAULT_VALUES = {
-  VITE_ROOT_PATH: "/",
-  VITE_RESUME_FILE: null,
-  VITE_RESUME_PDF_PATH: "/resume.pdf",
-} as const;
-
-/**
- * Validates that all required environment variables are set
- */
-function validateRequiredEnvVars(): void {
-  const missingVars: string[] = [];
-
-  for (const varName of REQUIRED_ENV_VARS) {
-    const value = import.meta.env[varName];
-
-    if (!value || value.trim() === "") {
-      missingVars.push(varName);
-    }
-  }
-
-  if (missingVars.length > 0) {
-    throw new Error(
-      `Missing required environment variables: ${missingVars.join(", ")}\n` +
-        "Please check your .env file and ensure all required variables are set.",
-    );
-  }
-}
-
 /**
  * Unified environment variable getter with validation and defaults
  */
@@ -54,14 +22,14 @@ function getEnvVar<T extends keyof ImportMetaEnv>(
   const value = import.meta.env[varName];
 
   if (options.required && !isNonEmptyString(value)) {
-    throw new Error(`Required environment variable ${varName} is not set`);
+    throw new Error(
+      `Missing required environment variable: ${varName}\n` +
+        "Please check your .env file and ensure all required variables are set.",
+    );
   }
 
   return isNonEmptyString(value) ? value : (options.defaultValue ?? null);
 }
-
-// Validate required environment variables on module load
-validateRequiredEnvVars();
 
 // Exported environment variables with proper validation and defaults
 export const env = {
@@ -69,15 +37,11 @@ export const env = {
   WEBSITE_TITLE: getEnvVar("VITE_WEBSITE_TITLE", { required: true })!,
 
   // Optional environment variables with defaults
-  RESUME_FILE: getEnvVar("VITE_RESUME_FILE", {
-    defaultValue: DEFAULT_VALUES.VITE_RESUME_FILE,
-  }),
-  ROOT_PATH: getEnvVar("VITE_ROOT_PATH", {
-    defaultValue: DEFAULT_VALUES.VITE_ROOT_PATH,
-  }),
+  RESUME_FILE: getEnvVar("VITE_RESUME_FILE"),
+  ROOT_PATH: getEnvVar("VITE_ROOT_PATH", { defaultValue: "/" })!,
   RESUME_PDF_PATH: getEnvVar("VITE_RESUME_PDF_PATH", {
-    defaultValue: DEFAULT_VALUES.VITE_RESUME_PDF_PATH,
-  }),
+    defaultValue: "/resume.pdf",
+  })!,
 } as const;
 
 // Helper functions for specific use cases
@@ -86,7 +50,7 @@ export const envHelpers = {
    * Get the root path with fallback to default
    */
   getRootPath(): string {
-    return env.ROOT_PATH || "/";
+    return env.ROOT_PATH;
   },
 
   /**
@@ -109,22 +73,4 @@ export const envHelpers = {
 
     return env.RESUME_FILE!;
   },
-
-  /**
-   * Get resume PDF path with validation and formatting.
-   * Remote URLs are returned as-is; local paths are prefixed with
-   * VITE_ROOT_PATH so GitHub Pages subpath deploys resolve correctly.
-   */
-  getResumePdfPath(): string {
-    const path = env.RESUME_PDF_PATH || "/resume.pdf";
-
-    if (path.match(/^https?:\/\//)) return path;
-
-    const root = this.getRootPath().replace(/\/$/, "");
-    const cleanPath = path.replace(/^\//, "");
-
-    return root === "" ? `/${cleanPath}` : `${root}/${cleanPath}`;
-  },
 } as const;
-
-// Type exports for better TypeScript support

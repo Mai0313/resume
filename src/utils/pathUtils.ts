@@ -33,3 +33,12 @@ export const buildPath = (path: string): string => {
 export const getBasename = (): string => {
   return getRootPath() === "/" ? "" : getRootPath();
 };
+
+/**
+ * Resolve an asset reference that may be a remote URL or a local path.
+ * Remote URLs are returned as-is; local paths are prefixed with
+ * VITE_ROOT_PATH so GitHub Pages subpath deploys resolve correctly.
+ */
+export const resolveAssetPath = (pathOrUrl: string): string => {
+  return /^https?:\/\//.test(pathOrUrl) ? pathOrUrl : buildPath(pathOrUrl);
+};
