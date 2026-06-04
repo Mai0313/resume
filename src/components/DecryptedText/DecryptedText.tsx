@@ -2,10 +2,10 @@ import {
   useEffect,
   useState,
   useRef,
-  useCallback,
   type ComponentPropsWithoutRef,
   type CSSProperties,
 } from "react";
+import { useReducedMotion } from "framer-motion";
 
 type RevealDirection = "start" | "end" | "center";
 
@@ -40,9 +40,58 @@ const styles: Record<string, CSSProperties> = {
   },
 };
 
+function shuffleText(originalText: string, revealed: Set<number>): string {
+  return originalText
+    .split("")
+    .map((char, i) => {
+      if (char === " ") return " ";
+      if (revealed.has(i)) return originalText[i];
+
+      return AVAILABLE_CHARS[
+        Math.floor(Math.random() * AVAILABLE_CHARS.length)
+      ];
+    })
+    .join("");
+}
+
+function getNextIndex(
+  revealed: Set<number>,
+  textLength: number,
+  revealDirection: RevealDirection,
+): number {
+  switch (revealDirection) {
+    case "end":
+      return textLength - 1 - revealed.size;
+    case "center": {
+      const middle = Math.floor(textLength / 2);
+      const offset = Math.floor(revealed.size / 2);
+      const nextIndex =
+        revealed.size % 2 === 0 ? middle + offset : middle - offset - 1;
+
+      if (
+        nextIndex >= 0 &&
+        nextIndex < textLength &&
+        !revealed.has(nextIndex)
+      ) {
+        return nextIndex;
+      }
+
+      for (let i = 0; i < textLength; i++) {
+        if (!revealed.has(i)) return i;
+      }
+
+      return 0;
+    }
+    case "start":
+    default:
+      return revealed.size;
+  }
+}
+
 /**
  * Sequentially "decrypts" text when it scrolls into view: characters scramble
- * and then resolve one by one in `revealDirection` order.
+ * and then resolve one by one in `revealDirection` order. Respects
+ * prefers-reduced-motion by rendering the plain text without animating.
  */
 export default function DecryptedText({
   text,
@@ -52,130 +101,68 @@ export default function DecryptedText({
   encryptedClassName = "",
   ...props
 }: DecryptedTextProps) {
-  const [displayText, setDisplayText] = useState<string>(text);
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const [started, setStarted] = useState(false);
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(
     new Set(),
   );
-  const [hasAnimated, setHasAnimated] = useState<boolean>(false);
-
   const containerRef = useRef<HTMLSpanElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
-  const shuffleText = useCallback(
-    (originalText: string, currentRevealed: Set<number>) => {
-      return originalText
-        .split("")
-        .map((char, i) => {
-          if (char === " ") return " ";
-          if (currentRevealed.has(i)) return originalText[i];
-
-          return AVAILABLE_CHARS[
-            Math.floor(Math.random() * AVAILABLE_CHARS.length)
-          ];
-        })
-        .join("");
-    },
-    [],
-  );
-
-  const triggerDecrypt = useCallback(() => {
-    setRevealedIndices(new Set());
-    setIsAnimating(true);
-  }, []);
+  const isAnimating = started && revealedIndices.size < text.length;
+  // Derived on every render: each reveal tick re-renders, so the characters
+  // that are still encrypted keep scrambling until they resolve.
+  const displayText = isAnimating ? shuffleText(text, revealedIndices) : text;
 
   useEffect(() => {
     if (!isAnimating) return;
 
-    const getNextIndex = (revealedSet: Set<number>): number => {
-      const textLength = text.length;
-
-      switch (revealDirection) {
-        case "start":
-          return revealedSet.size;
-        case "end":
-          return textLength - 1 - revealedSet.size;
-        case "center": {
-          const middle = Math.floor(textLength / 2);
-          const offset = Math.floor(revealedSet.size / 2);
-          const nextIndex =
-            revealedSet.size % 2 === 0 ? middle + offset : middle - offset - 1;
-
-          if (
-            nextIndex >= 0 &&
-            nextIndex < textLength &&
-            !revealedSet.has(nextIndex)
-          ) {
-            return nextIndex;
-          }
-
-          for (let i = 0; i < textLength; i++) {
-            if (!revealedSet.has(i)) return i;
-          }
-
-          return 0;
-        }
-        default:
-          return revealedSet.size;
-      }
-    };
-
     const interval = setInterval(() => {
       setRevealedIndices((prevRevealed) => {
-        if (prevRevealed.size < text.length) {
-          const newRevealed = new Set(prevRevealed);
-
-          newRevealed.add(getNextIndex(prevRevealed));
-          setDisplayText(shuffleText(text, newRevealed));
-
-          return newRevealed;
+        if (prevRevealed.size >= text.length) {
+          return prevRevealed;
         }
 
-        clearInterval(interval);
-        setIsAnimating(false);
+        const newRevealed = new Set(prevRevealed);
 
-        return prevRevealed;
+        newRevealed.add(
+          getNextIndex(prevRevealed, text.length, revealDirection),
+        );
+
+        return newRevealed;
       });
     }, speed);
 
+    // Once every index is revealed, `isAnimating` derives to false and this
+    // cleanup stops the interval.
     return () => clearInterval(interval);
-  }, [isAnimating, text, speed, revealDirection, shuffleText]);
+  }, [isAnimating, text, speed, revealDirection]);
 
   useEffect(() => {
-    setDisplayText(text);
-    setRevealedIndices(new Set());
-  }, [text]);
+    if (prefersReducedMotion) return;
 
-  useEffect(() => {
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          triggerDecrypt();
-          setHasAnimated(true);
-        }
-      });
-    };
+    const target = containerRef.current;
 
-    const observer = new IntersectionObserver(observerCallback, {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
-    });
-    const currentRef = containerRef.current;
+    if (!target) return;
 
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+    // One-shot: decrypt on the first viewport entry, then disconnect.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
 
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [hasAnimated, triggerDecrypt]);
+        setStarted(true);
+        observer.disconnect();
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, [prefersReducedMotion]);
 
   return (
     <span ref={containerRef} style={styles.wrapper} {...props}>
-      <span style={styles.srOnly}>{displayText}</span>
+      <span style={styles.srOnly}>{text}</span>
 
       <span aria-hidden="true">
         {displayText.split("").map((char, index) => {
