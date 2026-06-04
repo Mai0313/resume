@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { m } from "framer-motion";
 import { Button, Separator, useTheme } from "@heroui/react";
@@ -9,18 +9,18 @@ import { siteConfig } from "@/config/site";
 
 const tabs = [{ label: "Home", href: "/" }, ...siteConfig.navItems];
 
+const subscribeToScroll = (callback: () => void) => {
+  window.addEventListener("scroll", callback, { passive: true });
+
+  return () => window.removeEventListener("scroll", callback);
+};
+
+const isPageScrolled = () => window.scrollY > 24;
+
 export const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(() => window.scrollY > 24);
+  const isScrolled = useSyncExternalStore(subscribeToScroll, isPageScrolled);
   const { resolvedTheme, setTheme } = useTheme("dark");
   const location = useLocation();
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const isDark = resolvedTheme !== "light";
 
