@@ -2,10 +2,9 @@ import type { OneLineEntry } from "@/utils/resume";
 
 import React from "react";
 import { Variants } from "framer-motion";
+import { Chip } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
-
-import { formatList } from "@/lib/utils";
 
 interface OneLineSectionProps {
   entries: OneLineEntry[] | undefined;
@@ -14,8 +13,8 @@ interface OneLineSectionProps {
 }
 
 /**
- * Oxide style for OneLineEntry sections.
- * - With keywords (Skills/Interests): label + level + middle-dot keyword list
+ * Layout for OneLineEntry sections.
+ * - With keywords (Skills/Interests): label + level + keyword chips
  * - Without keywords (Languages-like): compact label · details pairs
  */
 export const OneLineSection: React.FC<OneLineSectionProps> = ({
@@ -38,23 +37,24 @@ export const OneLineSection: React.FC<OneLineSectionProps> = ({
               key={`${sectionName}-${entry.label || "unknown"}-${index}`}
               className="py-6"
             >
-              <div className="mb-2 flex items-baseline justify-between gap-4">
-                <h3
-                  className="font-display text-lg leading-tight text-fg md:text-xl"
-                  style={{ fontVariationSettings: "'opsz' 48, 'SOFT' 40" }}
-                >
+              <div className="mb-3 flex items-baseline justify-between gap-4">
+                <h3 className="text-base font-semibold text-foreground">
                   {entry.label}
                 </h3>
                 {entry.details && (
-                  <span className="label-mono shrink-0 text-fg-subtle">
+                  <span className="shrink-0 text-xs text-muted">
                     {entry.details}
                   </span>
                 )}
               </div>
               {entry.keywords && entry.keywords.length > 0 && (
-                <p className="max-w-3xl text-[13.5px] leading-relaxed text-fg-muted">
-                  {formatList(entry.keywords)}
-                </p>
+                <div className="flex max-w-3xl flex-wrap gap-1.5">
+                  {entry.keywords.map((keyword) => (
+                    <Chip key={keyword} size="sm" variant="soft">
+                      {keyword}
+                    </Chip>
+                  ))}
+                </div>
               )}
             </div>
           ))}
@@ -66,11 +66,9 @@ export const OneLineSection: React.FC<OneLineSectionProps> = ({
               key={`${sectionName}-${entry.label || "unknown"}-${index}`}
               className="flex items-baseline justify-between gap-3 border-b border-border py-3"
             >
-              <span className="text-[15px] text-fg">{entry.label}</span>
+              <span className="text-sm text-foreground">{entry.label}</span>
               {entry.details && (
-                <span className="label-mono text-fg-subtle">
-                  {entry.details}
-                </span>
+                <span className="text-xs text-muted">{entry.details}</span>
               )}
             </div>
           ))}

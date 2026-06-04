@@ -22,7 +22,7 @@ export const TextSection: React.FC<TextSectionProps> = ({
         {entries?.map((text, index) => (
           <p
             key={`${sectionName}-text-${index}`}
-            className="text-[14.5px] leading-[1.65] text-fg-muted"
+            className="text-sm leading-relaxed text-muted"
           >
             {text}
           </p>

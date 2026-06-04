@@ -17,7 +17,7 @@ interface EntryHeaderProps {
 
 /**
  * Shared header row for Experience/Education-style entries:
- * a linked display title with optional subtitle on the left, and a
+ * a linked title with optional subtitle on the left, and a
  * date range with optional meta (location, grade) on the right.
  */
 export const EntryHeader: FC<EntryHeaderProps> = ({
@@ -36,22 +36,17 @@ export const EntryHeader: FC<EntryHeaderProps> = ({
     )}
   >
     <div className="flex-1">
-      <h3
-        className="font-display text-2xl leading-tight text-fg md:text-[1.75rem]"
-        style={{ fontVariationSettings: "'opsz' 48, 'SOFT' 40" }}
-      >
-        <ExternalLink showIcon={false} url={url}>
+      <h3 className="text-lg font-semibold text-foreground">
+        <ExternalLink className="text-foreground" showIcon={false} url={url}>
           {title}
         </ExternalLink>
       </h3>
-      {subtitle && (
-        <p className="mt-0.5 text-[15px] text-fg-muted">{subtitle}</p>
-      )}
+      {subtitle && <p className="mt-0.5 text-sm text-muted">{subtitle}</p>}
     </div>
     <div className="flex shrink-0 flex-col items-start md:items-end">
       <DateRange endDate={endDate} startDate={startDate} />
       {rightMeta && (
-        <span className="label-mono mt-1 text-fg-subtle">{rightMeta}</span>
+        <span className="mt-1 text-xs text-muted">{rightMeta}</span>
       )}
     </div>
   </div>

@@ -52,7 +52,9 @@ export const Navbar = () => {
                 key={tab.href}
                 className={cn(
                   "relative rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
-                  isActive ? "text-foreground" : "text-muted hover:text-foreground",
+                  isActive
+                    ? "text-foreground"
+                    : "text-muted hover:text-foreground",
                 )}
                 to={tab.href}
               >

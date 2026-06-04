@@ -1,14 +1,10 @@
 import React from "react";
 import { Variants } from "framer-motion";
+import { Link } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
-import {
-  ArrowUpRightIcon,
-  ItemCard,
-  ExternalLink,
-  SummaryText,
-} from "@/components/shared";
+import { ItemCard, ExternalLink, SummaryText } from "@/components/shared";
 import { PublicationEntry } from "@/utils/resume";
 import { formatList } from "@/lib/utils";
 
@@ -36,33 +32,36 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
           return (
             <ItemCard key={`${sectionName}-${pub.title || "unknown"}-${index}`}>
               <div className="grid grid-cols-[auto_1fr_auto] items-baseline gap-4 md:gap-6">
-                <span className="label-mono text-fg-subtle">
+                <span className="font-mono text-xs text-muted">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h3
-                    className="font-display text-xl leading-snug text-fg md:text-[1.5rem]"
-                    style={{ fontVariationSettings: "'opsz' 72, 'SOFT' 50" }}
-                  >
-                    <ExternalLink showIcon={false} url={url}>
+                  <h3 className="text-lg font-semibold leading-snug text-foreground">
+                    <ExternalLink
+                      className="text-foreground"
+                      showIcon={false}
+                      url={url}
+                    >
                       {pub.title}
                     </ExternalLink>
                   </h3>
                   {meta && (
-                    <div className="label-mono mt-2 text-fg-muted">{meta}</div>
+                    <div className="mt-2 text-xs text-muted">{meta}</div>
                   )}
                   {pub.authors && pub.authors.length > 0 && (
-                    <p className="mt-3 text-[13.5px] text-fg-muted">
+                    <p className="mt-3 text-sm text-muted">
                       {pub.authors.map((author, i) => {
                         const bold = author.match(/^\*\*(.+)\*\*$/);
 
                         return (
                           <React.Fragment key={i}>
                             {i > 0 && (
-                              <span className="text-fg-subtle"> · </span>
+                              <span className="text-muted/60"> · </span>
                             )}
                             {bold ? (
-                              <span className="text-fg">{bold[1]}</span>
+                              <span className="font-medium text-foreground">
+                                {bold[1]}
+                              </span>
                             ) : (
                               author
                             )}
@@ -74,15 +73,15 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                   <SummaryText className="mt-4" text={pub.summary} />
                 </div>
                 {url && (
-                  <a
+                  <Link
                     aria-label={`Open publication: ${pub.title}`}
-                    className="mt-1 text-fg-muted transition-colors hover:text-fg"
+                    className="mt-1"
                     href={url}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <ArrowUpRightIcon size={16} />
-                  </a>
+                    <Link.Icon />
+                  </Link>
                 )}
               </div>
             </ItemCard>

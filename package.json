@@ -20,14 +20,12 @@
     "@heroui/react": "^3.1.0",
     "@heroui/styles": "^3.1.0",
     "@tailwindcss/vite": "^4.1.18",
-    "clsx": "2.1.1",
     "framer-motion": "^12.15.0",
     "js-yaml": "^4.1.0",
     "ogl": "^1.0.11",
     "react": "^19",
     "react-dom": "^19",
     "react-router-dom": "^7.15.0",
-    "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {

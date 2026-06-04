@@ -13,26 +13,14 @@ export const BulletList: FC<BulletListProps> = ({ items, className = "" }) => {
   }
 
   return (
-    <div className={className}>
-      <ul className="space-y-2.5">
-        {items.map((item, index) => (
-          <li
-            key={index}
-            className={cn(
-              "grid grid-cols-[auto_1fr] items-start gap-3",
-              "text-[14.5px] leading-[1.6] text-fg-muted",
-            )}
-          >
-            <span
-              aria-hidden="true"
-              className="label-mono mt-[0.55rem] text-fg-subtle"
-            >
-              &mdash;
-            </span>
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul
+      className={cn("list-disc space-y-2 pl-5 marker:text-muted/60", className)}
+    >
+      {items.map((item, index) => (
+        <li key={index} className="text-sm leading-relaxed text-muted">
+          {item}
+        </li>
+      ))}
+    </ul>
   );
 };
