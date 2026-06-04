@@ -74,7 +74,11 @@ export const PublicationSection: React.FC<PublicationSectionProps> = ({
                 </div>
                 {url && (
                   <Link
-                    aria-label={`Open publication: ${pub.title}`}
+                    aria-label={
+                      pub.title
+                        ? `Open publication: ${pub.title}`
+                        : "Open publication"
+                    }
                     className="mt-1"
                     href={url}
                     rel="noopener noreferrer"
