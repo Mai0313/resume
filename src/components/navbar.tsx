@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useTheme } from "@heroui/use-theme";
+import { Button, Separator, useTheme } from "@heroui/react";
 
 import { MoonIcon, SunIcon } from "@/components/shared";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ import { siteConfig } from "@/config/site";
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme("dark");
   const location = useLocation();
 
   const tabs = [{ label: "Home", href: "/" }, ...siteConfig.navItems];
@@ -28,7 +28,7 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isDark = theme !== "light";
+  const isDark = resolvedTheme !== "light";
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-5">
@@ -39,9 +39,7 @@ export const Navbar = () => {
         }}
         className={cn(
           "pointer-events-auto flex items-center gap-1 rounded-full border border-border bg-surface/70 backdrop-blur-xl transition-shadow duration-300",
-          isScrolled
-            ? "shadow-[0_8px_32px_-8px_rgba(0,0,0,0.25)]"
-            : "shadow-none",
+          isScrolled ? "shadow-lg" : "shadow-none",
         )}
         transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
@@ -53,14 +51,14 @@ export const Navbar = () => {
               <Link
                 key={tab.href}
                 className={cn(
-                  "relative rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors",
-                  isActive ? "text-fg" : "text-fg-muted hover:text-fg",
+                  "relative rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
+                  isActive ? "text-foreground" : "text-muted hover:text-foreground",
                 )}
                 to={tab.href}
               >
                 {isActive && (
                   <motion.span
-                    className="absolute inset-0 rounded-full bg-elevated"
+                    className="absolute inset-0 rounded-full bg-default"
                     layoutId="active-tab-pill"
                     transition={{
                       type: "spring",
@@ -75,25 +73,19 @@ export const Navbar = () => {
           })}
         </div>
 
-        <span className="mx-1 h-4 w-px bg-border" />
+        <Separator className="mx-1 h-4" orientation="vertical" />
 
         <div className="flex items-center gap-0.5 pr-1">
-          <button
+          <Button
+            isIconOnly
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            className="rounded-full p-2 text-fg-muted transition-colors hover:bg-elevated hover:text-fg"
-            type="button"
-            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className="rounded-full"
+            size="sm"
+            variant="ghost"
+            onPress={() => setTheme(isDark ? "light" : "dark")}
           >
-            {isMounted ? (
-              isDark ? (
-                <SunIcon />
-              ) : (
-                <MoonIcon />
-              )
-            ) : (
-              <div className="h-[18px] w-[18px]" />
-            )}
-          </button>
+            {isMounted ? isDark ? <SunIcon /> : <MoonIcon /> : null}
+          </Button>
         </div>
       </motion.nav>
     </header>

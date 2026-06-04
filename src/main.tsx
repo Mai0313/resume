@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import App from "./App.tsx";
-import { Provider } from "./provider.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 
 import { getBasename } from "@/utils/pathUtils";
@@ -13,9 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ErrorBoundary>
       <BrowserRouter basename={getBasename()}>
-        <Provider>
-          <App />
-        </Provider>
+        <App />
       </BrowserRouter>
     </ErrorBoundary>
   </React.StrictMode>,
