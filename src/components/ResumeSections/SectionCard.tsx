@@ -1,5 +1,7 @@
-import React, { ReactNode } from "react";
-import { motion, Variants } from "framer-motion";
+import type { FC, ReactNode } from "react";
+import type { Variants } from "framer-motion";
+
+import { m } from "framer-motion";
 import { Separator, Typography } from "@heroui/react";
 
 interface SectionCardProps {
@@ -12,13 +14,13 @@ interface SectionCardProps {
  * Section wrapper: an uppercase heading (HeroUI Typography rendered as h2)
  * followed by a full-width HeroUI Separator, then content.
  */
-export const SectionCard: React.FC<SectionCardProps> = ({
+export const SectionCard: FC<SectionCardProps> = ({
   title,
   itemVariants,
   children,
 }) => {
   return (
-    <motion.section className="scroll-mt-24" variants={itemVariants}>
+    <m.section className="scroll-mt-24" variants={itemVariants}>
       <div className="mb-8 flex items-center gap-4">
         <Typography.Heading
           className="text-xs font-semibold uppercase tracking-wider text-muted"
@@ -29,7 +31,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
         <Separator className="flex-1" />
       </div>
       <div>{children}</div>
-    </motion.section>
+    </m.section>
   );
 };
 

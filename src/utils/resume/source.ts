@@ -17,7 +17,7 @@ function isUrl(value: string): boolean {
  * - https://gist.github.com/username/gist_id
  * - https://gist.github.com/username/gist_id/raw/filename.yaml
  */
-export function convertGistToRawUrl(url: string): string {
+function convertGistToRawUrl(url: string): string {
   const gistMatch = url.match(
     /https:\/\/gist\.github\.com\/([^/]+)\/([a-f0-9]+)(?:\/raw\/(.+))?/,
   );

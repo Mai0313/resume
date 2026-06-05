@@ -1,5 +1,6 @@
-import React from "react";
-import { Variants } from "framer-motion";
+import type { FC } from "react";
+import type { Variants } from "framer-motion";
+
 import { Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
@@ -10,7 +11,7 @@ interface TextSectionProps {
   itemVariants: Variants;
 }
 
-export const TextSection: React.FC<TextSectionProps> = ({
+export const TextSection: FC<TextSectionProps> = ({
   entries,
   sectionName,
   itemVariants,

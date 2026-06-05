@@ -4,7 +4,8 @@ import type { LanguagesSection } from "@/components/ResumeSections/languages";
 import { Avatar, Chip, Link, Typography } from "@heroui/react";
 
 import { ExternalLink } from "@/components/shared";
-import { envHelpers } from "@/utils/env";
+import { env } from "@/utils/env";
+import { resolveAssetPath } from "@/utils/pathUtils";
 import { buildSocialUrl } from "@/utils/resume";
 
 interface ResumeHeaderProps {
@@ -44,7 +45,7 @@ function initials(name: string): string {
 }
 
 export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
-  const pdfPath = envHelpers.getResumePdfPath();
+  const pdfPath = resolveAssetPath(env.RESUME_PDF_PATH);
 
   return (
     <header className="mb-16 border-b border-border pb-14 md:mb-20 md:pb-20">

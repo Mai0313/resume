@@ -16,6 +16,8 @@ import { env, envHelpers } from "@/utils/env";
 
 const Threads = lazy(() => import("@/components/Threads/Threads"));
 
+const THREADS_COLOR: [number, number, number] = [1, 1, 1];
+
 export default function IndexPage() {
   const resumeAvailable = envHelpers.isResumeFileAvailable();
 
@@ -28,7 +30,7 @@ export default function IndexPage() {
           className="pointer-events-none absolute inset-0 opacity-[0.28]"
         >
           <Suspense fallback={null}>
-            <Threads amplitude={1.4} color={[1, 1, 1]} distance={0.25} />
+            <Threads amplitude={1.4} color={THREADS_COLOR} distance={0.25} />
           </Suspense>
         </div>
         <div

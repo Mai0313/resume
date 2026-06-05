@@ -30,7 +30,6 @@ yarn format:nofix     # prettier --check .
 yarn lint             # eslint --fix
 yarn lint:nofix       # eslint
 yarn check            # tsc --noEmit && prettier --write . && eslint --fix
-yarn deploy           # tsc && vite build && gh-pages -d dist
 
 make pdf              # regenerate public/resume.pdf from public/resume.yaml
 make run              # yarn dev
@@ -100,12 +99,7 @@ CI coverage:
 
 Releases are drafted automatically by `release_drafter.yml` on pushes to `main` or `master`. It uses `orhun/git-cliff-action` to generate the next tag and changelog body, then creates a draft GitHub release with `softprops/action-gh-release`.
 
-GitHub Pages deployment runs on pushes to `main`, `master`, and `v*` tags. Manual Pages deployment is available with:
-
-```bash
-yarn build
-yarn deploy
-```
+GitHub Pages deployment runs on pushes to `main`, `master`, and `v*` tags.
 
 ## Issues
 

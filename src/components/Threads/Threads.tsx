@@ -168,6 +168,12 @@ export default function Threads({
 
     const mesh = new Mesh(gl, { geometry, program });
 
+    // Respect prefers-reduced-motion: draw static frames instead of running
+    // the animation loop.
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     const resize = () => {
       const { clientWidth, clientHeight } = container;
 
@@ -175,6 +181,12 @@ export default function Threads({
       program.uniforms.iResolution.value.r = clientWidth;
       program.uniforms.iResolution.value.g = clientHeight;
       program.uniforms.iResolution.value.b = clientWidth / clientHeight;
+
+      // Without the animation loop nothing repaints after a resize, so
+      // render a frame here to keep the canvas in sync with its new size.
+      if (prefersReducedMotion) {
+        renderer.render({ scene: mesh });
+      }
     };
 
     window.addEventListener("resize", resize);
@@ -187,7 +199,9 @@ export default function Threads({
       animationFrameId.current = requestAnimationFrame(update);
     };
 
-    animationFrameId.current = requestAnimationFrame(update);
+    if (!prefersReducedMotion) {
+      animationFrameId.current = requestAnimationFrame(update);
+    }
 
     return () => {
       if (animationFrameId.current) {

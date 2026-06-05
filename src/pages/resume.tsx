@@ -1,36 +1,41 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Alert, Card, Skeleton, Typography } from "@heroui/react";
 
-import { ResumeContent } from "../components/ResumeContent";
-import { loadResumeData, type LoadedResumeData } from "../utils/resume";
-
+import { ResumeContent } from "@/components/ResumeContent";
+import { loadResumeData, type LoadedResumeData } from "@/utils/resume";
 import DefaultLayout from "@/layouts/default";
 
-function useResumeData() {
-  const [resumeData, setResumeData] = useState<LoadedResumeData | null>(null);
-  const [isLoadingResume, setIsLoadingResume] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+type ResumeState =
+  | { status: "loading" }
+  | { status: "error"; message: string }
+  | { status: "ready"; data: LoadedResumeData };
 
-  const loadResume = useCallback(async () => {
-    setIsLoadingResume(true);
-    setError(null);
-    try {
-      const data = await loadResumeData();
+function useResumeData(): ResumeState {
+  const [state, setState] = useState<ResumeState>({ status: "loading" });
 
-      if (!data || !data.cv || !data.cv.name) {
-        throw new Error("Resume data is incomplete or missing required fields");
-      }
+  useEffect(() => {
+    let cancelled = false;
 
-      setResumeData(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load resume");
-      setResumeData(null);
-    } finally {
-      setIsLoadingResume(false);
-    }
+    loadResumeData()
+      .then((data) => {
+        if (!cancelled) setState({ status: "ready", data });
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          setState({
+            status: "error",
+            message:
+              err instanceof Error ? err.message : "Failed to load resume",
+          });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  return { resumeData, isLoadingResume, loadResume, error };
+  return state;
 }
 
 function ResumeLoadingSkeleton() {
@@ -49,23 +54,19 @@ function ResumeLoadingSkeleton() {
 }
 
 export default function ResumePage() {
-  const { resumeData, isLoadingResume, loadResume, error } = useResumeData();
-
-  useEffect(() => {
-    loadResume();
-  }, [loadResume]);
+  const resume = useResumeData();
 
   return (
     <DefaultLayout>
-      {isLoadingResume ? (
+      {resume.status === "loading" ? (
         <ResumeLoadingSkeleton />
-      ) : error ? (
+      ) : resume.status === "error" ? (
         <div className="mx-auto max-w-2xl px-6 pb-24 pt-40">
           <Alert status="danger">
             <Alert.Indicator />
             <Alert.Content>
               <Alert.Title>Résumé loading failed</Alert.Title>
-              <Alert.Description>{error}</Alert.Description>
+              <Alert.Description>{resume.message}</Alert.Description>
             </Alert.Content>
           </Alert>
 
@@ -100,9 +101,9 @@ export default function ResumePage() {
             </Card.Content>
           </Card>
         </div>
-      ) : resumeData && resumeData.cv && resumeData.cv.name ? (
-        <ResumeContent data={resumeData} />
-      ) : null}
+      ) : (
+        <ResumeContent data={resume.data} />
+      )}
     </DefaultLayout>
   );
 }

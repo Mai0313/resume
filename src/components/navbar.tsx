@@ -1,38 +1,32 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Button, Separator, useTheme } from "@heroui/react";
 
 import { MoonIcon, SunIcon } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 
+const tabs = [{ label: "Home", href: "/" }, ...siteConfig.navItems];
+
+const subscribeToScroll = (callback: () => void) => {
+  window.addEventListener("scroll", callback, { passive: true });
+
+  return () => window.removeEventListener("scroll", callback);
+};
+
+const isPageScrolled = () => window.scrollY > 24;
+
 export const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const isScrolled = useSyncExternalStore(subscribeToScroll, isPageScrolled);
   const { resolvedTheme, setTheme } = useTheme("dark");
   const location = useLocation();
-
-  const tabs = [{ label: "Home", href: "/" }, ...siteConfig.navItems];
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const isDark = resolvedTheme !== "light";
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-5">
-      <motion.nav
+      <m.nav
         animate={{
           paddingTop: isScrolled ? 4 : 6,
           paddingBottom: isScrolled ? 4 : 6,
@@ -59,7 +53,7 @@ export const Navbar = () => {
                 to={tab.href}
               >
                 {isActive && (
-                  <motion.span
+                  <m.span
                     className="absolute inset-0 rounded-full bg-default"
                     layoutId="active-tab-pill"
                     transition={{
@@ -86,10 +80,10 @@ export const Navbar = () => {
             variant="ghost"
             onPress={() => setTheme(isDark ? "light" : "dark")}
           >
-            {isMounted ? isDark ? <SunIcon /> : <MoonIcon /> : null}
+            {isDark ? <SunIcon /> : <MoonIcon />}
           </Button>
         </div>
-      </motion.nav>
+      </m.nav>
     </header>
   );
 };

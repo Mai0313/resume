@@ -137,13 +137,6 @@ GitHub Pages：
 - Workflow 会跑 `make pdf`，设置 `VITE_ROOT_PATH=/${{ github.event.repository.name }}`，用 `yarn build` build，并通过 GitHub Pages 部署 `dist/`。
 - Repository settings 里的 Pages source 要设为 GitHub Actions。
 
-Manual GitHub Pages deployment：
-
-```bash
-yarn build
-yarn deploy
-```
-
 Vercel：
 
 - Import repository。
