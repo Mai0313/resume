@@ -44,7 +44,17 @@ function ResumeLoadingSkeleton() {
       <Skeleton className="h-6 w-44 rounded-full" />
       <Skeleton className="mt-8 h-14 w-2/3 rounded-lg" />
       <Skeleton className="mt-4 h-6 w-1/2 rounded-lg" />
-      <div className="mt-12 space-y-3">
+      <Skeleton className="mt-6 h-4 w-64 rounded-lg" />
+      <div className="mt-8 flex gap-5">
+        <Skeleton className="h-4 w-20 rounded-lg" />
+        <Skeleton className="h-4 w-20 rounded-lg" />
+        <Skeleton className="h-4 w-28 rounded-lg" />
+      </div>
+      <div className="mt-16 flex items-center gap-4">
+        <Skeleton className="h-3 w-32 rounded-lg" />
+        <Skeleton className="h-px flex-1" />
+      </div>
+      <div className="mt-8 space-y-3">
         <Skeleton className="h-4 w-full rounded-lg" />
         <Skeleton className="h-4 w-5/6 rounded-lg" />
         <Skeleton className="h-4 w-4/6 rounded-lg" />

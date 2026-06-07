@@ -35,7 +35,7 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
             <ItemCard key={`${sectionName}-${pub.title || "unknown"}-${index}`}>
               <div className="grid grid-cols-[auto_1fr_auto] items-baseline gap-4 md:gap-6">
                 <Typography
-                  className="font-mono text-xs leading-4 text-muted"
+                  className="font-mono text-xs leading-4 text-muted tabular-nums"
                   type="body-xs"
                 >
                   {String(index + 1).padStart(2, "0")}
@@ -55,7 +55,7 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
                   </Typography.Heading>
                   {meta && (
                     <Typography
-                      className="mt-2 text-xs leading-4 text-muted"
+                      className="mt-2 font-mono text-xs leading-4 text-muted"
                       type="body-xs"
                     >
                       {meta}

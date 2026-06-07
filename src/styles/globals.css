@@ -1,2 +1,32 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+
+@theme {
+  /* Geist font stack; families are registered by @fontsource-variable imports in main.tsx */
+  --font-sans:
+    "Geist Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono:
+    "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+@layer base {
+  /* Cool-tinted light theme; surface stays white so the navbar pill lifts off the page. */
+  :root,
+  .light,
+  .default,
+  [data-theme="light"],
+  [data-theme="default"] {
+    --background: oklch(0.985 0.002 240);
+  }
+
+  /* OLED blue-black dark theme tuned to the Threads hero; matches the meta theme-color. */
+  .dark,
+  [data-theme="dark"] {
+    --background: oklch(0.143 0.018 235);
+    --surface: oklch(0.21 0.012 235);
+    --border: oklch(0.26 0.01 235);
+    --separator: oklch(0.23 0.01 235);
+  }
+}

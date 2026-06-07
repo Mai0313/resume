@@ -44,7 +44,7 @@ export const EducationSection: FC<EducationSectionProps> = ({
             {edu.courses && edu.courses.length > 0 && (
               <div className="border-l border-border pl-4">
                 <Typography
-                  className="mb-2 text-xs font-medium uppercase leading-4 tracking-wider text-muted"
+                  className="mb-2 font-mono text-xs font-medium uppercase leading-4 tracking-[0.15em] text-muted"
                   type="body-xs"
                 >
                   Coursework

@@ -6,6 +6,8 @@ import App from "./App.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 
 import { getBasename } from "@/utils/pathUtils";
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist-mono";
 import "@/styles/globals.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

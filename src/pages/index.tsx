@@ -2,7 +2,7 @@ import type { ComponentPropsWithRef } from "react";
 
 import { lazy, Suspense } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Link, Typography } from "@heroui/react";
+import { Link, Typography, useTheme } from "@heroui/react";
 
 import DecryptedText from "@/components/DecryptedText/DecryptedText";
 import {
@@ -11,15 +11,21 @@ import {
   GitHubIcon,
 } from "@/components/shared";
 import DefaultLayout from "@/layouts/default";
+import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 import { env, envHelpers } from "@/utils/env";
 
 const Threads = lazy(() => import("@/components/Threads/Threads"));
 
-const THREADS_COLOR: [number, number, number] = [1, 1, 1];
+// Stable per-theme tuples: Threads rebuilds its WebGL context whenever the
+// color reference changes, so never pass an inline array literal.
+const THREADS_DARK: [number, number, number] = [1, 1, 1];
+const THREADS_LIGHT: [number, number, number] = [0.1, 0.15, 0.25];
 
 export default function IndexPage() {
   const resumeAvailable = envHelpers.isResumeFileAvailable();
+  const { resolvedTheme } = useTheme("dark");
+  const isDark = resolvedTheme !== "light";
 
   return (
     <DefaultLayout>
@@ -27,10 +33,17 @@ export default function IndexPage() {
       <section className="relative flex min-h-screen items-center overflow-hidden">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.28]"
+          className={cn(
+            "pointer-events-none absolute inset-0",
+            isDark ? "opacity-[0.28]" : "opacity-[0.18]",
+          )}
         >
           <Suspense fallback={null}>
-            <Threads amplitude={1.4} color={THREADS_COLOR} distance={0.25} />
+            <Threads
+              amplitude={1.4}
+              color={isDark ? THREADS_DARK : THREADS_LIGHT}
+              distance={0.25}
+            />
           </Suspense>
         </div>
         <div
@@ -40,7 +53,7 @@ export default function IndexPage() {
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-24 pt-32 sm:pt-40">
           <Typography.Heading
-            className="mb-12 font-bold leading-[1.02] tracking-tight"
+            className="mb-6 font-bold leading-[1.02] tracking-[-0.02em]"
             level={1}
             style={{ fontSize: "clamp(3.25rem, 10vw, 7rem)" }}
           >
@@ -52,6 +65,13 @@ export default function IndexPage() {
               text={env.WEBSITE_TITLE}
             />
           </Typography.Heading>
+
+          <Typography
+            className="mb-12 font-mono text-sm leading-5 text-muted"
+            type="body-sm"
+          >
+            {siteConfig.tagline}
+          </Typography>
 
           <div className="flex flex-wrap items-center gap-3">
             {resumeAvailable && (
@@ -71,7 +91,7 @@ export default function IndexPage() {
                 }}
               >
                 View Resume
-                <ArrowRightIcon />
+                <ArrowRightIcon size={16} />
               </Link>
             )}
             <Link

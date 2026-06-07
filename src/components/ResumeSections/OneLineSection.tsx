@@ -39,14 +39,14 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
             >
               <div className="mb-3 flex items-baseline justify-between gap-4">
                 <Typography.Heading
-                  className="text-base font-semibold tracking-normal text-foreground"
+                  className="text-base font-semibold leading-snug tracking-normal text-foreground"
                   level={3}
                 >
                   {entry.label}
                 </Typography.Heading>
                 {entry.details && (
                   <Typography
-                    className="shrink-0 text-xs leading-4 text-muted"
+                    className="shrink-0 font-mono text-xs leading-4 text-muted"
                     type="body-xs"
                   >
                     {entry.details}
@@ -56,7 +56,12 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
               {entry.keywords && entry.keywords.length > 0 && (
                 <div className="flex max-w-3xl flex-wrap gap-1.5">
                   {entry.keywords.map((keyword) => (
-                    <Chip key={keyword} size="sm" variant="soft">
+                    <Chip
+                      key={keyword}
+                      className="font-mono tracking-tight"
+                      size="sm"
+                      variant="soft"
+                    >
                       {keyword}
                     </Chip>
                   ))}
@@ -80,7 +85,7 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
               </Typography>
               {entry.details && (
                 <Typography
-                  className="text-xs leading-4 text-muted"
+                  className="font-mono text-xs leading-4 text-muted"
                   type="body-xs"
                 >
                   {entry.details}

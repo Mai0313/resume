@@ -54,12 +54,14 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
           <div className="mb-8">
             <Chip size="sm" variant="soft">
               <span className="size-1.5 rounded-full bg-success" />
-              <Chip.Label>PROFILE · {formatUpdatedAt()}</Chip.Label>
+              <Chip.Label className="font-mono text-[0.7rem] tracking-wide">
+                PROFILE · {formatUpdatedAt()}
+              </Chip.Label>
             </Chip>
           </div>
 
           <Typography.Heading
-            className="mb-4 text-5xl font-bold tracking-tight text-foreground md:text-7xl"
+            className="mb-4 text-5xl font-bold leading-[1.05] tracking-[-0.02em] text-foreground md:text-7xl"
             level={1}
           >
             {cv.name}
@@ -77,7 +79,7 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
             {cv.location && (
               <Typography
-                className="text-sm leading-5 text-muted"
+                className="font-mono text-sm leading-5 text-muted"
                 type="body-sm"
               >
                 {cv.location}
@@ -85,14 +87,14 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
             )}
             {cv.location && cv.email && (
               <Typography
-                className="text-sm leading-5 text-muted/50"
+                className="font-mono text-sm leading-5 text-muted/50"
                 type="body-sm"
               >
                 ·
               </Typography>
             )}
             {cv.email && (
-              <Link className="text-sm" href={`mailto:${cv.email}`}>
+              <Link className="font-mono text-sm" href={`mailto:${cv.email}`}>
                 {cv.email}
               </Link>
             )}
@@ -116,7 +118,7 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
 
         {cv.photo && (
           <div className="order-1 flex justify-start md:order-2 md:justify-end">
-            <Avatar className="size-24 md:size-32">
+            <Avatar className="size-24 ring-1 ring-border md:size-32">
               <Avatar.Image alt={cv.name} src={cv.photo} />
               <Avatar.Fallback>{initials(cv.name)}</Avatar.Fallback>
             </Avatar>
@@ -127,7 +129,7 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
       {languages && languages.entries.length > 0 && (
         <div className="mt-10 grid grid-cols-[auto_1fr] items-center gap-x-8 border-t border-border pt-6">
           <Typography
-            className="text-xs font-semibold uppercase leading-4 tracking-wider text-muted"
+            className="font-mono text-xs font-medium uppercase leading-4 tracking-[0.15em] text-muted"
             type="body-xs"
           >
             Languages

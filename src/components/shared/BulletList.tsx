@@ -16,7 +16,7 @@ export const BulletList: FC<BulletListProps> = ({ items, className = "" }) => {
 
   return (
     <ul
-      className={cn("list-disc space-y-2 pl-5 marker:text-muted/60", className)}
+      className={cn("list-disc space-y-2 pl-5 marker:text-muted/40", className)}
     >
       {items.map((item, index) => (
         // text-sm on the <li> keeps the ::marker sized to the body text.

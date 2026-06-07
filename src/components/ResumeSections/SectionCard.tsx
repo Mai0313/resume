@@ -23,7 +23,7 @@ export const SectionCard: FC<SectionCardProps> = ({
     <m.section className="scroll-mt-24" variants={itemVariants}>
       <div className="mb-8 flex items-center gap-4">
         <Typography.Heading
-          className="text-xs font-semibold uppercase tracking-wider text-muted"
+          className="font-mono text-xs font-medium uppercase leading-4 tracking-[0.15em] text-muted"
           level={2}
         >
           {title}
