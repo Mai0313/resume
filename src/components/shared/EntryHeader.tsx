@@ -39,7 +39,7 @@ export const EntryHeader: FC<EntryHeaderProps> = ({
   >
     <div className="flex-1">
       <Typography.Heading
-        className="text-lg font-semibold tracking-normal text-foreground"
+        className="text-lg font-semibold leading-snug tracking-normal text-foreground"
         level={3}
       >
         <ExternalLink className="text-foreground" showIcon={false} url={url}>
@@ -59,7 +59,7 @@ export const EntryHeader: FC<EntryHeaderProps> = ({
       <DateRange endDate={endDate} startDate={startDate} />
       {rightMeta && (
         <Typography
-          className="mt-1 text-xs leading-4 text-muted"
+          className="mt-1 font-mono text-xs leading-4 text-muted"
           type="body-xs"
         >
           {rightMeta}

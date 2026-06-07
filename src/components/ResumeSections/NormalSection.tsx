@@ -42,7 +42,7 @@ export const NormalSection: FC<NormalSectionProps> = ({
               <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-6">
                 <div className="flex-1">
                   <Typography.Heading
-                    className="text-lg font-semibold tracking-normal text-foreground"
+                    className="text-lg font-semibold leading-snug tracking-normal text-foreground"
                     level={3}
                   >
                     <ExternalLink className="text-foreground" url={entry.url}>
@@ -51,7 +51,7 @@ export const NormalSection: FC<NormalSectionProps> = ({
                   </Typography.Heading>
                   {metaLine && (
                     <Typography
-                      className="mt-1.5 text-xs leading-4 text-muted"
+                      className="mt-1.5 font-mono text-xs leading-4 text-muted"
                       type="body-xs"
                     >
                       {metaLine}
@@ -83,7 +83,12 @@ export const NormalSection: FC<NormalSectionProps> = ({
               {entry.keywords && entry.keywords.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {entry.keywords.map((keyword) => (
-                    <Chip key={keyword} size="sm" variant="soft">
+                    <Chip
+                      key={keyword}
+                      className="font-mono tracking-tight"
+                      size="sm"
+                      variant="soft"
+                    >
                       {keyword}
                     </Chip>
                   ))}

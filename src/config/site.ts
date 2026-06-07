@@ -13,6 +13,9 @@ const navItems = (() => {
 
 export const siteConfig = {
   navItems,
+  // Shown as the mono sub-line under the hero heading. Kept static so the
+  // home route bundle never needs to load the resume YAML.
+  tagline: "Software Engineer · Hsinchu, Taiwan",
   links: {
     github: "https://github.com/Mai0313",
   },

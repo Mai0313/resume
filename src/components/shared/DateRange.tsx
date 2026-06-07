@@ -21,13 +21,16 @@ export const DateRange: FC<DateRangeProps> = ({
 
   let text = "";
 
-  if (startDate && endDate) text = `${startDate} — ${endDate}`;
+  if (startDate && endDate) text = `${startDate} - ${endDate}`;
   else if (startDate) text = startDate;
   else if (endDate) text = endDate;
 
   return (
     <Typography
-      className={cn("text-xs leading-4 text-muted", className)}
+      className={cn(
+        "font-mono text-xs leading-4 tracking-tight text-muted tabular-nums",
+        className,
+      )}
       type="body-xs"
     >
       {text}
