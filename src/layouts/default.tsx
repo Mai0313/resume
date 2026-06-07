@@ -4,9 +4,9 @@ import { Navbar } from "@/components/navbar";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="relative flex min-h-screen flex-col bg-background text-foreground">
+    <div className="premium-shell relative flex min-h-[100dvh] flex-col bg-background text-foreground">
       <Navbar />
-      <main className="flex-grow">{children}</main>
+      <main className="relative z-0 flex-grow">{children}</main>
     </div>
   );
 }

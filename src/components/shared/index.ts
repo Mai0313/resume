@@ -7,7 +7,16 @@ export { EntryHeader } from "./EntryHeader";
 export {
   ArrowRightIcon,
   ArrowUpRightIcon,
+  BriefcaseIcon,
+  CircuitryIcon,
+  CodeIcon,
+  DownloadIcon,
+  FilePdfIcon,
   GitHubIcon,
+  LinkedInIcon,
+  MailIcon,
+  MapPinIcon,
   MoonIcon,
+  SparkleIcon,
   SunIcon,
 } from "./icons";

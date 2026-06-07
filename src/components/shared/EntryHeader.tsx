@@ -17,11 +17,6 @@ interface EntryHeaderProps {
   className?: string;
 }
 
-/**
- * Shared header row for Experience/Education-style entries:
- * a linked title with optional subtitle on the left, and a
- * date range with optional meta (location, grade) on the right.
- */
 export const EntryHeader: FC<EntryHeaderProps> = ({
   title,
   url,
@@ -33,35 +28,40 @@ export const EntryHeader: FC<EntryHeaderProps> = ({
 }) => (
   <div
     className={cn(
-      "flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-6",
+      "flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-6",
       className,
     )}
   >
     <div className="flex-1">
       <Typography.Heading
-        className="text-lg font-semibold tracking-normal text-foreground"
+        className="text-xl font-semibold leading-snug tracking-normal text-foreground"
         level={3}
       >
-        <ExternalLink className="text-foreground" showIcon={false} url={url}>
+        <ExternalLink
+          className="text-foreground no-underline decoration-accent/50 underline-offset-4 hover:underline"
+          showIcon={false}
+          url={url}
+        >
           {title}
         </ExternalLink>
       </Typography.Heading>
       {subtitle && (
         <Typography
-          className="mt-0.5 text-sm leading-5 text-muted"
+          className="mt-1 text-sm font-medium leading-6 text-muted"
           type="body-sm"
         >
           {subtitle}
         </Typography>
       )}
     </div>
-    <div className="flex shrink-0 flex-col items-start md:items-end">
-      <DateRange endDate={endDate} startDate={startDate} />
+    <div className="flex shrink-0 flex-col items-start gap-1 md:items-end">
+      <DateRange
+        className="rounded-full border border-border/70 bg-default/65 px-2.5 py-1"
+        endDate={endDate}
+        startDate={startDate}
+      />
       {rightMeta && (
-        <Typography
-          className="mt-1 text-xs leading-4 text-muted"
-          type="body-xs"
-        >
+        <Typography className="text-xs leading-5 text-muted" type="body-xs">
           {rightMeta}
         </Typography>
       )}

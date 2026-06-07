@@ -6,20 +6,19 @@ import { Chip, Typography } from "@heroui/react";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
 
+import { ItemCard } from "@/components/shared";
+
 interface OneLineSectionProps {
   entries: OneLineEntry[] | undefined;
   sectionName: string;
+  sectionIndex: number;
   itemVariants: Variants;
 }
 
-/**
- * Layout for OneLineEntry sections.
- * - With keywords (Skills/Interests): label + level + keyword chips
- * - Without keywords (Languages-like): compact label · details pairs
- */
 export const OneLineSection: FC<OneLineSectionProps> = ({
   entries,
   sectionName,
+  sectionIndex,
   itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
@@ -29,13 +28,16 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
   );
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
+    <SectionCard
+      index={sectionIndex}
+      itemVariants={itemVariants}
+      title={displayTitle}
+    >
       {hasKeywords ? (
-        <div className="divide-y divide-border">
+        <div className="space-y-3">
           {entries?.map((entry, index) => (
-            <div
+            <ItemCard
               key={`${sectionName}-${entry.label || "unknown"}-${index}`}
-              className="py-6"
             >
               <div className="mb-3 flex items-baseline justify-between gap-4">
                 <Typography.Heading
@@ -46,7 +48,7 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
                 </Typography.Heading>
                 {entry.details && (
                   <Typography
-                    className="shrink-0 text-xs leading-4 text-muted"
+                    className="shrink-0 rounded-full border border-border/70 bg-default/65 px-2.5 py-1 font-mono text-[11px] font-medium uppercase leading-4 tracking-[0.08em] text-muted"
                     type="body-xs"
                   >
                     {entry.details}
@@ -62,7 +64,7 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
                   ))}
                 </div>
               )}
-            </div>
+            </ItemCard>
           ))}
         </div>
       ) : (
@@ -70,17 +72,17 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
           {entries?.map((entry, index) => (
             <div
               key={`${sectionName}-${entry.label || "unknown"}-${index}`}
-              className="flex items-baseline justify-between gap-3 border-b border-border py-3"
+              className="flex items-baseline justify-between gap-3 rounded-2xl border border-border/70 bg-surface/58 px-4 py-3"
             >
               <Typography
-                className="text-sm leading-5 text-foreground"
+                className="text-sm font-medium leading-5 text-foreground"
                 type="body-sm"
               >
                 {entry.label}
               </Typography>
               {entry.details && (
                 <Typography
-                  className="text-xs leading-4 text-muted"
+                  className="font-mono text-[11px] font-medium uppercase leading-4 tracking-[0.08em] text-muted"
                   type="body-xs"
                 >
                   {entry.details}

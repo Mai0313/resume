@@ -1,2 +1,141 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, monospace;
+}
+
+:root,
+[data-theme="light"] {
+  --radius: 0.5rem;
+  --background: oklch(0.972 0.003 247);
+  --foreground: oklch(0.22 0.015 250);
+  --surface: oklch(0.995 0.001 247);
+  --surface-secondary: oklch(0.946 0.006 247);
+  --surface-tertiary: oklch(0.914 0.01 247);
+  --overlay: oklch(0.995 0.001 247);
+  --muted: oklch(0.49 0.018 250);
+  --default: oklch(0.925 0.006 247);
+  --border: oklch(0.86 0.009 247);
+  --separator: oklch(0.89 0.007 247);
+  --accent: oklch(0.68 0.17 155);
+  --accent-foreground: oklch(0.16 0.02 160);
+  --success: oklch(0.68 0.17 155);
+  --success-foreground: oklch(0.16 0.02 160);
+  --focus: var(--accent);
+  --link: var(--foreground);
+  --surface-shadow:
+    0 18px 46px rgba(22, 31, 43, 0.08), 0 1px 0 rgba(255, 255, 255, 0.85) inset;
+  --resume-grid: color-mix(in oklab, var(--foreground) 7%, transparent);
+  --resume-wash: color-mix(in oklab, var(--accent) 9%, transparent);
+}
+
+[data-theme="dark"] {
+  --background: oklch(0.15 0.014 250);
+  --foreground: oklch(0.965 0.004 247);
+  --surface: oklch(0.2 0.018 250);
+  --surface-secondary: oklch(0.245 0.018 250);
+  --surface-tertiary: oklch(0.29 0.017 250);
+  --overlay: oklch(0.22 0.018 250);
+  --muted: oklch(0.72 0.018 247);
+  --default: oklch(0.28 0.017 250);
+  --border: oklch(0.31 0.018 250);
+  --separator: oklch(0.27 0.017 250);
+  --accent: oklch(0.76 0.17 155);
+  --accent-foreground: oklch(0.16 0.02 160);
+  --success: oklch(0.76 0.17 155);
+  --success-foreground: oklch(0.16 0.02 160);
+  --focus: var(--accent);
+  --link: var(--foreground);
+  --surface-shadow:
+    0 22px 55px rgba(0, 0, 0, 0.32), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  --resume-grid: color-mix(in oklab, var(--foreground) 8%, transparent);
+  --resume-wash: color-mix(in oklab, var(--accent) 11%, transparent);
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+  background: var(--background);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100dvh;
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 32%, transparent);
+  color: var(--foreground);
+}
+
+.premium-shell {
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+.premium-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0%,
+      var(--resume-wash) 42%,
+      transparent 68%
+    ),
+    linear-gradient(var(--resume-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--resume-grid) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    44px 44px,
+    44px 44px;
+  mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 100%);
+}
+
+.premium-shell::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(to bottom, transparent 0%, var(--background) 82%),
+    linear-gradient(
+      90deg,
+      var(--background) 0%,
+      transparent 26%,
+      transparent 74%,
+      var(--background) 100%
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

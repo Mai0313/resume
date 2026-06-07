@@ -15,16 +15,11 @@ export const BulletList: FC<BulletListProps> = ({ items, className = "" }) => {
   }
 
   return (
-    <ul
-      className={cn("list-disc space-y-2 pl-5 marker:text-muted/60", className)}
-    >
+    <ul className={cn("space-y-2.5", className)}>
       {items.map((item, index) => (
-        // text-sm on the <li> keeps the ::marker sized to the body text.
-        <li key={index} className="text-sm leading-relaxed text-muted">
-          <Typography
-            className="text-sm leading-relaxed text-muted"
-            type="body-sm"
-          >
+        <li key={index} className="grid grid-cols-[0.65rem_1fr] gap-3">
+          <span className="mt-2 size-1.5 rounded-full bg-accent/75" />
+          <Typography className="text-sm leading-7 text-muted" type="body-sm">
             {item}
           </Typography>
         </li>

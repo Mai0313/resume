@@ -9,12 +9,14 @@ import { BulletList } from "@/components/shared";
 interface BulletSectionProps {
   entries: BulletEntry[] | undefined;
   sectionName: string;
+  sectionIndex: number;
   itemVariants: Variants;
 }
 
 export const BulletSection: FC<BulletSectionProps> = ({
   entries,
   sectionName,
+  sectionIndex,
   itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
@@ -22,7 +24,11 @@ export const BulletSection: FC<BulletSectionProps> = ({
   const items = entries?.map((entry) => entry.bullet) ?? [];
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
+    <SectionCard
+      index={sectionIndex}
+      itemVariants={itemVariants}
+      title={displayTitle}
+    >
       <BulletList items={items} />
     </SectionCard>
   );

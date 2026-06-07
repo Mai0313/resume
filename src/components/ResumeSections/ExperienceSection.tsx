@@ -14,19 +14,25 @@ import {
 interface ExperienceSectionProps {
   entries: ExperienceEntry[] | undefined;
   sectionName: string;
+  sectionIndex: number;
   itemVariants: Variants;
 }
 
 export const ExperienceSection: FC<ExperienceSectionProps> = ({
   entries,
   sectionName,
+  sectionIndex,
   itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
-      <div className="divide-y divide-border">
+    <SectionCard
+      index={sectionIndex}
+      itemVariants={itemVariants}
+      title={displayTitle}
+    >
+      <div className="space-y-3">
         {entries?.map((entry, index) => (
           <ItemCard
             key={`${sectionName}-${entry.company || "unknown"}-${index}`}

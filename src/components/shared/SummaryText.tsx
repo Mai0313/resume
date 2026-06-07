@@ -24,7 +24,7 @@ export const SummaryText: FC<SummaryTextProps> = ({
 
   return (
     <Typography
-      className={cn("max-w-3xl text-sm leading-relaxed text-muted", className)}
+      className={cn("max-w-[72ch] text-sm leading-7 text-muted", className)}
       type="body-sm"
     >
       {text}

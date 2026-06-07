@@ -7,6 +7,19 @@ type ThreadsProps = Omit<HTMLAttributes<HTMLDivElement>, "color"> & {
   distance?: number;
 };
 
+function canCreateWebGLContext(): boolean {
+  try {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+
+    gl?.getExtension("WEBGL_lose_context")?.loseContext();
+
+    return !!gl;
+  } catch {
+    return false;
+  }
+}
+
 const vertexShader = `
 attribute vec2 position;
 attribute vec2 uv;
@@ -138,7 +151,26 @@ export default function Threads({
     if (!containerRef.current) return;
     const container = containerRef.current;
 
-    const renderer = new Renderer({ alpha: true });
+    if (!canCreateWebGLContext()) {
+      if (import.meta.env.DEV) {
+        console.warn("[Threads] WebGL is not available; skipping background.");
+      }
+
+      return;
+    }
+
+    let renderer: Renderer;
+
+    try {
+      renderer = new Renderer({ alpha: true });
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.warn("[Threads] Failed to initialize WebGL renderer.", error);
+      }
+
+      return;
+    }
+
     const gl = renderer.gl;
 
     gl.clearColor(0, 0, 0, 0);

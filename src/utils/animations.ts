@@ -1,7 +1,4 @@
-/**
- * Common animation variants for framer-motion
- * Centralized to avoid duplication across components
- */
+const premiumEase = [0.32, 0.72, 0, 1] as const;
 
 export const fadeInStagger = {
   container: {
@@ -9,17 +6,18 @@ export const fadeInStagger = {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
       },
     },
   },
   item: {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 28 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.7,
+        ease: premiumEase,
       },
     },
   },

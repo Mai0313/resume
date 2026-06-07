@@ -18,19 +18,25 @@ import { formatList } from "@/lib/utils";
 interface NormalSectionProps {
   entries: NormalEntry[] | undefined;
   sectionName: string;
+  sectionIndex: number;
   itemVariants: Variants;
 }
 
 export const NormalSection: FC<NormalSectionProps> = ({
   entries,
   sectionName,
+  sectionIndex,
   itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
-      <div className="divide-y divide-border">
+    <SectionCard
+      index={sectionIndex}
+      itemVariants={itemVariants}
+      title={displayTitle}
+    >
+      <div className="space-y-3">
         {entries?.map((entry, index) => {
           const metaLine = formatList([
             entry.entity ?? entry.issuer,
@@ -42,16 +48,19 @@ export const NormalSection: FC<NormalSectionProps> = ({
               <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-6">
                 <div className="flex-1">
                   <Typography.Heading
-                    className="text-lg font-semibold tracking-normal text-foreground"
+                    className="text-xl font-semibold leading-snug tracking-normal text-foreground"
                     level={3}
                   >
-                    <ExternalLink className="text-foreground" url={entry.url}>
+                    <ExternalLink
+                      className="group text-foreground no-underline decoration-accent/50 underline-offset-4 hover:underline"
+                      url={entry.url}
+                    >
                       {entry.name}
                     </ExternalLink>
                   </Typography.Heading>
                   {metaLine && (
                     <Typography
-                      className="mt-1.5 text-xs leading-4 text-muted"
+                      className="mt-2 font-mono text-[11px] font-medium uppercase leading-4 tracking-[0.08em] text-muted"
                       type="body-xs"
                     >
                       {metaLine}
@@ -59,7 +68,7 @@ export const NormalSection: FC<NormalSectionProps> = ({
                   )}
                   {entry.roles && entry.roles.length > 0 && (
                     <Typography
-                      className="mt-0.5 text-sm leading-5 text-muted"
+                      className="mt-1 text-sm font-medium leading-6 text-muted"
                       type="body-sm"
                     >
                       {formatList(entry.roles)}
@@ -68,6 +77,7 @@ export const NormalSection: FC<NormalSectionProps> = ({
                 </div>
                 <div className="shrink-0">
                   <DateRange
+                    className="rounded-full border border-border/70 bg-default/65 px-2.5 py-1"
                     endDate={entry.date ?? entry.end_date}
                     startDate={entry.start_date}
                   />

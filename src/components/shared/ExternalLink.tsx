@@ -31,7 +31,9 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
       target="_blank"
     >
       {children}
-      {showIcon && <Link.Icon />}
+      {showIcon && (
+        <Link.Icon className="transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      )}
     </Link>
   );
 };

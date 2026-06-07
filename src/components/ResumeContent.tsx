@@ -16,29 +16,32 @@ export const ResumeContent = ({ data }: ResumeContentProps) => {
   const { container: containerVariants, item: itemVariants } = fadeInStagger;
   const { cv } = data;
   const languages = findLanguagesSection(cv.sections);
+  const visibleSections = data.sectionOrder.filter(
+    (sectionName) => !(languages && sectionName === languages.key),
+  );
 
   return (
     <m.div
       animate="visible"
-      className="mx-auto max-w-4xl px-6 pb-24 pt-32 sm:pt-40"
+      className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 px-4 pb-24 pt-28 sm:px-6 sm:pt-36 lg:grid-cols-[minmax(270px,340px)_minmax(0,1fr)] lg:gap-12 lg:pt-36"
       initial="hidden"
       variants={containerVariants}
     >
-      <m.div variants={itemVariants}>
+      <m.div
+        className="lg:sticky lg:top-28 lg:self-start"
+        variants={itemVariants}
+      >
         <ResumeHeader cv={cv} languages={languages} />
       </m.div>
 
-      <div className="space-y-20 md:space-y-24">
-        {data.sectionOrder.map((sectionName) => {
-          if (languages && sectionName === languages.key) {
-            return null;
-          }
-
+      <div className="space-y-12 lg:space-y-14">
+        {visibleSections.map((sectionName, index) => {
           return (
             <ResumeSectionRenderer
               key={sectionName}
               entries={cv.sections[sectionName]}
               itemVariants={itemVariants}
+              sectionIndex={index + 1}
               sectionName={sectionName}
             />
           );

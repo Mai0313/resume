@@ -22,12 +22,14 @@ import { detectEntryType } from "@/utils/resume";
 interface ResumeSectionRendererProps {
   entries: Entry[] | undefined;
   itemVariants: Variants;
+  sectionIndex: number;
   sectionName: string;
 }
 
 export function ResumeSectionRenderer({
   entries,
   itemVariants,
+  sectionIndex,
   sectionName,
 }: ResumeSectionRendererProps) {
   if (!entries || entries.length === 0) {
@@ -42,6 +44,7 @@ export function ResumeSectionRenderer({
         <ExperienceSection
           entries={entries as ExperienceEntry[]}
           itemVariants={itemVariants}
+          sectionIndex={sectionIndex}
           sectionName={sectionName}
         />
       );
@@ -50,6 +53,7 @@ export function ResumeSectionRenderer({
         <EducationSection
           entries={entries as EducationEntry[]}
           itemVariants={itemVariants}
+          sectionIndex={sectionIndex}
           sectionName={sectionName}
         />
       );
@@ -58,6 +62,7 @@ export function ResumeSectionRenderer({
         <PublicationSection
           entries={entries as PublicationEntry[]}
           itemVariants={itemVariants}
+          sectionIndex={sectionIndex}
           sectionName={sectionName}
         />
       );
@@ -66,6 +71,7 @@ export function ResumeSectionRenderer({
         <NormalSection
           entries={entries as NormalEntry[]}
           itemVariants={itemVariants}
+          sectionIndex={sectionIndex}
           sectionName={sectionName}
         />
       );
@@ -74,6 +80,7 @@ export function ResumeSectionRenderer({
         <OneLineSection
           entries={entries as OneLineEntry[]}
           itemVariants={itemVariants}
+          sectionIndex={sectionIndex}
           sectionName={sectionName}
         />
       );
@@ -82,6 +89,7 @@ export function ResumeSectionRenderer({
         <BulletSection
           entries={entries as BulletEntry[]}
           itemVariants={itemVariants}
+          sectionIndex={sectionIndex}
           sectionName={sectionName}
         />
       );
@@ -90,6 +98,7 @@ export function ResumeSectionRenderer({
         <TextSection
           entries={entries as string[]}
           itemVariants={itemVariants}
+          sectionIndex={sectionIndex}
           sectionName={sectionName}
         />
       );

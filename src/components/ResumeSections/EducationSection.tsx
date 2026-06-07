@@ -12,19 +12,25 @@ import { formatList } from "@/lib/utils";
 interface EducationSectionProps {
   entries: EducationEntry[] | undefined;
   sectionName: string;
+  sectionIndex: number;
   itemVariants: Variants;
 }
 
 export const EducationSection: FC<EducationSectionProps> = ({
   entries,
   sectionName,
+  sectionIndex,
   itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
-      <div className="divide-y divide-border">
+    <SectionCard
+      index={sectionIndex}
+      itemVariants={itemVariants}
+      title={displayTitle}
+    >
+      <div className="space-y-3">
         {entries?.map((edu, index) => (
           <ItemCard
             key={`${sectionName}-${edu.institution || "unknown"}-${index}`}
@@ -42,15 +48,15 @@ export const EducationSection: FC<EducationSectionProps> = ({
             <SummaryText text={edu.summary} />
 
             {edu.courses && edu.courses.length > 0 && (
-              <div className="border-l border-border pl-4">
+              <div className="border-l border-accent/40 pl-4">
                 <Typography
-                  className="mb-2 text-xs font-medium uppercase leading-4 tracking-wider text-muted"
+                  className="mb-2 font-mono text-[11px] font-medium uppercase leading-4 tracking-[0.12em] text-muted"
                   type="body-xs"
                 >
                   Coursework
                 </Typography>
                 <Typography
-                  className="text-sm leading-relaxed text-muted"
+                  className="text-sm leading-7 text-muted"
                   type="body-sm"
                 >
                   {formatList(edu.courses)}

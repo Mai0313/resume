@@ -1,91 +1,79 @@
-import type { SVGProps } from "react";
+import type { IconProps } from "@phosphor-icons/react";
 
-type IconProps = SVGProps<SVGSVGElement> & {
-  size?: number;
-};
+import {
+  ArrowRightIcon as PhosphorArrowRightIcon,
+  ArrowUpRightIcon as PhosphorArrowUpRightIcon,
+  BriefcaseIcon as PhosphorBriefcaseIcon,
+  CircuitryIcon as PhosphorCircuitryIcon,
+  CodeIcon as PhosphorCodeIcon,
+  DownloadSimpleIcon as PhosphorDownloadSimpleIcon,
+  EnvelopeSimpleIcon as PhosphorEnvelopeSimpleIcon,
+  FilePdfIcon as PhosphorFilePdfIcon,
+  GithubLogoIcon as PhosphorGithubLogoIcon,
+  LinkedinLogoIcon as PhosphorLinkedinLogoIcon,
+  MapPinIcon as PhosphorMapPinIcon,
+  MoonIcon as PhosphorMoonIcon,
+  SparkleIcon as PhosphorSparkleIcon,
+  SunIcon as PhosphorSunIcon,
+} from "@phosphor-icons/react";
+
+const iconDefaults = {
+  "aria-hidden": true,
+  "weight": "regular",
+} as const;
 
 export const ArrowUpRightIcon = ({ size = 14, ...props }: IconProps) => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    height={size}
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="1.5"
-    viewBox="0 0 24 24"
-    width={size}
-    {...props}
-  >
-    <path d="M7 17L17 7M7 7h10v10" />
-  </svg>
+  <PhosphorArrowUpRightIcon size={size} {...iconDefaults} {...props} />
 );
 
 export const ArrowRightIcon = ({ size = 14, ...props }: IconProps) => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    height={size}
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="1.75"
-    viewBox="0 0 24 24"
-    width={size}
-    {...props}
-  >
-    <path d="M5 12h14M13 5l7 7-7 7" />
-  </svg>
+  <PhosphorArrowRightIcon size={size} {...iconDefaults} {...props} />
 );
 
 export const GitHubIcon = ({ size = 16, ...props }: IconProps) => (
-  <svg
-    aria-hidden="true"
-    fill="currentColor"
-    height={size}
-    viewBox="0 0 24 24"
-    width={size}
-    {...props}
-  >
-    <path
-      clipRule="evenodd"
-      d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z"
-      fillRule="evenodd"
-    />
-  </svg>
+  <PhosphorGithubLogoIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const LinkedInIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorLinkedinLogoIcon size={size} {...iconDefaults} {...props} />
 );
 
 export const SunIcon = ({ size = 18, ...props }: IconProps) => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    height={size}
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="1.75"
-    viewBox="0 0 24 24"
-    width={size}
-    {...props}
-  >
-    <circle cx="12" cy="12" r="4" />
-    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-  </svg>
+  <PhosphorSunIcon size={size} {...iconDefaults} {...props} />
 );
 
 export const MoonIcon = ({ size = 18, ...props }: IconProps) => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    height={size}
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="1.75"
-    viewBox="0 0 24 24"
-    width={size}
-    {...props}
-  >
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-  </svg>
+  <PhosphorMoonIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const DownloadIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorDownloadSimpleIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const MailIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorEnvelopeSimpleIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const MapPinIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorMapPinIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const FilePdfIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorFilePdfIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const BriefcaseIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorBriefcaseIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const CodeIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorCodeIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const CircuitryIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorCircuitryIcon size={size} {...iconDefaults} {...props} />
+);
+
+export const SparkleIcon = ({ size = 16, ...props }: IconProps) => (
+  <PhosphorSparkleIcon size={size} {...iconDefaults} {...props} />
 );

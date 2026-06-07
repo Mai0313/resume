@@ -13,7 +13,7 @@ const ResumePage = lazy(() => import("@/pages/resume"));
 
 function RouteFallback() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="flex min-h-[100dvh] items-center justify-center bg-background">
       <Spinner size="lg" />
     </div>
   );

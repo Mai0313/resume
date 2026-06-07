@@ -1,6 +1,5 @@
 import { useSyncExternalStore } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { m } from "framer-motion";
 import { Button, Separator, useTheme } from "@heroui/react";
 
 import { MoonIcon, SunIcon } from "@/components/shared";
@@ -25,17 +24,14 @@ export const Navbar = () => {
   const isDark = resolvedTheme !== "light";
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-5">
-      <m.nav
-        animate={{
-          paddingTop: isScrolled ? 4 : 6,
-          paddingBottom: isScrolled ? 4 : 6,
-        }}
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex justify-center px-4 pt-4 sm:pt-5">
+      <nav
         className={cn(
-          "pointer-events-auto flex items-center gap-1 rounded-full border border-border bg-surface/70 backdrop-blur-xl transition-shadow duration-300",
-          isScrolled ? "shadow-lg" : "shadow-none",
+          "pointer-events-auto flex items-center gap-1 rounded-full border border-border/75 bg-background/82 p-1 shadow-[0_14px_40px_rgba(0,0,0,0.10)] backdrop-blur-xl transition-[background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+          isScrolled
+            ? "border-border bg-background/92 shadow-[0_18px_50px_rgba(0,0,0,0.16)]"
+            : "shadow-[0_10px_28px_rgba(0,0,0,0.08)]",
         )}
-        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="relative flex items-center gap-0.5 pl-1">
           {tabs.map((tab) => {
@@ -45,7 +41,7 @@ export const Navbar = () => {
               <Link
                 key={tab.href}
                 className={cn(
-                  "relative rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
+                  "relative rounded-full px-3.5 py-2 text-sm font-medium transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
                   isActive
                     ? "text-foreground"
                     : "text-muted hover:text-foreground",
@@ -53,14 +49,9 @@ export const Navbar = () => {
                 to={tab.href}
               >
                 {isActive && (
-                  <m.span
-                    className="absolute inset-0 rounded-full bg-default"
-                    layoutId="active-tab-pill"
-                    transition={{
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 32,
-                    }}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 rounded-full bg-default shadow-[0_1px_0_rgba(255,255,255,0.08)_inset]"
                   />
                 )}
                 <span className="relative z-10">{tab.label}</span>
@@ -75,7 +66,7 @@ export const Navbar = () => {
           <Button
             isIconOnly
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            className="rounded-full"
+            className="rounded-full transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-95"
             size="sm"
             variant="ghost"
             onPress={() => setTheme(isDark ? "light" : "dark")}
@@ -83,7 +74,7 @@ export const Navbar = () => {
             {isDark ? <SunIcon /> : <MoonIcon />}
           </Button>
         </div>
-      </m.nav>
+      </nav>
     </header>
   );
 };
