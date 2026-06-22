@@ -1,4 +1,3 @@
-import type { Variants } from "framer-motion";
 import type {
   BulletEntry,
   EducationEntry,
@@ -21,13 +20,11 @@ import { detectEntryType } from "@/utils/resume";
 
 interface ResumeSectionRendererProps {
   entries: Entry[] | undefined;
-  itemVariants: Variants;
   sectionName: string;
 }
 
 export function ResumeSectionRenderer({
   entries,
-  itemVariants,
   sectionName,
 }: ResumeSectionRendererProps) {
   if (!entries || entries.length === 0) {
@@ -41,7 +38,6 @@ export function ResumeSectionRenderer({
       return (
         <ExperienceSection
           entries={entries as ExperienceEntry[]}
-          itemVariants={itemVariants}
           sectionName={sectionName}
         />
       );
@@ -49,7 +45,6 @@ export function ResumeSectionRenderer({
       return (
         <EducationSection
           entries={entries as EducationEntry[]}
-          itemVariants={itemVariants}
           sectionName={sectionName}
         />
       );
@@ -57,7 +52,6 @@ export function ResumeSectionRenderer({
       return (
         <PublicationSection
           entries={entries as PublicationEntry[]}
-          itemVariants={itemVariants}
           sectionName={sectionName}
         />
       );
@@ -65,7 +59,6 @@ export function ResumeSectionRenderer({
       return (
         <NormalSection
           entries={entries as NormalEntry[]}
-          itemVariants={itemVariants}
           sectionName={sectionName}
         />
       );
@@ -73,7 +66,6 @@ export function ResumeSectionRenderer({
       return (
         <OneLineSection
           entries={entries as OneLineEntry[]}
-          itemVariants={itemVariants}
           sectionName={sectionName}
         />
       );
@@ -81,17 +73,12 @@ export function ResumeSectionRenderer({
       return (
         <BulletSection
           entries={entries as BulletEntry[]}
-          itemVariants={itemVariants}
           sectionName={sectionName}
         />
       );
     case "text":
       return (
-        <TextSection
-          entries={entries as string[]}
-          itemVariants={itemVariants}
-          sectionName={sectionName}
-        />
+        <TextSection entries={entries as string[]} sectionName={sectionName} />
       );
     default:
       return null;

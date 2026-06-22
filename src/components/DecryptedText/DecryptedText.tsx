@@ -5,7 +5,6 @@ import {
   type ComponentPropsWithoutRef,
   type CSSProperties,
 } from "react";
-import { useReducedMotion } from "framer-motion";
 
 type RevealDirection = "start" | "end" | "center";
 
@@ -88,6 +87,26 @@ function getNextIndex(
   }
 }
 
+function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(mq.matches);
+
+    update();
+    mq.addEventListener("change", update);
+
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  return reduced;
+}
+
 /**
  * Sequentially "decrypts" text when it scrolls into view: characters scramble
  * and then resolve one by one in `revealDirection` order. Respects
@@ -106,7 +125,7 @@ export default function DecryptedText({
     new Set(),
   );
   const containerRef = useRef<HTMLSpanElement>(null);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const isAnimating = started && revealedIndices.size < text.length;
   // Derived on every render: each reveal tick re-renders, so the characters

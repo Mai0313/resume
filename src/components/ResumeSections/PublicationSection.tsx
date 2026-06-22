@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import type { Variants } from "framer-motion";
 import type { PublicationEntry } from "@/utils/resume";
 
 import { Fragment } from "react";
@@ -13,18 +12,16 @@ import { formatList } from "@/lib/utils";
 interface PublicationSectionProps {
   entries: PublicationEntry[] | undefined;
   sectionName: string;
-  itemVariants: Variants;
 }
 
 export const PublicationSection: FC<PublicationSectionProps> = ({
   entries,
   sectionName,
-  itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
+    <SectionCard title={displayTitle}>
       <div className="divide-y divide-border">
         {entries?.map((pub, index) => {
           const url =

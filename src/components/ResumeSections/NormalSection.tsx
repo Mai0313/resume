@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import type { Variants } from "framer-motion";
 import type { NormalEntry } from "@/utils/resume";
 
 import { Chip, Typography } from "@heroui/react";
@@ -18,18 +17,16 @@ import { formatList } from "@/lib/utils";
 interface NormalSectionProps {
   entries: NormalEntry[] | undefined;
   sectionName: string;
-  itemVariants: Variants;
 }
 
 export const NormalSection: FC<NormalSectionProps> = ({
   entries,
   sectionName,
-  itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
+    <SectionCard title={displayTitle}>
       <div className="divide-y divide-border">
         {entries?.map((entry, index) => {
           const metaLine = formatList([

@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import type { Variants } from "framer-motion";
 import type { ExperienceEntry } from "@/utils/resume";
 
 import { SectionCard, getSectionConfig } from "./SectionCard";
@@ -14,18 +13,16 @@ import {
 interface ExperienceSectionProps {
   entries: ExperienceEntry[] | undefined;
   sectionName: string;
-  itemVariants: Variants;
 }
 
 export const ExperienceSection: FC<ExperienceSectionProps> = ({
   entries,
   sectionName,
-  itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
+    <SectionCard title={displayTitle}>
       <div className="divide-y divide-border">
         {entries?.map((entry, index) => (
           <ItemCard

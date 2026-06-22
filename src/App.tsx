@@ -1,12 +1,8 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import { LazyMotion, MotionConfig } from "framer-motion";
 import { Spinner } from "@heroui/react";
 
 import { envHelpers } from "@/utils/env";
-
-const loadMotionFeatures = () =>
-  import("@/utils/motionFeatures").then((mod) => mod.default);
 
 const IndexPage = lazy(() => import("@/pages/index"));
 const ResumePage = lazy(() => import("@/pages/resume"));
@@ -21,18 +17,14 @@ function RouteFallback() {
 
 function App() {
   return (
-    <LazyMotion strict features={loadMotionFeatures}>
-      <MotionConfig reducedMotion="user">
-        <Suspense fallback={<RouteFallback />}>
-          <Routes>
-            <Route element={<IndexPage />} path="/" />
-            {envHelpers.isResumeFileAvailable() && (
-              <Route element={<ResumePage />} path="/resume" />
-            )}
-          </Routes>
-        </Suspense>
-      </MotionConfig>
-    </LazyMotion>
+    <Suspense fallback={<RouteFallback />}>
+      <Routes>
+        <Route element={<IndexPage />} path="/" />
+        {envHelpers.isResumeFileAvailable() && (
+          <Route element={<ResumePage />} path="/resume" />
+        )}
+      </Routes>
+    </Suspense>
   );
 }
 

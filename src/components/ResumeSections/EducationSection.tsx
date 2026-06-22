@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import type { Variants } from "framer-motion";
 import type { EducationEntry } from "@/utils/resume";
 
 import { Typography } from "@heroui/react";
@@ -12,18 +11,16 @@ import { formatList } from "@/lib/utils";
 interface EducationSectionProps {
   entries: EducationEntry[] | undefined;
   sectionName: string;
-  itemVariants: Variants;
 }
 
 export const EducationSection: FC<EducationSectionProps> = ({
   entries,
   sectionName,
-  itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
+    <SectionCard title={displayTitle}>
       <div className="divide-y divide-border">
         {entries?.map((edu, index) => (
           <ItemCard

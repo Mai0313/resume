@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import type { Variants } from "framer-motion";
 import type { OneLineEntry } from "@/utils/resume";
 
 import { Chip, Typography } from "@heroui/react";
@@ -9,7 +8,6 @@ import { SectionCard, getSectionConfig } from "./SectionCard";
 interface OneLineSectionProps {
   entries: OneLineEntry[] | undefined;
   sectionName: string;
-  itemVariants: Variants;
 }
 
 /**
@@ -20,7 +18,6 @@ interface OneLineSectionProps {
 export const OneLineSection: FC<OneLineSectionProps> = ({
   entries,
   sectionName,
-  itemVariants,
 }) => {
   const { displayTitle } = getSectionConfig(sectionName);
 
@@ -29,7 +26,7 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
   );
 
   return (
-    <SectionCard itemVariants={itemVariants} title={displayTitle}>
+    <SectionCard title={displayTitle}>
       {hasKeywords ? (
         <div className="divide-y divide-border">
           {entries?.map((entry, index) => (
