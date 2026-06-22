@@ -31,6 +31,17 @@ export default function IndexPage() {
     <DefaultLayout>
       {/* ────── Hero ────── */}
       <section className="relative flex min-h-screen items-center overflow-hidden">
+        {/* Static gradient backdrop: paints instantly, covers the moment
+            before the WebGL canvas loads and the no-WebGL/reduced-motion case. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: isDark
+              ? "radial-gradient(125% 85% at 50% 0%, rgba(255,255,255,0.06), transparent 60%)"
+              : "radial-gradient(125% 85% at 50% 0%, rgba(26,51,102,0.05), transparent 60%)",
+          }}
+        />
         <div
           aria-hidden="true"
           className={cn(

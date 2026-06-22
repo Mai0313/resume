@@ -29,7 +29,7 @@ uniform vec2 uMouse;
 
 #define PI 3.1415926538
 
-const int u_line_count = 40;
+const int u_line_count = 20;
 const float u_line_width = 7.0;
 const float u_line_blur = 10.0;
 
@@ -124,6 +124,28 @@ void main() {
 }
 `;
 
+type IdleWindow = Window & {
+  requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+  cancelIdleCallback?: (handle: number) => void;
+};
+
+// Defer non-critical work to idle time, falling back to setTimeout on browsers
+// (e.g. older Safari) that lack requestIdleCallback.
+function requestIdle(cb: () => void): number {
+  const w = window as IdleWindow;
+
+  return typeof w.requestIdleCallback === "function"
+    ? w.requestIdleCallback(cb, { timeout: 2000 })
+    : window.setTimeout(cb, 200);
+}
+
+function cancelIdle(handle: number): void {
+  const w = window as IdleWindow;
+
+  if (typeof w.cancelIdleCallback === "function") w.cancelIdleCallback(handle);
+  else window.clearTimeout(handle);
+}
+
 export default function Threads({
   color = [1, 1, 1],
   amplitude = 1,
@@ -138,8 +160,24 @@ export default function Threads({
     if (!containerRef.current) return;
     const container = containerRef.current;
 
-    const renderer = new Renderer({ alpha: true });
+    // Cap the backing-store resolution: the fragment shader cost scales with
+    // pixel count, and this is a faint ambient backdrop, so a low dpr is
+    // visually indistinguishable but far cheaper on the GPU.
+    const dpr = Math.min(window.devicePixelRatio || 1, 1);
+
+    // WebGL can be unavailable (blocked, GPU blocklisted, context limit). Bail
+    // gracefully so the static gradient backdrop stands in instead of crashing
+    // the whole page.
+    let renderer: Renderer;
+
+    try {
+      renderer = new Renderer({ alpha: true, dpr });
+    } catch {
+      return;
+    }
     const gl = renderer.gl;
+
+    if (!gl) return;
 
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
@@ -168,11 +206,20 @@ export default function Threads({
 
     const mesh = new Mesh(gl, { geometry, program });
 
-    // Respect prefers-reduced-motion: draw static frames instead of running
-    // the animation loop.
+    // Respect prefers-reduced-motion: draw a single static frame instead of
+    // running the animation loop.
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+
+    // ~30fps is plenty for an ambient backdrop and halves the per-second cost
+    // versus 60fps.
+    const frameInterval = 1000 / 30;
+    let lastRenderTime = 0;
+    let running = false;
+    // The loop only runs once it is idle-started AND visible AND on-screen.
+    let idleReady = false;
+    let isIntersecting = false;
 
     const resize = () => {
       const { clientWidth, clientHeight } = container;
@@ -182,31 +229,72 @@ export default function Threads({
       program.uniforms.iResolution.value.g = clientHeight;
       program.uniforms.iResolution.value.b = clientWidth / clientHeight;
 
-      // Without the animation loop nothing repaints after a resize, so
-      // render a frame here to keep the canvas in sync with its new size.
-      if (prefersReducedMotion) {
+      // Nothing repaints automatically while the loop is paused (or under
+      // reduced motion), so render a frame here to keep the canvas in sync.
+      if (!running || prefersReducedMotion) {
         renderer.render({ scene: mesh });
+      }
+    };
+
+    const update = (t: number) => {
+      if (!running) return;
+      animationFrameId.current = requestAnimationFrame(update);
+
+      if (t - lastRenderTime < frameInterval) return;
+      lastRenderTime = t;
+      program.uniforms.iTime.value = t * 0.001;
+      renderer.render({ scene: mesh });
+    };
+
+    const start = () => {
+      if (running || prefersReducedMotion) return;
+      if (!idleReady || document.hidden || !isIntersecting) return;
+      running = true;
+      lastRenderTime = 0;
+      animationFrameId.current = requestAnimationFrame(update);
+    };
+
+    const stop = () => {
+      running = false;
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = undefined;
       }
     };
 
     window.addEventListener("resize", resize);
     resize();
 
-    const update = (t: number) => {
-      program.uniforms.iTime.value = t * 0.001;
-
-      renderer.render({ scene: mesh });
-      animationFrameId.current = requestAnimationFrame(update);
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else start();
     };
 
-    if (!prefersReducedMotion) {
-      animationFrameId.current = requestAnimationFrame(update);
-    }
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // Pause the loop while the hero is scrolled out of view, resume on return.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isIntersecting = entry.isIntersecting;
+        if (isIntersecting) start();
+        else stop();
+      },
+      { threshold: 0 },
+    );
+
+    observer.observe(container);
+
+    // Defer the first start until idle so it never competes with FCP/LCP.
+    const idleHandle = requestIdle(() => {
+      idleReady = true;
+      start();
+    });
 
     return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      stop();
+      cancelIdle(idleHandle);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", resize);
 
       if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
