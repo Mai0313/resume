@@ -155,7 +155,7 @@ Runtime image 使用 Node.js 20，會 build Vite app，並執行 `yarn preview -
 
 ## 更多文件
 
-- [CONTRIBUTING.md](CONTRIBUTING.md) 說明 local development、CI、project layout 和 PR conventions。
+- [CONTRIBUTING.md](.github/CONTRIBUTING.md) 說明 local development、CI、project layout 和 PR conventions。
 - [CLAUDE.md](CLAUDE.md) 提供 AI coding agents 使用的精簡 project-specific notes。
 
 ## 授權

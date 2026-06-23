@@ -107,4 +107,4 @@ When reporting a bug, include steps to reproduce, expected behavior, actual beha
 
 ## License
 
-By contributing, you agree that your contributions are licensed under the [MIT License](LICENSE).
+By contributing, you agree that your contributions are licensed under the [MIT License](../LICENSE).

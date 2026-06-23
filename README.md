@@ -155,7 +155,7 @@ The runtime image uses Node.js 20, builds the Vite app, and runs `yarn preview -
 
 ## More Docs
 
-- [CONTRIBUTING.md](CONTRIBUTING.md) covers local development, CI, project layout, and PR conventions.
+- [CONTRIBUTING.md](.github/CONTRIBUTING.md) covers local development, CI, project layout, and PR conventions.
 - [CLAUDE.md](CLAUDE.md) contains concise project-specific notes for AI coding agents.
 
 ## License
