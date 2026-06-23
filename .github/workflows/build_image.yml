@@ -68,7 +68,7 @@ jobs:
           echo "name=$IMAGE_NAME" >> $GITHUB_OUTPUT
 
       - name: ${{ matrix.target.name }}
-        uses: docker/build-push-action@v7.0.0
+        uses: docker/build-push-action@v7.2.0
         with:
           push: true
           context: .
