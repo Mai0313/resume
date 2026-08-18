@@ -18,18 +18,19 @@ export const ResumeContent = ({ data }: ResumeContentProps) => {
         <ResumeHeader cv={cv} languages={languages} />
       </div>
 
-      <div className="reveal-stagger space-y-20 md:space-y-24">
+      <div className="reveal-stagger space-y-6 md:space-y-8">
         {data.sectionOrder.map((sectionName) => {
           if (languages && sectionName === languages.key) {
             return null;
           }
 
           return (
-            <ResumeSectionRenderer
-              key={sectionName}
-              entries={cv.sections[sectionName]}
-              sectionName={sectionName}
-            />
+            <div key={sectionName}>
+              <ResumeSectionRenderer
+                entries={cv.sections[sectionName]}
+                sectionName={sectionName}
+              />
+            </div>
           );
         })}
       </div>
