@@ -8,9 +8,9 @@ There is no Dockerfile. The environment is assembled from a stock image plus [De
 
 - **Base image**: `mcr.microsoft.com/devcontainers/base:bookworm`.
 - **Features**:
-    - `common-utils`: git, curl, zsh, oh-my-zsh, and a non-root `vscode` user with passwordless sudo. zsh is the default shell.
-    - `node`: Node.js LTS with yarn and pnpm, for the Vite build and `yarn run check`.
-    - `uv`: used by `make pdf`, which renders `public/resume.pdf` through `uvx rendercv`.
+  - `common-utils`: git, curl, zsh, oh-my-zsh, and a non-root `vscode` user with passwordless sudo. zsh is the default shell.
+  - `node`: Node.js LTS with yarn and pnpm, for the Vite build and `yarn run check`.
+  - `uv`: used by `make pdf`, which renders `public/resume.pdf` through `uvx rendercv`.
 - **devcontainer.json**: extension recommendations (Docker, GitLens, YAML, TOML) and a zsh terminal profile.
 - **updateContentCommand**: runs `yarn install`, so dependencies are ready when the container opens.
 
