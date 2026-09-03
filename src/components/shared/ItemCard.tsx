@@ -14,7 +14,7 @@ interface ItemCardProps {
 export const ItemCard: FC<ItemCardProps> = ({ children, className = "" }) => (
   <div
     className={cn(
-      "group -mx-4 rounded-lg px-4 py-6 transition-colors duration-200 hover:bg-default/30",
+      "group -mx-6 rounded-xl px-6 py-6 transition-[transform,background-color] duration-200 ease-[var(--ease-out-fluid)] hover:-translate-y-px hover:bg-[var(--glass-hover-bg)] active:translate-y-0 active:scale-[0.995] md:-mx-8 md:px-8",
       className,
     )}
   >

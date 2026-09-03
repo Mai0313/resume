@@ -12,6 +12,21 @@
 }
 
 @layer base {
+  /* Liquid-glass tokens shared by both themes. */
+  :root {
+    --glass-radius: 1.25rem;
+    --glass-blur: 16px;
+    --glass-saturate: 140%;
+    --glass-spectral: linear-gradient(
+      125deg,
+      oklch(0.85 0.13 205 / 0.55) 0%,
+      oklch(0.85 0.13 205 / 0) 34%,
+      oklch(0.72 0.16 292 / 0) 66%,
+      oklch(0.72 0.16 292 / 0.55) 100%
+    );
+    --glass-spectral-opacity-hover: 0.6;
+  }
+
   /* Cool-tinted light theme; surface stays white so the navbar pill lifts off the page. */
   :root,
   .light,
@@ -19,6 +34,35 @@
   [data-theme="light"],
   [data-theme="default"] {
     --background: oklch(0.985 0.002 240);
+
+    --glass-bg: oklch(0.99 0.002 240 / 0.7);
+    --glass-bg-hover: oklch(1 0 0 / 0.82);
+    --glass-border: oklch(0.9 0.004 240 / 0.8);
+    --glass-highlight: rgba(255, 255, 255, 0.7);
+    --glass-hover-bg: oklch(0.94 0.004 240 / 0.55);
+    --glass-chip-bg: oklch(0.965 0.003 240 / 0.85);
+    --glass-chip-border: oklch(0.86 0.005 240 / 0.7);
+    --glass-shadow:
+      0 1px 2px 0 rgba(16, 24, 40, 0.04),
+      0 12px 28px -8px rgba(16, 24, 40, 0.12),
+      inset 0 1px 0 0 var(--glass-highlight);
+    --glass-spectral-opacity: 0.24;
+    --ambient-mesh:
+      radial-gradient(
+        60% 50% at 15% 10%,
+        oklch(0.7 0.09 220 / 0.06),
+        transparent 60%
+      ),
+      radial-gradient(
+        55% 45% at 88% 28%,
+        oklch(0.7 0.1 290 / 0.05),
+        transparent 60%
+      ),
+      radial-gradient(
+        75% 60% at 50% 106%,
+        oklch(0.8 0.05 235 / 0.05),
+        transparent 60%
+      );
   }
 
   /* OLED blue-black dark theme tuned to the Threads hero; matches the meta theme-color. */
@@ -28,15 +72,179 @@
     --surface: oklch(0.21 0.012 235);
     --border: oklch(0.26 0.01 235);
     --separator: oklch(0.23 0.01 235);
+
+    --glass-bg: oklch(0.225 0.014 235 / 0.62);
+    --glass-bg-hover: oklch(0.255 0.016 235 / 0.72);
+    --glass-border: oklch(0.34 0.012 235 / 0.55);
+    --glass-highlight: rgba(255, 255, 255, 0.07);
+    --glass-hover-bg: oklch(0.26 0.016 235 / 0.5);
+    --glass-chip-bg: oklch(0.27 0.012 235 / 0.75);
+    --glass-chip-border: oklch(0.37 0.01 235 / 0.5);
+    --glass-shadow:
+      inset 0 1px 0 0 var(--glass-highlight),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    --glass-spectral-opacity: 0.32;
+    --ambient-mesh:
+      radial-gradient(
+        60% 50% at 18% 12%,
+        oklch(0.62 0.14 220 / 0.1),
+        transparent 60%
+      ),
+      radial-gradient(
+        55% 45% at 85% 30%,
+        oklch(0.55 0.16 290 / 0.08),
+        transparent 60%
+      ),
+      radial-gradient(
+        72% 60% at 50% 108%,
+        oklch(0.5 0.1 235 / 0.1),
+        transparent 60%
+      );
   }
 }
 
-/* On-mount entrance: fade in while rising. Replaces the former framer-motion
-   stagger on the resume page. */
-@keyframes fade-rise {
+@layer components {
+  /* Frosted glass panel: the single glass layer in any stack. Dark leans on
+     border + inset highlight + blur (no drop shadow); light adds a soft one. */
+  .glass-panel {
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--glass-radius);
+    border: 1px solid var(--glass-border);
+    background-color: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--glass-blur))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    --glass-mx: 50%;
+    --glass-my: 50%;
+    --glass-active: 0;
+    transition:
+      transform 200ms var(--ease-out-fluid),
+      box-shadow 200ms var(--ease-out-fluid),
+      border-color 200ms var(--ease-out-fluid);
+  }
+
+  /* Lift real content above the specular sheen for legibility. */
+  .glass-panel > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Pointer-tracked specular catch-light (sits on the frost, under the text). */
+  .glass-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: var(--glass-active);
+    transition: opacity 260ms var(--ease-out-fluid);
+    background: radial-gradient(
+      18rem 18rem at var(--glass-mx) var(--glass-my),
+      oklch(1 0 0 / 0.22),
+      transparent 60%
+    );
+    mix-blend-mode: screen;
+  }
+
+  /* Faint cyan->violet spectral rim, painted only on the 1px perimeter. */
+  .glass-panel::after,
+  .glass-edge::after,
+  .glass-cta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: var(--glass-spectral);
+    opacity: var(--glass-spectral-opacity);
+    transition: opacity 300ms var(--ease-out-fluid);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  .glass-panel:hover::after,
+  .glass-edge:hover::after,
+  .glass-cta:hover::after {
+    opacity: var(--glass-spectral-opacity-hover);
+  }
+
+  /* Hover lift + press. Spring feel via HeroUI's fluid easing, no motion lib. */
+  @media (hover: hover) {
+    .glass-panel:hover {
+      transform: translateY(-2px);
+      will-change: transform;
+      box-shadow:
+        var(--glass-shadow),
+        0 10px 34px -14px oklch(0 0 0 / 0.5);
+    }
+  }
+
+  .glass-panel:active {
+    transform: translateY(-1px) scale(0.99);
+    transition-duration: 120ms;
+  }
+
+  /* Frosted button: overrides HeroUI .button's bg vars, keeps its press-scale. */
+  .glass-cta {
+    --button-bg: var(--glass-bg);
+    --button-bg-hover: var(--glass-bg-hover);
+    --button-bg-pressed: var(--glass-bg-hover);
+    --button-fg: var(--foreground);
+    position: relative;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--glass-blur))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  }
+
+  /* Top-edge specular highlight for the solid accent primary CTA. */
+  .glass-cta-sheen {
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.28);
+  }
+
+  .glass-edge {
+    position: relative;
+  }
+
+  /* Solid chip backing over glass (no backdrop-filter -> no blur-on-blur).
+     .chip.glass-chip ties .chip--default.chip--soft and wins on source order. */
+  .chip.glass-chip {
+    --chip-bg: var(--glass-chip-bg);
+    border: 1px solid var(--glass-chip-border);
+  }
+
+  /* Shared ambient field behind resume content; the glass refracts it. */
+  .ambient-field {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    background-image: var(--ambient-mesh);
+    background-repeat: no-repeat;
+    will-change: transform;
+    animation: ambient-drift 100s linear infinite;
+  }
+}
+
+/* On-mount entrance: glass materializing (rise + scale resolving), not a plain
+   fade. Applied to wrappers, never to the glass panels themselves, so an
+   animated transform never collides with a panel's backdrop-filter. */
+@keyframes materialize {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px) scale(0.985);
   }
   to {
     opacity: 1;
@@ -44,9 +252,22 @@
   }
 }
 
+/* Imperceptibly slow drift for the ambient field (~0.01Hz, returns to start). */
+@keyframes ambient-drift {
+  0% {
+    transform: translate3d(-1.5%, -1%, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(1.5%, 1.5%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-1.5%, -1%, 0) scale(1.06);
+  }
+}
+
 .reveal-on-load,
 .reveal-stagger > * {
-  animation: fade-rise 0.5s ease both;
+  animation: materialize 0.55s var(--ease-out-fluid) both;
 }
 
 /* Stagger each direct child of a .reveal-stagger container. */
@@ -81,9 +302,62 @@
   animation-delay: 1s;
 }
 
+/* Reduced motion: no move/scale/drift/sheen; content simply appears. */
 @media (prefers-reduced-motion: reduce) {
   .reveal-on-load,
   .reveal-stagger > * {
     animation: none;
+  }
+
+  .glass-panel,
+  .glass-panel::before,
+  .glass-panel::after {
+    transition: none;
+  }
+
+  .glass-panel:hover,
+  .glass-panel:active {
+    transform: none;
+  }
+
+  .ambient-field {
+    animation: none;
+  }
+}
+
+/* Reduced transparency: frostier/solid glass, no blur, no decorative sheen. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-panel,
+  .glass-cta {
+    background-color: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .glass-panel::before,
+  .glass-panel::after,
+  .glass-cta::after {
+    display: none;
+  }
+
+  .ambient-field {
+    opacity: 0;
+  }
+}
+
+/* More contrast: near-solid panels with a defined, contrasting border. */
+@media (prefers-contrast: more) {
+  .glass-panel,
+  .glass-cta {
+    background-color: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: 1px solid var(--foreground);
+  }
+
+  .glass-panel::before,
+  .glass-panel::after,
+  .glass-cta::after {
+    display: none;
   }
 }

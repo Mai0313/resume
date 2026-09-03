@@ -48,11 +48,11 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
   const pdfPath = resolveAssetPath(env.RESUME_PDF_PATH);
 
   return (
-    <header className="mb-16 border-b border-border pb-14 md:mb-20 md:pb-20">
+    <header className="glass-panel mb-6 p-6 md:mb-8 md:p-10">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto] md:items-start md:gap-10">
         <div className="order-2 md:order-1">
           <div className="mb-8">
-            <Chip size="sm" variant="soft">
+            <Chip className="glass-chip" size="sm" variant="soft">
               <span className="size-1.5 rounded-full bg-success" />
               <Chip.Label className="font-mono text-[0.7rem] tracking-wide">
                 PROFILE · {formatUpdatedAt()}
@@ -118,7 +118,7 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
 
         {cv.photo && (
           <div className="order-1 flex justify-start md:order-2 md:justify-end">
-            <Avatar className="size-24 ring-1 ring-border md:size-32">
+            <Avatar className="size-24 ring-1 ring-[color:var(--glass-border)] md:size-32">
               <Avatar.Image alt={cv.name} src={cv.photo} />
               <Avatar.Fallback>{initials(cv.name)}</Avatar.Fallback>
             </Avatar>
@@ -138,6 +138,7 @@ export function ResumeHeader({ cv, languages }: ResumeHeaderProps) {
             {languages.entries.map((lang, index) => (
               <Chip
                 key={`lang-${index}-${lang.label}`}
+                className="glass-chip"
                 size="sm"
                 variant="soft"
               >

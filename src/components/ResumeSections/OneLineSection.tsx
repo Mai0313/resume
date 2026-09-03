@@ -55,7 +55,7 @@ export const OneLineSection: FC<OneLineSectionProps> = ({
                   {entry.keywords.map((keyword) => (
                     <Chip
                       key={keyword}
-                      className="font-mono tracking-tight"
+                      className="glass-chip font-mono tracking-tight"
                       size="sm"
                       variant="soft"
                     >

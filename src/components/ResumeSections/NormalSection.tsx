@@ -82,7 +82,7 @@ export const NormalSection: FC<NormalSectionProps> = ({
                   {entry.keywords.map((keyword) => (
                     <Chip
                       key={keyword}
-                      className="font-mono tracking-tight"
+                      className="glass-chip font-mono tracking-tight"
                       size="sm"
                       variant="soft"
                     >
