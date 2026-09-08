@@ -87,7 +87,7 @@ export default function IndexPage() {
           <div className="flex flex-wrap items-center gap-3">
             {resumeAvailable && (
               <Link
-                className="button button--primary gap-2"
+                className="button button--primary glass-cta-sheen glass-edge gap-2"
                 href="/resume"
                 render={(props) => {
                   // Drop the placeholder href so RouterLink fully owns the
@@ -106,7 +106,7 @@ export default function IndexPage() {
               </Link>
             )}
             <Link
-              className="button button--outline gap-2"
+              className="button glass-cta gap-2"
               href={siteConfig.links.github}
               rel="noopener noreferrer"
               target="_blank"
