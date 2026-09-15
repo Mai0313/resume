@@ -80,8 +80,10 @@ export const Navbar = () => {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-5">
       <nav
         className={cn(
-          "pointer-events-auto flex items-center gap-1 rounded-full border border-border bg-surface/70 backdrop-blur-xl transition-[box-shadow,padding] duration-300",
-          isScrolled ? "py-1 shadow-lg" : "py-1.5 shadow-none",
+          "glass-edge pointer-events-auto flex items-center gap-1 rounded-full border border-[color:var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-[16px] backdrop-saturate-[1.4] transition-[box-shadow,padding] duration-300",
+          isScrolled
+            ? "py-1 shadow-[inset_0_1px_0_0_var(--glass-highlight),0_10px_30px_-10px_rgba(0,0,0,0.35)]"
+            : "py-1.5 shadow-[inset_0_1px_0_0_var(--glass-highlight)]",
         )}
       >
         <div ref={listRef} className="relative flex items-center gap-0.5 pl-1">

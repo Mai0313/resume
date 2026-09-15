@@ -2,18 +2,22 @@ import type { FC, ReactNode } from "react";
 
 import { Separator, Typography } from "@heroui/react";
 
+import { useGlassPointer } from "@/hooks/useGlassPointer";
+
 interface SectionCardProps {
   title: string;
   children: ReactNode;
 }
 
 /**
- * Section wrapper: an uppercase heading (HeroUI Typography rendered as h2)
- * followed by a full-width HeroUI Separator, then content.
+ * Section wrapper: a frosted glass panel with an uppercase heading (HeroUI
+ * Typography rendered as h2), a full-width HeroUI Separator, then content.
  */
 export const SectionCard: FC<SectionCardProps> = ({ title, children }) => {
+  const glassRef = useGlassPointer();
+
   return (
-    <section className="scroll-mt-24">
+    <section ref={glassRef} className="glass-panel scroll-mt-24 p-6 md:p-8">
       <div className="mb-8 flex items-center gap-4">
         <Typography.Heading
           className="font-mono text-xs font-medium uppercase leading-4 tracking-[0.15em] text-muted"
