@@ -2,6 +2,10 @@
 
 Project notes for AI agents working in this repo.
 
+## Confidential information
+
+No confidential information from any employer, current or past, may appear anywhere in this repo: not in `public/resume.yaml` or the PDF, and not in code, docs, commit messages, branch names, or PR and issue text. The repo, resume.mai0313.com and the `ghcr.io/mai0313/resume` image are all public, and deleting something later does not unpublish it: git history and every untagged image version keep it. This covers internal bug, CL or build IDs, product and chip codenames, unreleased products and hardware, and specifics of defects or security mechanisms in shipped products, and is not limited to them. When unsure whether something is public, leave it out, or state the result without the detail.
+
 ## Commands
 
 ```bash
@@ -43,9 +47,9 @@ Dark mode is class plus `data-theme` on `<html>`, managed by `useTheme` from `@h
 - `/resume` is registered only when `VITE_RESUME_FILE` is set. Gate new conditional pages in `src/utils/env.ts`, `src/config/site.ts`, and `src/App.tsx`.
 - `vite.config.ts` copies `dist/index.html` to `dist/404.html` for GitHub Pages SPA fallback.
 - `vercel.json` rewrites only extensionless routes so `/resume.pdf`, `/resume.yaml`, and other static files are not masked by `index.html`.
-- GitHub Pages deploy runs `make pdf`; Vercel does not.
+- Vercel (resume.mai0313.com) is the only deployment and does not run `make pdf`. The GitHub Pages workflow is disabled in the repository settings, so nothing is published there.
 - A year-only `date` (e.g. `"2025"`) renders as `Jan 2025` in the PDF, because `design.templates.single_date` is `MONTH_ABBREVIATION YEAR`.
-- `public/resume.yaml` is the master resume: keep both the AI/ML and the firmware track in it and tailor per application elsewhere. The repo is public, so no internal bug, CL or build IDs, product codenames, or unreleased-hardware details.
+- `public/resume.yaml` is the master resume: keep both the AI/ML and the firmware track in it and tailor per application elsewhere.
 
 ## Key Files
 
