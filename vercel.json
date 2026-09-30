@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "Personal Website",
+  "framework": "vite",
+  "devCommand": "npm run dev",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [{ "source": "/((?!.*\\.).*)", "destination": "/" }]
+}

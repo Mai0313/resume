@@ -1,0 +1,41 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true
+    },
+    "ghcr.io/devcontainers/features/node:2": {},
+    "ghcr.io/devcontainers-extra/features/uv:1": {}
+  },
+  "updateContentCommand": "npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "cweijan.dbclient-jdbc",
+        "cweijan.vscode-redis-client",
+        "eamodio.gitlens",
+        "github.copilot-chat",
+        "huggingface.huggingface-vscode-chat",
+        "ms-azuretools.vscode-containers",
+        "ms-azuretools.vscode-docker",
+        "natqe.reload",
+        "oderwat.indent-rainbow",
+        "redhat.vscode-yaml",
+        "smcpeak.default-keys-windows",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          },
+          "zsh": {
+            "path": "zsh"
+          }
+        }
+      }
+    }
+  }
+}

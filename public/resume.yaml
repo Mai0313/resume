@@ -1,0 +1,439 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/main/schema.json
+
+cv:
+  name: Wei Cheng Lee
+  headline: Software Engineer
+  location: Hsinchu, Taiwan
+  email: weichenglee0313@gmail.com
+  # photo: https://lh3.googleusercontent.com/pw/AP1GczMszOuf7KjSMw1UtWoja-uC9XDUHYZ7LCG9S9esseVDRcadreWNqrIfzt3-PjCrIVJMVrDPh0g8ySeY5F_zfb7Rz73BF8BDy2oqKQ3Pj4NtNEANvMkna8VkYeWZa7mHl4YxL4QIAq963YLyuvFZWFrh=w1349-h1012-s-no-gm?authuser=0
+  social_networks:
+    - network: LinkedIn
+      username: weichenglee0313
+    - network: GitHub
+      username: Mai0313
+
+  sections:
+    Languages:
+      - label: Chinese
+        details: Native
+      - label: English
+        details: Advanced
+
+    Education:
+      - institution: University of California, San Diego
+        area: Psychology
+        degree: BS
+        start_date: 2017-09
+        end_date: 2021-09
+        url: https://ucsd.edu/
+        summary: >
+          Built a foundation in statistical analysis and behavioral data modeling, later transitioning to computer science through rigorous self-directed learning.
+          Cross-disciplinary training in cognition, computation, and systems thinking shaped a career spanning AI research for silicon design and firmware engineering for next-generation SoCs.
+
+    Experience:
+      - company: Google
+        position: Software Engineer
+        location: Banqiao, New Taipei, Taiwan
+        start_date: 2025-10
+        url: https://www.google.com
+        description: Software Engineer on the Google Pixel Security Team, working on EL3 firmware for Pixel SoCs in Trusted Firmware-A (TF-A) and its Rust port, Rusted Firmware-A (RF-A), and testing it with the TF-A Test Framework (TFTF).
+        summary: >
+          Focused on EL3 power management and stability for shipping and next-generation Pixel SoCs: working on low-power (PSCI) paths in TF-A and RF-A, investigating EL3 crashes and hangs with the power-firmware and stability teams, and making EL3 failures easier to diagnose.
+        highlights:
+          - Root-caused an EL3 crash during suspend on shipping Pixel devices to the power-management firmware, and handed the root cause and an on-device reproducer to the owning team.
+          - "Implemented, with the power co-processor team, the EL3 side of a new CPU power-down handshake in TF-A: the co-processor now acts on Arm PPU interrupts raised once a CPU has actually powered down, not on an early software interrupt, removing the race behind a family of watchdog resets found in pre-launch testing; later ported it to RF-A."
+          - Merged 13 upstream TF-A LTS releases (445 commits) into Pixel's TF-A 2.12 branches, including the one Pixel 10 firmware builds from, resolving conflicts with Pixel-specific patches, reconciling downstream security backports with their upstream versions, and verifying the result on a Pixel 10.
+          - Added shutdown and reset progress markers (breadcrumbs) to EL3's PSCI handlers in two Pixel TF-A trees, requested by the team triaging reboot hangs; after a reset hang, one register can show whether EL3 stalled or had already handed the reset off. Verified on Pixel 10 and Pixel 11; RF-A port in review.
+          - Fixed a TF-A regression that kept the bootloader on a shipping Pixel SoC from applying a hardware protection setting; verified on device and confirmed fixed on a later platform build.
+          - "Served as an EL3 triage contact for kernel-stability crash reports on Pixel 11 and next-generation Pixel SoCs: read breadcrumbs, EL3 tracepoints and scan dumps, and decoded EL3 panics to the source line, to judge whether EL3 was at fault, and pointed the stability team to the likely owning component when it was not."
+          - "Reviewed and tested teammates' fixes for top-priority suspend hangs: an on-device A/B test showed one fix turning a 24–30 s hang and watchdog reset into a clean suspend abort in about 0.45 ms; for another, showed that the crashes left in its stability run were unrelated to the change before approving it."
+          - Built AI-agent automation that gives a first-pass analysis to tickets on two engineers' queues as they are filed or updated (over 100 in one quarter) and pre-reviews code changes; it is read-only on tickets and reviews by design, and its findings reach a ticket or review only after an engineer has checked them.
+
+      - company: MediaTek
+        position: Machine Learning Engineer
+        location: Hsinchu, Taiwan
+        start_date: 2022-08
+        end_date: 2025-10
+        url: https://www.mediatek.com
+        description: Fabless semiconductor company that designs and manufactures a range of semiconductor products, providing chips for wireless communications, high-definition television, handheld mobile devices like smartphones and tablet computers, navigation systems, consumer multimedia products and digital subscriber line services as well as optical disc drives.
+        summary: >
+          Spearheaded ML research and industrialization for semiconductor design—thermal simulation, leakage analysis, and multi-agent AI systems.
+        highlights:
+          - Developed and deployed physics-aware deep learning models for SoC thermal simulation, reducing maximum temperature prediction error by 34%.
+          - Engineered layout-dependent leakage analysis methodology, enhancing pre-silicon estimation accuracy by 10% across multiple product lines.
+          - Built scalable data analysis and visualization pipelines for IC design, improving decision-making speed and accuracy.
+          - Led automation of RF/analog circuit design using multi-agent LLM systems, driving Pass@1 success rate to over 84% on complex tasks.
+          - Published 3 peer-reviewed papers in top conferences (NeurIPS, IEEE VLSI TSA, IEEE ICLAD) as first/co-author.
+          - Established industry-academia partnerships and secured research sponsorships, supporting talent development and knowledge exchange.
+          - Mentored junior engineers and interns, fostering open collaboration and a culture of continuous learning.
+
+    Publications:
+      - title: "MenTeR: A fully-automated Multi-agenT workflow for end-to-end RF/Analog Circuits Netlist Design"
+        authors:
+          - "**Wei Cheng Lee**"
+        journal: IEEE International Conference on LLM-Aided Design (ICLAD)
+        date: "2025-06"
+        url: https://arxiv.org/abs/2505.22990
+        summary: >
+          Proposed a scalable, fully-automated multi-agent workflow for RF/Analog circuit netlist design, integrating Diagram-Aware Retrieval-Augmented Generation and Chain-of-Stage reasoning. Achieved state-of-the-art results on real-world analog circuit design tasks, validating the potential of AI-assisted EDA systems.
+
+      - title: A Leakage Analysis Methodology Considering Intra-Cell and Inter-Cell Layout Dependent Effects
+        authors:
+          - "**Wei Cheng Lee**"
+        journal: IEEE VLSI TSA
+        date: "2024-04"
+        url: https://ieeexplore.ieee.org/document/10546410
+        summary: >
+          A novel methodology for digital logic IP-level leakage analysis, incorporating both intra-cell and inter-cell layout-dependent effects. Improved pre-silicon and post-silicon correlation by over 10% in industrial mixed-Vt designs.
+
+      - title: Fast SoC Thermal Simulation with Physics-aware U-Net
+        authors:
+          - "**Wei Cheng Lee**"
+        journal: NeurIPS 2023
+        date: "2023-12"
+        url: https://neurips.cc/virtual/2023/76089
+        summary: >
+          A physics-aware U-Net model for rapid SoC thermal simulation, embedding Fourier-Biot constraints in the loss function. Reduced maximum temperature error by 34% and achieved >100x speedup over commercial CFD tools.
+
+    Projects:
+      - name: TF-A Test Framework (TFTF) for Pixel SoCs
+        start_date: 2025-10
+        entity: Google
+        summary: >
+          Working on the TF-A Test Framework (TFTF), a bare-metal harness that exercises EL3 firmware without an OS: multi-core low-power stress coverage, test-failure diagnosis, and pre-silicon port review for Pixel SoCs.
+        highlights:
+          - Ported Pixel 10's low-power stress tests to Pixel 11's CPU topology, adding per-core tests for every core to its existing multi-cluster stress coverage.
+          - "Triaged a deep-idle (C4) test that failed 58 runs in a row over three weeks after a harness change dropped a test setting: showed the fix belonged in the test harness, not the firmware, and approved restoring it; it has passed 198 runs in a row since."
+          - Wrote detection of CPU low-power states disabled on the device under test, so a test whose target state is unavailable reports a skip naming the cause instead of an unexplained failure (in review).
+          - Reviewed pre-silicon TFTF port changes for a next-generation Pixel SoC and an EL3 firmware change they depend on, catching two power-sequencing defects in the latter before merge.
+        keywords: "TFTF, Baremetal Testing, Low-Power Mode, Multi-Core Stress Testing, PSCI"
+        roles: "Software Engineer"
+
+      - name: Trusted Firmware-A (TF-A / RF-A) for Pixel SoCs
+        start_date: 2025-10
+        entity: Google
+        summary: >
+          Contributing to EL3 firmware for Pixel SoCs in both the C implementation (TF-A) and its Rust port, Rusted Firmware-A (RF-A), focused on PSCI low-power transitions and crash debuggability.
+        highlights:
+          - "Implemented the EL3 side of the power co-processor handshake: for deep idle and suspend, EL3 arms the Arm PPU LOCKED / STA_ACCEPT interrupts for the target state instead of sending an early software interrupt; merged in TF-A and RF-A, with the TF-A version verified on device."
+          - Instrumented the platform handlers for PSCI SYSTEM_OFF, SYSTEM_RESET and SYSTEM_RESET2, first with EL3 tracepoints and then with shutdown and reset breadcrumbs in two TF-A trees, verified on two device generations and with fault-injection builds that forced early hangs; wrote the RF-A port (in review).
+          - "Fixed two causes of missing EL3 logs in Pixel 11 ramdumps: a log address the bootloader left stale after a memory-map change, and per-core crash logs that were not flushed before reset; both merged and verified on device."
+          - Supported RF-A builds on Pixel development hardware by adding the bootloader build targets that package RF-A, and a temporary bring-up build option, removed once no longer needed.
+          - "Decoded RF-A panics to exact source lines without symbols, from ramdump SRAM and serial logs: two in the bootloader's crash-dump boot, one of which hid the real crash (a kernel read blocked by an access-control firewall), and a by-design timeout pointing to a power-controller stall."
+          - Showed that an EL3 panic on a shipping Pixel device was collateral damage rather than an EL3 defect, tracing the bus error to another firmware component accessing a hardware block powered down 15 ms earlier, and routed it to the owning team's existing bug.
+          - "Jointly debugged a top-priority EL3 crash on the CPU power-down path: wrote a debug patch logging the power-down status, built debug-only fault-injection hooks, caught a missing reset step in a teammate's fix during review, and requested and tracked its stress validation (1,205 suspend/resume and 1,395 reboot cycles without a crash dump)."
+          - Prototyped the team's horizontal sibling-state design for RF-A OS-initiated (OSI) suspend, narrowing the power-domain lock from system level to the highest affected power level; a TFTF benchmark written for it showed C2 suspend/resume cycle time falling 14%.
+        keywords: "ARM Trusted Firmware, Rust, PSCI, Low-Power Mode, EL3 Crash Analysis, Firmware Security"
+        roles: "Software Engineer"
+
+      - name: AI Agents for Firmware Debugging and Code Review
+        start_date: 2026-02
+        entity: Google
+        summary: >
+          Building AI-agent tooling for EL3 firmware work: reusable agent skills that encode firmware debug procedures, and background agents that give tickets a first-pass analysis as they are filed or updated and pre-review code changes. The agents report to an engineer and do not post to tickets or reviews themselves.
+        highlights:
+          - Built background AI agents that give a first-pass analysis to tickets on two engineers' queues as they are filed or updated (over 100 in one quarter) and pre-review code changes, writing reports for an engineer to check; read-only on tickets and code reviews by design.
+          - "Wrote reusable agent skills that encode firmware debug procedures: bug investigation with duplicate-cluster resolution and log retrieval, crash-dump and trace decoding, device flashing and recovery, test runs, upstream merges, and code review."
+          - Checked agent reports against firmware source and logs before acting on them, and fed errors back into the skills, such as correcting a breadcrumb decoding guide against the firmware source and on-device readings.
+        keywords: "LLM Agents, Agent Skills, AI-Assisted Debugging, Automation, Code Review"
+        roles: "Software Engineer"
+
+      - name: Automotive Assistant for Vehicle using multi-agent system
+        start_date: 2025-01
+        end_date: 2025-06
+        url: https://github.com/Mai0313/automotive-backend
+        entity: MediaTek
+        summary: >
+          Using multi-agent system to develop an automotive assistant for vehicle control, enabling real-time voice commands and automated task execution.
+          Focused on agent orchestration, executor agents, and chain-of-stage reasoning to enhance user experience and system efficiency.
+        highlights:
+          - Implemented a multi-agent architecture for real-time voice command processing and task execution.
+          - Developed executor agents for specialized tasks, improving system responsiveness and adaptability.
+        keywords: "Multi-Agent Systems, Voice Recognition, Automotive, Real-time Processing"
+        roles: "Technical Lead, System Engineer"
+
+      - name: "MenTeR: Multi-Agent Analog Circuit Design System"
+        start_date: 2025-01
+        end_date: 2025-05
+        url: https://arxiv.org/abs/2505.22990
+        entity: MediaTek
+        summary: >
+          Led engineering and system integration for MenTeR, an end-to-end automated workflow for RF/analog circuit netlist design based on LLM agents. Focused on cross-agent collaboration, reusable knowledge base construction, and seamless integration with industrial flows.
+        highlights:
+          - Architected and engineered PI, Circuit, and Testbench agents for automation of specification analysis, netlist generation, and simulation validation.
+          - Built the Circuit Think Tank, a reusable domain knowledge base for design pattern acceleration.
+          - Significantly reduced manual workload and boosted design success rates on real-world analog circuits.
+          - Drove practical adoption through industry-academia collaboration.
+        keywords: "Circuit Design, Multi-Agent Systems, LLM, Automation"
+        roles: "Technical Lead, System Engineer"
+
+      - name: Task Management System with Multi-Agent Orchestration
+        start_date: 2024-01
+        end_date: 2024-12
+        entity: MediaTek
+        summary: >
+          Multi-Agent system for task management, including task assignment, progress tracking, and resource allocation.
+          Utilizes executor agents for efficient execution of tasks across various domains.
+          Supports delegation of tasks to specialized agents, enhancing system flexibility and adaptability.
+        highlights:
+          - Implemented a robust task management framework with multi-agent orchestration.
+          - Delegated tasks to specialized executor agents for efficient execution.
+          - Enabled dynamic task assignment and resource allocation based on agent capabilities.
+        keywords: "Task Management, Multi-Agent Systems, Resource Allocation, Orchestration"
+        roles: "System Engineer"
+
+      - name: Leakage Analysis Automation
+        start_date: 2024-01
+        end_date: 2024-06
+        url: https://ieeexplore.ieee.org/document/10546410
+        entity: MediaTek
+        summary: >
+          Developed scalable toolchains and visualization dashboards for automated semiconductor leakage analysis, enabling efficient cross-team data-driven validation and model refinement.
+        highlights:
+          - Automated extraction and modeling of layout-dependent leakage effects, deployed across multiple product lines.
+          - Enabled real-time silicon measurement analysis for rapid debugging and yield improvement.
+        keywords: "Semiconductor, Leakage Analysis, Automation, Data Visualization"
+        roles: "Lead Developer, Data Scientist"
+
+      - name: AI Thermal Simulation
+        start_date: 2022-10
+        end_date: 2023-06
+        url: https://neurips.cc/virtual/2023/76089
+        entity: MediaTek
+        summary: >
+          Core developer for a physics-aware, data-efficient SoC thermal simulation engine. Focused on model architecture, loss function design, data pipeline optimization, and experimental validation.
+        highlights:
+          - Integrated thermal gradient and Laplacian constraints, improving data efficiency and model fidelity.
+          - Benchmarked system against commercial CFD tools, achieving 34% MTE reduction and 100x speedup.
+          - Explored and prototyped transformer-based variants for future research directions.
+        keywords: "Thermal Simulation, Physics-Informed Neural Networks, SoC Design, Deep Learning"
+        roles: "Core Developer, Research Engineer"
+
+    Skills:
+      - label: Firmware & Systems Programming
+        details: ""
+        keywords: "Trusted Firmware-A (TF-A), Rusted Firmware-A (RF-A), TF-A Test Framework (TFTF), PSCI, Low-Power Mode (LPM), SMC Handling, EL3 Crash and Ramdump Analysis"
+      - label: SoC & Hardware Integration
+        details: ""
+        keywords: "Power Management, Arm Power Policy Units (PPU), Watchdog Reset Triage, EL3 Tracepoints and Breadcrumbs, Scan Dump Analysis"
+      - label: Multi-Agent Systems
+        details: ""
+        keywords: "Agent-Oriented Programming, Agent Orchestration, Chain-of-Stage Reasoning, Diagram-Aware Retrieval-Augmented Generation (DA-RAG), Executor Agent, Circuit Think Tank"
+      - label: Physics-Informed Machine Learning
+        details: ""
+        keywords: "Physics-Informed Neural Networks (PINNs), Fourier-Biot Equation, Gradient and Laplacian Modeling, Physics-aware Loss Functions"
+      - label: Programming Languages
+        details: ""
+        keywords: "Python, C, C++, Rust, Golang, TypeScript, JavaScript, ARM Assembly, LaTeX"
+      - label: AI/ML Frameworks
+        details: ""
+        keywords: "PyTorch, PyTorch Lightning, TensorFlow"
+      - label: DevOps & Infrastructure
+        details: ""
+        keywords: "Docker, BigQuery, Kubernetes, GitHub Actions"
+      - label: Research & Analysis
+        details: ""
+        keywords: "Statistical Modeling, Data Analysis, Empirical Research Methods, Technical Writing"
+
+    Interests:
+      - label: Firmware & Silicon Systems
+        details: Research Focus
+        keywords: "Trusted Firmware, Pre-Silicon Validation, Low-Power Systems, SoC Architecture, Hardware/Software Co-Design"
+      - label: Systems Programming
+        details: Research Focus
+        keywords: "Rust, ARM Architecture, Baremetal Testing, Memory Safety, Real-Time Systems"
+      - label: AI for Semiconductor Design
+        details: Research Focus
+        keywords: "Physics-Informed Neural Networks, Circuit Design Automation, Thermal Modeling, Leakage Analysis"
+      - label: Multi-Agent & Multimodal AI
+        details: Research Focus
+        keywords: "Multi-Agent Systems, Multimodal & Reinforcement Learning, Decision Making"
+      - label: Research Methodology
+        details: Research Focus
+        keywords: "Integrative Tokenization, Knowledge Distillation, Process-Oriented Evaluation, Cross-disciplinary Research"
+      - label: Educational Impact
+        details: Community
+        keywords: "Knowledge Democratization, Fair Access to AI Tools"
+
+    Volunteer:
+      - company: Open Source Community
+        position: Contributor
+        start_date: 2022-01
+        url: https://github.com/mai0313
+        summary: >
+          Active contributor to open-source machine learning and semiconductor design tools.
+        highlights:
+          - Contributed to 15+ open-source projects related to AI and EDA tools
+          - Maintained documentation and tutorials for newcomers
+
+    Certificates:
+      - name: Fundamentals of Accelerated Computing with CUDA Python
+        date: "2024-12-06"
+        url: https://learn.nvidia.com/certificates?id=wS6KBhmjTqiLOkau1wi0Tw
+        issuer: NVIDIA
+
+    References:
+      - name: Jiayi Xu
+        summary: >
+          As Manager of MediaTek's Standard Cell Library Dept. II, I witnessed Wei Cheng Lee architect and deliver a custom terabyte-scale data analysis and visualization platform for IC design — replacing Splunk to overcome its scalability and customization limits, and enabling real-time analysis of SPICE models, sidefile models, and silicon measurement data. His command of scalable data pipelines and performance-critical algorithms, paired with deep engagement with IC design workflows, turned a long-standing tooling gap into a decision-making accelerator for the broader engineering organization.
+
+      - name: Yi-Chen Lin
+        summary: >
+          As MediaTek's ML Team Manager, I observed Wei Cheng Lee translate his open-source credibility — built through contributions to AutoGen, LangChain, LangGraph, and MLflow — into tangible team outcomes. He directly engaged AutoGen's co-authors, Chi Wang (DeepMind) and Qingyun Wu (Penn State University), to fast-track fixes aligned with our needs and host technical exchanges at MediaTek. He also routinely took on the less visible, high-leverage work of hardening testing and data pipelines, raising productivity across the department.
+
+      - name: Yu-Sheng Lin
+        summary: >
+          As project manager for MediaTek's AI Thermal Simulation initiative, I saw Wei Cheng Lee drive the core technical execution behind "Fast SoC Thermal Simulation with Physics-aware U-Net" (NeurIPS 2023) — integrating physics-aware thermal gradient constraints into the model architecture, validating data efficiency gains through rigorous experimentation, and delivering production-grade code the team could readily extend. He further broadened our research horizon by prototyping a Swin Transformer V2 variant for thermal image generation, showcasing both depth and strategic initiative.
+
+# ---------------------------------------------------------------------------
+# PDF design (rendercv only — ignored by the web UI).
+# Reference: https://docs.rendercv.com/user_guide/yaml_input_structure/design
+# ---------------------------------------------------------------------------
+design:
+  theme: engineeringresumes
+
+  page:
+    size: us-letter
+    top_margin: 1.8cm
+    bottom_margin: 1.8cm
+    left_margin: 1.8cm
+    right_margin: 1.8cm
+    show_footer: true
+
+  colors:
+    body: rgb(30, 30, 30)
+    name: rgb(0, 58, 115) # deep navy for the name
+    headline: rgb(80, 80, 80)
+    connections: rgb(0, 58, 115)
+    section_titles: rgb(0, 58, 115)
+    links: rgb(0, 82, 160) # slightly brighter navy for links
+    footer: rgb(140, 140, 140)
+
+  typography:
+    line_spacing: 0.65em
+    alignment: justified
+    date_and_location_column_alignment: right
+    font_size:
+      body: 10pt
+      name: 26pt
+      headline: 11pt
+      connections: 10pt
+      section_titles: 1.2em
+    bold:
+      name: true
+      headline: false
+      connections: false
+      section_titles: true
+    small_caps:
+      name: false
+      headline: false
+      connections: false
+      section_titles: false
+
+  links:
+    underline: false
+    show_external_link_icon: false
+
+  header:
+    alignment: center
+    photo_width: 3.5cm
+    photo_position: left
+    photo_space_left: 0.4cm
+    photo_space_right: 0.4cm
+    space_below_name: 0.35cm
+    space_below_headline: 0.35cm
+    space_below_connections: 0.7cm
+    connections:
+      separator: "·"
+      show_icons: true
+      hyperlink: true
+      display_urls_instead_of_usernames: false
+      space_between_connections: 0.4cm
+
+  section_titles:
+    type: with_partial_line
+    line_thickness: 0.6pt
+    space_above: 0.5cm
+    space_below: 0.25cm
+
+  sections:
+    allow_page_break: true
+    space_between_regular_entries: 0.4cm
+    space_between_text_based_entries: 0.15cm
+    show_time_spans_in: []
+
+  entries:
+    date_and_location_width: 4cm
+    side_space: 0cm
+    space_between_columns: 0.2cm
+    allow_page_break: false
+    short_second_row: false
+    degree_width: 1cm
+    summary:
+      space_above: 0.1cm
+      space_left: 0cm
+    highlights:
+      bullet: "◆"
+      nested_bullet: "◦"
+      space_left: 0cm
+      space_above: 0.1cm
+      space_between_items: 0.15cm
+      space_between_bullet_and_text: 0.35em
+
+  templates:
+    footer: "NAME · PAGE_NUMBER / TOTAL_PAGES"
+    single_date: "MONTH_ABBREVIATION YEAR"
+    date_range: "START_DATE - END_DATE"
+    one_line_entry:
+      # Skills/Interests show label, level, and keyword list on one line in PDF.
+      main_column: "**LABEL** (DETAILS): KEYWORDS"
+
+locale:
+  language: english
+  last_updated: Last updated in
+  month: month
+  months: months
+  year: year
+  years: years
+  present: present
+  phrases:
+    degree_with_area: DEGREE in AREA
+  month_abbreviations:
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - June
+    - July
+    - Aug
+    - Sept
+    - Oct
+    - Nov
+    - Dec
+  month_names:
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+
+settings:
+  current_date: today
+  # Auto-bold these keywords wherever they appear in summaries/highlights.
+  # "Wei Cheng Lee" is intentionally NOT listed here — author names use manual
+  # **...** markdown so the web UI can detect self-authorship (and listing it
+  # here would double-bold and break typst rendering in the footer).
+  bold_keywords:
+    - Google
+    - MediaTek
+    - NeurIPS
+    - ICLAD
+    - VLSI TSA
