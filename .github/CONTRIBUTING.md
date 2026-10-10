@@ -44,7 +44,7 @@ If you edit `public/resume.yaml`, run `make pdf` and commit `public/resume.pdf` 
 - `src/pages/` contains the lazy-loaded home and resume route components.
 - `src/components/` contains reusable UI, including `navbar.tsx`, `ResumeContent.tsx`, `ResumeHeader.tsx`, `Threads/`, `DecryptedText/`, and the `ResumeSections/` renderers.
 - `src/components/shared/` contains small cross-section primitives such as `BulletList`, `DateRange`, `ExternalLink`, `ItemCard`, and shared icons.
-- `src/utils/` contains environment access, path helpers, resume compatibility exports, and animation variants.
+- `src/utils/` contains environment access and path helpers.
 - `src/utils/resume/` contains focused resume modules for schema types, YAML loading, entry-type detection, list-field normalization, source resolution, and social URLs.
 - `src/config/site.ts` defines navigation items and external links from the current environment.
 - `src/styles/` contains the global stylesheet importing Tailwind CSS v4 and `@heroui/styles`.
