@@ -18,8 +18,7 @@ A personal resume website built with Vite, React 19, Tailwind CSS v4, and [HeroU
 - YAML-driven resume content from `public/resume.yaml`, GitHub Gist, or any raw YAML URL.
 - Seven rendercv entry renderers for experience, education, publications, projects, skills, bullets, and text sections.
 - Downloadable `public/resume.pdf` generated from the same YAML with [rendercv](https://github.com/rendercv/rendercv).
-- Responsive home and resume pages with a WebGL `Threads` background, `DecryptedText` headline animation, theme switching, and Framer Motion transitions.
-- Lazy-loaded route bundles keep resume rendering and YAML parsing out of the home page's initial load.
+- Responsive home and resume pages with an animated WebGL background, an animated headline, and a light/dark theme toggle.
 - Subpath-aware routing and asset paths through `VITE_ROOT_PATH`, suitable for GitHub Pages.
 
 ## Quick Start
@@ -38,35 +37,11 @@ npm run dev
 
 The dev server runs on Vite's default port, usually `http://localhost:5173`.
 
-Useful commands:
-
-```bash
-npm run dev           # start the Vite dev server
-npm run build         # tsc && vite build
-npm run preview       # preview the production build
-npm run type-check    # TypeScript only
-npm run format:nofix  # Prettier check
-npm run lint:nofix    # ESLint check
-npm run check         # type-check, format, and lint with fixes
-
-make pdf              # regenerate public/resume.pdf from public/resume.yaml
-make run              # shortcut for npm run dev
-make fmt              # shortcut for npm run check
-make clean            # remove generated output/caches, then prune Git refs and GC
-```
-
 ## Configuration
 
-Create `.env` from `.env.example` and set the Vite environment variables:
+Set the variables in `.env`; `.env.example` documents each one.
 
-```bash
-VITE_WEBSITE_TITLE=Mai
-VITE_RESUME_FILE=resume.yaml
-VITE_RESUME_PDF_PATH=resume.pdf
-# VITE_ROOT_PATH=/resume
-```
-
-`VITE_WEBSITE_TITLE` is required at module load. `VITE_RESUME_FILE` is optional; when it is empty, the `/resume` route and nav item are hidden. Local resume files are served from `public/`, while GitHub Gist URLs and raw YAML URLs are fetched directly. `VITE_RESUME_PDF_PATH` defaults to `/resume.pdf`; local paths are prefixed with `VITE_ROOT_PATH` for subpath deployments.
+`VITE_WEBSITE_TITLE` is required. `VITE_RESUME_FILE` is optional; when it is empty, the `/resume` route and nav item are hidden. Local resume files are served from `public/`, while GitHub Gist URLs and raw YAML URLs are fetched directly. `VITE_RESUME_PDF_PATH` defaults to `/resume.pdf`; local paths are prefixed with `VITE_ROOT_PATH` for subpath deployments.
 
 Set `VITE_ROOT_PATH=/resume` when deploying to a GitHub Pages subpath such as `https://<user>.github.io/resume/`. Leave it unset for root-domain deployments.
 
@@ -134,14 +109,13 @@ GitHub Actions regenerates the PDF during the GitHub Pages deployment as a safet
 GitHub Pages:
 
 - `.github/workflows/deploy.yml` runs on pushes to `main`, `master`, and `v*` tags.
-- The workflow runs `make pdf`, sets `VITE_ROOT_PATH=/${{ github.event.repository.name }}`, builds with `npm run build`, and deploys `dist/` through GitHub Pages.
+- The workflow sets `VITE_ROOT_PATH` to `/<repository-name>`; the other build variables are in its `env` block.
 - In repository settings, set Pages source to GitHub Actions.
 
 Vercel:
 
 - Import the repository.
 - Set `VITE_WEBSITE_TITLE`, `VITE_RESUME_FILE`, `VITE_RESUME_PDF_PATH`, and optionally `VITE_ROOT_PATH`.
-- `vercel.json` rewrites only extensionless routes to the SPA, so files such as `/resume.pdf` and `/resume.yaml` are served as static assets.
 
 Docker:
 
@@ -151,12 +125,11 @@ docker compose logs -f
 docker compose down
 ```
 
-The runtime image uses the Node.js version set in `docker/Dockerfile`, builds the Vite app, and runs `npm run preview -- --host=0.0.0.0 --port=3000`, mapped to host port `5173`.
+The site is served on `http://localhost:5173`.
 
-## More Docs
+## Development
 
-- [CONTRIBUTING.md](.github/CONTRIBUTING.md) covers local development, CI, project layout, and PR conventions.
-- [CLAUDE.md](CLAUDE.md) contains concise project-specific notes for AI coding agents.
+Contributor setup, project layout, commit conventions, quality checks, and the release process live in [CONTRIBUTING.md](./.github/CONTRIBUTING.md).
 
 ## License
 

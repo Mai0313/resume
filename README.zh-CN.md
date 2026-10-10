@@ -18,8 +18,7 @@
 - 以 YAML 驱动简历内容，来源可以是 `public/resume.yaml`、GitHub Gist 或任何 raw YAML URL。
 - 提供七种 rendercv entry renderer，覆盖 experience、education、publications、projects、skills、bullets 和 text sections。
 - 可下载的 `public/resume.pdf` 由同一份 YAML 通过 [rendercv](https://github.com/rendercv/rendercv) 生成。
-- Responsive home 和 resume pages，包含 WebGL `Threads` 背景、`DecryptedText` headline animation、theme switching 和 Framer Motion transitions。
-- Lazy-loaded route bundles 让 resume rendering 和 YAML parsing 不会进入 home page 的 initial load。
+- 响应式的首页和简历页，包含 WebGL 动态背景、动态标题，以及浅色／深色主题切换。
 - 通过 `VITE_ROOT_PATH` 支持 subpath-aware routing 和 asset paths，适合 GitHub Pages。
 
 ## 快速开始
@@ -38,35 +37,11 @@ npm run dev
 
 Dev server 会跑在 Vite 默认 port，通常是 `http://localhost:5173`。
 
-常用 commands：
-
-```bash
-npm run dev           # start the Vite dev server
-npm run build         # tsc && vite build
-npm run preview       # preview the production build
-npm run type-check    # TypeScript only
-npm run format:nofix  # Prettier check
-npm run lint:nofix    # ESLint check
-npm run check         # type-check, format, and lint with fixes
-
-make pdf              # regenerate public/resume.pdf from public/resume.yaml
-make run              # shortcut for npm run dev
-make fmt              # shortcut for npm run check
-make clean            # remove generated output/caches, then prune Git refs and GC
-```
-
 ## 配置
 
-从 `.env.example` 创建 `.env`，并设置 Vite environment variables：
+在 `.env` 设置变量；每个变量的说明都在 `.env.example`。
 
-```bash
-VITE_WEBSITE_TITLE=Mai
-VITE_RESUME_FILE=resume.yaml
-VITE_RESUME_PDF_PATH=resume.pdf
-# VITE_ROOT_PATH=/resume
-```
-
-`VITE_WEBSITE_TITLE` 会在 module load 时检查，必填。`VITE_RESUME_FILE` 是可选项，空值时 `/resume` route 和 nav item 会被隐藏。本地 resume files 会从 `public/` serve，GitHub Gist URLs 和 raw YAML URLs 则会直接 fetch。`VITE_RESUME_PDF_PATH` 默认是 `/resume.pdf`；local paths 会依 `VITE_ROOT_PATH` 加上 prefix，以支持 subpath deployments。
+`VITE_WEBSITE_TITLE` 必填。`VITE_RESUME_FILE` 是可选项，空值时 `/resume` route 和 nav item 会被隐藏。本地 resume files 会从 `public/` serve，GitHub Gist URLs 和 raw YAML URLs 则会直接 fetch。`VITE_RESUME_PDF_PATH` 默认是 `/resume.pdf`；local paths 会依 `VITE_ROOT_PATH` 加上 prefix，以支持 subpath deployments。
 
 部署到 `https://<user>.github.io/resume/` 这类 GitHub Pages subpath 时，设置 `VITE_ROOT_PATH=/resume`。如果部署在 root domain，保持未设置即可。
 
@@ -134,14 +109,13 @@ GitHub Actions 在 GitHub Pages deployment 期间会重新生成 PDF，作为 sa
 GitHub Pages：
 
 - `.github/workflows/deploy.yml` 会在 push 到 `main`、`master` 和 `v*` tags 时执行。
-- Workflow 会跑 `make pdf`，设置 `VITE_ROOT_PATH=/${{ github.event.repository.name }}`，用 `npm run build` build，并通过 GitHub Pages 部署 `dist/`。
+- 这个 workflow 会把 `VITE_ROOT_PATH` 设为 `/<repository-name>`，其他 build 变量则写在它的 `env` 块里。
 - Repository settings 里的 Pages source 要设为 GitHub Actions。
 
 Vercel：
 
 - Import repository。
 - 设置 `VITE_WEBSITE_TITLE`、`VITE_RESUME_FILE`、`VITE_RESUME_PDF_PATH`，以及可选的 `VITE_ROOT_PATH`。
-- `vercel.json` 只会把没有 extension 的 routes rewrite 到 SPA，因此 `/resume.pdf` 和 `/resume.yaml` 这类文件会以 static assets serve。
 
 Docker：
 
@@ -151,12 +125,11 @@ docker compose logs -f
 docker compose down
 ```
 
-Runtime image 使用 `docker/Dockerfile` 设定的 Node.js 版本，会 build Vite app，并执行 `npm run preview -- --host=0.0.0.0 --port=3000`，映射到 host port `5173`。
+网站会运行在 `http://localhost:5173`。
 
-## 更多文档
+## 开发
 
-- [CONTRIBUTING.md](.github/CONTRIBUTING.md) 说明 local development、CI、project layout 和 PR conventions。
-- [CLAUDE.md](CLAUDE.md) 提供 AI coding agents 使用的精简 project-specific notes。
+本地开发环境、项目结构、commit 规范、质量检查和发布流程都在 [CONTRIBUTING.md](./.github/CONTRIBUTING.md)。
 
 ## 授权
 

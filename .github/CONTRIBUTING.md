@@ -52,6 +52,7 @@ If you edit `public/resume.yaml`, run `make pdf` and commit `public/resume.pdf` 
 - `.github/workflows/` contains CI, security scanning, GitHub Pages deployment, release drafting, labeler, and Docker image workflows.
 - `docker/` and `docker-compose.yaml` contain the production Docker setup.
 - `.devcontainer/` contains the VS Code Dev Container setup.
+- `CLAUDE.md` contains concise project-specific notes for AI coding agents.
 
 ## Workflow
 
