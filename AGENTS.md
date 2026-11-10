@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 Project notes for AI agents working in this repo.
 
